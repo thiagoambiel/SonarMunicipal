@@ -1,0 +1,5572 @@
+Nivel,Codigo,Nome,Num Hab
+MU,1100015,Alta Floresta D'Oeste,21494
+MU,1100023,Ariquemes,96833
+MU,1100031,Cabixi,5351
+MU,1100049,Cacoal,86887
+MU,1100056,Cerejeiras,15890
+MU,1100064,Colorado do Oeste,15663
+MU,1100072,Corumbiara,7519
+MU,1100080,Costa Marques,12627
+MU,1100098,Espigão D'Oeste,29414
+MU,1100106,Guajará-Mirim,39387
+MU,1100114,Jaru,50591
+MU,1100122,Ji-Paraná,124333
+MU,1100130,Machadinho D'Oeste,30707
+MU,1100148,Nova Brasilândia D'Oeste,15679
+MU,1100155,Ouro Preto do Oeste,35044
+MU,1100189,Pimenta Bueno,35079
+MU,1100205,Porto Velho,460434
+MU,1100254,Presidente Médici,19327
+MU,1100262,Rio Crespo,3471
+MU,1100288,Rolim de Moura,56406
+MU,1100296,Santa Luzia D'Oeste,7419
+MU,1100304,Vilhena,95832
+MU,1100320,São Miguel do Guaporé,21635
+MU,1100338,Nova Mamoré,25444
+MU,1100346,Alvorada D'Oeste,13117
+MU,1100379,Alto Alegre dos Parecis,11479
+MU,1100403,Alto Paraíso,16320
+MU,1100452,Buritis,27992
+MU,1100502,Novo Horizonte do Oeste,7667
+MU,1100601,Cacaulândia,4150
+MU,1100700,Campo Novo de Rondônia,8844
+MU,1100809,Candeias do Jamari,22310
+MU,1100908,Castanheiras,3233
+MU,1100924,Chupinguaia,9324
+MU,1100940,Cujubim,14863
+MU,1101005,Governador Jorge Teixeira,8001
+MU,1101104,Itapuã do Oeste,8548
+MU,1101203,Ministro Andreazza,6466
+MU,1101302,Mirante da Serra,9235
+MU,1101401,Monte Negro,11548
+MU,1101435,Nova União,6200
+MU,1101450,Parecis,4125
+MU,1101468,Pimenteiras do Oeste,2156
+MU,1101476,Primavera de Rondônia,3076
+MU,1101484,São Felipe D'Oeste,5258
+MU,1101492,São Francisco do Guaporé,16286
+MU,1101500,Seringueiras,11171
+MU,1101559,Teixeirópolis,4256
+MU,1101609,Theobroma,8113
+MU,1101708,Urupá,10725
+MU,1101757,Vale do Anari,7788
+MU,1101807,Vale do Paraíso,6479
+MU,1200013,Acrelândia,14021
+MU,1200054,Assis Brasil,8100
+MU,1200104,Brasiléia,26000
+MU,1200138,Bujari,12917
+MU,1200179,Capixaba,10392
+MU,1200203,Cruzeiro do Sul,91888
+MU,1200252,Epitaciolândia,18757
+MU,1200302,Feijó,35426
+MU,1200328,Jordão,9222
+MU,1200336,Mâncio Lima,19294
+MU,1200344,Manoel Urbano,11996
+MU,1200351,Marechal Thaumaturgo,17093
+MU,1200385,Plácido de Castro,16560
+MU,1200393,Porto Walter,10735
+MU,1200401,Rio Branco,364756
+MU,1200427,Rodrigues Alves,14938
+MU,1200435,Santa Rosa do Purus,6723
+MU,1200450,Senador Guiomard,21454
+MU,1200500,Sena Madureira,41343
+MU,1200609,Tarauacá,43467
+MU,1200708,Xapuri,18243
+MU,1200807,Porto Acre,16693
+MU,1300029,Alvarães,15866
+MU,1300060,Amaturá,10819
+MU,1300086,Anamã,9962
+MU,1300102,Anori,17194
+MU,1300144,Apuí,20647
+MU,1300201,Atalaia do Norte,15314
+MU,1300300,Autazes,41564
+MU,1300409,Barcelos,18834
+MU,1300508,Barreirinha,31051
+MU,1300607,Benjamin Constant,37648
+MU,1300631,Beruri,20718
+MU,1300680,Boa Vista do Ramos,23785
+MU,1300706,Boca do Acre,35447
+MU,1300805,Borba,33080
+MU,1300839,Caapiranga,13469
+MU,1300904,Canutama,16869
+MU,1301001,Carauari,28742
+MU,1301100,Careiro,30792
+MU,1301159,Careiro da Várzea,19637
+MU,1301209,Coari,70616
+MU,1301308,Codajás,23549
+MU,1301407,Eirunepé,33170
+MU,1301506,Envira,17186
+MU,1301605,Fonte Boa,25871
+MU,1301654,Guajará,13815
+MU,1301704,Humaitá,57473
+MU,1301803,Ipixuna,24311
+MU,1301852,Iranduba,61163
+MU,1301902,Itacoatiara,103598
+MU,1301951,Itamarati,10937
+MU,1302009,Itapiranga,10162
+MU,1302108,Japurá,8858
+MU,1302207,Juruá,10742
+MU,1302306,Jutaí,25172
+MU,1302405,Lábrea,45448
+MU,1302504,Manacapuru,101883
+MU,1302553,Manaquiri,17107
+MU,1302603,Manaus,2063689
+MU,1302702,Manicoré,53914
+MU,1302801,Maraã,15529
+MU,1302900,Maués,61204
+MU,1303007,Nhamundá,20136
+MU,1303106,Nova Olinda do Norte,27062
+MU,1303205,Novo Airão,15761
+MU,1303304,Novo Aripuanã,23818
+MU,1303403,Parintins,96372
+MU,1303502,Pauini,19373
+MU,1303536,Presidente Figueiredo,30668
+MU,1303569,Rio Preto da Eva,24936
+MU,1303601,Santa Isabel do Rio Negro,14164
+MU,1303700,Santo Antônio do Içá,28211
+MU,1303809,São Gabriel da Cachoeira,51795
+MU,1303908,São Paulo de Olivença,32967
+MU,1303957,São Sebastião do Uatumã,11670
+MU,1304005,Silves,11559
+MU,1304062,Tabatinga,66764
+MU,1304104,Tapauá,19599
+MU,1304203,Tefé,73669
+MU,1304237,Tonantins,19247
+MU,1304260,Uarini,14431
+MU,1304302,Urucará,18631
+MU,1304401,Urucurituba,23945
+MU,1400027,Amajari,13927
+MU,1400050,Alto Alegre,21096
+MU,1400100,Boa Vista,413486
+MU,1400159,Bonfim,13923
+MU,1400175,Cantá,18682
+MU,1400209,Caracaraí,20957
+MU,1400233,Caroebe,10656
+MU,1400282,Iracema,10023
+MU,1400308,Mucajaí,18095
+MU,1400407,Normandia,13986
+MU,1400456,Pacaraima,19305
+MU,1400472,Rorainópolis,32647
+MU,1400506,São João da Baliza,8858
+MU,1400605,São Luiz,7315
+MU,1400704,Uiramutã,13751
+MU,1500107,Abaetetuba,158188
+MU,1500131,Abel Figueiredo,6136
+MU,1500206,Acará,59023
+MU,1500305,Afuá,37765
+MU,1500347,Água Azul do Norte,18080
+MU,1500404,Alenquer,69377
+MU,1500503,Almeirim,34280
+MU,1500602,Altamira,126279
+MU,1500701,Anajás,28011
+MU,1500800,Ananindeua,478778
+MU,1500859,Anapu,31850
+MU,1500909,Augusto Corrêa,44573
+MU,1500958,Aurora do Pará,23774
+MU,1501006,Aveiro,18290
+MU,1501105,Bagre,31892
+MU,1501204,Baião,51641
+MU,1501253,Bannach,4031
+MU,1501303,Barcarena,126650
+MU,1501402,Belém,1303403
+MU,1501451,Belterra,18099
+MU,1501501,Benevides,63567
+MU,1501576,Bom Jesus do Tocantins,18005
+MU,1501600,Bonito,12622
+MU,1501709,Bragança,123082
+MU,1501725,Brasil Novo,24718
+MU,1501758,Brejo Grande do Araguaia,6783
+MU,1501782,Breu Branco,45712
+MU,1501808,Breves,106968
+MU,1501907,Bujaru,24383
+MU,1501956,Cachoeira do Piriá,19630
+MU,1502004,Cachoeira do Arari,23981
+MU,1502103,Cametá,134184
+MU,1502152,Canaã dos Carajás,77079
+MU,1502202,Capanema,70394
+MU,1502301,Capitão Poço,56506
+MU,1502400,Castanhal,192256
+MU,1502509,Chaves,20757
+MU,1502608,Colares,12868
+MU,1502707,Conceição do Araguaia,44617
+MU,1502756,Concórdia do Pará,26881
+MU,1502764,Cumaru do Norte,14036
+MU,1502772,Curionópolis,19950
+MU,1502806,Curralinho,33903
+MU,1502855,Curuá,14117
+MU,1502905,Curuçá,41262
+MU,1502939,Dom Eliseu,58484
+MU,1502954,Eldorado do Carajás,28192
+MU,1503002,Faro,8728
+MU,1503044,Floresta do Araguaia,17898
+MU,1503077,Garrafão do Norte,24703
+MU,1503093,Goianésia do Pará,26362
+MU,1503101,Gurupá,31786
+MU,1503200,Igarapé-Açu,35797
+MU,1503309,Igarapé-Miri,64831
+MU,1503408,Inhangapi,10325
+MU,1503457,Ipixuna do Pará,30329
+MU,1503507,Irituia,30955
+MU,1503606,Itaituba,123314
+MU,1503705,Itupiranga,49754
+MU,1503754,Jacareacanga,24042
+MU,1503804,Jacundá,37707
+MU,1503903,Juruti,50881
+MU,1504000,Limoeiro do Ajuru,29569
+MU,1504059,Mãe do Rio,34353
+MU,1504109,Magalhães Barata,8115
+MU,1504208,Marabá,266533
+MU,1504307,Maracanã,25971
+MU,1504406,Marapanim,26573
+MU,1504422,Marituba,111785
+MU,1504455,Medicilândia,27094
+MU,1504505,Melgaço,27881
+MU,1504604,Mocajuba,27198
+MU,1504703,Moju,84094
+MU,1504752,Mojuí dos Campos,23501
+MU,1504802,Monte Alegre,60012
+MU,1504901,Muaná,45368
+MU,1504950,Nova Esperança do Piriá,20478
+MU,1504976,Nova Ipixuna,13955
+MU,1505007,Nova Timboteua,12806
+MU,1505031,Novo Progresso,33638
+MU,1505064,Novo Repartimento,60732
+MU,1505106,Óbidos,52229
+MU,1505205,Oeiras do Pará,33844
+MU,1505304,Oriximiná,68294
+MU,1505403,Ourém,17855
+MU,1505437,Ourilândia do Norte,32467
+MU,1505486,Pacajá,41097
+MU,1505494,Palestina do Pará,6885
+MU,1505502,Paragominas,105550
+MU,1505536,Parauapebas,267836
+MU,1505551,Pau D'Arco,6931
+MU,1505601,Peixe-Boi,8285
+MU,1505635,Piçarra,12832
+MU,1505650,Placas,18668
+MU,1505700,Ponta de Pedras,24984
+MU,1505809,Portel,62503
+MU,1505908,Porto de Moz,40597
+MU,1506005,Prainha,35577
+MU,1506104,Primavera,10851
+MU,1506112,Quatipuru,11524
+MU,1506138,Redenção,85597
+MU,1506161,Rio Maria,18384
+MU,1506187,Rondon do Pará,53143
+MU,1506195,Rurópolis,35769
+MU,1506203,Salinópolis,44772
+MU,1506302,Salvaterra,24129
+MU,1506351,Santa Bárbara do Pará,21087
+MU,1506401,Santa Cruz do Arari,7445
+MU,1506500,Santa Izabel do Pará,73019
+MU,1506559,Santa Luzia do Pará,20370
+MU,1506583,Santa Maria das Barreiras,16548
+MU,1506609,Santa Maria do Pará,24624
+MU,1506708,Santana do Araguaia,32413
+MU,1506807,Santarém,331942
+MU,1506906,Santarém Novo,6116
+MU,1507003,Santo Antônio do Tauá,27461
+MU,1507102,São Caetano de Odivelas,16666
+MU,1507151,São Domingos do Araguaia,21092
+MU,1507201,São Domingos do Capim,30599
+MU,1507300,São Félix do Xingu,65418
+MU,1507409,São Francisco do Pará,14894
+MU,1507458,São Geraldo do Araguaia,24255
+MU,1507466,São João da Ponta,4430
+MU,1507474,São João de Pirabas,20689
+MU,1507508,São João do Araguaia,13664
+MU,1507607,São Miguel do Guamá,52894
+MU,1507706,São Sebastião da Boa Vista,25643
+MU,1507755,Sapucaia,5847
+MU,1507805,Senador José Porfírio,22576
+MU,1507904,Soure,24204
+MU,1507953,Tailândia,72493
+MU,1507961,Terra Alta,10400
+MU,1507979,Terra Santa,18782
+MU,1508001,Tomé-Açu,67585
+MU,1508035,Tracuateua,28595
+MU,1508050,Trairão,15242
+MU,1508084,Tucumã,39550
+MU,1508100,Tucuruí,91306
+MU,1508126,Ulianópolis,37972
+MU,1508159,Uruará,43558
+MU,1508209,Vigia,50832
+MU,1508308,Viseu,58692
+MU,1508357,Vitória do Xingu,15607
+MU,1508407,Xinguara,52893
+MU,1600055,Serra do Navio,4673
+MU,1600105,Amapá,7943
+MU,1600154,Pedra Branca do Amapari,12847
+MU,1600204,Calçoene,10612
+MU,1600212,Cutias,4461
+MU,1600238,Ferreira Gomes,6666
+MU,1600253,Itaubal,5599
+MU,1600279,Laranjal do Jari,35114
+MU,1600303,Macapá,442933
+MU,1600402,Mazagão,21924
+MU,1600501,Oiapoque,27482
+MU,1600535,Porto Grande,17848
+MU,1600550,Pracuúba,3803
+MU,1600600,Santana,107618
+MU,1600709,Tartarugalzinho,12945
+MU,1600808,Vitória do Jari,11291
+MU,1700251,Abreulândia,2576
+MU,1700301,Aguiarnópolis,4497
+MU,1700350,Aliança do Tocantins,5147
+MU,1700400,Almas,6499
+MU,1700707,Alvorada,8802
+MU,1701002,Ananás,10325
+MU,1701051,Angico,2876
+MU,1701101,Aparecida do Rio Negro,4856
+MU,1701309,Aragominas,5290
+MU,1701903,Araguacema,5927
+MU,1702000,Araguaçu,8133
+MU,1702109,Araguaína,171301
+MU,1702158,Araguanã,4310
+MU,1702208,Araguatins,31918
+MU,1702307,Arapoema,5550
+MU,1702406,Arraias,10287
+MU,1702554,Augustinópolis,17484
+MU,1702703,Aurora do Tocantins,3342
+MU,1702901,Axixá do Tocantins,10262
+MU,1703008,Babaçulândia,7880
+MU,1703057,Bandeirantes do Tocantins,3407
+MU,1703073,Barra do Ouro,4476
+MU,1703107,Barrolândia,4846
+MU,1703206,Bernardo Sayão,4229
+MU,1703305,Bom Jesus do Tocantins,4038
+MU,1703602,Brasilândia do Tocantins,1974
+MU,1703701,Brejinho de Nazaré,4725
+MU,1703800,Buriti do Tocantins,10307
+MU,1703826,Cachoeirinha,1961
+MU,1703842,Campos Lindos,8653
+MU,1703867,Cariri do Tocantins,4007
+MU,1703883,Carmolândia,2201
+MU,1703891,Carrasco Bonito,3318
+MU,1703909,Caseara,4847
+MU,1704105,Centenário,2131
+MU,1704600,Chapada de Areia,1501
+MU,1705102,Chapada da Natividade,3117
+MU,1705508,Colinas do Tocantins,34233
+MU,1705557,Combinado,4756
+MU,1705607,Conceição do Tocantins,3887
+MU,1706001,Couto Magalhães,5331
+MU,1706100,Cristalândia,6371
+MU,1706258,Crixás do Tocantins,1470
+MU,1706506,Darcinópolis,5827
+MU,1707009,Dianópolis,17739
+MU,1707108,Divinópolis do Tocantins,7024
+MU,1707207,Dois Irmãos do Tocantins,6327
+MU,1707306,Dueré,4248
+MU,1707405,Esperantina,7530
+MU,1707553,Fátima,3467
+MU,1707652,Figueirópolis,5211
+MU,1707702,Filadélfia,7712
+MU,1708205,Formoso do Araguaia,18881
+MU,1708254,Tabocão,3455
+MU,1708304,Goianorte,4738
+MU,1709005,Goiatins,12433
+MU,1709302,Guaraí,24775
+MU,1709500,Gurupi,85125
+MU,1709807,Ipueiras,1590
+MU,1710508,Itacajá,6819
+MU,1710706,Itaguatins,5172
+MU,1710904,Itapiratins,3577
+MU,1711100,Itaporã do Tocantins,2404
+MU,1711506,Jaú do Tocantins,3334
+MU,1711803,Juarina,2243
+MU,1711902,Lagoa da Confusão,15288
+MU,1711951,Lagoa do Tocantins,3516
+MU,1712009,Lajeado,3357
+MU,1712157,Lavandeira,1626
+MU,1712405,Lizarda,2999
+MU,1712454,Luzinópolis,2717
+MU,1712504,Marianópolis do Tocantins,4615
+MU,1712702,Mateiros,2748
+MU,1712801,Maurilândia do Tocantins,3095
+MU,1713205,Miracema do Tocantins,18566
+MU,1713304,Miranorte,12701
+MU,1713601,Monte do Carmo,5694
+MU,1713700,Monte Santo do Tocantins,2396
+MU,1713809,Palmeiras do Tocantins,4872
+MU,1713957,Muricilândia,3367
+MU,1714203,Natividade,8754
+MU,1714302,Nazaré,4521
+MU,1714880,Nova Olinda,10367
+MU,1715002,Nova Rosalândia,3362
+MU,1715101,Novo Acordo,3969
+MU,1715150,Novo Alegre,1846
+MU,1715259,Novo Jardim,2230
+MU,1715507,Oliveira de Fátima,1164
+MU,1715705,Palmeirante,4798
+MU,1715754,Palmeirópolis,6975
+MU,1716109,Paraíso do Tocantins,52360
+MU,1716208,Paranã,10542
+MU,1716307,Pau D'Arco,4043
+MU,1716505,Pedro Afonso,14055
+MU,1716604,Peixe,9317
+MU,1716653,Pequizeiro,4921
+MU,1716703,Colméia,8941
+MU,1717008,Pindorama do Tocantins,4478
+MU,1717206,Piraquê,2282
+MU,1717503,Pium,7128
+MU,1717800,Ponte Alta do Bom Jesus,4220
+MU,1717909,Ponte Alta do Tocantins,7586
+MU,1718006,Porto Alegre do Tocantins,2866
+MU,1718204,Porto Nacional,64418
+MU,1718303,Praia Norte,9044
+MU,1718402,Presidente Kennedy,3047
+MU,1718451,Pugmil,2193
+MU,1718501,Recursolândia,3421
+MU,1718550,Riachinho,3960
+MU,1718659,Rio da Conceição,1768
+MU,1718709,Rio dos Bois,2738
+MU,1718758,Rio Sono,4841
+MU,1718808,Sampaio,4215
+MU,1718840,Sandolândia,3723
+MU,1718865,Santa Fé do Araguaia,7216
+MU,1718881,Santa Maria do Tocantins,2680
+MU,1718899,Santa Rita do Tocantins,2219
+MU,1718907,Santa Rosa do Tocantins,4653
+MU,1719004,Santa Tereza do Tocantins,2781
+MU,1720002,Santa Terezinha do Tocantins,2406
+MU,1720101,São Bento do Tocantins,5654
+MU,1720150,São Félix do Tocantins,1783
+MU,1720200,São Miguel do Tocantins,13241
+MU,1720259,São Salvador do Tocantins,2385
+MU,1720309,São Sebastião do Tocantins,4100
+MU,1720499,São Valério,4422
+MU,1720655,Silvanópolis,5108
+MU,1720804,Sítio Novo do Tocantins,10830
+MU,1720853,Sucupira,1577
+MU,1720903,Taguatinga,14011
+MU,1720937,Taipas do Tocantins,2021
+MU,1720978,Talismã,2456
+MU,1721000,Palmas,302692
+MU,1721109,Tocantínia,7459
+MU,1721208,Tocantinópolis,22615
+MU,1721257,Tupirama,1909
+MU,1721307,Tupiratins,1874
+MU,1722081,Wanderlândia,10522
+MU,1722107,Xambioá,10517
+MU,2100055,Açailândia,106550
+MU,2100105,Afonso Cunha,6144
+MU,2100154,Água Doce do Maranhão,12142
+MU,2100204,Alcântara,18467
+MU,2100303,Aldeias Altas,23286
+MU,2100402,Altamira do Maranhão,6447
+MU,2100436,Alto Alegre do Maranhão,24048
+MU,2100477,Alto Alegre do Pindaré,25710
+MU,2100501,Alto Parnaíba,11109
+MU,2100550,Amapá do Maranhão,7170
+MU,2100600,Amarante do Maranhão,37085
+MU,2100709,Anajatuba,25322
+MU,2100808,Anapurus,13793
+MU,2100832,Apicum-Açu,17519
+MU,2100873,Araguanã,11181
+MU,2100907,Araioses,39052
+MU,2100956,Arame,25517
+MU,2101004,Arari,29472
+MU,2101103,Axixá,11790
+MU,2101202,Bacabal,103711
+MU,2101251,Bacabeira,16966
+MU,2101301,Bacuri,16290
+MU,2101350,Bacurituba,5252
+MU,2101400,Balsas,101767
+MU,2101509,Barão de Grajaú,18984
+MU,2101608,Barra do Corda,84532
+MU,2101707,Barreirinhas,65589
+MU,2101731,Belágua,8460
+MU,2101772,Bela Vista do Maranhão,11750
+MU,2101806,Benedito Leite,5469
+MU,2101905,Bequimão,19584
+MU,2101939,Bernardo do Mearim,5840
+MU,2101970,Boa Vista do Gurupi,7574
+MU,2102002,Bom Jardim,33100
+MU,2102036,Bom Jesus das Selvas,28599
+MU,2102077,Bom Lugar,12212
+MU,2102101,Brejo,34120
+MU,2102150,Brejo de Areia,9218
+MU,2102200,Buriti,29685
+MU,2102309,Buriti Bravo,22455
+MU,2102325,Buriticupu,55499
+MU,2102358,Buritirana,12918
+MU,2102374,Cachoeira Grande,9732
+MU,2102408,Cajapió,10121
+MU,2102507,Cajari,16412
+MU,2102556,Campestre do Maranhão,12301
+MU,2102606,Cândido Mendes,19932
+MU,2102705,Cantanhede,24303
+MU,2102754,Capinzal do Norte,11374
+MU,2102804,Carolina,24062
+MU,2102903,Carutapera,24238
+MU,2103000,Caxias,156973
+MU,2103109,Cedral,10208
+MU,2103125,Central do Maranhão,7094
+MU,2103158,Centro do Guilherme,12342
+MU,2103174,Centro Novo do Maranhão,16267
+MU,2103208,Chapadinha,81386
+MU,2103257,Cidelândia,12878
+MU,2103307,Codó,114275
+MU,2103406,Coelho Neto,41658
+MU,2103505,Colinas,40316
+MU,2103554,Conceição do Lago-Açu,14915
+MU,2103604,Coroatá,59566
+MU,2103703,Cururupu,31558
+MU,2103752,Davinópolis,14404
+MU,2103802,Dom Pedro,23053
+MU,2103901,Duque Bacelar,10223
+MU,2104008,Esperantinópolis,18311
+MU,2104057,Estreito,33294
+MU,2104073,Feira Nova do Maranhão,8048
+MU,2104081,Fernando Falcão,10873
+MU,2104099,Formosa da Serra Negra,17719
+MU,2104107,Fortaleza dos Nogueiras,12640
+MU,2104206,Fortuna,16976
+MU,2104305,Godofredo Viana,10186
+MU,2104404,Gonçalves Dias,17206
+MU,2104503,Governador Archer,10231
+MU,2104552,Governador Edison Lobão,18411
+MU,2104602,Governador Eugênio Barros,13930
+MU,2104628,Governador Luiz Rocha,7063
+MU,2104651,Governador Newton Bello,10713
+MU,2104677,Governador Nunes Freire,23128
+MU,2104701,Graça Aranha,6023
+MU,2104800,Grajaú,73872
+MU,2104909,Guimarães,10290
+MU,2105005,Humberto de Campos,25680
+MU,2105104,Icatu,24794
+MU,2105153,Igarapé do Meio,13974
+MU,2105203,Igarapé Grande,10231
+MU,2105302,Imperatriz,273110
+MU,2105351,Itaipava do Grajaú,13828
+MU,2105401,Itapecuru Mirim,60440
+MU,2105427,Itinga do Maranhão,22513
+MU,2105450,Jatobá,7471
+MU,2105476,Jenipapo dos Vieiras,17076
+MU,2105500,João Lisboa,24709
+MU,2105609,Joselândia,14924
+MU,2105658,Junco do Maranhão,5146
+MU,2105708,Lago da Pedra,44403
+MU,2105807,Lago do Junco,9506
+MU,2105906,Lago Verde,14769
+MU,2105922,Lagoa do Mato,10572
+MU,2105948,Lago dos Rodrigues,8758
+MU,2105963,Lagoa Grande do Maranhão,11411
+MU,2105989,Lajeado Novo,7057
+MU,2106003,Lima Campos,11297
+MU,2106102,Loreto,11597
+MU,2106201,Luís Domingues,7161
+MU,2106300,Magalhães de Almeida,13807
+MU,2106326,Maracaçumé,21149
+MU,2106359,Marajá do Sena,7027
+MU,2106375,Maranhãozinho,13761
+MU,2106409,Mata Roma,17090
+MU,2106508,Matinha,22034
+MU,2106607,Matões,32174
+MU,2106631,Matões do Norte,17432
+MU,2106672,Milagres do Maranhão,8818
+MU,2106706,Mirador,21030
+MU,2106755,Miranda do Norte,23864
+MU,2106805,Mirinzal,13978
+MU,2106904,Monção,27751
+MU,2107001,Montes Altos,9106
+MU,2107100,Morros,18554
+MU,2107209,Nina Rodrigues,14176
+MU,2107258,Nova Colinas,5021
+MU,2107308,Nova Iorque,4320
+MU,2107357,Nova Olinda do Maranhão,14314
+MU,2107407,Olho d'Água das Cunhãs,17919
+MU,2107456,Olinda Nova do Maranhão,13577
+MU,2107506,Paço do Lumiar,145643
+MU,2107605,Palmeirândia,21059
+MU,2107704,Paraibano,18274
+MU,2107803,Parnarama,31250
+MU,2107902,Passagem Franca,17220
+MU,2108009,Pastos Bons,18802
+MU,2108058,Paulino Neves,17056
+MU,2108108,Paulo Ramos,20341
+MU,2108207,Pedreiras,37050
+MU,2108256,Pedro do Rosário,24320
+MU,2108306,Penalva,32511
+MU,2108405,Peri Mirim,11108
+MU,2108454,Peritoró,20479
+MU,2108504,Pindaré-Mirim,31429
+MU,2108603,Pinheiro,84621
+MU,2108702,Pio XII,21886
+MU,2108801,Pirapemas,17714
+MU,2108900,Poção de Pedras,17161
+MU,2109007,Porto Franco,23903
+MU,2109056,Porto Rico do Maranhão,5954
+MU,2109106,Presidente Dutra,45155
+MU,2109205,Presidente Juscelino,11356
+MU,2109239,Presidente Médici,4696
+MU,2109270,Presidente Sarney,17511
+MU,2109304,Presidente Vargas,10549
+MU,2109403,Primeira Cruz,13614
+MU,2109452,Raposa,30839
+MU,2109502,Riachão,22145
+MU,2109551,Ribamar Fiquene,7420
+MU,2109601,Rosário,38475
+MU,2109700,Sambaíba,5568
+MU,2109759,Santa Filomena do Maranhão,6697
+MU,2109809,Santa Helena,41561
+MU,2109908,Santa Inês,85014
+MU,2110005,Santa Luzia,57635
+MU,2110039,Santa Luzia do Paruá,24307
+MU,2110104,Santa Quitéria do Maranhão,23957
+MU,2110203,Santa Rita,37035
+MU,2110237,Santana do Maranhão,10567
+MU,2110278,Santo Amaro do Maranhão,13949
+MU,2110302,Santo Antônio dos Lopes,14304
+MU,2110401,São Benedito do Rio Preto,18364
+MU,2110500,São Bento,46395
+MU,2110609,São Bernardo,26943
+MU,2110658,São Domingos do Azeitão,7992
+MU,2110708,São Domingos do Maranhão,34034
+MU,2110807,São Félix de Balsas,4402
+MU,2110856,São Francisco do Brejão,9051
+MU,2110906,São Francisco do Maranhão,12064
+MU,2111003,São João Batista,18544
+MU,2111029,São João do Carú,12251
+MU,2111052,São João do Paraíso,9904
+MU,2111078,São João do Soter,16889
+MU,2111102,São João dos Patos,25020
+MU,2111201,São José de Ribamar,244579
+MU,2111250,São José dos Basílios,6957
+MU,2111300,São Luís,1037775
+MU,2111409,São Luís Gonzaga do Maranhão,17818
+MU,2111508,São Mateus do Maranhão,38829
+MU,2111532,São Pedro da Água Branca,14338
+MU,2111573,São Pedro dos Crentes,5783
+MU,2111607,São Raimundo das Mangabeiras,18672
+MU,2111631,São Raimundo do Doca Bezerra,5650
+MU,2111672,São Roberto,4544
+MU,2111706,São Vicente Ferrer,19498
+MU,2111722,Satubinha,8784
+MU,2111748,Senador Alexandre Costa,10207
+MU,2111763,Senador La Rocque,14700
+MU,2111789,Serrano do Maranhão,10202
+MU,2111805,Sítio Novo,17074
+MU,2111904,Sucupira do Norte,10238
+MU,2111953,Sucupira do Riachão,4985
+MU,2112001,Tasso Fragoso,8862
+MU,2112100,Timbiras,26484
+MU,2112209,Timon,174465
+MU,2112233,Trizidela do Vale,22484
+MU,2112274,Tufilândia,5507
+MU,2112308,Tuntum,36251
+MU,2112407,Turiaçu,37491
+MU,2112456,Turilândia,31638
+MU,2112506,Tutóia,53356
+MU,2112605,Urbano Santos,32812
+MU,2112704,Vargem Grande,43261
+MU,2112803,Viana,51442
+MU,2112852,Vila Nova dos Martírios,10362
+MU,2112902,Vitória do Mearim,30805
+MU,2113009,Vitorino Freire,30845
+MU,2114007,Zé Doca,40801
+MU,2200053,Acauã,6420
+MU,2200103,Agricolândia,4940
+MU,2200202,Água Branca,17573
+MU,2200251,Alagoinha do Piauí,6819
+MU,2200277,Alegrete do Piauí,4634
+MU,2200301,Alto Longá,13479
+MU,2200400,Altos,47453
+MU,2200459,Alvorada do Gurguéia,5322
+MU,2200509,Amarante,17234
+MU,2200608,Angical do Piauí,6827
+MU,2200707,Anísio de Abreu,9407
+MU,2200806,Antônio Almeida,3152
+MU,2200905,Aroazes,5369
+MU,2200954,Aroeiras do Itaim,2690
+MU,2201002,Arraial,4520
+MU,2201051,Assunção do Piauí,7452
+MU,2201101,Avelino Lopes,10866
+MU,2201150,Baixa Grande do Ribeiro,13272
+MU,2201176,Barra D'Alcântara,3995
+MU,2201200,Barras,47938
+MU,2201309,Barreiras do Piauí,3264
+MU,2201408,Barro Duro,6640
+MU,2201507,Batalha,26300
+MU,2201556,Bela Vista do Piauí,4091
+MU,2201572,Belém do Piauí,3423
+MU,2201606,Beneditinos,9929
+MU,2201705,Bertolínia,5562
+MU,2201739,Betânia do Piauí,6220
+MU,2201770,Boa Hora,6902
+MU,2201804,Bocaina,4078
+MU,2201903,Bom Jesus,28796
+MU,2201919,Bom Princípio do Piauí,5636
+MU,2201929,Bonfim do Piauí,5913
+MU,2201945,Boqueirão do Piauí,6545
+MU,2201960,Brasileira,8436
+MU,2201988,Brejo do Piauí,3904
+MU,2202000,Buriti dos Lopes,19654
+MU,2202026,Buriti dos Montes,7434
+MU,2202059,Cabeceiras do Piauí,10212
+MU,2202075,Cajazeiras do Piauí,3108
+MU,2202083,Cajueiro da Praia,7957
+MU,2202091,Caldeirão Grande do Piauí,5503
+MU,2202109,Campinas do Piauí,4938
+MU,2202117,Campo Alegre do Fidalgo,4616
+MU,2202133,Campo Grande do Piauí,6020
+MU,2202174,Campo Largo do Piauí,7419
+MU,2202208,Campo Maior,45793
+MU,2202251,Canavieira,3414
+MU,2202307,Canto do Buriti,19365
+MU,2202406,Capitão de Campos,11100
+MU,2202455,Capitão Gervásio Oliveira,3974
+MU,2202505,Caracol,10318
+MU,2202539,Caraúbas do Piauí,5630
+MU,2202554,Caridade do Piauí,5033
+MU,2202604,Castelo do Piauí,19288
+MU,2202653,Caxingó,5496
+MU,2202703,Cocal,28212
+MU,2202711,Cocal de Telha,4911
+MU,2202729,Cocal dos Alves,6386
+MU,2202737,Coivaras,4117
+MU,2202752,Colônia do Gurguéia,6150
+MU,2202778,Colônia do Piauí,6994
+MU,2202802,Conceição do Canindé,4932
+MU,2202851,Coronel José Dias,4250
+MU,2202901,Corrente,27278
+MU,2203008,Cristalândia do Piauí,7356
+MU,2203107,Cristino Castro,10503
+MU,2203206,Curimatá,11270
+MU,2203230,Currais,4854
+MU,2203255,Curralinhos,4413
+MU,2203271,Curral Novo do Piauí,5073
+MU,2203305,Demerval Lobão,16352
+MU,2203354,Dirceu Arcoverde,7054
+MU,2203404,Dom Expedito Lopes,6320
+MU,2203420,Domingos Mourão,4075
+MU,2203453,Dom Inocêncio,9159
+MU,2203503,Elesbão Veloso,13607
+MU,2203602,Eliseu Martins,4377
+MU,2203701,Esperantina,40970
+MU,2203750,Fartura do Piauí,5284
+MU,2203800,Flores do Piauí,4414
+MU,2203859,Floresta do Piauí,2333
+MU,2203909,Floriano,62036
+MU,2204006,Francinópolis,4505
+MU,2204105,Francisco Ayres,4412
+MU,2204154,Francisco Macedo,2929
+MU,2204204,Francisco Santos,8237
+MU,2204303,Fronteiras,10259
+MU,2204352,Geminiano,5445
+MU,2204402,Gilbués,10892
+MU,2204501,Guadalupe,10270
+MU,2204550,Guaribas,4276
+MU,2204600,Hugo Napoleão,3518
+MU,2204659,Ilha Grande,9274
+MU,2204709,Inhuma,14958
+MU,2204808,Ipiranga do Piauí,9420
+MU,2204907,Isaías Coelho,7774
+MU,2205003,Itainópolis,10790
+MU,2205102,Itaueira,10323
+MU,2205151,Jacobina do Piauí,5613
+MU,2205201,Jaicós,17527
+MU,2205250,Jardim do Mulato,4180
+MU,2205276,Jatobá do Piauí,4494
+MU,2205300,Jerumenha,4497
+MU,2205359,João Costa,2970
+MU,2205409,Joaquim Pires,13886
+MU,2205458,Joca Marques,5394
+MU,2205508,José de Freitas,42559
+MU,2205516,Juazeiro do Piauí,5214
+MU,2205524,Júlio Borges,5388
+MU,2205532,Jurema,4425
+MU,2205540,Lagoinha do Piauí,2939
+MU,2205557,Lagoa Alegre,8256
+MU,2205565,Lagoa do Barro do Piauí,4995
+MU,2205573,Lagoa de São Francisco,6331
+MU,2205581,Lagoa do Piauí,4810
+MU,2205599,Lagoa do Sítio,4520
+MU,2205607,Landri Sales,5213
+MU,2205706,Luís Correia,30641
+MU,2205805,Luzilândia,25375
+MU,2205854,Madeiro,8032
+MU,2205904,Manoel Emídio,5209
+MU,2205953,Marcolândia,8533
+MU,2206001,Marcos Parente,4724
+MU,2206050,Massapê do Piauí,5218
+MU,2206100,Matias Olímpio,10641
+MU,2206209,Miguel Alves,32150
+MU,2206308,Miguel Leão,1318
+MU,2206357,Milton Brandão,6542
+MU,2206407,Monsenhor Gil,10255
+MU,2206506,Monsenhor Hipólito,7577
+MU,2206605,Monte Alegre do Piauí,10660
+MU,2206654,Morro Cabeça no Tempo,4377
+MU,2206670,Morro do Chapéu do Piauí,6425
+MU,2206696,Murici dos Portelas,9797
+MU,2206704,Nazaré do Piauí,6665
+MU,2206720,Nazária,10262
+MU,2206753,Nossa Senhora de Nazaré,5228
+MU,2206803,Nossa Senhora dos Remédios,8525
+MU,2206902,Novo Oriente do Piauí,6097
+MU,2206951,Novo Santo Antônio,2827
+MU,2207009,Oeiras,38161
+MU,2207108,Olho D'Água do Piauí,2637
+MU,2207207,Padre Marcos,6382
+MU,2207306,Paes Landim,4088
+MU,2207355,Pajeú do Piauí,3000
+MU,2207405,Palmeira do Piauí,4952
+MU,2207504,Palmeirais,13264
+MU,2207553,Paquetá,3813
+MU,2207603,Parnaguá,10103
+MU,2207702,Parnaíba,162159
+MU,2207751,Passagem Franca do Piauí,4135
+MU,2207777,Patos do Piauí,5425
+MU,2207793,Pau D'Arco do Piauí,3880
+MU,2207801,Paulistana,21055
+MU,2207850,Pavussu,3628
+MU,2207900,Pedro II,37894
+MU,2207934,Pedro Laurentino,2458
+MU,2207959,Nova Santa Rita,4076
+MU,2208007,Picos,83090
+MU,2208106,Pimenteiras,11341
+MU,2208205,Pio IX,17613
+MU,2208304,Piracuruca,28846
+MU,2208403,Piripiri,65538
+MU,2208502,Porto,12052
+MU,2208551,Porto Alegre do Piauí,2364
+MU,2208601,Prata do Piauí,3042
+MU,2208650,Queimada Nova,8738
+MU,2208700,Redenção do Gurguéia,8394
+MU,2208809,Regeneração,17133
+MU,2208858,Riacho Frio,4165
+MU,2208874,Ribeira do Piauí,4055
+MU,2208908,Ribeiro Gonçalves,6164
+MU,2209005,Rio Grande do Piauí,5801
+MU,2209104,Santa Cruz do Piauí,5831
+MU,2209153,Santa Cruz dos Milagres,3435
+MU,2209203,Santa Filomena,6087
+MU,2209302,Santa Luz,5336
+MU,2209351,Santana do Piauí,4125
+MU,2209377,Santa Rosa do Piauí,4650
+MU,2209401,Santo Antônio de Lisboa,5839
+MU,2209450,Santo Antônio dos Milagres,2138
+MU,2209500,Santo Inácio do Piauí,3646
+MU,2209559,São Braz do Piauí,4358
+MU,2209609,São Félix do Piauí,2842
+MU,2209658,São Francisco de Assis do Piauí,5572
+MU,2209708,São Francisco do Piauí,5392
+MU,2209757,São Gonçalo do Gurguéia,2947
+MU,2209807,São Gonçalo do Piauí,4837
+MU,2209856,São João da Canabrava,4242
+MU,2209872,São João da Fronteira,5522
+MU,2209906,São João da Serra,6114
+MU,2209955,São João da Varjota,4383
+MU,2209971,São João do Arraial,8186
+MU,2210003,São João do Piauí,21421
+MU,2210052,São José do Divino,4841
+MU,2210102,São José do Peixe,3297
+MU,2210201,São José do Piauí,6597
+MU,2210300,São Julião,6025
+MU,2210359,São Lourenço do Piauí,4410
+MU,2210375,São Luis do Piauí,2309
+MU,2210383,São Miguel da Baixa Grande,2269
+MU,2210391,São Miguel do Fidalgo,2829
+MU,2210409,São Miguel do Tapuio,17554
+MU,2210508,São Pedro do Piauí,13755
+MU,2210607,São Raimundo Nonato,38934
+MU,2210623,Sebastião Barros,3202
+MU,2210631,Sebastião Leal,4446
+MU,2210656,Sigefredo Pacheco,9460
+MU,2210706,Simões,14350
+MU,2210805,Simplício Mendes,13870
+MU,2210904,Socorro do Piauí,4141
+MU,2210938,Sussuapara,6220
+MU,2210953,Tamboril do Piauí,2949
+MU,2210979,Tanque do Piauí,2316
+MU,2211001,Teresina,866300
+MU,2211100,União,46119
+MU,2211209,Uruçuí,25203
+MU,2211308,Valença do Piauí,22279
+MU,2211357,Várzea Branca,5055
+MU,2211407,Várzea Grande,4417
+MU,2211506,Vera Mendes,3185
+MU,2211605,Vila Nova do Piauí,2935
+MU,2211704,Wall Ferraz,4059
+MU,2300101,Abaiara,10038
+MU,2300150,Acarape,14027
+MU,2300200,Acaraú,65264
+MU,2300309,Acopiara,44962
+MU,2300408,Aiuaba,14076
+MU,2300507,Alcântaras,11369
+MU,2300606,Altaneira,6782
+MU,2300705,Alto Santo,14155
+MU,2300754,Amontada,42156
+MU,2300804,Antonina do Norte,7245
+MU,2300903,Apuiarés,12928
+MU,2301000,Aquiraz,80645
+MU,2301109,Aracati,75113
+MU,2301208,Aracoiaba,25553
+MU,2301257,Ararendá,11096
+MU,2301307,Araripe,19783
+MU,2301406,Aratuba,11224
+MU,2301505,Arneiroz,7429
+MU,2301604,Assaré,21697
+MU,2301703,Aurora,23714
+MU,2301802,Baixio,5704
+MU,2301851,Banabuiú,17195
+MU,2301901,Barbalha,75033
+MU,2301950,Barreira,22392
+MU,2302008,Barro,19381
+MU,2302057,Barroquinha,14567
+MU,2302107,Baturité,35218
+MU,2302206,Beberibe,53114
+MU,2302305,Bela Cruz,32775
+MU,2302404,Boa Viagem,50411
+MU,2302503,Brejo Santo,51090
+MU,2302602,Camocim,62326
+MU,2302701,Campos Sales,25135
+MU,2302800,Canindé,74174
+MU,2302909,Capistrano,17254
+MU,2303006,Caridade,16377
+MU,2303105,Cariré,17632
+MU,2303204,Caririaçu,26320
+MU,2303303,Cariús,17015
+MU,2303402,Carnaubal,17210
+MU,2303501,Cascavel,72720
+MU,2303600,Catarina,10243
+MU,2303659,Catunda,10444
+MU,2303709,Caucaia,355679
+MU,2303808,Cedro,22344
+MU,2303907,Chaval,12462
+MU,2303931,Choró,12113
+MU,2303956,Chorozinho,20163
+MU,2304004,Coreaú,20953
+MU,2304103,Crateús,76390
+MU,2304202,Crato,131050
+MU,2304236,Croatá,17481
+MU,2304251,Cruz,29761
+MU,2304269,Deputado Irapuan Pinheiro,8932
+MU,2304277,Ereré,6474
+MU,2304285,Eusébio,74170
+MU,2304301,Farias Brito,18217
+MU,2304350,Forquilha,24173
+MU,2304400,Fortaleza,2428708
+MU,2304459,Fortim,17294
+MU,2304509,Frecheirinha,15657
+MU,2304608,General Sampaio,6734
+MU,2304657,Graça,13801
+MU,2304707,Granja,53344
+MU,2304806,Granjeiro,4841
+MU,2304905,Groaíras,10910
+MU,2304954,Guaiúba,24325
+MU,2305001,Guaraciaba do Norte,42053
+MU,2305100,Guaramiranga,5654
+MU,2305209,Hidrolândia,17855
+MU,2305233,Horizonte,74755
+MU,2305266,Ibaretama,11956
+MU,2305308,Ibiapina,23965
+MU,2305332,Ibicuitinga,11611
+MU,2305357,Icapuí,21433
+MU,2305407,Icó,62642
+MU,2305506,Iguatu,98064
+MU,2305605,Independência,24024
+MU,2305654,Ipaporanga,11575
+MU,2305704,Ipaumirim,12083
+MU,2305803,Ipu,41081
+MU,2305902,Ipueiras,36798
+MU,2306009,Iracema,14001
+MU,2306108,Irauçuba,23915
+MU,2306207,Itaiçaba,7536
+MU,2306256,Itaitinga,64650
+MU,2306306,Itapajé,46426
+MU,2306405,Itapipoca,131123
+MU,2306504,Itapiúna,17841
+MU,2306553,Itarema,42957
+MU,2306603,Itatira,20424
+MU,2306702,Jaguaretama,17232
+MU,2306801,Jaguaribara,10356
+MU,2306900,Jaguaribe,33726
+MU,2307007,Jaguaruana,31701
+MU,2307106,Jardim,27411
+MU,2307205,Jati,7861
+MU,2307254,Jijoca de Jericoacoara,25555
+MU,2307304,Juazeiro do Norte,286120
+MU,2307403,Jucás,23922
+MU,2307502,Lavras da Mangabeira,30802
+MU,2307601,Limoeiro do Norte,59560
+MU,2307635,Madalena,16896
+MU,2307650,Maracanaú,234509
+MU,2307700,Maranguape,105093
+MU,2307809,Marco,25799
+MU,2307908,Martinópole,10846
+MU,2308005,Massapê,37697
+MU,2308104,Mauriti,45561
+MU,2308203,Meruoca,15157
+MU,2308302,Milagres,25900
+MU,2308351,Milhã,14123
+MU,2308377,Miraíma,14196
+MU,2308401,Missão Velha,36822
+MU,2308500,Mombaça,37735
+MU,2308609,Monsenhor Tabosa,17149
+MU,2308708,Morada Nova,61443
+MU,2308807,Moraújo,8254
+MU,2308906,Morrinhos,22753
+MU,2309003,Mucambo,13666
+MU,2309102,Mulungu,10569
+MU,2309201,Nova Olinda,15399
+MU,2309300,Nova Russas,30699
+MU,2309409,Novo Oriente,27545
+MU,2309458,Ocara,24493
+MU,2309508,Orós,19675
+MU,2309607,Pacajus,70983
+MU,2309706,Pacatuba,81524
+MU,2309805,Pacoti,11186
+MU,2309904,Pacujá,6175
+MU,2310001,Palhano,9346
+MU,2310100,Palmácia,10242
+MU,2310209,Paracuru,38980
+MU,2310258,Paraipaba,32216
+MU,2310308,Parambu,31445
+MU,2310407,Paramoti,10384
+MU,2310506,Pedra Branca,40187
+MU,2310605,Penaforte,8972
+MU,2310704,Pentecoste,37813
+MU,2310803,Pereiro,15274
+MU,2310852,Pindoretama,23391
+MU,2310902,Piquet Carneiro,16616
+MU,2310951,Pires Ferreira,10606
+MU,2311009,Poranga,12065
+MU,2311108,Porteiras,17050
+MU,2311207,Potengi,8833
+MU,2311231,Potiretama,5974
+MU,2311264,Quiterianópolis,20213
+MU,2311306,Quixadá,84168
+MU,2311355,Quixelô,15910
+MU,2311405,Quixeramobim,82177
+MU,2311504,Quixeré,20874
+MU,2311603,Redenção,27214
+MU,2311702,Reriutaba,18606
+MU,2311801,Russas,72928
+MU,2311900,Saboeiro,13854
+MU,2311959,Salitre,16633
+MU,2312007,Santana do Acaraú,30628
+MU,2312106,Santana do Cariri,16954
+MU,2312205,Santa Quitéria,40183
+MU,2312304,São Benedito,47640
+MU,2312403,São Gonçalo do Amarante,54143
+MU,2312502,São João do Jaguaribe,5855
+MU,2312601,São Luís do Curu,10822
+MU,2312700,Senador Pompeu,24266
+MU,2312809,Senador Sá,7262
+MU,2312908,Sobral,203023
+MU,2313005,Solonópole,18179
+MU,2313104,Tabuleiro do Norte,30652
+MU,2313203,Tamboril,24815
+MU,2313252,Tarrafas,7529
+MU,2313302,Tauá,61227
+MU,2313351,Tejuçuoca,17154
+MU,2313401,Tianguá,81506
+MU,2313500,Trairi,58415
+MU,2313559,Tururu,15412
+MU,2313609,Ubajara,32767
+MU,2313708,Umari,6871
+MU,2313757,Umirim,17470
+MU,2313807,Uruburetama,20189
+MU,2313906,Uruoca,13746
+MU,2313955,Varjota,18105
+MU,2314003,Várzea Alegre,38984
+MU,2314102,Viçosa do Ceará,59712
+MU,2400109,Acari,10597
+MU,2400208,Açu,56496
+MU,2400307,Afonso Bezerra,10839
+MU,2400406,Água Nova,2946
+MU,2400505,Alexandria,13640
+MU,2400604,Almino Afonso,4687
+MU,2400703,Alto do Rodrigues,12484
+MU,2400802,Angicos,11632
+MU,2400901,Antônio Martins,6577
+MU,2401008,Apodi,36093
+MU,2401107,Areia Branca,24093
+MU,2401206,Arês,13251
+MU,2401305,Campo Grande,9730
+MU,2401404,Baía Formosa,8825
+MU,2401453,Baraúna,26913
+MU,2401503,Barcelona,3986
+MU,2401602,Bento Fernandes,4807
+MU,2401651,Bodó,2306
+MU,2401701,Bom Jesus,9952
+MU,2401800,Brejinho,12202
+MU,2401859,Caiçara do Norte,6293
+MU,2401909,Caiçara do Rio do Vento,3268
+MU,2402006,Caicó,61146
+MU,2402105,Campo Redondo,10215
+MU,2402204,Canguaretama,29668
+MU,2402303,Caraúbas,19727
+MU,2402402,Carnaúba dos Dantas,7992
+MU,2402501,Carnaubais,9714
+MU,2402600,Ceará-Mirim,79115
+MU,2402709,Cerro Corá,11000
+MU,2402808,Coronel Ezequiel,5117
+MU,2402907,Coronel João Pessoa,4237
+MU,2403004,Cruzeta,8005
+MU,2403103,Currais Novos,41313
+MU,2403202,Doutor Severiano,7044
+MU,2403251,Parnamirim,252716
+MU,2403301,Encanto,6016
+MU,2403400,Equador,5360
+MU,2403509,Espírito Santo,10620
+MU,2403608,Extremoz,61635
+MU,2403707,Felipe Guerra,5944
+MU,2403756,Fernando Pedroza,2938
+MU,2403806,Florânia,10196
+MU,2403905,Francisco Dantas,2700
+MU,2404002,Frutuoso Gomes,4122
+MU,2404101,Galinhos,2104
+MU,2404200,Goianinha,26741
+MU,2404309,Governador Dix-Sept Rosado,11938
+MU,2404408,Grossos,9924
+MU,2404507,Guamaré,15295
+MU,2404606,Ielmo Marinho,11615
+MU,2404705,Ipanguaçu,14131
+MU,2404804,Ipueira,2035
+MU,2404853,Itajá,7292
+MU,2404903,Itaú,5320
+MU,2405009,Jaçanã,7834
+MU,2405108,Jandaíra,6562
+MU,2405207,Janduís,4746
+MU,2405306,Januário Cicco,9051
+MU,2405405,Japi,5117
+MU,2405504,Jardim de Angicos,2437
+MU,2405603,Jardim de Piranhas,13977
+MU,2405702,Jardim do Seridó,11655
+MU,2405801,João Câmara,33290
+MU,2405900,João Dias,2076
+MU,2406007,José da Penha,5803
+MU,2406106,Jucurutu,17793
+MU,2406155,Jundiá,3739
+MU,2406205,Lagoa d'Anta,6654
+MU,2406304,Lagoa de Pedras,7338
+MU,2406403,Lagoa de Velhos,2567
+MU,2406502,Lagoa Nova,15573
+MU,2406601,Lagoa Salgada,8319
+MU,2406700,Lajes,9866
+MU,2406809,Lajes Pintadas,4787
+MU,2406908,Lucrécia,3490
+MU,2407005,Luís Gomes,9070
+MU,2407104,Macaíba,82249
+MU,2407203,Macau,27369
+MU,2407252,Major Sales,3924
+MU,2407302,Marcelino Vieira,7896
+MU,2407401,Martins,8179
+MU,2407500,Maxaranguape,10255
+MU,2407609,Messias Targino,4274
+MU,2407708,Montanhas,11444
+MU,2407807,Monte Alegre,23031
+MU,2407906,Monte das Gameleiras,2276
+MU,2408003,Mossoró,264577
+MU,2408102,Natal,751300
+MU,2408201,Nísia Floresta,31942
+MU,2408300,Nova Cruz,34269
+MU,2408409,Olho d'Água do Borges,3905
+MU,2408508,Ouro Branco,4913
+MU,2408607,Paraná,3934
+MU,2408706,Paraú,3579
+MU,2408805,Parazinho,4801
+MU,2408904,Parelhas,21499
+MU,2408953,Rio do Fogo,10351
+MU,2409100,Passa e Fica,10896
+MU,2409209,Passagem,3115
+MU,2409308,Patu,11007
+MU,2409332,Santa Maria,4847
+MU,2409407,Pau dos Ferros,30479
+MU,2409506,Pedra Grande,3618
+MU,2409605,Pedra Preta,2441
+MU,2409704,Pedro Avelino,6242
+MU,2409803,Pedro Velho,13824
+MU,2409902,Pendências,12278
+MU,2410009,Pilões,2965
+MU,2410108,Poço Branco,12390
+MU,2410207,Portalegre,7601
+MU,2410256,Porto do Mangue,5228
+MU,2410306,Serra Caiada,10125
+MU,2410405,Pureza,9362
+MU,2410504,Rafael Fernandes,5432
+MU,2410603,Rafael Godeiro,2934
+MU,2410702,Riacho da Cruz,2701
+MU,2410801,Riacho de Santana,4127
+MU,2410900,Riachuelo,7389
+MU,2411007,Rodolfo Fernandes,4242
+MU,2411056,Tibau,5382
+MU,2411106,Ruy Barbosa,3206
+MU,2411205,Santa Cruz,37313
+MU,2411403,Santana do Matos,12456
+MU,2411429,Santana do Seridó,2696
+MU,2411502,Santo Antônio,22177
+MU,2411601,São Bento do Norte,3304
+MU,2411700,São Bento do Trairí,3792
+MU,2411809,São Fernando,3492
+MU,2411908,São Francisco do Oeste,4161
+MU,2412005,São Gonçalo do Amarante,115838
+MU,2412104,São João do Sabugi,5956
+MU,2412203,São José de Mipibu,47286
+MU,2412302,São José do Campestre,11121
+MU,2412401,São José do Seridó,4558
+MU,2412500,São Miguel,23537
+MU,2412559,São Miguel do Gostoso,10221
+MU,2412609,São Paulo do Potengi,16786
+MU,2412708,São Pedro,5776
+MU,2412807,São Rafael,7711
+MU,2412906,São Tomé,9972
+MU,2413003,São Vicente,6310
+MU,2413102,Senador Elói de Souza,5965
+MU,2413201,Senador Georgino Avelino,4065
+MU,2413300,Serra de São Bento,5703
+MU,2413359,Serra do Mel,13091
+MU,2413409,Serra Negra do Norte,7597
+MU,2413508,Serrinha,6436
+MU,2413557,Serrinha dos Pintos,4659
+MU,2413607,Severiano Melo,5487
+MU,2413706,Sítio Novo,4654
+MU,2413805,Taboleiro Grande,2338
+MU,2413904,Taipu,11422
+MU,2414001,Tangará,13281
+MU,2414100,Tenente Ananias,10262
+MU,2414159,Tenente Laurentino Cruz,5891
+MU,2414209,Tibau do Sul,16929
+MU,2414308,Timbaúba dos Batistas,2348
+MU,2414407,Touros,33035
+MU,2414456,Triunfo Potiguar,3376
+MU,2414506,Umarizal,10078
+MU,2414605,Upanema,13577
+MU,2414704,Várzea,5233
+MU,2414753,Venha-Ver,3014
+MU,2414803,Vera Cruz,10735
+MU,2414902,Viçosa,1822
+MU,2415008,Vila Flor,3174
+MU,2500106,Água Branca,9335
+MU,2500205,Aguiar,5003
+MU,2500304,Alagoa Grande,26062
+MU,2500403,Alagoa Nova,21013
+MU,2500502,Alagoinha,13725
+MU,2500536,Alcantil,5578
+MU,2500577,Algodão de Jandaíra,2953
+MU,2500601,Alhandra,21730
+MU,2500700,São João do Rio do Peixe,17964
+MU,2500734,Amparo,2234
+MU,2500775,Aparecida,7960
+MU,2500809,Araçagi,16646
+MU,2500908,Arara,12212
+MU,2501005,Araruna,17189
+MU,2501104,Areia,22633
+MU,2501153,Areia de Baraúnas,2005
+MU,2501203,Areial,7128
+MU,2501302,Aroeiras,18705
+MU,2501351,Assunção,4152
+MU,2501401,Baía da Traição,9224
+MU,2501500,Bananeiras,23134
+MU,2501534,Baraúna,4762
+MU,2501575,Barra de Santana,8059
+MU,2501609,Barra de Santa Rosa,12904
+MU,2501708,Barra de São Miguel,5906
+MU,2501807,Bayeux,82742
+MU,2501906,Belém,16401
+MU,2502003,Belém do Brejo do Cruz,6268
+MU,2502052,Bernardino Batista,3504
+MU,2502102,Boa Ventura,5207
+MU,2502151,Boa Vista,6377
+MU,2502201,Bom Jesus,2286
+MU,2502300,Bom Sucesso,4661
+MU,2502409,Bonito de Santa Fé,10252
+MU,2502508,Boqueirão,17598
+MU,2502607,Igaracy,5648
+MU,2502706,Borborema,4214
+MU,2502805,Brejo do Cruz,13613
+MU,2502904,Brejo dos Santos,5742
+MU,2503001,Caaporã,21193
+MU,2503100,Cabaceiras,5335
+MU,2503209,Cabedelo,66519
+MU,2503308,Cachoeira dos Índios,9151
+MU,2503407,Cacimba de Areia,3291
+MU,2503506,Cacimba de Dentro,16064
+MU,2503555,Cacimbas,7223
+MU,2503605,Caiçara,6602
+MU,2503704,Cajazeiras,63239
+MU,2503753,Cajazeirinhas,2740
+MU,2503803,Caldas Brandão,5753
+MU,2503902,Camalaú,6085
+MU,2504009,Campina Grande,419379
+MU,2504033,Capim,6970
+MU,2504074,Caraúbas,3944
+MU,2504108,Carrapateira,2312
+MU,2504157,Casserengue,6889
+MU,2504207,Catingueira,4491
+MU,2504306,Catolé do Rocha,30661
+MU,2504355,Caturité,5254
+MU,2504405,Conceição,18260
+MU,2504504,Condado,6451
+MU,2504603,Conde,27605
+MU,2504702,Congo,4933
+MU,2504801,Coremas,14683
+MU,2504850,Coxixola,1824
+MU,2504900,Cruz do Espírito Santo,17095
+MU,2505006,Cubati,7580
+MU,2505105,Cuité,19719
+MU,2505204,Cuitegi,6730
+MU,2505238,Cuité de Mamanguape,6251
+MU,2505279,Curral de Cima,5254
+MU,2505303,Curral Velho,2292
+MU,2505352,Damião,4982
+MU,2505402,Desterro,8067
+MU,2505501,Vista Serrana,3641
+MU,2505600,Diamante,6299
+MU,2505709,Dona Inês,10380
+MU,2505808,Duas Estradas,3327
+MU,2505907,Emas,3011
+MU,2506004,Esperança,31231
+MU,2506103,Fagundes,11049
+MU,2506202,Frei Martinho,2846
+MU,2506251,Gado Bravo,8179
+MU,2506301,Guarabira,57484
+MU,2506400,Gurinhém,13766
+MU,2506509,Gurjão,3242
+MU,2506608,Ibiara,5631
+MU,2506707,Imaculada,10392
+MU,2506806,Ingá,17692
+MU,2506905,Itabaiana,23182
+MU,2507002,Itaporanga,23940
+MU,2507101,Itapororoca,18382
+MU,2507200,Itatuba,10499
+MU,2507309,Jacaraú,14477
+MU,2507408,Jericó,7516
+MU,2507507,João Pessoa,833932
+MU,2507606,Juarez Távora,7796
+MU,2507705,Juazeirinho,17007
+MU,2507804,Junco do Seridó,6793
+MU,2507903,Juripiranga,10012
+MU,2508000,Juru,9234
+MU,2508109,Lagoa,4415
+MU,2508208,Lagoa de Dentro,7819
+MU,2508307,Lagoa Seca,27730
+MU,2508406,Lastro,3162
+MU,2508505,Livramento,6877
+MU,2508554,Logradouro,4797
+MU,2508604,Lucena,12560
+MU,2508703,Mãe d'Água,3583
+MU,2508802,Malta,6046
+MU,2508901,Mamanguape,44599
+MU,2509008,Manaíra,10434
+MU,2509057,Marcação,8999
+MU,2509107,Mari,21512
+MU,2509156,Marizópolis,6705
+MU,2509206,Massaranduba,14139
+MU,2509305,Mataraca,8244
+MU,2509339,Matinhas,4571
+MU,2509370,Mato Grosso,2543
+MU,2509396,Maturéia,6433
+MU,2509404,Mogeiro,13899
+MU,2509503,Montadas,5812
+MU,2509602,Monte Horebe,4338
+MU,2509701,Monteiro,32277
+MU,2509800,Mulungu,8791
+MU,2509909,Natuba,8945
+MU,2510006,Nazarezinho,7203
+MU,2510105,Nova Floresta,9724
+MU,2510204,Nova Olinda,5787
+MU,2510303,Nova Palmeira,4259
+MU,2510402,Olho d'Água,6060
+MU,2510501,Olivedos,3580
+MU,2510600,Ouro Velho,2918
+MU,2510659,Parari,1720
+MU,2510709,Passagem,2463
+MU,2510808,Patos,103165
+MU,2510907,Paulista,11834
+MU,2511004,Pedra Branca,3739
+MU,2511103,Pedra Lavrada,6859
+MU,2511202,Pedras de Fogo,29662
+MU,2511301,Piancó,16441
+MU,2511400,Picuí,18333
+MU,2511509,Pilar,12311
+MU,2511608,Pilões,6815
+MU,2511707,Pilõezinhos,5329
+MU,2511806,Pirpirituba,9340
+MU,2511905,Pitimbu,16751
+MU,2512002,Pocinhos,17469
+MU,2512036,Poço Dantas,3830
+MU,2512077,Poço de José de Moura,4006
+MU,2512101,Pombal,32473
+MU,2512200,Prata,3915
+MU,2512309,Princesa Isabel,21114
+MU,2512408,Puxinanã,14277
+MU,2512507,Queimadas,47658
+MU,2512606,Quixaba,1743
+MU,2512705,Remígio,17885
+MU,2512721,Pedro Régis,5766
+MU,2512747,Riachão,2927
+MU,2512754,Riachão do Bacamarte,4690
+MU,2512762,Riachão do Poço,4738
+MU,2512788,Riacho de Santo Antônio,1955
+MU,2512804,Riacho dos Cavalos,8493
+MU,2512903,Rio Tinto,24581
+MU,2513000,Salgadinho,3355
+MU,2513109,Salgado de São Félix,11505
+MU,2513158,Santa Cecília,7670
+MU,2513208,Santa Cruz,5947
+MU,2513307,Santa Helena,5865
+MU,2513356,Santa Inês,3227
+MU,2513406,Santa Luzia,14959
+MU,2513505,Santana de Mangueira,5010
+MU,2513604,Santana dos Garrotes,6569
+MU,2513653,Joca Claudino,2539
+MU,2513703,Santa Rita,149910
+MU,2513802,Santa Teresinha,4402
+MU,2513851,Santo André,2622
+MU,2513901,São Bento,32235
+MU,2513927,São Bentinho,4327
+MU,2513943,São Domingos do Cariri,2585
+MU,2513968,São Domingos,2595
+MU,2513984,São Francisco,3137
+MU,2514008,São João do Cariri,4226
+MU,2514107,São João do Tigre,4263
+MU,2514206,São José da Lagoa Tapada,7126
+MU,2514305,São José de Caiana,5034
+MU,2514404,São José de Espinharas,4083
+MU,2514453,São José dos Ramos,5891
+MU,2514503,São José de Piranhas,19067
+MU,2514552,São José de Princesa,3416
+MU,2514602,São José do Bonfim,3242
+MU,2514651,São José do Brejo do Cruz,1699
+MU,2514701,São José do Sabugi,4138
+MU,2514800,São José dos Cordeiros,3411
+MU,2514909,São Mamede,7470
+MU,2515005,São Miguel de Taipu,7066
+MU,2515104,São Sebastião de Lagoa de Roça,11040
+MU,2515203,São Sebastião do Umbuzeiro,3279
+MU,2515302,Sapé,51306
+MU,2515401,São Vicente do Seridó,10291
+MU,2515500,Serra Branca,13614
+MU,2515609,Serra da Raiz,3094
+MU,2515708,Serra Grande,2942
+MU,2515807,Serra Redonda,6828
+MU,2515906,Serraria,4885
+MU,2515930,Sertãozinho,5054
+MU,2515971,Sobrado,8236
+MU,2516003,Solânea,26774
+MU,2516102,Soledade,13968
+MU,2516151,Sossêgo,3345
+MU,2516201,Sousa,67259
+MU,2516300,Sumé,17166
+MU,2516409,Tacima,8010
+MU,2516508,Taperoá,14068
+MU,2516607,Tavares,14101
+MU,2516706,Teixeira,14631
+MU,2516755,Tenório,2966
+MU,2516805,Triunfo,9892
+MU,2516904,Uiraúna,14930
+MU,2517001,Umbuzeiro,9124
+MU,2517100,Várzea,2668
+MU,2517209,Vieirópolis,4864
+MU,2517407,Zabelê,2228
+MU,2600054,Abreu e Lima,98462
+MU,2600104,Afogados da Ingazeira,40241
+MU,2600203,Afrânio,18674
+MU,2600302,Agrestina,23779
+MU,2600401,Água Preta,26461
+MU,2600500,Águas Belas,41548
+MU,2600609,Alagoinha,13542
+MU,2600708,Aliança,35741
+MU,2600807,Altinho,20674
+MU,2600906,Amaraji,18205
+MU,2601003,Angelim,10241
+MU,2601052,Araçoiaba,19243
+MU,2601102,Araripina,85088
+MU,2601201,Arcoverde,77742
+MU,2601300,Barra de Guabiraba,12263
+MU,2601409,Barreiros,40121
+MU,2601508,Belém de Maria,10378
+MU,2601607,Belém do São Francisco,18301
+MU,2601706,Belo Jardim,79507
+MU,2601805,Betânia,11232
+MU,2601904,Bezerros,61694
+MU,2602001,Bodocó,34478
+MU,2602100,Bom Conselho,44294
+MU,2602209,Bom Jardim,37629
+MU,2602308,Bonito,37474
+MU,2602407,Brejão,9079
+MU,2602506,Brejinho,7720
+MU,2602605,Brejo da Madre de Deus,48648
+MU,2602704,Buenos Aires,12808
+MU,2602803,Buíque,52097
+MU,2602902,Cabo de Santo Agostinho,203440
+MU,2603009,Cabrobó,30294
+MU,2603108,Cachoeirinha,19899
+MU,2603207,Caetés,28827
+MU,2603306,Calçado,11093
+MU,2603405,Calumbi,5228
+MU,2603454,Camaragibe,147771
+MU,2603504,Camocim de São Félix,17419
+MU,2603603,Camutanga,7750
+MU,2603702,Canhotinho,24329
+MU,2603801,Capoeiras,18338
+MU,2603900,Carnaíba,18644
+MU,2603926,Carnaubeira da Penha,12239
+MU,2604007,Carpina,79293
+MU,2604106,Caruaru,378048
+MU,2604155,Casinhas,12967
+MU,2604205,Catende,32156
+MU,2604304,Cedro,10518
+MU,2604403,Chã de Alegria,12984
+MU,2604502,Chã Grande,20546
+MU,2604601,Condado,24587
+MU,2604700,Correntes,17131
+MU,2604809,Cortês,10198
+MU,2604908,Cumaru,15920
+MU,2605004,Cupira,23518
+MU,2605103,Custódia,37699
+MU,2605152,Dormentes,17188
+MU,2605202,Escada,59891
+MU,2605301,Exu,31843
+MU,2605400,Feira Nova,21427
+MU,2605459,Fernando de Noronha,3167
+MU,2605509,Ferreiros,15026
+MU,2605608,Flores,20347
+MU,2605707,Floresta,30137
+MU,2605806,Frei Miguelinho,13636
+MU,2605905,Gameleira,18214
+MU,2606002,Garanhuns,142506
+MU,2606101,Glória do Goitá,29347
+MU,2606200,Goiana,81055
+MU,2606309,Granito,6967
+MU,2606408,Gravatá,86516
+MU,2606507,Iati,17165
+MU,2606606,Ibimirim,26593
+MU,2606705,Ibirajuba,7140
+MU,2606804,Igarassu,115196
+MU,2606903,Iguaracy,11081
+MU,2607000,Inajá,25603
+MU,2607109,Ingazeira,4765
+MU,2607208,Ipojuca,98932
+MU,2607307,Ipubi,29009
+MU,2607406,Itacuruba,4284
+MU,2607505,Itaíba,32650
+MU,2607604,Ilha de Itamaracá,24540
+MU,2607653,Itambé,34935
+MU,2607703,Itapetim,13791
+MU,2607752,Itapissuma,27749
+MU,2607802,Itaquitinga,16554
+MU,2607901,Jaboatão dos Guararapes,644037
+MU,2607950,Jaqueira,10247
+MU,2608008,Jataúba,15843
+MU,2608057,Jatobá,14020
+MU,2608107,João Alfredo,27725
+MU,2608206,Joaquim Nabuco,13269
+MU,2608255,Jucati,11517
+MU,2608305,Jupi,15329
+MU,2608404,Jurema,13648
+MU,2608453,Lagoa do Carro,17981
+MU,2608503,Lagoa de Itaenga,19003
+MU,2608602,Lagoa do Ouro,11933
+MU,2608701,Lagoa dos Gatos,14076
+MU,2608750,Lagoa Grande,24088
+MU,2608800,Lajedo,39582
+MU,2608909,Limoeiro,56510
+MU,2609006,Macaparana,23879
+MU,2609105,Machados,11333
+MU,2609154,Manari,23763
+MU,2609204,Maraial,9359
+MU,2609303,Mirandiba,14166
+MU,2609402,Moreno,55292
+MU,2609501,Nazaré da Mata,30648
+MU,2609600,Olinda,349976
+MU,2609709,Orobó,21808
+MU,2609808,Orocó,13613
+MU,2609907,Ouricuri,65245
+MU,2610004,Palmares,54584
+MU,2610103,Palmeirina,7031
+MU,2610202,Panelas,22991
+MU,2610301,Paranatama,12199
+MU,2610400,Parnamirim,18612
+MU,2610509,Passira,28340
+MU,2610608,Paudalho,56665
+MU,2610707,Paulista,342167
+MU,2610806,Pedra,22795
+MU,2610905,Pesqueira,62722
+MU,2611002,Petrolândia,34161
+MU,2611101,Petrolina,386791
+MU,2611200,Poção,10500
+MU,2611309,Pombos,27552
+MU,2611408,Primavera,13838
+MU,2611507,Quipapá,17928
+MU,2611533,Quixaba,6554
+MU,2611606,Recife,1488920
+MU,2611705,Riacho das Almas,20639
+MU,2611804,Ribeirão,33507
+MU,2611903,Rio Formoso,20009
+MU,2612000,Sairé,10887
+MU,2612109,Salgadinho,5727
+MU,2612208,Salgueiro,62372
+MU,2612307,Saloá,13836
+MU,2612406,Sanharó,18624
+MU,2612455,Santa Cruz,13841
+MU,2612471,Santa Cruz da Baixa Verde,11567
+MU,2612505,Santa Cruz do Capibaribe,98254
+MU,2612554,Santa Filomena,12106
+MU,2612604,Santa Maria da Boa Vista,40578
+MU,2612703,Santa Maria do Cambucá,14013
+MU,2612802,Santa Terezinha,10244
+MU,2612901,São Benedito do Sul,13113
+MU,2613008,São Bento do Una,49449
+MU,2613107,São Caitano,37126
+MU,2613206,São João,23837
+MU,2613305,São Joaquim do Monte,20037
+MU,2613404,São José da Coroa Grande,18825
+MU,2613503,São José do Belmonte,34843
+MU,2613602,São José do Egito,31004
+MU,2613701,São Lourenço da Mata,111249
+MU,2613800,São Vicente Férrer,16677
+MU,2613909,Serra Talhada,92228
+MU,2614006,Serrita,18207
+MU,2614105,Sertânia,32811
+MU,2614204,Sirinhaém,37596
+MU,2614303,Moreilândia,10540
+MU,2614402,Solidão,5210
+MU,2614501,Surubim,64120
+MU,2614600,Tabira,27681
+MU,2614709,Tacaimbó,13738
+MU,2614808,Tacaratu,23902
+MU,2614857,Tamandaré,23561
+MU,2615003,Taquaritinga do Norte,24736
+MU,2615102,Terezinha,6513
+MU,2615201,Terra Nova,8920
+MU,2615300,Timbaúba,46147
+MU,2615409,Toritama,41137
+MU,2615508,Tracunhaém,13867
+MU,2615607,Trindade,30321
+MU,2615706,Triunfo,14705
+MU,2615805,Tupanatinga,26937
+MU,2615904,Tuparetama,8005
+MU,2616001,Venturosa,17251
+MU,2616100,Verdejante,9169
+MU,2616183,Vertente do Lério,7558
+MU,2616209,Vertentes,21959
+MU,2616308,Vicência,26359
+MU,2616407,Vitória de Santo Antão,134084
+MU,2616506,Xexéu,11611
+MU,2700102,Água Branca,19008
+MU,2700201,Anadia,13966
+MU,2700300,Arapiraca,234696
+MU,2700409,Atalaia,37512
+MU,2700508,Barra de Santo Antônio,16365
+MU,2700607,Barra de São Miguel,7944
+MU,2700706,Batalha,16448
+MU,2700805,Belém,4722
+MU,2700904,Belo Monte,5936
+MU,2701001,Boca da Mata,21187
+MU,2701100,Branquinha,9603
+MU,2701209,Cacimbinhas,10482
+MU,2701308,Cajueiro,16024
+MU,2701357,Campestre,6665
+MU,2701407,Campo Alegre,32106
+MU,2701506,Campo Grande,8143
+MU,2701605,Canapi,15559
+MU,2701704,Capela,15032
+MU,2701803,Carneiros,8999
+MU,2701902,Chã Preta,5910
+MU,2702009,Coité do Nóia,10810
+MU,2702108,Colônia Leopoldina,15816
+MU,2702207,Coqueiro Seco,5581
+MU,2702306,Coruripe,50414
+MU,2702355,Craíbas,25397
+MU,2702405,Delmiro Gouveia,51318
+MU,2702504,Dois Riachos,9805
+MU,2702553,Estrela de Alagoas,15429
+MU,2702603,Feira Grande,22712
+MU,2702702,Feliz Deserto,3963
+MU,2702801,Flexeiras,9618
+MU,2702900,Girau do Ponciano,36102
+MU,2703007,Ibateguara,13731
+MU,2703106,Igaci,23995
+MU,2703205,Igreja Nova,21372
+MU,2703304,Inhapi,15167
+MU,2703403,Jacaré dos Homens,5083
+MU,2703502,Jacuípe,5352
+MU,2703601,Japaratinga,9219
+MU,2703700,Jaramataia,4985
+MU,2703759,Jequiá da Praia,9470
+MU,2703809,Joaquim Gomes,17150
+MU,2703908,Jundiá,4092
+MU,2704005,Junqueiro,23907
+MU,2704104,Lagoa da Canoa,18457
+MU,2704203,Limoeiro de Anadia,24740
+MU,2704302,Maceió,957916
+MU,2704401,Major Isidoro,17700
+MU,2704500,Maragogi,32174
+MU,2704609,Maravilha,9534
+MU,2704708,Marechal Deodoro,60370
+MU,2704807,Maribondo,13679
+MU,2704906,Mar Vermelho,3155
+MU,2705002,Mata Grande,21844
+MU,2705101,Matriz de Camaragibe,23857
+MU,2705200,Messias,15405
+MU,2705309,Minador do Negrão,4845
+MU,2705408,Monteirópolis,7184
+MU,2705507,Murici,25187
+MU,2705606,Novo Lino,10020
+MU,2705705,Olho d'Água das Flores,20695
+MU,2705804,Olho d'Água do Casado,8349
+MU,2705903,Olho d'Água Grande,4330
+MU,2706000,Olivença,10812
+MU,2706109,Ouro Branco,11446
+MU,2706208,Palestina,4325
+MU,2706307,Palmeira dos Índios,71574
+MU,2706406,Pão de Açúcar,23823
+MU,2706422,Pariconha,10573
+MU,2706448,Paripueira,13835
+MU,2706505,Passo de Camaragibe,13804
+MU,2706604,Paulo Jacinto,6576
+MU,2706703,Penedo,58650
+MU,2706802,Piaçabuçu,15908
+MU,2706901,Pilar,35370
+MU,2707008,Pindoba,2731
+MU,2707107,Piranhas,22609
+MU,2707206,Poço das Trincheiras,12518
+MU,2707305,Porto Calvo,24071
+MU,2707404,Porto de Pedras,9295
+MU,2707503,Porto Real do Colégio,20082
+MU,2707602,Quebrangulo,11080
+MU,2707701,Rio Largo,93927
+MU,2707800,Roteiro,6474
+MU,2707909,Santa Luzia do Norte,6919
+MU,2708006,Santana do Ipanema,46220
+MU,2708105,Santana do Mundaú,11323
+MU,2708204,São Brás,6555
+MU,2708303,São José da Laje,20813
+MU,2708402,São José da Tapera,30604
+MU,2708501,São Luís do Quitunde,30873
+MU,2708600,São Miguel dos Campos,51990
+MU,2708709,São Miguel dos Milagres,8482
+MU,2708808,São Sebastião,31786
+MU,2708907,Satuba,24278
+MU,2708956,Senador Rui Palmeira,12303
+MU,2709004,Tanque d'Arca,5796
+MU,2709103,Taquarana,19032
+MU,2709152,Teotônio Vilela,38053
+MU,2709202,Traipu,23565
+MU,2709301,União dos Palmares,59280
+MU,2709400,Viçosa,24092
+MU,2800100,Amparo do São Francisco,2170
+MU,2800209,Aquidabã,20131
+MU,2800308,Aracaju,602757
+MU,2800407,Arauá,10318
+MU,2800506,Areia Branca,18081
+MU,2800605,Barra dos Coqueiros,41511
+MU,2800670,Boquim,24636
+MU,2800704,Brejo Grande,7841
+MU,2801009,Campo do Brito,18149
+MU,2801108,Canhoba,3791
+MU,2801207,Canindé de São Francisco,26834
+MU,2801306,Capela,31645
+MU,2801405,Carira,19939
+MU,2801504,Carmópolis,13853
+MU,2801603,Cedro de São João,5391
+MU,2801702,Cristinápolis,17100
+MU,2801900,Cumbe,3824
+MU,2802007,Divina Pastora,4340
+MU,2802106,Estância,65078
+MU,2802205,Feira Nova,5975
+MU,2802304,Frei Paulo,14530
+MU,2802403,Gararu,11096
+MU,2802502,General Maynard,3037
+MU,2802601,Graccho Cardoso,5834
+MU,2802700,Ilha das Flores,8321
+MU,2802809,Indiaroba,16549
+MU,2802908,Itabaiana,103440
+MU,2803005,Itabaianinha,40678
+MU,2803104,Itabi,4745
+MU,2803203,Itaporanga d'Ajuda,34411
+MU,2803302,Japaratuba,16209
+MU,2803401,Japoatã,13407
+MU,2803500,Lagarto,101579
+MU,2803609,Laranjeiras,23975
+MU,2803708,Macambira,6838
+MU,2803807,Malhada dos Bois,3579
+MU,2803906,Malhador,11533
+MU,2804003,Maruim,15719
+MU,2804102,Moita Bonita,11050
+MU,2804201,Monte Alegre de Sergipe,14336
+MU,2804300,Muribeca,7822
+MU,2804409,Neópolis,16426
+MU,2804458,Nossa Senhora Aparecida,9232
+MU,2804508,Nossa Senhora da Glória,41212
+MU,2804607,Nossa Senhora das Dores,24996
+MU,2804706,Nossa Senhora de Lourdes,6268
+MU,2804805,Nossa Senhora do Socorro,192330
+MU,2804904,Pacatuba,12502
+MU,2805000,Pedra Mole,2778
+MU,2805109,Pedrinhas,7396
+MU,2805208,Pinhão,5677
+MU,2805307,Pirambu,7913
+MU,2805406,Poço Redondo,33439
+MU,2805505,Poço Verde,21794
+MU,2805604,Porto da Folha,26576
+MU,2805703,Propriá,26618
+MU,2805802,Riachão do Dantas,18313
+MU,2805901,Riachuelo,8748
+MU,2806008,Ribeirópolis,17033
+MU,2806107,Rosário do Catete,9295
+MU,2806206,Salgado,20279
+MU,2806305,Santa Luzia do Itanhy,13616
+MU,2806404,Santana do São Francisco,7346
+MU,2806503,Santa Rosa de Lima,3937
+MU,2806602,Santo Amaro das Brotas,11092
+MU,2806701,São Cristóvão,95612
+MU,2806800,São Domingos,10327
+MU,2806909,São Francisco,3243
+MU,2807006,São Miguel do Aleixo,3434
+MU,2807105,Simão Dias,42578
+MU,2807204,Siriri,7834
+MU,2807303,Telha,3274
+MU,2807402,Tobias Barreto,50905
+MU,2807501,Tomar do Geru,12012
+MU,2807600,Umbaúba,23917
+MU,2900108,Abaíra,7301
+MU,2900207,Abaré,17639
+MU,2900306,Acajutiba,13795
+MU,2900355,Adustina,14201
+MU,2900405,Água Fria,14497
+MU,2900504,Érico Cardoso,10604
+MU,2900603,Aiquara,4447
+MU,2900702,Alagoinhas,151055
+MU,2900801,Alcobaça,24530
+MU,2900900,Almadina,5218
+MU,2901007,Amargosa,36521
+MU,2901106,Amélia Rodrigues,24138
+MU,2901155,América Dourada,15137
+MU,2901205,Anagé,25438
+MU,2901304,Andaraí,13080
+MU,2901353,Andorinha,15012
+MU,2901403,Angical,13732
+MU,2901502,Anguera,11031
+MU,2901601,Antas,14206
+MU,2901700,Antônio Cardoso,11146
+MU,2901809,Antônio Gonçalves,10862
+MU,2901908,Aporá,15922
+MU,2901957,Apuarema,6913
+MU,2902005,Aracatu,13936
+MU,2902054,Araçás,11557
+MU,2902104,Araci,48294
+MU,2902203,Aramari,9833
+MU,2902252,Arataca,10191
+MU,2902302,Aratuípe,8677
+MU,2902401,Aurelino Leal,11179
+MU,2902500,Baianópolis,13614
+MU,2902609,Baixa Grande,18220
+MU,2902658,Banzaê,11958
+MU,2902708,Barra,51092
+MU,2902807,Barra da Estiva,26026
+MU,2902906,Barra do Choça,36539
+MU,2903003,Barra do Mendes,13836
+MU,2903102,Barra do Rocha,5775
+MU,2903201,Barreiras,159734
+MU,2903235,Barro Alto,13453
+MU,2903276,Barrocas,15203
+MU,2903300,Barro Preto,5833
+MU,2903409,Belmonte,20121
+MU,2903508,Belo Campo,18412
+MU,2903607,Biritinga,15146
+MU,2903706,Boa Nova,13690
+MU,2903805,Boa Vista do Tupim,16873
+MU,2903904,Bom Jesus da Lapa,65550
+MU,2903953,Bom Jesus da Serra,9730
+MU,2904001,Boninal,13622
+MU,2904050,Bonito,15844
+MU,2904100,Boquira,19322
+MU,2904209,Botuporã,11024
+MU,2904308,Brejões,12943
+MU,2904407,Brejolândia,9108
+MU,2904506,Brotas de Macaúbas,11765
+MU,2904605,Brumado,70510
+MU,2904704,Buerarema,14804
+MU,2904753,Buritirama,19589
+MU,2904803,Caatiba,6205
+MU,2904852,Cabaceiras do Paraguaçu,16559
+MU,2904902,Cachoeira,29250
+MU,2905008,Caculé,22462
+MU,2905107,Caém,10384
+MU,2905156,Caetanos,11266
+MU,2905206,Caetité,52012
+MU,2905305,Cafarnaum,17466
+MU,2905404,Cairu,17761
+MU,2905503,Caldeirão Grande,13080
+MU,2905602,Camacan,22579
+MU,2905701,Camaçari,300372
+MU,2905800,Camamu,30469
+MU,2905909,Campo Alegre de Lourdes,30671
+MU,2906006,Campo Formoso,71377
+MU,2906105,Canápolis,10225
+MU,2906204,Canarana,24206
+MU,2906303,Canavieiras,32683
+MU,2906402,Candeal,7772
+MU,2906501,Candeias,72382
+MU,2906600,Candiba,13016
+MU,2906709,Cândido Sales,25247
+MU,2906808,Cansanção,37439
+MU,2906824,Canudos,16105
+MU,2906857,Capela do Alto Alegre,10744
+MU,2906873,Capim Grosso,33235
+MU,2906899,Caraíbas,9940
+MU,2906907,Caravelas,20580
+MU,2907004,Cardeal da Silva,8365
+MU,2907103,Carinhanha,28869
+MU,2907202,Casa Nova,72086
+MU,2907301,Castro Alves,24712
+MU,2907400,Catolândia,3434
+MU,2907509,Catu,48148
+MU,2907558,Caturama,8841
+MU,2907608,Central,16348
+MU,2907707,Chorrochó,10579
+MU,2907806,Cícero Dantas,30907
+MU,2907905,Cipó,17230
+MU,2908002,Coaraci,17333
+MU,2908101,Cocos,19151
+MU,2908200,Conceição da Feira,20800
+MU,2908309,Conceição do Almeida,15794
+MU,2908408,Conceição do Coité,67825
+MU,2908507,Conceição do Jacuípe,35308
+MU,2908606,Conde,23654
+MU,2908705,Condeúba,17053
+MU,2908804,Contendas do Sincorá,4333
+MU,2908903,Coração de Maria,26692
+MU,2909000,Cordeiros,7546
+MU,2909109,Coribe,13990
+MU,2909208,Coronel João Sá,17056
+MU,2909307,Correntina,32457
+MU,2909406,Cotegipe,13063
+MU,2909505,Cravolândia,4415
+MU,2909604,Crisópolis,19729
+MU,2909703,Cristópolis,13993
+MU,2909802,Cruz das Almas,60348
+MU,2909901,Curaçá,34180
+MU,2910008,Dário Meira,10820
+MU,2910057,Dias d'Ávila,71485
+MU,2910107,Dom Basílio,11884
+MU,2910206,Dom Macedo Costa,4407
+MU,2910305,Elísio Medrado,7808
+MU,2910404,Encruzilhada,19107
+MU,2910503,Entre Rios,38098
+MU,2910602,Esplanada,32554
+MU,2910701,Euclides da Cunha,61456
+MU,2910727,Eunápolis,113710
+MU,2910750,Fátima,17895
+MU,2910776,Feira da Mata,5631
+MU,2910800,Feira de Santana,616272
+MU,2910859,Filadélfia,17897
+MU,2910909,Firmino Alves,4873
+MU,2911006,Floresta Azul,11059
+MU,2911105,Formosa do Rio Preto,25899
+MU,2911204,Gandu,32178
+MU,2911253,Gavião,4360
+MU,2911303,Gentio do Ouro,10884
+MU,2911402,Glória,15524
+MU,2911501,Gongogi,5555
+MU,2911600,Governador Mangabeira,20605
+MU,2911659,Guajeru,8050
+MU,2911709,Guanambi,87817
+MU,2911808,Guaratinga,19049
+MU,2911857,Heliópolis,12309
+MU,2911907,Iaçu,24607
+MU,2912004,Ibiassucê,10429
+MU,2912103,Ibicaraí,21665
+MU,2912202,Ibicoara,20785
+MU,2912301,Ibicuí,13934
+MU,2912400,Ibipeba,16603
+MU,2912509,Ibipitanga,13863
+MU,2912608,Ibiquera,3725
+MU,2912707,Ibirapitanga,25344
+MU,2912806,Ibirapuã,8896
+MU,2912905,Ibirataia,18792
+MU,2913002,Ibitiara,14637
+MU,2913101,Ibititá,16969
+MU,2913200,Ibotirama,26309
+MU,2913309,Ichu,6190
+MU,2913408,Igaporã,15527
+MU,2913457,Igrapiúna,13151
+MU,2913507,Iguaí,21491
+MU,2913606,Ilhéus,178649
+MU,2913705,Inhambupe,33790
+MU,2913804,Ipecaetá,13709
+MU,2913903,Ipiaú,40706
+MU,2914000,Ipirá,56876
+MU,2914109,Ipupiara,9935
+MU,2914208,Irajuba,6101
+MU,2914307,Iramaia,10752
+MU,2914406,Iraquara,23879
+MU,2914505,Irará,28043
+MU,2914604,Irecê,74507
+MU,2914653,Itabela,28165
+MU,2914703,Itaberaba,65073
+MU,2914802,Itabuna,186708
+MU,2914901,Itacaré,27704
+MU,2915007,Itaeté,13472
+MU,2915106,Itagi,13803
+MU,2915205,Itagibá,15310
+MU,2915304,Itagimirim,6347
+MU,2915353,Itaguaçu da Bahia,12311
+MU,2915403,Itaju do Colônia,6037
+MU,2915502,Itajuípe,18781
+MU,2915601,Itamaraju,59605
+MU,2915700,Itamari,7051
+MU,2915809,Itambé,24394
+MU,2915908,Itanagra,5914
+MU,2916005,Itanhém,17813
+MU,2916104,Itaparica,19789
+MU,2916203,Itapé,10341
+MU,2916302,Itapebi,9174
+MU,2916401,Itapetinga,65897
+MU,2916500,Itapicuru,31679
+MU,2916609,Itapitanga,10279
+MU,2916708,Itaquara,8153
+MU,2916807,Itarantim,17052
+MU,2916856,Itatim,15737
+MU,2916906,Itiruçu,10999
+MU,2917003,Itiúba,33872
+MU,2917102,Itororó,16617
+MU,2917201,Ituaçu,17914
+MU,2917300,Ituberá,21902
+MU,2917334,Iuiu,11118
+MU,2917359,Jaborandi,9275
+MU,2917409,Jacaraci,14436
+MU,2917508,Jacobina,82590
+MU,2917607,Jaguaquara,45964
+MU,2917706,Jaguarari,32703
+MU,2917805,Jaguaripe,17659
+MU,2917904,Jandaíra,9285
+MU,2918001,Jequié,158813
+MU,2918100,Jeremoabo,37626
+MU,2918209,Jiquiriçá,13629
+MU,2918308,Jitaúna,14355
+MU,2918357,João Dourado,24854
+MU,2918407,Juazeiro,237821
+MU,2918456,Jucuruçu,9655
+MU,2918506,Jussara,16354
+MU,2918555,Jussari,5888
+MU,2918605,Jussiape,7379
+MU,2918704,Lafaiete Coutinho,4075
+MU,2918753,Lagoa Real,14105
+MU,2918803,Laje,21052
+MU,2918902,Lajedão,3845
+MU,2919009,Lajedinho,3527
+MU,2919058,Lajedo do Tabocal,7494
+MU,2919108,Lamarão,9015
+MU,2919157,Lapão,25736
+MU,2919207,Lauro de Freitas,203331
+MU,2919306,Lençóis,10774
+MU,2919405,Licínio de Almeida,11834
+MU,2919504,Livramento de Nossa Senhora,43903
+MU,2919553,Luís Eduardo Magalhães,107909
+MU,2919603,Macajuba,10454
+MU,2919702,Macarani,21599
+MU,2919801,Macaúbas,41859
+MU,2919900,Macururé,7256
+MU,2919926,Madre de Deus,18504
+MU,2919959,Maetinga,6973
+MU,2920007,Maiquinique,8731
+MU,2920106,Mairi,17674
+MU,2920205,Malhada,15398
+MU,2920304,Malhada de Pedras,8670
+MU,2920403,Manoel Vitorino,13860
+MU,2920452,Mansidão,13919
+MU,2920502,Maracás,27620
+MU,2920601,Maragogipe,35859
+MU,2920700,Maraú,24527
+MU,2920809,Marcionílio Souza,9267
+MU,2920908,Mascote,13544
+MU,2921005,Mata de São João,42566
+MU,2921054,Matina,10330
+MU,2921104,Medeiros Neto,22194
+MU,2921203,Miguel Calmon,24661
+MU,2921302,Milagres,11071
+MU,2921401,Mirangaba,15734
+MU,2921450,Mirante,10187
+MU,2921500,Monte Santo,47780
+MU,2921609,Morpará,7996
+MU,2921708,Morro do Chapéu,33594
+MU,2921807,Mortugaba,11143
+MU,2921906,Mucugê,12137
+MU,2922003,Mucuri,37977
+MU,2922052,Mulungu do Morro,13152
+MU,2922102,Mundo Novo,17305
+MU,2922201,Muniz Ferreira,7190
+MU,2922250,Muquém do São Francisco,10443
+MU,2922300,Muritiba,28707
+MU,2922409,Mutuípe,20037
+MU,2922508,Nazaré,27060
+MU,2922607,Nilo Peçanha,12063
+MU,2922656,Nordestina,18523
+MU,2922706,Nova Canaã,13715
+MU,2922730,Nova Fátima,7967
+MU,2922755,Nova Ibiá,6501
+MU,2922805,Nova Itarana,7780
+MU,2922854,Nova Redenção,7538
+MU,2922904,Nova Soure,24236
+MU,2923001,Nova Viçosa,39509
+MU,2923035,Novo Horizonte,11162
+MU,2923050,Novo Triunfo,10660
+MU,2923100,Olindina,22633
+MU,2923209,Oliveira dos Brejinhos,20715
+MU,2923308,Ouriçangas,7716
+MU,2923357,Ourolândia,19243
+MU,2923407,Palmas de Monte Alto,20078
+MU,2923506,Palmeiras,10339
+MU,2923605,Paramirim,20351
+MU,2923704,Paratinga,29252
+MU,2923803,Paripiranga,26604
+MU,2923902,Pau Brasil,9370
+MU,2924009,Paulo Afonso,112870
+MU,2924058,Pé de Serra,13243
+MU,2924108,Pedrão,6235
+MU,2924207,Pedro Alexandre,13954
+MU,2924306,Piatã,20086
+MU,2924405,Pilão Arcado,35357
+MU,2924504,Pindaí,14731
+MU,2924603,Pindobaçu,19083
+MU,2924652,Pintadas,10325
+MU,2924678,Piraí do Norte,10974
+MU,2924702,Piripá,9152
+MU,2924801,Piritiba,17566
+MU,2924900,Planaltino,8022
+MU,2925006,Planalto,23334
+MU,2925105,Poções,48293
+MU,2925204,Pojuca,32136
+MU,2925253,Ponto Novo,17938
+MU,2925303,Porto Seguro,168326
+MU,2925402,Potiraguá,10274
+MU,2925501,Prado,35003
+MU,2925600,Presidente Dutra,15130
+MU,2925709,Presidente Jânio Quadros,12621
+MU,2925758,Presidente Tancredo Neves,27734
+MU,2925808,Queimadas,25988
+MU,2925907,Quijingue,25272
+MU,2925931,Quixabeira,9461
+MU,2925956,Rafael Jambeiro,19662
+MU,2926004,Remanso,40586
+MU,2926103,Retirolândia,13651
+MU,2926202,Riachão das Neves,21642
+MU,2926301,Riachão do Jacuípe,33386
+MU,2926400,Riacho de Santana,30711
+MU,2926509,Ribeira do Amparo,13841
+MU,2926608,Ribeira do Pombal,54010
+MU,2926657,Ribeirão do Largo,9740
+MU,2926707,Rio de Contas,13184
+MU,2926806,Rio do Antônio,13146
+MU,2926905,Rio do Pires,10497
+MU,2927002,Rio Real,35362
+MU,2927101,Rodelas,10308
+MU,2927200,Ruy Barbosa,28282
+MU,2927309,Salinas da Margarida,14987
+MU,2927408,Salvador,2417678
+MU,2927507,Santa Bárbara,20952
+MU,2927606,Santa Brígida,14965
+MU,2927705,Santa Cruz Cabrália,29185
+MU,2927804,Santa Cruz da Vitória,4681
+MU,2927903,Santa Inês,10300
+MU,2928000,Santaluz,37834
+MU,2928059,Santa Luzia,13896
+MU,2928109,Santa Maria da Vitória,38604
+MU,2928208,Santana,24755
+MU,2928307,Santanópolis,8716
+MU,2928406,Santa Rita de Cássia,27390
+MU,2928505,Santa Terezinha,10441
+MU,2928604,Santo Amaro,56012
+MU,2928703,Santo Antônio de Jesus,103055
+MU,2928802,Santo Estêvão,52276
+MU,2928901,São Desidério,32828
+MU,2928950,São Domingos,8426
+MU,2929008,São Félix,11026
+MU,2929057,São Félix do Coribe,15194
+MU,2929107,São Felipe,20283
+MU,2929206,São Francisco do Conde,38733
+MU,2929255,São Gabriel,18600
+MU,2929305,São Gonçalo dos Campos,39513
+MU,2929354,São José da Vitória,5315
+MU,2929370,São José do Jacuípe,10187
+MU,2929404,São Miguel das Matas,10334
+MU,2929503,São Sebastião do Passé,40958
+MU,2929602,Sapeaçu,17963
+MU,2929701,Sátiro Dias,16008
+MU,2929750,Saubara,11438
+MU,2929800,Saúde,10478
+MU,2929909,Seabra,46160
+MU,2930006,Sebastião Laranjeiras,9360
+MU,2930105,Senhor do Bonfim,74523
+MU,2930154,Serra do Ramalho,34222
+MU,2930204,Sento Sé,38154
+MU,2930303,Serra Dourada,17066
+MU,2930402,Serra Preta,17996
+MU,2930501,Serrinha,80435
+MU,2930600,Serrolândia,13335
+MU,2930709,Simões Filho,114559
+MU,2930758,Sítio do Mato,13408
+MU,2930766,Sítio do Quinto,14773
+MU,2930774,Sobradinho,25475
+MU,2930808,Souto Soares,17054
+MU,2930907,Tabocas do Brejo Velho,11979
+MU,2931004,Tanhaçu,21006
+MU,2931053,Tanque Novo,17158
+MU,2931103,Tanquinho,7717
+MU,2931202,Taperoá,18044
+MU,2931301,Tapiramutá,15818
+MU,2931350,Teixeira de Freitas,145216
+MU,2931400,Teodoro Sampaio,7110
+MU,2931509,Teofilândia,21176
+MU,2931608,Teolândia,15332
+MU,2931707,Terra Nova,10798
+MU,2931806,Tremedal,16296
+MU,2931905,Tucano,48736
+MU,2932002,Uauá,24665
+MU,2932101,Ubaíra,18626
+MU,2932200,Ubaitaba,17596
+MU,2932309,Ubatã,16094
+MU,2932408,Uibaí,13432
+MU,2932457,Umburanas,13642
+MU,2932507,Una,18131
+MU,2932606,Urandi,15355
+MU,2932705,Uruçuca,21420
+MU,2932804,Utinga,16277
+MU,2932903,Valença,85655
+MU,2933000,Valente,24362
+MU,2933059,Várzea da Roça,13800
+MU,2933109,Várzea do Poço,8101
+MU,2933158,Várzea Nova,13377
+MU,2933174,Varzedo,9913
+MU,2933208,Vera Cruz,42529
+MU,2933257,Vereda,6003
+MU,2933307,Vitória da Conquista,370879
+MU,2933406,Wagner,9503
+MU,2933455,Wanderley,12968
+MU,2933505,Wenceslau Guimarães,24474
+MU,2933604,Xique-Xique,44757
+MU,3100104,Abadia dos Dourados,6272
+MU,3100203,Abaeté,22675
+MU,3100302,Abre Campo,13927
+MU,3100401,Acaiaca,3909
+MU,3100500,Açucena,8943
+MU,3100609,Água Boa,12589
+MU,3100708,Água Comprida,2108
+MU,3100807,Aguanil,4357
+MU,3100906,Águas Formosas,18448
+MU,3101003,Águas Vermelhas,14037
+MU,3101102,Aimorés,25269
+MU,3101201,Aiuruoca,6233
+MU,3101300,Alagoa,2749
+MU,3101409,Albertina,2952
+MU,3101508,Além Paraíba,30717
+MU,3101607,Alfenas,78970
+MU,3101631,Alfredo Vasconcelos,6931
+MU,3101706,Almenara,40364
+MU,3101805,Alpercata,6903
+MU,3101904,Alpinópolis,18300
+MU,3102001,Alterosa,13915
+MU,3102050,Alto Caparaó,5795
+MU,3102100,Alto Rio Doce,10891
+MU,3102209,Alvarenga,3975
+MU,3102308,Alvinópolis,15059
+MU,3102407,Alvorada de Minas,4159
+MU,3102506,Amparo do Serra,4541
+MU,3102605,Andradas,40553
+MU,3102704,Cachoeira de Pajeú,9110
+MU,3102803,Andrelândia,11927
+MU,3102852,Angelândia,7718
+MU,3102902,Antônio Carlos,11095
+MU,3103009,Antônio Dias,9219
+MU,3103108,Antônio Prado de Minas,1538
+MU,3103207,Araçaí,2181
+MU,3103306,Aracitaba,2049
+MU,3103405,Araçuaí,34297
+MU,3103504,Araguari,117808
+MU,3103603,Arantina,2915
+MU,3103702,Araponga,8048
+MU,3103751,Araporã,8479
+MU,3103801,Arapuá,2631
+MU,3103900,Araújos,9199
+MU,3104007,Araxá,111691
+MU,3104106,Arceburgo,9177
+MU,3104205,Arcos,41416
+MU,3104304,Areado,13881
+MU,3104403,Argirita,2688
+MU,3104452,Aricanduva,4719
+MU,3104502,Arinos,17272
+MU,3104601,Astolfo Dutra,14138
+MU,3104700,Ataléia,13736
+MU,3104809,Augusto de Lima,4538
+MU,3104908,Baependi,18366
+MU,3105004,Baldim,7492
+MU,3105103,Bambuí,23546
+MU,3105202,Bandeira,4741
+MU,3105301,Bandeira do Sul,5943
+MU,3105400,Barão de Cocais,30778
+MU,3105509,Barão do Monte Alto,4964
+MU,3105608,Barbacena,125317
+MU,3105707,Barra Longa,5666
+MU,3105905,Barroso,20080
+MU,3106002,Bela Vista de Minas,10167
+MU,3106101,Belmiro Braga,3244
+MU,3106200,Belo Horizonte,2315560
+MU,3106309,Belo Oriente,23928
+MU,3106408,Belo Vale,8627
+MU,3106507,Berilo,9826
+MU,3106606,Bertópolis,4451
+MU,3106655,Berizal,4201
+MU,3106705,Betim,411846
+MU,3106804,Bias Fortes,3361
+MU,3106903,Bicas,13978
+MU,3107000,Biquinhas,2383
+MU,3107109,Boa Esperança,39848
+MU,3107208,Bocaina de Minas,5348
+MU,3107307,Bocaiúva,48032
+MU,3107406,Bom Despacho,51737
+MU,3107505,Bom Jardim de Minas,6783
+MU,3107604,Bom Jesus da Penha,4474
+MU,3107703,Bom Jesus do Amparo,5631
+MU,3107802,Bom Jesus do Galho,14536
+MU,3107901,Bom Repouso,12649
+MU,3108008,Bom Sucesso,17151
+MU,3108107,Bonfim,7434
+MU,3108206,Bonfinópolis de Minas,5528
+MU,3108255,Bonito de Minas,10204
+MU,3108305,Borda da Mata,17404
+MU,3108404,Botelhos,14828
+MU,3108503,Botumirim,5790
+MU,3108552,Brasilândia de Minas,15020
+MU,3108602,Brasília de Minas,32025
+MU,3108701,Brás Pires,4260
+MU,3108800,Braúnas,4441
+MU,3108909,Brazópolis,14246
+MU,3109006,Brumadinho,38915
+MU,3109105,Bueno Brandão,10911
+MU,3109204,Buenópolis,9150
+MU,3109253,Bugre,4041
+MU,3109303,Buritis,24030
+MU,3109402,Buritizeiro,23910
+MU,3109451,Cabeceira Grande,6627
+MU,3109501,Cabo Verde,11410
+MU,3109600,Cachoeira da Prata,3693
+MU,3109709,Cachoeira de Minas,11883
+MU,3109808,Cachoeira Dourada,2315
+MU,3109907,Caetanópolis,11435
+MU,3110004,Caeté,38776
+MU,3110103,Caiana,5304
+MU,3110202,Cajuri,4088
+MU,3110301,Caldas,14217
+MU,3110400,Camacho,2838
+MU,3110509,Camanducaia,26097
+MU,3110608,Cambuí,29536
+MU,3110707,Cambuquira,12313
+MU,3110806,Campanário,2923
+MU,3110905,Campanha,15935
+MU,3111002,Campestre,20696
+MU,3111101,Campina Verde,18011
+MU,3111150,Campo Azul,3714
+MU,3111200,Campo Belo,52277
+MU,3111309,Campo do Meio,11377
+MU,3111408,Campo Florido,8466
+MU,3111507,Campos Altos,12979
+MU,3111606,Campos Gerais,26105
+MU,3111705,Canaã,4715
+MU,3111804,Canápolis,10608
+MU,3111903,Cana Verde,5272
+MU,3112000,Candeias,14001
+MU,3112059,Cantagalo,3974
+MU,3112109,Caparaó,5048
+MU,3112208,Capela Nova,4362
+MU,3112307,Capelinha,39626
+MU,3112406,Capetinga,6562
+MU,3112505,Capim Branco,10663
+MU,3112604,Capinópolis,14655
+MU,3112653,Capitão Andrade,4585
+MU,3112703,Capitão Enéas,14108
+MU,3112802,Capitólio,10380
+MU,3112901,Caputira,8936
+MU,3113008,Caraí,19548
+MU,3113107,Caranaíba,2933
+MU,3113206,Carandaí,23812
+MU,3113305,Carangola,31240
+MU,3113404,Caratinga,87360
+MU,3113503,Carbonita,8512
+MU,3113602,Careaçu,6816
+MU,3113701,Carlos Chagas,18615
+MU,3113800,Carmésia,2605
+MU,3113909,Carmo da Cachoeira,11547
+MU,3114006,Carmo da Mata,11019
+MU,3114105,Carmo de Minas,13797
+MU,3114204,Carmo do Cajuru,23479
+MU,3114303,Carmo do Paranaíba,29011
+MU,3114402,Carmo do Rio Claro,20954
+MU,3114501,Carmópolis de Minas,18003
+MU,3114550,Carneirinho,9422
+MU,3114600,Carrancas,4049
+MU,3114709,Carvalhópolis,3341
+MU,3114808,Carvalhos,4422
+MU,3114907,Casa Grande,2214
+MU,3115003,Cascalho Rico,2712
+MU,3115102,Cássia,17155
+MU,3115201,Conceição da Barra de Minas,3560
+MU,3115300,Cataguases,66261
+MU,3115359,Catas Altas,5473
+MU,3115409,Catas Altas da Noruega,3110
+MU,3115458,Catuji,7030
+MU,3115474,Catuti,4739
+MU,3115508,Caxambu,21056
+MU,3115607,Cedro do Abaeté,1081
+MU,3115706,Central de Minas,6171
+MU,3115805,Centralina,10207
+MU,3115904,Chácara,3075
+MU,3116001,Chalé,6075
+MU,3116100,Chapada do Norte,10337
+MU,3116159,Chapada Gaúcha,12355
+MU,3116209,Chiador,2800
+MU,3116308,Cipotânea,5581
+MU,3116407,Claraval,4658
+MU,3116506,Claro dos Poções,7166
+MU,3116605,Cláudio,30159
+MU,3116704,Coimbra,7117
+MU,3116803,Coluna,8163
+MU,3116902,Comendador Gomes,2773
+MU,3117009,Comercinho,6660
+MU,3117108,Conceição da Aparecida,10371
+MU,3117207,Conceição das Pedras,2772
+MU,3117306,Conceição das Alagoas,28381
+MU,3117405,Conceição de Ipanema,4409
+MU,3117504,Conceição do Mato Dentro,23163
+MU,3117603,Conceição do Pará,5415
+MU,3117702,Conceição do Rio Verde,12541
+MU,3117801,Conceição dos Ouros,10880
+MU,3117836,Cônego Marinho,7237
+MU,3117876,Confins,7350
+MU,3117900,Congonhal,11083
+MU,3118007,Congonhas,52890
+MU,3118106,Congonhas do Norte,4831
+MU,3118205,Conquista,6694
+MU,3118304,Conselheiro Lafaiete,131621
+MU,3118403,Conselheiro Pena,20824
+MU,3118502,Consolação,1563
+MU,3118601,Contagem,621863
+MU,3118700,Coqueiral,9023
+MU,3118809,Coração de Jesus,25377
+MU,3118908,Cordisburgo,7547
+MU,3119005,Cordislândia,3200
+MU,3119104,Corinto,23532
+MU,3119203,Coroaci,10884
+MU,3119302,Coromandel,28894
+MU,3119401,Coronel Fabriciano,104736
+MU,3119500,Coronel Murta,8200
+MU,3119609,Coronel Pacheco,2762
+MU,3119708,Coronel Xavier Chaves,3486
+MU,3119807,Córrego Danta,2960
+MU,3119906,Córrego do Bom Jesus,4272
+MU,3119955,Córrego Fundo,6133
+MU,3120003,Córrego Novo,2875
+MU,3120102,Couto de Magalhães de Minas,4245
+MU,3120151,Crisólita,5265
+MU,3120201,Cristais,12197
+MU,3120300,Cristália,5121
+MU,3120409,Cristiano Otoni,4667
+MU,3120508,Cristina,10374
+MU,3120607,Crucilândia,5434
+MU,3120706,Cruzeiro da Fortaleza,3521
+MU,3120805,Cruzília,15362
+MU,3120839,Cuparaque,3983
+MU,3120870,Curral de Dentro,7406
+MU,3120904,Curvelo,80665
+MU,3121001,Datas,5465
+MU,3121100,Delfim Moreira,7952
+MU,3121209,Delfinópolis,8393
+MU,3121258,Delta,10494
+MU,3121308,Descoberto,4928
+MU,3121407,Desterro de Entre Rios,7653
+MU,3121506,Desterro do Melo,2994
+MU,3121605,Diamantina,47702
+MU,3121704,Diogo de Vasconcelos,3549
+MU,3121803,Dionísio,6847
+MU,3121902,Divinésia,4226
+MU,3122009,Divino,20706
+MU,3122108,Divino das Laranjeiras,4178
+MU,3122207,Divinolândia de Minas,6516
+MU,3122306,Divinópolis,231091
+MU,3122355,Divisa Alegre,6321
+MU,3122405,Divisa Nova,5851
+MU,3122454,Divisópolis,10213
+MU,3122470,Dom Bosco,3697
+MU,3122504,Dom Cavati,4904
+MU,3122603,Dom Joaquim,4899
+MU,3122702,Dom Silvério,5228
+MU,3122801,Dom Viçoso,3095
+MU,3122900,Dona Euzébia,6093
+MU,3123007,Dores de Campos,10007
+MU,3123106,Dores de Guanhães,5029
+MU,3123205,Dores do Indaiá,12630
+MU,3123304,Dores do Turvo,4987
+MU,3123403,Doresópolis,1461
+MU,3123502,Douradoquara,1829
+MU,3123528,Durandé,7817
+MU,3123601,Elói Mendes,26336
+MU,3123700,Engenheiro Caldas,13622
+MU,3123809,Engenheiro Navarro,6354
+MU,3123858,Entre Folhas,5179
+MU,3123908,Entre Rios de Minas,14746
+MU,3124005,Ervália,20255
+MU,3124104,Esmeraldas,85598
+MU,3124203,Espera Feliz,24102
+MU,3124302,Espinosa,30443
+MU,3124401,Espírito Santo do Dourado,6611
+MU,3124500,Estiva,11502
+MU,3124609,Estrela Dalva,2186
+MU,3124708,Estrela do Indaiá,2772
+MU,3124807,Estrela do Sul,6840
+MU,3124906,Eugenópolis,10801
+MU,3125002,Ewbank da Câmara,3875
+MU,3125101,Extrema,53482
+MU,3125200,Fama,2578
+MU,3125309,Faria Lemos,3188
+MU,3125408,Felício dos Santos,5133
+MU,3125507,São Gonçalo do Rio Preto,3032
+MU,3125606,Felisburgo,6489
+MU,3125705,Felixlândia,13978
+MU,3125804,Fernandes Tourinho,2789
+MU,3125903,Ferros,9590
+MU,3125952,Fervedouro,10445
+MU,3126000,Florestal,8045
+MU,3126109,Formiga,68248
+MU,3126208,Formoso,7949
+MU,3126307,Fortaleza de Minas,3477
+MU,3126406,Fortuna de Minas,3093
+MU,3126505,Francisco Badaró,7366
+MU,3126604,Francisco Dumont,4503
+MU,3126703,Francisco Sá,23476
+MU,3126752,Franciscópolis,5034
+MU,3126802,Frei Gaspar,5640
+MU,3126901,Frei Inocêncio,8226
+MU,3126950,Frei Lagonegro,3391
+MU,3127008,Fronteira,14540
+MU,3127057,Fronteira dos Vales,4345
+MU,3127073,Fruta de Leite,4647
+MU,3127107,Frutal,58588
+MU,3127206,Funilândia,4686
+MU,3127305,Galiléia,6222
+MU,3127339,Gameleiras,4793
+MU,3127354,Glaucilândia,2928
+MU,3127370,Goiabeira,2830
+MU,3127388,Goianá,4053
+MU,3127404,Gonçalves,4727
+MU,3127503,Gonzaga,5230
+MU,3127602,Gouveia,11331
+MU,3127701,Governador Valadares,257171
+MU,3127800,Grão Mogol,13901
+MU,3127909,Grupiara,1392
+MU,3128006,Guanhães,32244
+MU,3128105,Guapé,13772
+MU,3128204,Guaraciaba,9753
+MU,3128253,Guaraciama,5051
+MU,3128303,Guaranésia,19150
+MU,3128402,Guarani,7714
+MU,3128501,Guarará,3149
+MU,3128600,Guarda-Mor,6539
+MU,3128709,Guaxupé,50911
+MU,3128808,Guidoval,7131
+MU,3128907,Guimarânia,8478
+MU,3129004,Guiricema,7778
+MU,3129103,Gurinhatã,5192
+MU,3129202,Heliodora,6134
+MU,3129301,Iapu,12030
+MU,3129400,Ibertioga,5198
+MU,3129509,Ibiá,22229
+MU,3129608,Ibiaí,6286
+MU,3129657,Ibiracatu,5081
+MU,3129707,Ibiraci,10948
+MU,3129806,Ibirité,170537
+MU,3129905,Ibitiúra de Minas,3365
+MU,3130002,Ibituruna,2698
+MU,3130051,Icaraí de Minas,10677
+MU,3130101,Igarapé,45847
+MU,3130200,Igaratinga,10830
+MU,3130309,Iguatama,6826
+MU,3130408,Ijaci,7003
+MU,3130507,Ilicínea,12741
+MU,3130556,Imbé de Minas,6986
+MU,3130606,Inconfidentes,7301
+MU,3130655,Indaiabira,6346
+MU,3130705,Indianópolis,6171
+MU,3130804,Ingaí,2580
+MU,3130903,Inhapim,22692
+MU,3131000,Inhaúma,6239
+MU,3131109,Inimutaba,7371
+MU,3131158,Ipaba,17136
+MU,3131208,Ipanema,19522
+MU,3131307,Ipatinga,227731
+MU,3131406,Ipiaçu,3775
+MU,3131505,Ipuiúna,9135
+MU,3131604,Iraí de Minas,7180
+MU,3131703,Itabira,113343
+MU,3131802,Itabirinha,10362
+MU,3131901,Itabirito,53365
+MU,3132008,Itacambira,4252
+MU,3132107,Itacarambi,17208
+MU,3132206,Itaguara,13846
+MU,3132305,Itaipé,10463
+MU,3132404,Itajubá,93073
+MU,3132503,Itamarandiba,32948
+MU,3132602,Itamarati de Minas,3690
+MU,3132701,Itambacuri,21042
+MU,3132800,Itambé do Mato Dentro,2142
+MU,3132909,Itamogi,10770
+MU,3133006,Itamonte,14786
+MU,3133105,Itanhandu,15236
+MU,3133204,Itanhomi,11128
+MU,3133303,Itaobim,19151
+MU,3133402,Itapagipe,13690
+MU,3133501,Itapecerica,21046
+MU,3133600,Itapeva,12692
+MU,3133709,Itatiaiuçu,12966
+MU,3133758,Itaú de Minas,14406
+MU,3133808,Itaúna,97669
+MU,3133907,Itaverava,5642
+MU,3134004,Itinga,13745
+MU,3134103,Itueta,6055
+MU,3134202,Ituiutaba,102217
+MU,3134301,Itumirim,6638
+MU,3134400,Iturama,38295
+MU,3134509,Itutinga,4217
+MU,3134608,Jaboticatubas,20406
+MU,3134707,Jacinto,11042
+MU,3134806,Jacuí,7495
+MU,3134905,Jacutinga,25525
+MU,3135001,Jaguaraçu,3092
+MU,3135050,Jaíba,37660
+MU,3135076,Jampruca,4296
+MU,3135100,Janaúba,70699
+MU,3135209,Januária,65150
+MU,3135308,Japaraíba,4506
+MU,3135357,Japonvar,8127
+MU,3135407,Jeceaba,6197
+MU,3135456,Jenipapo de Minas,6100
+MU,3135506,Jequeri,12419
+MU,3135605,Jequitaí,6484
+MU,3135704,Jequitibá,5883
+MU,3135803,Jequitinhonha,24007
+MU,3135902,Jesuânia,5138
+MU,3136009,Joaíma,13888
+MU,3136108,Joanésia,4329
+MU,3136207,João Monlevade,80187
+MU,3136306,João Pinheiro,46801
+MU,3136405,Joaquim Felício,3854
+MU,3136504,Jordânia,10304
+MU,3136520,José Gonçalves de Minas,3969
+MU,3136553,José Raydan,4268
+MU,3136579,Josenópolis,3630
+MU,3136603,Nova União,5909
+MU,3136652,Juatuba,30716
+MU,3136702,Juiz de Fora,540756
+MU,3136801,Juramento,3768
+MU,3136900,Juruaia,11084
+MU,3136959,Juvenília,5789
+MU,3137007,Ladainha,14383
+MU,3137106,Lagamar,6631
+MU,3137205,Lagoa da Prata,51412
+MU,3137304,Lagoa dos Patos,3313
+MU,3137403,Lagoa Dourada,12769
+MU,3137502,Lagoa Formosa,18904
+MU,3137536,Lagoa Grande,8969
+MU,3137601,Lagoa Santa,75145
+MU,3137700,Lajinha,20835
+MU,3137809,Lambari,20414
+MU,3137908,Lamim,3184
+MU,3138005,Laranjal,5963
+MU,3138104,Lassance,7124
+MU,3138203,Lavras,104761
+MU,3138302,Leandro Ferreira,3199
+MU,3138351,Leme do Prado,4341
+MU,3138401,Leopoldina,51145
+MU,3138500,Liberdade,4737
+MU,3138609,Lima Duarte,17221
+MU,3138625,Limeira do Oeste,8687
+MU,3138658,Lontra,8790
+MU,3138674,Luisburgo,6956
+MU,3138682,Luislândia,6210
+MU,3138708,Luminárias,5586
+MU,3138807,Luz,17875
+MU,3138906,Machacalis,6487
+MU,3139003,Machado,37684
+MU,3139102,Madre de Deus de Minas,5191
+MU,3139201,Malacacheta,17516
+MU,3139250,Mamonas,5997
+MU,3139300,Manga,18886
+MU,3139409,Manhuaçu,91886
+MU,3139508,Manhumirim,20613
+MU,3139607,Mantena,26535
+MU,3139706,Maravilhas,7333
+MU,3139805,Mar de Espanha,12721
+MU,3139904,Maria da Fé,14247
+MU,3140001,Mariana,61387
+MU,3140100,Marilac,4224
+MU,3140159,Mário Campos,15900
+MU,3140209,Maripá de Minas,3387
+MU,3140308,Marliéria,4592
+MU,3140407,Marmelópolis,3200
+MU,3140506,Martinho Campos,14003
+MU,3140530,Martins Soares,8396
+MU,3140555,Mata Verde,9112
+MU,3140605,Materlândia,3963
+MU,3140704,Mateus Leme,37841
+MU,3140803,Matias Barbosa,14121
+MU,3140852,Matias Cardoso,8895
+MU,3140902,Matipó,18552
+MU,3141009,Mato Verde,12038
+MU,3141108,Matozinhos,37618
+MU,3141207,Matutina,3814
+MU,3141306,Medeiros,3900
+MU,3141405,Medina,20156
+MU,3141504,Mendes Pimentel,5606
+MU,3141603,Mercês,10373
+MU,3141702,Mesquita,5040
+MU,3141801,Minas Novas,24405
+MU,3141900,Minduri,3741
+MU,3142007,Mirabela,13651
+MU,3142106,Miradouro,8968
+MU,3142205,Miraí,13633
+MU,3142254,Miravânia,3985
+MU,3142304,Moeda,5125
+MU,3142403,Moema,7548
+MU,3142502,Monjolos,2169
+MU,3142601,Monsenhor Paulo,8340
+MU,3142700,Montalvânia,14060
+MU,3142809,Monte Alegre de Minas,20170
+MU,3142908,Monte Azul,20328
+MU,3143005,Monte Belo,13046
+MU,3143104,Monte Carmelo,47692
+MU,3143153,Monte Formoso,4381
+MU,3143203,Monte Santo de Minas,20890
+MU,3143302,Montes Claros,414240
+MU,3143401,Monte Sião,24089
+MU,3143450,Montezuma,6888
+MU,3143500,Morada Nova de Minas,9067
+MU,3143609,Morro da Garça,2411
+MU,3143708,Morro do Pilar,3133
+MU,3143807,Munhoz,7451
+MU,3143906,Muriaé,104108
+MU,3144003,Mutum,27635
+MU,3144102,Muzambinho,21891
+MU,3144201,Nacip Raydan,2459
+MU,3144300,Nanuque,35038
+MU,3144359,Naque,6303
+MU,3144375,Natalândia,3520
+MU,3144409,Natércia,4691
+MU,3144508,Nazareno,8179
+MU,3144607,Nepomuceno,25018
+MU,3144656,Ninheira,10588
+MU,3144672,Nova Belém,3151
+MU,3144706,Nova Era,17438
+MU,3144805,Nova Lima,111697
+MU,3144904,Nova Módica,3663
+MU,3145000,Nova Ponte,14598
+MU,3145059,Nova Porteirinha,6706
+MU,3145109,Nova Resende,16387
+MU,3145208,Nova Serrana,105552
+MU,3145307,Novo Cruzeiro,26975
+MU,3145356,Novo Oriente de Minas,10275
+MU,3145372,Novorizonte,4571
+MU,3145406,Olaria,1945
+MU,3145455,Olhos-d'Água,5385
+MU,3145505,Olímpio Noronha,2555
+MU,3145604,Oliveira,39262
+MU,3145703,Oliveira Fortes,2027
+MU,3145802,Onça de Pitangui,2969
+MU,3145851,Oratórios,4917
+MU,3145877,Orizânia,8437
+MU,3145901,Ouro Branco,38724
+MU,3146008,Ouro Fino,32094
+MU,3146107,Ouro Preto,74821
+MU,3146206,Ouro Verde de Minas,5757
+MU,3146255,Padre Carvalho,5058
+MU,3146305,Padre Paraíso,17334
+MU,3146404,Paineiras,4224
+MU,3146503,Pains,8142
+MU,3146552,Pai Pedro,5551
+MU,3146602,Paiva,1474
+MU,3146701,Palma,5707
+MU,3146750,Palmópolis,6301
+MU,3146909,Papagaios,13920
+MU,3147006,Paracatu,94023
+MU,3147105,Pará de Minas,97139
+MU,3147204,Paraguaçu,21723
+MU,3147303,Paraisópolis,20445
+MU,3147402,Paraopeba,24107
+MU,3147501,Passabém,1600
+MU,3147600,Passa Quatro,15515
+MU,3147709,Passa Tempo,8473
+MU,3147808,Passa Vinte,2233
+MU,3147907,Passos,111939
+MU,3147956,Patis,4837
+MU,3148004,Patos de Minas,159235
+MU,3148103,Patrocínio,89826
+MU,3148202,Patrocínio do Muriaé,5576
+MU,3148301,Paula Cândido,8659
+MU,3148400,Paulistas,4389
+MU,3148509,Pavão,8047
+MU,3148608,Peçanha,17446
+MU,3148707,Pedra Azul,24410
+MU,3148756,Pedra Bonita,7320
+MU,3148806,Pedra do Anta,3311
+MU,3148905,Pedra do Indaiá,4112
+MU,3149002,Pedra Dourada,2757
+MU,3149101,Pedralva,10760
+MU,3149150,Pedras de Maria da Cruz,10433
+MU,3149200,Pedrinópolis,3344
+MU,3149309,Pedro Leopoldo,62580
+MU,3149408,Pedro Teixeira,1810
+MU,3149507,Pequeri,3351
+MU,3149606,Pequi,4155
+MU,3149705,Perdigão,12268
+MU,3149804,Perdizes,17151
+MU,3149903,Perdões,21384
+MU,3149952,Periquito,6553
+MU,3150000,Pescador,3570
+MU,3150109,Piau,2796
+MU,3150158,Piedade de Caratinga,8529
+MU,3150208,Piedade de Ponte Nova,3976
+MU,3150307,Piedade do Rio Grande,4604
+MU,3150406,Piedade dos Gerais,5019
+MU,3150505,Pimenta,8563
+MU,3150539,Pingo-d'Água,4706
+MU,3150570,Pintópolis,7084
+MU,3150604,Piracema,6700
+MU,3150703,Pirajuba,5537
+MU,3150802,Piranga,17018
+MU,3150901,Piranguçu,6041
+MU,3151008,Piranguinho,9120
+MU,3151107,Pirapetinga,11077
+MU,3151206,Pirapora,55606
+MU,3151305,Piraúba,11610
+MU,3151404,Pitangui,26685
+MU,3151503,Piumhi,36062
+MU,3151602,Planura,11145
+MU,3151701,Poço Fundo,16390
+MU,3151800,Poços de Caldas,163742
+MU,3151909,Pocrane,8350
+MU,3152006,Pompéu,31047
+MU,3152105,Ponte Nova,57776
+MU,3152131,Ponto Chique,3747
+MU,3152170,Ponto dos Volantes,10883
+MU,3152204,Porteirinha,37438
+MU,3152303,Porto Firme,10569
+MU,3152402,Poté,13666
+MU,3152501,Pouso Alegre,152217
+MU,3152600,Pouso Alto,6566
+MU,3152709,Prados,9048
+MU,3152808,Prata,28342
+MU,3152907,Pratápolis,8406
+MU,3153004,Pratinha,3559
+MU,3153103,Presidente Bernardes,4850
+MU,3153202,Presidente Juscelino,3465
+MU,3153301,Presidente Kubitschek,3071
+MU,3153400,Presidente Olegário,18765
+MU,3153509,Alto Jequitibá,8397
+MU,3153608,Prudente de Morais,11466
+MU,3153707,Quartel Geral,3179
+MU,3153806,Queluzito,1770
+MU,3153905,Raposos,16279
+MU,3154002,Raul Soares,23423
+MU,3154101,Recreio,11007
+MU,3154150,Reduto,7848
+MU,3154200,Resende Costa,11230
+MU,3154309,Resplendor,17226
+MU,3154408,Ressaquinha,4548
+MU,3154457,Riachinho,6863
+MU,3154507,Riacho dos Machados,8756
+MU,3154606,Ribeirão das Neves,329794
+MU,3154705,Ribeirão Vermelho,4080
+MU,3154804,Rio Acima,10261
+MU,3154903,Rio Casca,12789
+MU,3155009,Rio Doce,2484
+MU,3155108,Rio do Prado,4639
+MU,3155207,Rio Espera,5429
+MU,3155306,Rio Manso,5568
+MU,3155405,Rio Novo,8518
+MU,3155504,Rio Paranaíba,14532
+MU,3155603,Rio Pardo de Minas,28271
+MU,3155702,Rio Piracicaba,14631
+MU,3155801,Rio Pomba,17443
+MU,3155900,Rio Preto,5141
+MU,3156007,Rio Vermelho,12641
+MU,3156106,Ritápolis,4994
+MU,3156205,Rochedo de Minas,2291
+MU,3156304,Rodeiro,8664
+MU,3156403,Romaria,3386
+MU,3156452,Rosário da Limeira,4734
+MU,3156502,Rubelita,5679
+MU,3156601,Rubim,10298
+MU,3156700,Sabará,129380
+MU,3156809,Sabinópolis,14240
+MU,3156908,Sacramento,26670
+MU,3157005,Salinas,40178
+MU,3157104,Salto da Divisa,6110
+MU,3157203,Santa Bárbara,30466
+MU,3157252,Santa Bárbara do Leste,8458
+MU,3157278,Santa Bárbara do Monte Verde,3095
+MU,3157302,Santa Bárbara do Tugúrio,4208
+MU,3157336,Santa Cruz de Minas,8109
+MU,3157377,Santa Cruz de Salinas,3910
+MU,3157401,Santa Cruz do Escalvado,4673
+MU,3157500,Santa Efigênia de Minas,4039
+MU,3157609,Santa Fé de Minas,3522
+MU,3157658,Santa Helena de Minas,5938
+MU,3157708,Santa Juliana,15734
+MU,3157807,Santa Luzia,219132
+MU,3157906,Santa Margarida,16395
+MU,3158003,Santa Maria de Itabira,10485
+MU,3158102,Santa Maria do Salto,4755
+MU,3158201,Santa Maria do Suaçuí,12788
+MU,3158300,Santana da Vargem,6691
+MU,3158409,Santana de Cataguases,3489
+MU,3158508,Santana de Pirapama,7030
+MU,3158607,Santana do Deserto,3747
+MU,3158706,Santana do Garambéu,2137
+MU,3158805,Santana do Jacaré,4214
+MU,3158904,Santana do Manhuaçu,8987
+MU,3158953,Santana do Paraíso,44800
+MU,3159001,Santana do Riacho,5313
+MU,3159100,Santana dos Montes,3469
+MU,3159209,Santa Rita de Caldas,8460
+MU,3159308,Santa Rita de Jacutinga,4755
+MU,3159357,Santa Rita de Minas,6773
+MU,3159407,Santa Rita de Ibitipoca,3301
+MU,3159506,Santa Rita do Itueto,5826
+MU,3159605,Santa Rita do Sapucaí,40635
+MU,3159704,Santa Rosa da Serra,3382
+MU,3159803,Santa Vitória,20973
+MU,3159902,Santo Antônio do Amparo,17285
+MU,3160009,Santo Antônio do Aventureiro,3769
+MU,3160108,Santo Antônio do Grama,4229
+MU,3160207,Santo Antônio do Itambé,3915
+MU,3160306,Santo Antônio do Jacinto,10327
+MU,3160405,Santo Antônio do Monte,27295
+MU,3160454,Santo Antônio do Retiro,6629
+MU,3160504,Santo Antônio do Rio Abaixo,1808
+MU,3160603,Santo Hipólito,2717
+MU,3160702,Santos Dumont,42406
+MU,3160801,São Bento Abade,4713
+MU,3160900,São Brás do Suaçuí,3989
+MU,3160959,São Domingos das Dores,5626
+MU,3161007,São Domingos do Prata,17392
+MU,3161056,São Félix de Minas,3200
+MU,3161106,São Francisco,52762
+MU,3161205,São Francisco de Paula,6187
+MU,3161304,São Francisco de Sales,5732
+MU,3161403,São Francisco do Glória,4800
+MU,3161502,São Geraldo,10282
+MU,3161601,São Geraldo da Piedade,3305
+MU,3161650,São Geraldo do Baixio,3143
+MU,3161700,São Gonçalo do Abaeté,7375
+MU,3161809,São Gonçalo do Pará,11770
+MU,3161908,São Gonçalo do Rio Abaixo,11850
+MU,3162005,São Gonçalo do Sapucaí,23959
+MU,3162104,São Gotardo,40910
+MU,3162203,São João Batista do Glória,7652
+MU,3162252,São João da Lagoa,4822
+MU,3162302,São João da Mata,2914
+MU,3162401,São João da Ponte,23930
+MU,3162450,São João das Missões,13024
+MU,3162500,São João del Rei,90225
+MU,3162559,São João do Manhuaçu,11246
+MU,3162575,São João do Manteninha,5331
+MU,3162609,São João do Oriente,7070
+MU,3162658,São João do Pacuí,3972
+MU,3162708,São João do Paraíso,23910
+MU,3162807,São João Evangelista,15315
+MU,3162906,São João Nepomuceno,25565
+MU,3162922,São Joaquim de Bicas,34348
+MU,3162948,São José da Barra,7793
+MU,3162955,São José da Lapa,26090
+MU,3163003,São José da Safira,3806
+MU,3163102,São José da Varginha,4536
+MU,3163201,São José do Alegre,4133
+MU,3163300,São José do Divino,3464
+MU,3163409,São José do Goiabal,5396
+MU,3163508,São José do Jacuri,6197
+MU,3163607,São José do Mantimento,2753
+MU,3163706,São Lourenço,44798
+MU,3163805,São Miguel do Anta,6334
+MU,3163904,São Pedro da União,4885
+MU,3164001,São Pedro dos Ferros,7166
+MU,3164100,São Pedro do Suaçuí,5103
+MU,3164209,São Romão,10315
+MU,3164308,São Roque de Minas,7129
+MU,3164407,São Sebastião da Bela Vista,6387
+MU,3164431,São Sebastião da Vargem Alegre,3113
+MU,3164472,São Sebastião do Anta,6194
+MU,3164506,São Sebastião do Maranhão,10079
+MU,3164605,São Sebastião do Oeste,8815
+MU,3164704,São Sebastião do Paraíso,71796
+MU,3164803,São Sebastião do Rio Preto,1259
+MU,3164902,São Sebastião do Rio Verde,2300
+MU,3165008,São Tiago,11192
+MU,3165107,São Tomás de Aquino,6740
+MU,3165206,São Tomé das Letras,6904
+MU,3165305,São Vicente de Minas,6804
+MU,3165404,Sapucaí-Mirim,6311
+MU,3165503,Sardoá,5104
+MU,3165537,Sarzedo,36844
+MU,3165552,Setubinha,9917
+MU,3165560,Sem-Peixe,2433
+MU,3165578,Senador Amaral,6206
+MU,3165602,Senador Cortes,2240
+MU,3165701,Senador Firmino,7716
+MU,3165800,Senador José Bento,2068
+MU,3165909,Senador Modestino Gonçalves,4008
+MU,3166006,Senhora de Oliveira,5483
+MU,3166105,Senhora do Porto,3067
+MU,3166204,Senhora dos Remédios,10384
+MU,3166303,Sericita,7345
+MU,3166402,Seritinga,1819
+MU,3166501,Serra Azul de Minas,3792
+MU,3166600,Serra da Saudade,833
+MU,3166709,Serra dos Aimorés,6944
+MU,3166808,Serra do Salitre,11801
+MU,3166907,Serrania,7621
+MU,3166956,Serranópolis de Minas,4399
+MU,3167004,Serranos,1990
+MU,3167103,Serro,21952
+MU,3167202,Sete Lagoas,227397
+MU,3167301,Silveirânia,2323
+MU,3167400,Silvianópolis,6179
+MU,3167509,Simão Pereira,2947
+MU,3167608,Simonésia,19750
+MU,3167707,Sobrália,5137
+MU,3167806,Soledade de Minas,5613
+MU,3167905,Tabuleiro,4014
+MU,3168002,Taiobeiras,33050
+MU,3168051,Taparuba,3387
+MU,3168101,Tapira,4118
+MU,3168200,Tapiraí,1690
+MU,3168309,Taquaraçu de Minas,4224
+MU,3168408,Tarumirim,14709
+MU,3168507,Teixeiras,12255
+MU,3168606,Teófilo Otoni,137418
+MU,3168705,Timóteo,81579
+MU,3168804,Tiradentes,7744
+MU,3168903,Tiros,7883
+MU,3169000,Tocantins,16185
+MU,3169059,Tocos do Moji,3826
+MU,3169109,Toledo,7214
+MU,3169208,Tombos,8609
+MU,3169307,Três Corações,75485
+MU,3169356,Três Marias,28895
+MU,3169406,Três Pontas,55255
+MU,3169505,Tumiritinga,5886
+MU,3169604,Tupaciguara,25470
+MU,3169703,Turmalina,20000
+MU,3169802,Turvolândia,4935
+MU,3169901,Ubá,103365
+MU,3170008,Ubaí,11708
+MU,3170057,Ubaporanga,13017
+MU,3170107,Uberaba,337836
+MU,3170206,Uberlândia,713224
+MU,3170305,Umburatiba,2684
+MU,3170404,Unaí,86619
+MU,3170438,União de Minas,3828
+MU,3170479,Uruana de Minas,3282
+MU,3170503,Urucânia,10600
+MU,3170529,Urucuia,17479
+MU,3170578,Vargem Alegre,5780
+MU,3170602,Vargem Bonita,2158
+MU,3170651,Vargem Grande do Rio Pardo,4633
+MU,3170701,Varginha,136467
+MU,3170750,Varjão de Minas,6969
+MU,3170800,Várzea da Palma,33744
+MU,3170909,Varzelândia,18840
+MU,3171006,Vazante,19975
+MU,3171030,Verdelândia,7672
+MU,3171071,Veredinha,5181
+MU,3171105,Veríssimo,3411
+MU,3171154,Vermelho Novo,4899
+MU,3171204,Vespasiano,129246
+MU,3171303,Viçosa,76430
+MU,3171402,Vieiras,3700
+MU,3171501,Mathias Lobato,3038
+MU,3171600,Virgem da Lapa,11804
+MU,3171709,Virgínia,8908
+MU,3171808,Virginópolis,10314
+MU,3171907,Virgolândia,4552
+MU,3172004,Visconde do Rio Branco,39160
+MU,3172103,Volta Grande,4443
+MU,3172202,Wenceslau Braz,2356
+MU,3200102,Afonso Cláudio,30684
+MU,3200136,Águia Branca,9711
+MU,3200169,Água Doce do Norte,12042
+MU,3200201,Alegre,29177
+MU,3200300,Alfredo Chaves,13836
+MU,3200359,Alto Rio Novo,7434
+MU,3200409,Anchieta,29984
+MU,3200508,Apiacá,7223
+MU,3200607,Aracruz,94765
+MU,3200706,Atílio Vivácqua,10540
+MU,3200805,Baixo Guandu,30674
+MU,3200904,Barra de São Francisco,42498
+MU,3201001,Boa Esperança,13608
+MU,3201100,Bom Jesus do Norte,10254
+MU,3201159,Brejetuba,12985
+MU,3201209,Cachoeiro de Itapemirim,185786
+MU,3201308,Cariacica,353491
+MU,3201407,Castelo,36930
+MU,3201506,Colatina,120033
+MU,3201605,Conceição da Barra,27458
+MU,3201704,Conceição do Castelo,11937
+MU,3201803,Divino de São Lourenço,5083
+MU,3201902,Domingos Martins,35416
+MU,3202009,Dores do Rio Preto,6596
+MU,3202108,Ecoporanga,21992
+MU,3202207,Fundão,18014
+MU,3202256,Governador Lindenberg,11009
+MU,3202306,Guaçuí,29358
+MU,3202405,Guarapari,124656
+MU,3202454,Ibatiba,25380
+MU,3202504,Ibiraçu,11723
+MU,3202553,Ibitirama,9520
+MU,3202603,Iconha,12326
+MU,3202652,Irupi,13710
+MU,3202702,Itaguaçu,13589
+MU,3202801,Itapemirim,39832
+MU,3202900,Itarana,10597
+MU,3203007,Iúna,28590
+MU,3203056,Jaguaré,28931
+MU,3203106,Jerônimo Monteiro,11575
+MU,3203130,João Neiva,14079
+MU,3203163,Laranja da Terra,11094
+MU,3203205,Linhares,166786
+MU,3203304,Mantenópolis,12770
+MU,3203320,Marataízes,41929
+MU,3203346,Marechal Floriano,17641
+MU,3203353,Marilândia,12387
+MU,3203403,Mimoso do Sul,24475
+MU,3203502,Montanha,18900
+MU,3203601,Mucurici,5466
+MU,3203700,Muniz Freire,18153
+MU,3203809,Muqui,13745
+MU,3203908,Nova Venécia,49065
+MU,3204005,Pancas,18893
+MU,3204054,Pedro Canário,21522
+MU,3204104,Pinheiros,23915
+MU,3204203,Piúma,22300
+MU,3204252,Ponto Belo,6497
+MU,3204302,Presidente Kennedy,13696
+MU,3204351,Rio Bananal,19274
+MU,3204401,Rio Novo do Sul,11069
+MU,3204500,Santa Leopoldina,13106
+MU,3204559,Santa Maria de Jetibá,41636
+MU,3204609,Santa Teresa,22808
+MU,3204658,São Domingos do Norte,8589
+MU,3204708,São Gabriel da Palha,32252
+MU,3204807,São José do Calçado,10878
+MU,3204906,São Mateus,123752
+MU,3204955,São Roque do Canaã,10886
+MU,3205002,Serra,520653
+MU,3205010,Sooretama,26502
+MU,3205036,Vargem Alta,19563
+MU,3205069,Venda Nova do Imigrante,23831
+MU,3205101,Viana,73423
+MU,3205150,Vila Pavão,8911
+MU,3205176,Vila Valério,13728
+MU,3205200,Vila Velha,467722
+MU,3205309,Vitória,322869
+MU,3300100,Angra dos Reis,167434
+MU,3300159,Aperibé,11034
+MU,3300209,Araruama,129671
+MU,3300225,Areal,11828
+MU,3300233,Armação dos Búzios,40006
+MU,3300258,Arraial do Cabo,30986
+MU,3300308,Barra do Piraí,92883
+MU,3300407,Barra Mansa,169894
+MU,3300456,Belford Roxo,483087
+MU,3300506,Bom Jardim,28102
+MU,3300605,Bom Jesus do Itabapoana,35173
+MU,3300704,Cabo Frio,222161
+MU,3300803,Cachoeiras de Macacu,56943
+MU,3300902,Cambuci,14616
+MU,3300936,Carapebus,13847
+MU,3300951,Comendador Levy Gasparian,8741
+MU,3301009,Campos dos Goytacazes,483540
+MU,3301108,Cantagalo,19390
+MU,3301157,Cardoso Moreira,12958
+MU,3301207,Carmo,17198
+MU,3301306,Casimiro de Abreu,46110
+MU,3301405,Conceição de Macabu,21104
+MU,3301504,Cordeiro,20783
+MU,3301603,Duas Barras,10980
+MU,3301702,Duque de Caxias,808161
+MU,3301801,Engenheiro Paulo de Frontin,12242
+MU,3301850,Guapimirim,51696
+MU,3301876,Iguaba Grande,27920
+MU,3301900,Itaboraí,224267
+MU,3302007,Itaguaí,116841
+MU,3302056,Italva,14073
+MU,3302106,Itaocara,22919
+MU,3302205,Itaperuna,101041
+MU,3302254,Itatiaia,30908
+MU,3302270,Japeri,96289
+MU,3302304,Laje do Muriaé,7336
+MU,3302403,Macaé,246391
+MU,3302452,Macuco,5415
+MU,3302502,Magé,228127
+MU,3302601,Mangaratiba,41220
+MU,3302700,Maricá,197277
+MU,3302809,Mendes,17502
+MU,3302858,Mesquita,167127
+MU,3302908,Miguel Pereira,26582
+MU,3303005,Miracema,26881
+MU,3303104,Natividade,15074
+MU,3303203,Nilópolis,146774
+MU,3303302,Niterói,481749
+MU,3303401,Nova Friburgo,189939
+MU,3303500,Nova Iguaçu,785867
+MU,3303609,Paracambi,41375
+MU,3303708,Paraíba do Sul,42063
+MU,3303807,Paraty,45243
+MU,3303856,Paty do Alferes,29619
+MU,3303906,Petrópolis,278881
+MU,3303955,Pinheiral,24298
+MU,3304003,Piraí,27474
+MU,3304102,Porciúncula,17288
+MU,3304110,Porto Real,20373
+MU,3304128,Quatis,13682
+MU,3304144,Queimados,140523
+MU,3304151,Quissamã,22393
+MU,3304201,Resende,129612
+MU,3304300,Rio Bonito,56276
+MU,3304409,Rio Claro,17401
+MU,3304508,Rio das Flores,8954
+MU,3304524,Rio das Ostras,156491
+MU,3304557,Rio de Janeiro,6211223
+MU,3304607,Santa Maria Madalena,10232
+MU,3304706,Santo Antônio de Pádua,41325
+MU,3304755,São Francisco de Itabapoana,45059
+MU,3304805,São Fidélis,38961
+MU,3304904,São Gonçalo,896744
+MU,3305000,São João da Barra,36573
+MU,3305109,São João de Meriti,440962
+MU,3305133,São José de Ubá,7070
+MU,3305158,São José do Vale do Rio Preto,22080
+MU,3305208,São Pedro da Aldeia,104029
+MU,3305307,São Sebastião do Alto,7750
+MU,3305406,Sapucaia,17729
+MU,3305505,Saquarema,89559
+MU,3305554,Seropédica,80596
+MU,3305604,Silva Jardim,21352
+MU,3305703,Sumidouro,15206
+MU,3305752,Tanguá,31086
+MU,3305802,Teresópolis,165123
+MU,3305901,Trajano de Moraes,10302
+MU,3306008,Três Rios,78346
+MU,3306107,Valença,68088
+MU,3306156,Varre-Sai,10207
+MU,3306206,Vassouras,33976
+MU,3306305,Volta Redonda,261563
+MU,3500105,Adamantina,34687
+MU,3500204,Adolfo,4351
+MU,3500303,Aguaí,32072
+MU,3500402,Águas da Prata,7369
+MU,3500501,Águas de Lindóia,17930
+MU,3500550,Águas de Santa Bárbara,7177
+MU,3500600,Águas de São Pedro,2780
+MU,3500709,Agudos,37680
+MU,3500758,Alambari,6141
+MU,3500808,Alfredo Marcondes,4445
+MU,3500907,Altair,3451
+MU,3501004,Altinópolis,16818
+MU,3501103,Alto Alegre,3841
+MU,3501152,Alumínio,17301
+MU,3501202,Álvares Florence,3915
+MU,3501301,Álvares Machado,27255
+MU,3501400,Álvaro de Carvalho,4808
+MU,3501509,Alvinlândia,2885
+MU,3501608,Americana,237240
+MU,3501707,Américo Brasiliense,33019
+MU,3501806,Américo de Campos,5870
+MU,3501905,Amparo,68008
+MU,3502002,Analândia,4589
+MU,3502101,Andradina,59783
+MU,3502200,Angatuba,24022
+MU,3502309,Anhembi,5674
+MU,3502408,Anhumas,4023
+MU,3502507,Aparecida,32569
+MU,3502606,Aparecida d'Oeste,4086
+MU,3502705,Apiaí,24585
+MU,3502754,Araçariguama,21522
+MU,3502804,Araçatuba,200124
+MU,3502903,Araçoiaba da Serra,32443
+MU,3503000,Aramina,5420
+MU,3503109,Arandu,6885
+MU,3503158,Arapeí,2330
+MU,3503208,Araraquara,242228
+MU,3503307,Araras,130866
+MU,3503356,Arco-Íris,2044
+MU,3503406,Arealva,8130
+MU,3503505,Areias,3577
+MU,3503604,Areiópolis,10130
+MU,3503703,Ariranha,7602
+MU,3503802,Artur Nogueira,51456
+MU,3503901,Arujá,86678
+MU,3503950,Aspásia,1842
+MU,3504008,Assis,101409
+MU,3504107,Atibaia,158647
+MU,3504206,Auriflama,13692
+MU,3504305,Avaí,4483
+MU,3504404,Avanhandava,11263
+MU,3504503,Avaré,92805
+MU,3504602,Bady Bassitt,27260
+MU,3504701,Balbinos,3887
+MU,3504800,Bálsamo,9596
+MU,3504909,Bananal,9969
+MU,3505005,Barão de Antonina,3531
+MU,3505104,Barbosa,5640
+MU,3505203,Bariri,31595
+MU,3505302,Barra Bonita,34346
+MU,3505351,Barra do Chapéu,5179
+MU,3505401,Barra do Turvo,6876
+MU,3505500,Barretos,122485
+MU,3505609,Barrinha,32092
+MU,3505708,Barueri,316473
+MU,3505807,Bastos,21503
+MU,3505906,Batatais,58402
+MU,3506003,Bauru,379146
+MU,3506102,Bebedouro,76373
+MU,3506201,Bento de Abreu,2606
+MU,3506300,Bernardino de Campos,11607
+MU,3506359,Bertioga,64188
+MU,3506409,Bilac,7319
+MU,3506508,Birigui,118979
+MU,3506607,Biritiba Mirim,29683
+MU,3506706,Boa Esperança do Sul,12978
+MU,3506805,Bocaina,11259
+MU,3506904,Bofete,10460
+MU,3507001,Boituva,61081
+MU,3507100,Bom Jesus dos Perdões,22006
+MU,3507159,Bom Sucesso de Itararé,3555
+MU,3507209,Borá,907
+MU,3507308,Boracéia,4715
+MU,3507407,Borborema,14226
+MU,3507456,Borebi,2713
+MU,3507506,Botucatu,145155
+MU,3507605,Bragança Paulista,176811
+MU,3507704,Braúna,5356
+MU,3507753,Brejo Alegre,2565
+MU,3507803,Brodowski,25201
+MU,3507902,Brotas,23898
+MU,3508009,Buri,20250
+MU,3508108,Buritama,17210
+MU,3508207,Buritizal,4356
+MU,3508306,Cabrália Paulista,4299
+MU,3508405,Cabreúva,47011
+MU,3508504,Caçapava,96202
+MU,3508603,Cachoeira Paulista,31564
+MU,3508702,Caconde,17101
+MU,3508801,Cafelândia,16654
+MU,3508900,Caiabu,3712
+MU,3509007,Caieiras,95032
+MU,3509106,Caiuá,5466
+MU,3509205,Cajamar,92689
+MU,3509254,Cajati,28515
+MU,3509304,Cajobi,9133
+MU,3509403,Cajuru,23830
+MU,3509452,Campina do Monte Alegre,5954
+MU,3509502,Campinas,1139047
+MU,3509601,Campo Limpo Paulista,77632
+MU,3509700,Campos do Jordão,46974
+MU,3509809,Campos Novos Paulista,4888
+MU,3509908,Cananéia,12289
+MU,3509957,Canas,4931
+MU,3510005,Cândido Mota,29449
+MU,3510104,Cândido Rodrigues,2889
+MU,3510153,Canitar,6283
+MU,3510203,Capão Bonito,46337
+MU,3510302,Capela do Alto,22866
+MU,3510401,Capivari,50068
+MU,3510500,Caraguatatuba,134873
+MU,3510609,Carapicuíba,386984
+MU,3510708,Cardoso,11345
+MU,3510807,Casa Branca,28083
+MU,3510906,Cássia dos Coqueiros,2799
+MU,3511003,Castilho,19977
+MU,3511102,Catanduva,115791
+MU,3511201,Catiguá,7003
+MU,3511300,Cedral,12618
+MU,3511409,Cerqueira César,21469
+MU,3511508,Cerquilho,44695
+MU,3511607,Cesário Lange,19048
+MU,3511706,Charqueada,15535
+MU,3511904,Clementina,6982
+MU,3512001,Colina,18486
+MU,3512100,Colômbia,6629
+MU,3512209,Conchal,28101
+MU,3512308,Conchas,15232
+MU,3512407,Cordeirópolis,24514
+MU,3512506,Coroados,5400
+MU,3512605,Coronel Macedo,4280
+MU,3512704,Corumbataí,4195
+MU,3512803,Cosmópolis,59773
+MU,3512902,Cosmorama,8719
+MU,3513009,Cotia,274413
+MU,3513108,Cravinhos,33281
+MU,3513207,Cristais Paulista,9272
+MU,3513306,Cruzália,2108
+MU,3513405,Cruzeiro,74961
+MU,3513504,Cubatão,112476
+MU,3513603,Cunha,22110
+MU,3513702,Descalvado,31756
+MU,3513801,Diadema,393237
+MU,3513850,Dirce Reis,1620
+MU,3513900,Divinolândia,11158
+MU,3514007,Dobrada,8759
+MU,3514106,Dois Córregos,24510
+MU,3514205,Dolcinópolis,2207
+MU,3514304,Dourado,8096
+MU,3514403,Dracena,45474
+MU,3514502,Duartina,12328
+MU,3514601,Dumont,9471
+MU,3514700,Echaporã,6205
+MU,3514809,Eldorado,13069
+MU,3514908,Elias Fausto,17699
+MU,3514924,Elisiário,3138
+MU,3514957,Embaúba,2323
+MU,3515004,Embu das Artes,250691
+MU,3515103,Embu-Guaçu,66970
+MU,3515129,Emilianópolis,3014
+MU,3515152,Engenheiro Coelho,19566
+MU,3515186,Espírito Santo do Pinhal,39816
+MU,3515194,Espírito Santo do Turvo,4157
+MU,3515202,Estrela d'Oeste,9417
+MU,3515301,Estrela do Norte,2703
+MU,3515350,Euclides da Cunha Paulista,7924
+MU,3515400,Fartura,16641
+MU,3515509,Fernandópolis,71186
+MU,3515608,Fernando Prestes,5942
+MU,3515657,Fernão,1656
+MU,3515707,Ferraz de Vasconcelos,179198
+MU,3515806,Flora Rica,1487
+MU,3515905,Floreal,2733
+MU,3516002,Flórida Paulista,12958
+MU,3516101,Florínea,3851
+MU,3516200,Franca,352536
+MU,3516309,Francisco Morato,165139
+MU,3516408,Franco da Rocha,144849
+MU,3516507,Gabriel Monteiro,2763
+MU,3516606,Gália,6380
+MU,3516705,Garça,42110
+MU,3516804,Gastão Vidigal,3252
+MU,3516853,Gavião Peixoto,4702
+MU,3516903,General Salgado,10312
+MU,3517000,Getulina,10232
+MU,3517109,Glicério,4138
+MU,3517208,Guaiçara,11239
+MU,3517307,Guaimbê,5512
+MU,3517406,Guaíra,39279
+MU,3517505,Guapiaçu,21711
+MU,3517604,Guapiara,17071
+MU,3517703,Guará,18606
+MU,3517802,Guaraçaí,7441
+MU,3517901,Guaraci,10350
+MU,3518008,Guarani d'Oeste,1968
+MU,3518107,Guarantã,6427
+MU,3518206,Guararapes,31043
+MU,3518305,Guararema,31236
+MU,3518404,Guaratinguetá,118044
+MU,3518503,Guareí,15013
+MU,3518602,Guariba,37498
+MU,3518701,Guarujá,287634
+MU,3518800,Guarulhos,1291771
+MU,3518859,Guatapará,7320
+MU,3518909,Guzolândia,4246
+MU,3519006,Herculândia,9125
+MU,3519055,Holambra,15094
+MU,3519071,Hortolândia,236641
+MU,3519105,Iacanga,10437
+MU,3519204,Iacri,6131
+MU,3519253,Iaras,8010
+MU,3519303,Ibaté,32178
+MU,3519402,Ibirá,11690
+MU,3519501,Ibirarema,6385
+MU,3519600,Ibitinga,60033
+MU,3519709,Ibiúna,75605
+MU,3519808,Icém,7819
+MU,3519907,Iepê,7619
+MU,3520004,Igaraçu do Tietê,23106
+MU,3520103,Igarapava,26212
+MU,3520202,Igaratá,10605
+MU,3520301,Iguape,29115
+MU,3520400,Ilhabela,34934
+MU,3520426,Ilha Comprida,13419
+MU,3520442,Ilha Solteira,25549
+MU,3520509,Indaiatuba,255748
+MU,3520608,Indiana,5090
+MU,3520707,Indiaporã,4035
+MU,3520806,Inúbia Paulista,3615
+MU,3520905,Ipaussu,13712
+MU,3521002,Iperó,36459
+MU,3521101,Ipeúna,6831
+MU,3521150,Ipiguá,6761
+MU,3521200,Iporanga,4046
+MU,3521309,Ipuã,14454
+MU,3521408,Iracemápolis,21967
+MU,3521507,Irapuã,6867
+MU,3521606,Irapuru,7085
+MU,3521705,Itaberá,17983
+MU,3521804,Itaí,25180
+MU,3521903,Itajobi,16989
+MU,3522000,Itaju,3618
+MU,3522109,Itanhaém,112476
+MU,3522158,Itaoca,3422
+MU,3522208,Itapecerica da Serra,158522
+MU,3522307,Itapetininga,157790
+MU,3522406,Itapeva,89728
+MU,3522505,Itapevi,232297
+MU,3522604,Itapira,72022
+MU,3522653,Itapirapuã Paulista,4306
+MU,3522703,Itápolis,39493
+MU,3522802,Itaporanga,14085
+MU,3522901,Itapuí,13659
+MU,3523008,Itapura,3979
+MU,3523107,Itaquaquecetuba,369275
+MU,3523206,Itararé,44438
+MU,3523305,Itariri,15528
+MU,3523404,Itatiba,121590
+MU,3523503,Itatinga,19070
+MU,3523602,Itirapina,16148
+MU,3523701,Itirapuã,5779
+MU,3523800,Itobi,8046
+MU,3523909,Itu,168240
+MU,3524006,Itupeva,70616
+MU,3524105,Ituverava,37571
+MU,3524204,Jaborandi,6221
+MU,3524303,Jaboticabal,71821
+MU,3524402,Jacareí,240275
+MU,3524501,Jaci,7613
+MU,3524600,Jacupiranga,16097
+MU,3524709,Jaguariúna,59347
+MU,3524808,Jales,48776
+MU,3524907,Jambeiro,6397
+MU,3525003,Jandira,118045
+MU,3525102,Jardinópolis,45282
+MU,3525201,Jarinu,37535
+MU,3525300,Jaú,133497
+MU,3525409,Jeriquara,3863
+MU,3525508,Joanópolis,12815
+MU,3525607,João Ramalho,4371
+MU,3525706,José Bonifácio,36633
+MU,3525805,Júlio Mesquita,4254
+MU,3525854,Jumirim,3056
+MU,3525904,Jundiaí,443221
+MU,3526001,Junqueirópolis,20448
+MU,3526100,Juquiá,17154
+MU,3526209,Juquitiba,27404
+MU,3526308,Lagoinha,5083
+MU,3526407,Laranjal Paulista,26261
+MU,3526506,Lavínia,9689
+MU,3526605,Lavrinhas,7171
+MU,3526704,Leme,98161
+MU,3526803,Lençóis Paulista,66505
+MU,3526902,Limeira,291869
+MU,3527009,Lindóia,7014
+MU,3527108,Lins,74779
+MU,3527207,Lorena,84855
+MU,3527256,Lourdes,1950
+MU,3527306,Louveira,51847
+MU,3527405,Lucélia,20061
+MU,3527504,Lucianópolis,2372
+MU,3527603,Luís Antônio,12265
+MU,3527702,Luiziânia,4701
+MU,3527801,Lupércio,3981
+MU,3527900,Lutécia,2661
+MU,3528007,Macatuba,16829
+MU,3528106,Macaubal,7481
+MU,3528205,Macedônia,3963
+MU,3528304,Magda,3165
+MU,3528403,Mairinque,50027
+MU,3528502,Mairiporã,93853
+MU,3528601,Manduri,9871
+MU,3528700,Marabá Paulista,4573
+MU,3528809,Maracaí,12673
+MU,3528858,Marapoama,3292
+MU,3528908,Mariápolis,3513
+MU,3529005,Marília,237627
+MU,3529104,Marinópolis,1860
+MU,3529203,Martinópolis,24881
+MU,3529302,Matão,79033
+MU,3529401,Mauá,418261
+MU,3529500,Mendonça,6159
+MU,3529609,Meridiano,4572
+MU,3529658,Mesópolis,1952
+MU,3529708,Miguelópolis,19441
+MU,3529807,Mineiros do Tietê,11230
+MU,3529906,Miracatu,18553
+MU,3530003,Mira Estrela,3126
+MU,3530102,Mirandópolis,27983
+MU,3530201,Mirante do Paranapanema,15917
+MU,3530300,Mirassol,63337
+MU,3530409,Mirassolândia,4669
+MU,3530508,Mococa,67681
+MU,3530607,Mogi das Cruzes,451505
+MU,3530706,Mogi Guaçu,153658
+MU,3530805,Mogi Mirim,92558
+MU,3530904,Mombuca,3722
+MU,3531001,Monções,1937
+MU,3531100,Mongaguá,61951
+MU,3531209,Monte Alegre do Sul,8627
+MU,3531308,Monte Alto,47574
+MU,3531407,Monte Aprazível,22280
+MU,3531506,Monte Azul Paulista,18151
+MU,3531605,Monte Castelo,4222
+MU,3531704,Monteiro Lobato,4138
+MU,3531803,Monte Mor,64662
+MU,3531902,Morro Agudo,27933
+MU,3532009,Morungaba,13720
+MU,3532058,Motuca,4034
+MU,3532108,Murutinga do Sul,3737
+MU,3532157,Nantes,2660
+MU,3532207,Narandiba,5713
+MU,3532306,Natividade da Serra,6999
+MU,3532405,Nazaré Paulista,18217
+MU,3532504,Neves Paulista,9699
+MU,3532603,Nhandeara,9852
+MU,3532702,Nipoã,4750
+MU,3532801,Nova Aliança,6693
+MU,3532827,Nova Campina,8497
+MU,3532843,Nova Canaã Paulista,2032
+MU,3532868,Nova Castilho,1062
+MU,3532900,Nova Europa,9311
+MU,3533007,Nova Granada,19419
+MU,3533106,Nova Guataporanga,2156
+MU,3533205,Nova Independência,4609
+MU,3533254,Novais,4412
+MU,3533304,Nova Luzitânia,2837
+MU,3533403,Nova Odessa,62019
+MU,3533502,Novo Horizonte,38324
+MU,3533601,Nuporanga,7391
+MU,3533700,Ocauçu,4331
+MU,3533809,Óleo,2512
+MU,3533908,Olímpia,55074
+MU,3534005,Onda Verde,4771
+MU,3534104,Oriente,6085
+MU,3534203,Orindiúva,6024
+MU,3534302,Orlândia,38319
+MU,3534401,Osasco,728615
+MU,3534500,Oscar Bressane,2470
+MU,3534609,Osvaldo Cruz,31272
+MU,3534708,Ourinhos,103970
+MU,3534757,Ouroeste,10294
+MU,3534807,Ouro Verde,7779
+MU,3534906,Pacaembu,14877
+MU,3535002,Palestina,11476
+MU,3535101,Palmares Paulista,9650
+MU,3535200,Palmeira d'Oeste,8903
+MU,3535309,Palmital,19594
+MU,3535408,Panorama,14964
+MU,3535507,Paraguaçu Paulista,41120
+MU,3535606,Paraibuna,17667
+MU,3535705,Paraíso,6099
+MU,3535804,Paranapanema,19395
+MU,3535903,Paranapuã,4031
+MU,3536000,Parapuã,10580
+MU,3536109,Pardinho,7153
+MU,3536208,Pariquera-Açu,19233
+MU,3536257,Parisi,2892
+MU,3536307,Patrocínio Paulista,14512
+MU,3536406,Paulicéia,7955
+MU,3536505,Paulínia,110537
+MU,3536570,Paulistânia,2090
+MU,3536604,Paulo de Faria,7400
+MU,3536703,Pederneiras,44827
+MU,3536802,Pedra Bela,6557
+MU,3536901,Pedranópolis,2787
+MU,3537008,Pedregulho,15525
+MU,3537107,Pedreira,43112
+MU,3537156,Pedrinhas Paulista,2804
+MU,3537206,Pedro de Toledo,11281
+MU,3537305,Penápolis,61679
+MU,3537404,Pereira Barreto,24095
+MU,3537503,Pereiras,8737
+MU,3537602,Peruíbe,68352
+MU,3537701,Piacatu,5519
+MU,3537800,Piedade,52970
+MU,3537909,Pilar do Sul,27619
+MU,3538006,Pindamonhangaba,165428
+MU,3538105,Pindorama,14542
+MU,3538204,Pinhalzinho,15224
+MU,3538303,Piquerobi,3264
+MU,3538501,Piquete,12490
+MU,3538600,Piracaia,26029
+MU,3538709,Piracicaba,423323
+MU,3538808,Piraju,29436
+MU,3538907,Pirajuí,22431
+MU,3539004,Pirangi,10885
+MU,3539103,Pirapora do Bom Jesus,18370
+MU,3539202,Pirapozinho,25348
+MU,3539301,Pirassununga,73545
+MU,3539400,Piratininga,15108
+MU,3539509,Pitangueiras,33674
+MU,3539608,Planalto,4389
+MU,3539707,Platina,3025
+MU,3539806,Poá,103765
+MU,3539905,Poloni,5592
+MU,3540002,Pompéia,20196
+MU,3540101,Pongaí,3395
+MU,3540200,Pontal,37607
+MU,3540259,Pontalinda,4127
+MU,3540309,Pontes Gestal,2387
+MU,3540408,Populina,4127
+MU,3540507,Porangaba,10451
+MU,3540606,Porto Feliz,56497
+MU,3540705,Porto Ferreira,52649
+MU,3540754,Potim,20392
+MU,3540804,Potirendaba,18496
+MU,3540853,Pracinha,2578
+MU,3540903,Pradópolis,17078
+MU,3541000,Praia Grande,349935
+MU,3541059,Pratânia,5126
+MU,3541109,Presidente Alves,3804
+MU,3541208,Presidente Bernardes,14490
+MU,3541307,Presidente Epitácio,39505
+MU,3541406,Presidente Prudente,225668
+MU,3541505,Presidente Venceslau,35201
+MU,3541604,Promissão,35131
+MU,3541653,Quadra,3405
+MU,3541703,Quatá,13163
+MU,3541802,Queiroz,3265
+MU,3541901,Queluz,9159
+MU,3542008,Quintana,7038
+MU,3542107,Rafard,8965
+MU,3542206,Rancharia,28588
+MU,3542305,Redenção da Serra,4494
+MU,3542404,Regente Feijó,20145
+MU,3542503,Reginópolis,7662
+MU,3542602,Registro,59947
+MU,3542701,Restinga,6404
+MU,3542800,Ribeira,3132
+MU,3542909,Ribeirão Bonito,10989
+MU,3543006,Ribeirão Branco,18627
+MU,3543105,Ribeirão Corrente,4608
+MU,3543204,Ribeirão do Sul,4677
+MU,3543238,Ribeirão dos Índios,2025
+MU,3543253,Ribeirão Grande,7450
+MU,3543303,Ribeirão Pires,115559
+MU,3543402,Ribeirão Preto,698642
+MU,3543501,Riversul,5599
+MU,3543600,Rifaina,4049
+MU,3543709,Rincão,9098
+MU,3543808,Rinópolis,9259
+MU,3543907,Rio Claro,201418
+MU,3544004,Rio das Pedras,31328
+MU,3544103,Rio Grande da Serra,44170
+MU,3544202,Riolândia,10309
+MU,3544251,Rosana,17440
+MU,3544301,Roseira,10832
+MU,3544400,Rubiácea,2700
+MU,3544509,Rubinéia,3833
+MU,3544608,Sabino,5112
+MU,3544707,Sagres,2474
+MU,3544806,Sales,6437
+MU,3544905,Sales Oliveira,11411
+MU,3545001,Salesópolis,15202
+MU,3545100,Salmourão,4808
+MU,3545159,Saltinho,8161
+MU,3545209,Salto,134319
+MU,3545308,Salto de Pirapora,43748
+MU,3545407,Salto Grande,9050
+MU,3545506,Sandovalina,3645
+MU,3545605,Santa Adélia,14018
+MU,3545704,Santa Albertina,6393
+MU,3545803,Santa Bárbara d'Oeste,183347
+MU,3546009,Santa Branca,13975
+MU,3546108,Santa Clara d'Oeste,2598
+MU,3546207,Santa Cruz da Conceição,4277
+MU,3546256,Santa Cruz da Esperança,2116
+MU,3546306,Santa Cruz das Palmeiras,28864
+MU,3546405,Santa Cruz do Rio Pardo,46442
+MU,3546504,Santa Ernestina,6118
+MU,3546603,Santa Fé do Sul,34794
+MU,3546702,Santa Gertrudes,23611
+MU,3546801,Santa Isabel,53174
+MU,3546900,Santa Lúcia,7149
+MU,3547007,Santa Maria da Serra,5243
+MU,3547106,Santa Mercedes,2956
+MU,3547205,Santana da Ponte Pensa,1670
+MU,3547304,Santana de Parnaíba,154105
+MU,3547403,Santa Rita d'Oeste,2733
+MU,3547502,Santa Rita do Passa Quatro,24833
+MU,3547601,Santa Rosa de Viterbo,23411
+MU,3547650,Santa Salete,1645
+MU,3547700,Santo Anastácio,17963
+MU,3547809,Santo André,748919
+MU,3547908,Santo Antônio da Alegria,6775
+MU,3548005,Santo Antônio de Posse,23244
+MU,3548054,Santo Antônio do Aracanguá,8379
+MU,3548104,Santo Antônio do Jardim,6126
+MU,3548203,Santo Antônio do Pinhal,7133
+MU,3548302,Santo Expedito,3000
+MU,3548401,Santópolis do Aguapeí,3899
+MU,3548500,Santos,418608
+MU,3548609,São Bento do Sapucaí,11674
+MU,3548708,São Bernardo do Campo,810729
+MU,3548807,São Caetano do Sul,165655
+MU,3548906,São Carlos,254857
+MU,3549003,São Francisco,2602
+MU,3549102,São João da Boa Vista,92547
+MU,3549201,São João das Duas Pontes,2580
+MU,3549250,São João de Iracema,1846
+MU,3549300,São João do Pau d'Alho,2242
+MU,3549409,São Joaquim da Barra,48558
+MU,3549508,São José da Bela Vista,7626
+MU,3549607,São José do Barreiro,3853
+MU,3549706,São José do Rio Pardo,52205
+MU,3549805,São José do Rio Preto,480393
+MU,3549904,São José dos Campos,697054
+MU,3549953,São Lourenço da Serra,16067
+MU,3550001,São Luiz do Paraitinga,10337
+MU,3550100,São Manuel,37289
+MU,3550209,São Miguel Arcanjo,32039
+MU,3550308,São Paulo,11451999
+MU,3550407,São Pedro,38256
+MU,3550506,São Pedro do Turvo,7217
+MU,3550605,São Roque,79484
+MU,3550704,São Sebastião,81595
+MU,3550803,São Sebastião da Grama,10441
+MU,3550902,São Simão,13442
+MU,3551009,São Vicente,329911
+MU,3551108,Sarapuí,10369
+MU,3551207,Sarutaiá,3704
+MU,3551306,Sebastianópolis do Sul,3130
+MU,3551405,Serra Azul,12746
+MU,3551504,Serrana,43909
+MU,3551603,Serra Negra,29894
+MU,3551702,Sertãozinho,126887
+MU,3551801,Sete Barras,12730
+MU,3551900,Severínia,14576
+MU,3552007,Silveiras,6186
+MU,3552106,Socorro,40122
+MU,3552205,Sorocaba,723682
+MU,3552304,Sud Mennucci,7355
+MU,3552403,Sumaré,279545
+MU,3552502,Suzano,307429
+MU,3552551,Suzanápolis,3408
+MU,3552601,Tabapuã,11323
+MU,3552700,Tabatinga,14769
+MU,3552809,Taboão da Serra,273542
+MU,3552908,Taciba,6260
+MU,3553005,Taguaí,12669
+MU,3553104,Taiaçu,5677
+MU,3553203,Taiúva,6548
+MU,3553302,Tambaú,21435
+MU,3553401,Tanabi,25265
+MU,3553500,Tapiraí,7996
+MU,3553609,Tapiratiba,11816
+MU,3553658,Taquaral,2619
+MU,3553708,Taquaritinga,52260
+MU,3553807,Taquarituba,24350
+MU,3553856,Taquarivaí,6876
+MU,3553906,Tarabai,6536
+MU,3553955,Tarumã,14882
+MU,3554003,Tatuí,123942
+MU,3554102,Taubaté,310739
+MU,3554201,Tejupá,4127
+MU,3554300,Teodoro Sampaio,22173
+MU,3554409,Terra Roxa,7904
+MU,3554508,Tietê,37663
+MU,3554607,Timburi,2464
+MU,3554656,Torre de Pedra,2046
+MU,3554706,Torrinha,9335
+MU,3554755,Trabiju,1682
+MU,3554805,Tremembé,51173
+MU,3554904,Três Fronteiras,6804
+MU,3554953,Tuiuti,6778
+MU,3555000,Tupã,63928
+MU,3555109,Tupi Paulista,15854
+MU,3555208,Turiúba,1818
+MU,3555307,Turmalina,1669
+MU,3555356,Ubarana,5365
+MU,3555406,Ubatuba,92981
+MU,3555505,Ubirajara,5132
+MU,3555604,Uchoa,10394
+MU,3555703,União Paulista,1603
+MU,3555802,Urânia,8833
+MU,3555901,Uru,1387
+MU,3556008,Urupês,13744
+MU,3556107,Valentim Gentil,14098
+MU,3556206,Valinhos,126373
+MU,3556305,Valparaíso,24241
+MU,3556354,Vargem,10512
+MU,3556404,Vargem Grande do Sul,40133
+MU,3556453,Vargem Grande Paulista,50415
+MU,3556503,Várzea Paulista,115771
+MU,3556602,Vera Cruz,10176
+MU,3556701,Vinhedo,76540
+MU,3556800,Viradouro,17414
+MU,3556909,Vista Alegre do Alto,8109
+MU,3556958,Vitória Brasil,1794
+MU,3557006,Votorantim,127923
+MU,3557105,Votuporanga,96634
+MU,3557154,Zacarias,2692
+MU,3557204,Chavantes,12211
+MU,3557303,Estiva Gerbi,11295
+MU,4100103,Abatiá,7241
+MU,4100202,Adrianópolis,6256
+MU,4100301,Agudos do Sul,10233
+MU,4100400,Almirante Tamandaré,119825
+MU,4100459,Altamira do Paraná,3590
+MU,4100509,Altônia,18742
+MU,4100608,Alto Paraná,13909
+MU,4100707,Alto Piquiri,9727
+MU,4100806,Alvorada do Sul,10326
+MU,4100905,Amaporã,4762
+MU,4101002,Ampére,19620
+MU,4101051,Anahy,2918
+MU,4101101,Andirá,19878
+MU,4101150,Ângulo,3235
+MU,4101200,Antonina,18091
+MU,4101309,Antônio Olinto,7018
+MU,4101408,Apucarana,130134
+MU,4101507,Arapongas,119138
+MU,4101606,Arapoti,25777
+MU,4101655,Arapuã,3527
+MU,4101705,Araruna,14485
+MU,4101804,Araucária,151666
+MU,4101853,Ariranha do Ivaí,2329
+MU,4101903,Assaí,13797
+MU,4102000,Assis Chateaubriand,36808
+MU,4102109,Astorga,25475
+MU,4102208,Atalaia,3980
+MU,4102307,Balsa Nova,13395
+MU,4102406,Bandeirantes,31273
+MU,4102505,Barbosa Ferraz,10795
+MU,4102604,Barracão,9759
+MU,4102703,Barra do Jacaré,2814
+MU,4102752,Bela Vista da Caroba,4031
+MU,4102802,Bela Vista do Paraíso,14833
+MU,4102901,Bituruna,15533
+MU,4103008,Boa Esperança,4558
+MU,4103024,Boa Esperança do Iguaçu,2455
+MU,4103040,Boa Ventura de São Roque,6378
+MU,4103057,Boa Vista da Aparecida,7924
+MU,4103107,Bocaiúva do Sul,13299
+MU,4103156,Bom Jesus do Sul,3980
+MU,4103206,Bom Sucesso,6581
+MU,4103222,Bom Sucesso do Sul,3202
+MU,4103305,Borrazópolis,7735
+MU,4103354,Braganey,4854
+MU,4103370,Brasilândia do Sul,3708
+MU,4103404,Cafeara,2627
+MU,4103453,Cafelândia,18997
+MU,4103479,Cafezal do Sul,4473
+MU,4103503,Califórnia,8710
+MU,4103602,Cambará,23212
+MU,4103701,Cambé,107208
+MU,4103800,Cambira,9460
+MU,4103909,Campina da Lagoa,15723
+MU,4103958,Campina do Simão,3936
+MU,4104006,Campina Grande do Sul,47825
+MU,4104055,Campo Bonito,4027
+MU,4104105,Campo do Tenente,7508
+MU,4104204,Campo Largo,136327
+MU,4104253,Campo Magro,30160
+MU,4104303,Campo Mourão,99432
+MU,4104402,Cândido de Abreu,15244
+MU,4104428,Candói,14973
+MU,4104451,Cantagalo,10933
+MU,4104501,Capanema,20481
+MU,4104600,Capitão Leônidas Marques,14648
+MU,4104659,Carambeí,23283
+MU,4104709,Carlópolis,16905
+MU,4104808,Cascavel,348051
+MU,4104907,Castro,73075
+MU,4105003,Catanduvas,10446
+MU,4105102,Centenário do Sul,10832
+MU,4105201,Cerro Azul,16134
+MU,4105300,Céu Azul,11087
+MU,4105409,Chopinzinho,21085
+MU,4105508,Cianorte,79527
+MU,4105607,Cidade Gaúcha,11467
+MU,4105706,Clevelândia,15070
+MU,4105805,Colombo,232212
+MU,4105904,Colorado,22896
+MU,4106001,Congonhinhas,8320
+MU,4106100,Conselheiro Mairinck,3461
+MU,4106209,Contenda,19128
+MU,4106308,Corbélia,17470
+MU,4106407,Cornélio Procópio,45206
+MU,4106456,Coronel Domingos Soares,5649
+MU,4106506,Coronel Vivida,23331
+MU,4106555,Corumbataí do Sul,3760
+MU,4106571,Cruzeiro do Iguaçu,4133
+MU,4106605,Cruzeiro do Oeste,23831
+MU,4106704,Cruzeiro do Sul,4494
+MU,4106803,Cruz Machado,15978
+MU,4106852,Cruzmaltina,2892
+MU,4106902,Curitiba,1773718
+MU,4107009,Curiúva,13647
+MU,4107108,Diamante do Norte,5142
+MU,4107124,Diamante do Sul,3171
+MU,4107157,Diamante D'Oeste,4557
+MU,4107207,Dois Vizinhos,44869
+MU,4107256,Douradina,9161
+MU,4107306,Doutor Camargo,6327
+MU,4107405,Enéas Marques,5999
+MU,4107504,Engenheiro Beltrão,12454
+MU,4107520,Esperança Nova,1849
+MU,4107538,Entre Rios do Oeste,4575
+MU,4107546,Espigão Alto do Iguaçu,4797
+MU,4107553,Farol,3039
+MU,4107603,Faxinal,16389
+MU,4107652,Fazenda Rio Grande,148873
+MU,4107702,Fênix,4492
+MU,4107736,Fernandes Pinheiro,6255
+MU,4107751,Figueira,8062
+MU,4107801,Floraí,4792
+MU,4107850,Flor da Serra do Sul,4364
+MU,4107900,Floresta,10458
+MU,4108007,Florestópolis,11446
+MU,4108106,Flórida,2652
+MU,4108205,Formosa do Oeste,7635
+MU,4108304,Foz do Iguaçu,285415
+MU,4108320,Francisco Alves,8116
+MU,4108403,Francisco Beltrão,96666
+MU,4108452,Foz do Jordão,4926
+MU,4108502,General Carneiro,11062
+MU,4108551,Godoy Moreira,2977
+MU,4108601,Goioerê,28437
+MU,4108650,Goioxim,6566
+MU,4108700,Grandes Rios,5641
+MU,4108809,Guaíra,32097
+MU,4108908,Guairaçá,6587
+MU,4108957,Guamiranga,7856
+MU,4109005,Guapirama,4626
+MU,4109104,Guaporema,2191
+MU,4109203,Guaraci,4748
+MU,4109302,Guaraniaçu,13735
+MU,4109401,Guarapuava,182093
+MU,4109500,Guaraqueçaba,7430
+MU,4109609,Guaratuba,42062
+MU,4109658,Honório Serpa,4941
+MU,4109708,Ibaiti,28830
+MU,4109757,Ibema,6218
+MU,4109807,Ibiporã,51603
+MU,4109906,Icaraíma,8991
+MU,4110003,Iguaraçu,5338
+MU,4110052,Iguatu,2144
+MU,4110078,Imbaú,14249
+MU,4110102,Imbituva,29924
+MU,4110201,Inácio Martins,9670
+MU,4110300,Inajá,2536
+MU,4110409,Indianópolis,4448
+MU,4110508,Ipiranga,14142
+MU,4110607,Iporã,15746
+MU,4110656,Iracema do Oeste,2343
+MU,4110706,Irati,59250
+MU,4110805,Iretama,10684
+MU,4110904,Itaguajé,4481
+MU,4110953,Itaipulândia,11485
+MU,4111001,Itambaracá,5908
+MU,4111100,Itambé,6111
+MU,4111209,Itapejara d'Oeste,12344
+MU,4111258,Itaperuçu,31217
+MU,4111308,Itaúna do Sul,3572
+MU,4111407,Ivaí,13229
+MU,4111506,Ivaiporã,32720
+MU,4111555,Ivaté,6831
+MU,4111605,Ivatuba,2708
+MU,4111704,Jaboti,5427
+MU,4111803,Jacarezinho,40375
+MU,4111902,Jaguapitã,15122
+MU,4112009,Jaguariaíva,35141
+MU,4112108,Jandaia do Sul,21408
+MU,4112207,Janiópolis,5870
+MU,4112306,Japira,4972
+MU,4112405,Japurá,9144
+MU,4112504,Jardim Alegre,12004
+MU,4112603,Jardim Olinda,1343
+MU,4112702,Jataizinho,11813
+MU,4112751,Jesuítas,10506
+MU,4112801,Joaquim Távora,11945
+MU,4112900,Jundiaí do Sul,3333
+MU,4112959,Juranda,7771
+MU,4113007,Jussara,6690
+MU,4113106,Kaloré,4582
+MU,4113205,Lapa,45003
+MU,4113254,Laranjal,5600
+MU,4113304,Laranjeiras do Sul,32227
+MU,4113403,Leópolis,3752
+MU,4113429,Lidianópolis,3938
+MU,4113452,Lindoeste,5175
+MU,4113502,Loanda,23225
+MU,4113601,Lobato,4601
+MU,4113700,Londrina,555965
+MU,4113734,Luiziana,6690
+MU,4113759,Lunardelli,4872
+MU,4113809,Lupionópolis,4813
+MU,4113908,Mallet,13428
+MU,4114005,Mamborê,13452
+MU,4114104,Mandaguaçu,31457
+MU,4114203,Mandaguari,36716
+MU,4114302,Mandirituba,27439
+MU,4114351,Manfrinópolis,2770
+MU,4114401,Mangueirinha,16603
+MU,4114500,Manoel Ribas,14240
+MU,4114609,Marechal Cândido Rondon,55836
+MU,4114708,Maria Helena,5865
+MU,4114807,Marialva,41851
+MU,4114906,Marilândia do Sul,8677
+MU,4115002,Marilena,7253
+MU,4115101,Mariluz,9847
+MU,4115200,Maringá,409657
+MU,4115309,Mariópolis,6371
+MU,4115358,Maripá,6555
+MU,4115408,Marmeleiro,15901
+MU,4115457,Marquinho,4504
+MU,4115507,Marumbi,4699
+MU,4115606,Matelândia,18450
+MU,4115705,Matinhos,39259
+MU,4115739,Mato Rico,3267
+MU,4115754,Mauá da Serra,9383
+MU,4115804,Medianeira,54369
+MU,4115853,Mercedes,5931
+MU,4115903,Mirador,2238
+MU,4116000,Miraselva,1966
+MU,4116059,Missal,11064
+MU,4116109,Moreira Sales,11175
+MU,4116208,Morretes,18309
+MU,4116307,Munhoz de Melo,3951
+MU,4116406,Nossa Senhora das Graças,3669
+MU,4116505,Nova Aliança do Ivaí,1323
+MU,4116604,Nova América da Colina,3280
+MU,4116703,Nova Aurora,13765
+MU,4116802,Nova Cantu,6790
+MU,4116901,Nova Esperança,26585
+MU,4116950,Nova Esperança do Sudoeste,5597
+MU,4117008,Nova Fátima,7225
+MU,4117057,Nova Laranjeiras,12074
+MU,4117107,Nova Londrina,12923
+MU,4117206,Nova Olímpia,5833
+MU,4117214,Nova Santa Bárbara,4184
+MU,4117222,Nova Santa Rosa,8322
+MU,4117255,Nova Prata do Iguaçu,12699
+MU,4117271,Nova Tebas,6848
+MU,4117297,Novo Itacolomi,3125
+MU,4117305,Ortigueira,24192
+MU,4117404,Ourizona,3187
+MU,4117453,Ouro Verde do Oeste,6785
+MU,4117503,Paiçandu,45962
+MU,4117602,Palmas,48247
+MU,4117701,Palmeira,33855
+MU,4117800,Palmital,13033
+MU,4117909,Palotina,35011
+MU,4118006,Paraíso do Norte,13245
+MU,4118105,Paranacity,9557
+MU,4118204,Paranaguá,145829
+MU,4118303,Paranapoema,2398
+MU,4118402,Paranavaí,92001
+MU,4118451,Pato Bragado,5733
+MU,4118501,Pato Branco,91836
+MU,4118600,Paula Freitas,5666
+MU,4118709,Paulo Frontin,6343
+MU,4118808,Peabiru,13346
+MU,4118857,Perobal,7189
+MU,4118907,Pérola,11878
+MU,4119004,Pérola d'Oeste,6221
+MU,4119103,Piên,13655
+MU,4119152,Pinhais,127019
+MU,4119202,Pinhalão,6566
+MU,4119251,Pinhal de São Bento,2761
+MU,4119301,Pinhão,29886
+MU,4119400,Piraí do Sul,23651
+MU,4119509,Piraquara,118730
+MU,4119608,Pitanga,33567
+MU,4119657,Pitangueiras,3046
+MU,4119707,Planaltina do Paraná,4070
+MU,4119806,Planalto,14374
+MU,4119905,Ponta Grossa,358371
+MU,4119954,Pontal do Paraná,30425
+MU,4120002,Porecatu,11624
+MU,4120101,Porto Amazonas,4098
+MU,4120150,Porto Barreiro,3110
+MU,4120200,Porto Rico,3182
+MU,4120309,Porto Vitória,3562
+MU,4120333,Prado Ferreira,3709
+MU,4120358,Pranchita,5737
+MU,4120408,Presidente Castelo Branco,4336
+MU,4120507,Primeiro de Maio,10082
+MU,4120606,Prudentópolis,49393
+MU,4120655,Quarto Centenário,4201
+MU,4120705,Quatiguá,8099
+MU,4120804,Quatro Barras,24191
+MU,4120853,Quatro Pontes,4480
+MU,4120903,Quedas do Iguaçu,30738
+MU,4121000,Querência do Norte,10685
+MU,4121109,Quinta do Sol,5001
+MU,4121208,Quitandinha,18398
+MU,4121257,Ramilândia,4221
+MU,4121307,Rancho Alegre,3512
+MU,4121356,Rancho Alegre D'Oeste,2618
+MU,4121406,Realeza,19247
+MU,4121505,Rebouças,14514
+MU,4121604,Renascença,6845
+MU,4121703,Reserva,24573
+MU,4121752,Reserva do Iguaçu,6553
+MU,4121802,Ribeirão Claro,12364
+MU,4121901,Ribeirão do Pinhal,13060
+MU,4122008,Rio Azul,14025
+MU,4122107,Rio Bom,3197
+MU,4122156,Rio Bonito do Iguaçu,13929
+MU,4122172,Rio Branco do Ivaí,3808
+MU,4122206,Rio Branco do Sul,37558
+MU,4122305,Rio Negro,31324
+MU,4122404,Rolândia,71670
+MU,4122503,Roncador,11251
+MU,4122602,Rondon,9097
+MU,4122651,Rosário do Ivaí,5435
+MU,4122701,Sabáudia,8822
+MU,4122800,Salgado Filho,4075
+MU,4122909,Salto do Itararé,5192
+MU,4123006,Salto do Lontra,15223
+MU,4123105,Santa Amélia,3394
+MU,4123204,Santa Cecília do Pavão,3365
+MU,4123303,Santa Cruz de Monte Castelo,8613
+MU,4123402,Santa Fé,11378
+MU,4123501,Santa Helena,25492
+MU,4123600,Santa Inês,1748
+MU,4123709,Santa Isabel do Ivaí,8912
+MU,4123808,Santa Izabel do Oeste,14070
+MU,4123824,Santa Lúcia,3644
+MU,4123857,Santa Maria do Oeste,9934
+MU,4123907,Santa Mariana,11066
+MU,4123956,Santa Mônica,3356
+MU,4124004,Santana do Itararé,5514
+MU,4124020,Santa Tereza do Oeste,13174
+MU,4124053,Santa Terezinha de Itaipu,24262
+MU,4124103,Santo Antônio da Platina,44369
+MU,4124202,Santo Antônio do Caiuá,2493
+MU,4124301,Santo Antônio do Paraíso,2125
+MU,4124400,Santo Antônio do Sudoeste,23673
+MU,4124509,Santo Inácio,6181
+MU,4124608,São Carlos do Ivaí,6587
+MU,4124707,São Jerônimo da Serra,10830
+MU,4124806,São João,11886
+MU,4124905,São João do Caiuá,5586
+MU,4125001,São João do Ivaí,10667
+MU,4125100,São João do Triunfo,13726
+MU,4125209,São Jorge d'Oeste,9378
+MU,4125308,São Jorge do Ivaí,5168
+MU,4125357,São Jorge do Patrocínio,6504
+MU,4125407,São José da Boa Vista,6040
+MU,4125456,São José das Palmeiras,3957
+MU,4125506,São José dos Pinhais,329628
+MU,4125555,São Manoel do Paraná,2138
+MU,4125605,São Mateus do Sul,42366
+MU,4125704,São Miguel do Iguaçu,29122
+MU,4125753,São Pedro do Iguaçu,5784
+MU,4125803,São Pedro do Ivaí,8690
+MU,4125902,São Pedro do Paraná,2661
+MU,4126009,São Sebastião da Amoreira,8063
+MU,4126108,São Tomé,5232
+MU,4126207,Sapopema,6695
+MU,4126256,Sarandi,118455
+MU,4126272,Saudade do Iguaçu,6108
+MU,4126306,Sengés,17270
+MU,4126355,Serranópolis do Iguaçu,5007
+MU,4126405,Sertaneja,5616
+MU,4126504,Sertanópolis,15930
+MU,4126603,Siqueira Campos,22811
+MU,4126652,Sulina,3440
+MU,4126678,Tamarana,10707
+MU,4126702,Tamboara,4880
+MU,4126801,Tapejara,15869
+MU,4126900,Tapira,5745
+MU,4127007,Teixeira Soares,9547
+MU,4127106,Telêmaco Borba,75042
+MU,4127205,Terra Boa,17568
+MU,4127304,Terra Rica,14842
+MU,4127403,Terra Roxa,18119
+MU,4127502,Tibagi,19961
+MU,4127601,Tijucas do Sul,17621
+MU,4127700,Toledo,150470
+MU,4127809,Tomazina,8426
+MU,4127858,Três Barras do Paraná,11135
+MU,4127882,Tunas do Paraná,6219
+MU,4127908,Tuneiras do Oeste,8067
+MU,4127957,Tupãssi,8077
+MU,4127965,Turvo,14231
+MU,4128005,Ubiratã,24749
+MU,4128104,Umuarama,117095
+MU,4128203,União da Vitória,55033
+MU,4128302,Uniflor,2136
+MU,4128401,Uraí,10406
+MU,4128500,Wenceslau Braz,19188
+MU,4128534,Ventania,9681
+MU,4128559,Vera Cruz do Oeste,8215
+MU,4128609,Verê,7932
+MU,4128625,Alto Paraíso,3055
+MU,4128633,Doutor Ulysses,5697
+MU,4128658,Virmond,3811
+MU,4128708,Vitorino,9706
+MU,4128807,Xambrê,5798
+MU,4200051,Abdon Batista,2598
+MU,4200101,Abelardo Luz,17392
+MU,4200200,Agrolândia,10990
+MU,4200309,Agronômica,6055
+MU,4200408,Água Doce,6508
+MU,4200507,Águas de Chapecó,6036
+MU,4200556,Águas Frias,2839
+MU,4200606,Águas Mornas,6743
+MU,4200705,Alfredo Wagner,10481
+MU,4200754,Alto Bela Vista,1856
+MU,4200804,Anchieta,5943
+MU,4200903,Angelina,5358
+MU,4201000,Anita Garibaldi,8285
+MU,4201109,Anitápolis,3593
+MU,4201208,Antônio Carlos,11224
+MU,4201257,Apiúna,9811
+MU,4201273,Arabutã,4378
+MU,4201307,Araquari,45283
+MU,4201406,Araranguá,71922
+MU,4201505,Armazém,8834
+MU,4201604,Arroio Trinta,3556
+MU,4201653,Arvoredo,2510
+MU,4201703,Ascurra,8319
+MU,4201802,Atalanta,3227
+MU,4201901,Aurora,6780
+MU,4201950,Balneário Arroio do Silva,15820
+MU,4202008,Balneário Camboriú,139155
+MU,4202057,Balneário Barra do Sul,14912
+MU,4202073,Balneário Gaivota,15669
+MU,4202081,Bandeirante,3144
+MU,4202099,Barra Bonita,1668
+MU,4202107,Barra Velha,45369
+MU,4202131,Bela Vista do Toldo,5872
+MU,4202156,Belmonte,2658
+MU,4202206,Benedito Novo,10520
+MU,4202305,Biguaçu,76773
+MU,4202404,Blumenau,361261
+MU,4202438,Bocaina do Sul,3515
+MU,4202453,Bombinhas,25058
+MU,4202503,Bom Jardim da Serra,4026
+MU,4202537,Bom Jesus,2777
+MU,4202578,Bom Jesus do Oeste,2187
+MU,4202602,Bom Retiro,8418
+MU,4202701,Botuverá,5363
+MU,4202800,Braço do Norte,33773
+MU,4202859,Braço do Trombudo,4026
+MU,4202875,Brunópolis,2489
+MU,4202909,Brusque,141385
+MU,4203006,Caçador,73720
+MU,4203105,Caibi,6304
+MU,4203154,Calmon,3443
+MU,4203204,Camboriú,103074
+MU,4203253,Capão Alto,2625
+MU,4203303,Campo Alegre,12501
+MU,4203402,Campo Belo do Sul,7257
+MU,4203501,Campo Erê,9623
+MU,4203600,Campos Novos,36932
+MU,4203709,Canelinha,12821
+MU,4203808,Canoinhas,55016
+MU,4203907,Capinzal,23314
+MU,4203956,Capivari de Baixo,23975
+MU,4204004,Catanduvas,10566
+MU,4204103,Caxambu do Sul,4614
+MU,4204152,Celso Ramos,2805
+MU,4204178,Cerro Negro,3317
+MU,4204194,Chapadão do Lageado,2950
+MU,4204202,Chapecó,254785
+MU,4204251,Cocal do Sul,17240
+MU,4204301,Concórdia,81646
+MU,4204350,Cordilheira Alta,4781
+MU,4204400,Coronel Freitas,10388
+MU,4204459,Coronel Martins,2065
+MU,4204509,Corupá,15267
+MU,4204558,Correia Pinto,15727
+MU,4204608,Criciúma,214493
+MU,4204707,Cunha Porã,10953
+MU,4204756,Cunhataí,1968
+MU,4204806,Curitibanos,40045
+MU,4204905,Descanso,8530
+MU,4205001,Dionísio Cerqueira,15008
+MU,4205100,Dona Emma,4221
+MU,4205159,Doutor Pedrinho,3637
+MU,4205175,Entre Rios,3402
+MU,4205191,Ermo,2269
+MU,4205209,Erval Velho,4885
+MU,4205308,Faxinal dos Guedes,11192
+MU,4205357,Flor do Sertão,1783
+MU,4205407,Florianópolis,537211
+MU,4205431,Formosa do Sul,2682
+MU,4205456,Forquilhinha,31431
+MU,4205506,Fraiburgo,33481
+MU,4205555,Frei Rogério,2411
+MU,4205605,Galvão,3210
+MU,4205704,Garopaba,29959
+MU,4205803,Garuva,18545
+MU,4205902,Gaspar,72570
+MU,4206009,Governador Celso Ramos,16915
+MU,4206108,Grão-Pará,6277
+MU,4206207,Gravatal,12435
+MU,4206306,Guabiruba,24543
+MU,4206405,Guaraciaba,10796
+MU,4206504,Guaramirim,46711
+MU,4206603,Guarujá do Sul,4829
+MU,4206652,Guatambú,8425
+MU,4206702,Herval d'Oeste,21724
+MU,4206751,Ibiam,2008
+MU,4206801,Ibicaré,3269
+MU,4206900,Ibirama,19862
+MU,4207007,Içara,59035
+MU,4207106,Ilhota,17046
+MU,4207205,Imaruí,11881
+MU,4207304,Imbituba,52579
+MU,4207403,Imbuia,5982
+MU,4207502,Indaial,71549
+MU,4207577,Iomerê,2877
+MU,4207601,Ipira,4578
+MU,4207650,Iporã do Oeste,9335
+MU,4207684,Ipuaçu,7730
+MU,4207700,Ipumirim,7816
+MU,4207759,Iraceminha,3986
+MU,4207809,Irani,10195
+MU,4207858,Irati,2069
+MU,4207908,Irineópolis,10285
+MU,4208005,Itá,7067
+MU,4208104,Itaiópolis,22051
+MU,4208203,Itajaí,264054
+MU,4208302,Itapema,75940
+MU,4208401,Itapiranga,16638
+MU,4208450,Itapoá,30750
+MU,4208500,Ituporanga,26525
+MU,4208609,Jaborá,4310
+MU,4208708,Jacinto Machado,10624
+MU,4208807,Jaguaruna,20375
+MU,4208906,Jaraguá do Sul,182660
+MU,4208955,Jardinópolis,1776
+MU,4209003,Joaçaba,30146
+MU,4209102,Joinville,616317
+MU,4209151,José Boiteux,5985
+MU,4209177,Jupiá,2555
+MU,4209201,Lacerdópolis,2248
+MU,4209300,Lages,164981
+MU,4209409,Laguna,42785
+MU,4209458,Lajeado Grande,1702
+MU,4209508,Laurentino,7932
+MU,4209607,Lauro Müller,14381
+MU,4209706,Lebon Régis,11472
+MU,4209805,Leoberto Leal,3330
+MU,4209854,Lindóia do Sul,4549
+MU,4209904,Lontras,12873
+MU,4210001,Luiz Alves,11684
+MU,4210035,Luzerna,5794
+MU,4210050,Macieira,1778
+MU,4210100,Mafra,55286
+MU,4210209,Major Gercino,3214
+MU,4210308,Major Vieira,7425
+MU,4210407,Maracajá,7815
+MU,4210506,Maravilha,28251
+MU,4210555,Marema,2184
+MU,4210605,Massaranduba,17162
+MU,4210704,Matos Costa,2761
+MU,4210803,Meleiro,7006
+MU,4210852,Mirim Doce,2511
+MU,4210902,Modelo,4080
+MU,4211009,Mondaí,10066
+MU,4211058,Monte Carlo,9117
+MU,4211108,Monte Castelo,7736
+MU,4211207,Morro da Fumaça,18537
+MU,4211256,Morro Grande,3010
+MU,4211306,Navegantes,86401
+MU,4211405,Nova Erechim,5155
+MU,4211454,Nova Itaberaba,4536
+MU,4211504,Nova Trento,13727
+MU,4211603,Nova Veneza,13664
+MU,4211652,Novo Horizonte,2643
+MU,4211702,Orleans,23661
+MU,4211751,Otacílio Costa,17312
+MU,4211801,Ouro,7032
+MU,4211850,Ouro Verde,2181
+MU,4211876,Paial,1927
+MU,4211892,Painel,2215
+MU,4211900,Palhoça,222598
+MU,4212007,Palma Sola,7605
+MU,4212056,Palmeira,2561
+MU,4212106,Palmitos,15626
+MU,4212205,Papanduva,19150
+MU,4212239,Paraíso,4267
+MU,4212254,Passo de Torres,12897
+MU,4212270,Passos Maia,4034
+MU,4212304,Paulo Lopes,9063
+MU,4212403,Pedras Grandes,4245
+MU,4212502,Penha,33663
+MU,4212601,Peritiba,2992
+MU,4212650,Pescaria Brava,10190
+MU,4212700,Petrolândia,6716
+MU,4212809,Balneário Piçarras,27127
+MU,4212908,Pinhalzinho,21972
+MU,4213005,Pinheiro Preto,3473
+MU,4213104,Piratuba,5769
+MU,4213153,Planalto Alegre,2946
+MU,4213203,Pomerode,34289
+MU,4213302,Ponte Alta,4437
+MU,4213351,Ponte Alta do Norte,3210
+MU,4213401,Ponte Serrada,10649
+MU,4213500,Porto Belo,27688
+MU,4213609,Porto União,32970
+MU,4213708,Pouso Redondo,17123
+MU,4213807,Praia Grande,8270
+MU,4213906,Presidente Castello Branco,1689
+MU,4214003,Presidente Getúlio,20010
+MU,4214102,Presidente Nereu,2301
+MU,4214151,Princesa,2964
+MU,4214201,Quilombo,11022
+MU,4214300,Rancho Queimado,3279
+MU,4214409,Rio das Antas,6253
+MU,4214508,Rio do Campo,6452
+MU,4214607,Rio do Oeste,7747
+MU,4214706,Rio dos Cedros,10865
+MU,4214805,Rio do Sul,72587
+MU,4214904,Rio Fortuna,4847
+MU,4215000,Rio Negrinho,39261
+MU,4215059,Rio Rufino,2397
+MU,4215075,Riqueza,4768
+MU,4215109,Rodeio,12757
+MU,4215208,Romelândia,4823
+MU,4215307,Salete,7489
+MU,4215356,Saltinho,3632
+MU,4215406,Salto Veloso,4390
+MU,4215455,Sangão,12882
+MU,4215505,Santa Cecília,15546
+MU,4215554,Santa Helena,2425
+MU,4215604,Santa Rosa de Lima,2088
+MU,4215653,Santa Rosa do Sul,9792
+MU,4215679,Santa Terezinha,8066
+MU,4215687,Santa Terezinha do Progresso,2576
+MU,4215695,Santiago do Sul,1651
+MU,4215703,Santo Amaro da Imperatriz,27272
+MU,4215752,São Bernardino,2684
+MU,4215802,São Bento do Sul,83277
+MU,4215901,São Bonifácio,2946
+MU,4216008,São Carlos,10282
+MU,4216057,São Cristóvão do Sul,6084
+MU,4216107,São Domingos,9226
+MU,4216206,São Francisco do Sul,52674
+MU,4216255,São João do Oeste,6295
+MU,4216305,São João Batista,32687
+MU,4216354,São João do Itaperiú,4463
+MU,4216404,São João do Sul,8668
+MU,4216503,São Joaquim,25939
+MU,4216602,São José,270299
+MU,4216701,São José do Cedro,14167
+MU,4216800,São José do Cerrito,8708
+MU,4216909,São Lourenço do Oeste,24791
+MU,4217006,São Ludgero,13509
+MU,4217105,São Martinho,3405
+MU,4217154,São Miguel da Boa Vista,1781
+MU,4217204,São Miguel do Oeste,44330
+MU,4217253,São Pedro de Alcântara,5776
+MU,4217303,Saudades,10265
+MU,4217402,Schroeder,20061
+MU,4217501,Seara,18620
+MU,4217550,Serra Alta,3303
+MU,4217600,Siderópolis,13714
+MU,4217709,Sombrio,29991
+MU,4217758,Sul Brasil,2832
+MU,4217808,Taió,18310
+MU,4217907,Tangará,8143
+MU,4217956,Tigrinhos,2329
+MU,4218004,Tijucas,51592
+MU,4218103,Timbé do Sul,5386
+MU,4218202,Timbó,46099
+MU,4218251,Timbó Grande,7342
+MU,4218301,Três Barras,19746
+MU,4218350,Treviso,3782
+MU,4218400,Treze de Maio,7362
+MU,4218509,Treze Tílias,8787
+MU,4218608,Trombudo Central,7274
+MU,4218707,Tubarão,110088
+MU,4218756,Tunápolis,4916
+MU,4218806,Turvo,13043
+MU,4218855,União do Oeste,2774
+MU,4218905,Urubici,10834
+MU,4218954,Urupema,2656
+MU,4219002,Urussanga,20919
+MU,4219101,Vargeão,3634
+MU,4219150,Vargem,2627
+MU,4219176,Vargem Bonita,4576
+MU,4219200,Vidal Ramos,6189
+MU,4219309,Videira,55466
+MU,4219358,Vitor Meireles,5370
+MU,4219408,Witmarsum,4255
+MU,4219507,Xanxerê,51607
+MU,4219606,Xavantina,3653
+MU,4219705,Xaxim,31918
+MU,4219853,Zortéa,3930
+MU,4220000,Balneário Rincão,15981
+MU,4300034,Aceguá,4170
+MU,4300059,Água Santa,3912
+MU,4300109,Agudo,16041
+MU,4300208,Ajuricaba,6720
+MU,4300307,Alecrim,6123
+MU,4300406,Alegrete,72409
+MU,4300455,Alegria,3651
+MU,4300471,Almirante Tamandaré do Sul,1969
+MU,4300505,Alpestre,7117
+MU,4300554,Alto Alegre,1800
+MU,4300570,Alto Feliz,3072
+MU,4300604,Alvorada,187315
+MU,4300638,Amaral Ferrador,5310
+MU,4300646,Ametista do Sul,7650
+MU,4300661,André da Rocha,1135
+MU,4300703,Anta Gorda,5957
+MU,4300802,Antônio Prado,13045
+MU,4300851,Arambaré,4112
+MU,4300877,Araricá,8525
+MU,4300901,Aratiba,6483
+MU,4301008,Arroio do Meio,21958
+MU,4301057,Arroio do Sal,11057
+MU,4301073,Arroio do Padre,2599
+MU,4301107,Arroio dos Ratos,14601
+MU,4301206,Arroio do Tigre,12058
+MU,4301305,Arroio Grande,17558
+MU,4301404,Arvorezinha,10322
+MU,4301503,Augusto Pestana,7149
+MU,4301552,Áurea,3396
+MU,4301602,Bagé,117938
+MU,4301636,Balneário Pinhal,14955
+MU,4301651,Barão,6461
+MU,4301701,Barão de Cotegipe,7144
+MU,4301750,Barão do Triunfo,5889
+MU,4301800,Barracão,4831
+MU,4301859,Barra do Guarita,3161
+MU,4301875,Barra do Quaraí,4241
+MU,4301909,Barra do Ribeiro,12225
+MU,4301925,Barra do Rio Azul,1696
+MU,4301958,Barra Funda,2498
+MU,4302006,Barros Cassal,9296
+MU,4302055,Benjamin Constant do Sul,2082
+MU,4302105,Bento Gonçalves,123151
+MU,4302154,Boa Vista das Missões,1933
+MU,4302204,Boa Vista do Buricá,6966
+MU,4302220,Boa Vista do Cadeado,2229
+MU,4302238,Boa Vista do Incra,2271
+MU,4302253,Boa Vista do Sul,2779
+MU,4302303,Bom Jesus,11202
+MU,4302352,Bom Princípio,13142
+MU,4302378,Bom Progresso,2096
+MU,4302402,Bom Retiro do Sul,12294
+MU,4302451,Boqueirão do Leão,6247
+MU,4302501,Bossoroca,5890
+MU,4302584,Bozano,2151
+MU,4302600,Braga,3268
+MU,4302659,Brochier,4966
+MU,4302709,Butiá,19084
+MU,4302808,Caçapava do Sul,32515
+MU,4302907,Cacequi,11157
+MU,4303004,Cachoeira do Sul,80070
+MU,4303103,Cachoeirinha,136258
+MU,4303202,Cacique Doble,4603
+MU,4303301,Caibaté,4704
+MU,4303400,Caiçara,4836
+MU,4303509,Camaquã,62200
+MU,4303558,Camargo,2981
+MU,4303608,Cambará do Sul,6361
+MU,4303673,Campestre da Serra,3242
+MU,4303707,Campina das Missões,5882
+MU,4303806,Campinas do Sul,5284
+MU,4303905,Campo Bom,62886
+MU,4304002,Campo Novo,4975
+MU,4304101,Campos Borges,3613
+MU,4304200,Candelária,28906
+MU,4304309,Cândido Godói,6294
+MU,4304358,Candiota,10710
+MU,4304408,Canela,48946
+MU,4304507,Canguçu,49680
+MU,4304606,Canoas,347657
+MU,4304614,Canudos do Vale,1656
+MU,4304622,Capão Bonito do Sul,1733
+MU,4304630,Capão da Canoa,63594
+MU,4304655,Capão do Cipó,3119
+MU,4304663,Capão do Leão,26487
+MU,4304671,Capivari do Sul,3991
+MU,4304689,Capela de Santana,11159
+MU,4304697,Capitão,2921
+MU,4304705,Carazinho,61804
+MU,4304713,Caraá,7394
+MU,4304804,Carlos Barbosa,30420
+MU,4304853,Carlos Gomes,1368
+MU,4304903,Casca,9465
+MU,4304952,Caseiros,3000
+MU,4305009,Catuípe,8674
+MU,4305108,Caxias do Sul,463501
+MU,4305116,Centenário,2721
+MU,4305124,Cerrito,5808
+MU,4305132,Cerro Branco,3802
+MU,4305157,Cerro Grande,2379
+MU,4305173,Cerro Grande do Sul,9178
+MU,4305207,Cerro Largo,13705
+MU,4305306,Chapada,9540
+MU,4305355,Charqueadas,35012
+MU,4305371,Charrua,2768
+MU,4305405,Chiapetta,3913
+MU,4305439,Chuí,6262
+MU,4305447,Chuvisca,4597
+MU,4305454,Cidreira,17071
+MU,4305504,Ciríaco,4149
+MU,4305587,Colinas,2423
+MU,4305603,Colorado,3258
+MU,4305702,Condor,6406
+MU,4305801,Constantina,10385
+MU,4305835,Coqueiro Baixo,1290
+MU,4305850,Coqueiros do Sul,2211
+MU,4305871,Coronel Barros,2822
+MU,4305900,Coronel Bicaco,6144
+MU,4305934,Coronel Pilar,1607
+MU,4305959,Cotiporã,3846
+MU,4305975,Coxilha,2667
+MU,4306007,Crissiumal,12886
+MU,4306056,Cristal,7299
+MU,4306072,Cristal do Sul,2692
+MU,4306106,Cruz Alta,58913
+MU,4306130,Cruzaltense,1635
+MU,4306205,Cruzeiro do Sul,11600
+MU,4306304,David Canabarro,4321
+MU,4306320,Derrubadas,2751
+MU,4306353,Dezesseis de Novembro,2507
+MU,4306379,Dilermando de Aguiar,2806
+MU,4306403,Dois Irmãos,30709
+MU,4306429,Dois Irmãos das Missões,2090
+MU,4306452,Dois Lajeados,3097
+MU,4306502,Dom Feliciano,13051
+MU,4306551,Dom Pedro de Alcântara,2562
+MU,4306601,Dom Pedrito,36981
+MU,4306700,Dona Francisca,3079
+MU,4306734,Doutor Maurício Cardoso,4470
+MU,4306759,Doutor Ricardo,1888
+MU,4306767,Eldorado do Sul,39559
+MU,4306809,Encantado,22962
+MU,4306908,Encruzilhada do Sul,23819
+MU,4306924,Engenho Velho,1296
+MU,4306932,Entre-Ijuís,9158
+MU,4306957,Entre Rios do Sul,2685
+MU,4306973,Erebango,3054
+MU,4307005,Erechim,105705
+MU,4307054,Ernestina,3034
+MU,4307104,Herval,6191
+MU,4307203,Erval Grande,4930
+MU,4307302,Erval Seco,6787
+MU,4307401,Esmeralda,3195
+MU,4307450,Esperança do Sul,3226
+MU,4307500,Espumoso,15173
+MU,4307559,Estação,5582
+MU,4307609,Estância Velha,47924
+MU,4307708,Esteio,76137
+MU,4307807,Estrela,32183
+MU,4307815,Estrela Velha,3070
+MU,4307831,Eugênio de Castro,2633
+MU,4307864,Fagundes Varela,2566
+MU,4307906,Farroupilha,70286
+MU,4308003,Faxinal do Soturno,6702
+MU,4308052,Faxinalzinho,2520
+MU,4308078,Fazenda Vilanova,4291
+MU,4308102,Feliz,13764
+MU,4308201,Flores da Cunha,30892
+MU,4308250,Floriano Peixoto,1668
+MU,4308300,Fontoura Xavier,9550
+MU,4308409,Formigueiro,6413
+MU,4308433,Forquetinha,2393
+MU,4308458,Fortaleza dos Valos,4477
+MU,4308508,Frederico Westphalen,32627
+MU,4308607,Garibaldi,34335
+MU,4308656,Garruchos,2688
+MU,4308706,Gaurama,5665
+MU,4308805,General Câmara,7612
+MU,4308854,Gentil,1744
+MU,4308904,Getúlio Vargas,16602
+MU,4309001,Giruá,16013
+MU,4309050,Glorinha,7658
+MU,4309100,Gramado,40134
+MU,4309126,Gramado dos Loureiros,2014
+MU,4309159,Gramado Xavier,3304
+MU,4309209,Gravataí,265074
+MU,4309258,Guabiju,1417
+MU,4309308,Guaíba,92924
+MU,4309407,Guaporé,25268
+MU,4309506,Guarani das Missões,7415
+MU,4309555,Harmonia,5378
+MU,4309571,Herveiras,2565
+MU,4309605,Horizontina,18851
+MU,4309654,Hulha Negra,5976
+MU,4309704,Humaitá,4681
+MU,4309753,Ibarama,3732
+MU,4309803,Ibiaçá,4527
+MU,4309902,Ibiraiaras,6776
+MU,4309951,Ibirapuitã,3723
+MU,4310009,Ibirubá,21583
+MU,4310108,Igrejinha,32808
+MU,4310207,Ijuí,84780
+MU,4310306,Ilópolis,4157
+MU,4310330,Imbé,26824
+MU,4310363,Imigrante,3080
+MU,4310405,Independência,6427
+MU,4310413,Inhacorá,2014
+MU,4310439,Ipê,5399
+MU,4310462,Ipiranga do Sul,1720
+MU,4310504,Iraí,7482
+MU,4310538,Itaara,5572
+MU,4310553,Itacurubi,2995
+MU,4310579,Itapuca,1937
+MU,4310603,Itaqui,35768
+MU,4310652,Itati,2638
+MU,4310702,Itatiba do Sul,3208
+MU,4310751,Ivorá,1929
+MU,4310801,Ivoti,22983
+MU,4310850,Jaboticaba,3779
+MU,4310876,Jacuizinho,2040
+MU,4310900,Jacutinga,3338
+MU,4311007,Jaguarão,26603
+MU,4311106,Jaguari,10579
+MU,4311122,Jaquirana,3690
+MU,4311130,Jari,3349
+MU,4311155,Jóia,7184
+MU,4311205,Júlio de Castilhos,18226
+MU,4311239,Lagoa Bonita do Sul,2251
+MU,4311254,Lagoão,5341
+MU,4311270,Lagoa dos Três Cantos,1738
+MU,4311304,Lagoa Vermelha,27659
+MU,4311403,Lajeado,93646
+MU,4311429,Lajeado do Bugre,2601
+MU,4311502,Lavras do Sul,7157
+MU,4311601,Liberato Salzano,4781
+MU,4311627,Lindolfo Collor,6248
+MU,4311643,Linha Nova,1683
+MU,4311700,Machadinho,5735
+MU,4311718,Maçambará,4425
+MU,4311734,Mampituba,3131
+MU,4311759,Manoel Viana,6801
+MU,4311775,Maquiné,7418
+MU,4311791,Maratá,2470
+MU,4311809,Marau,45124
+MU,4311908,Marcelino Ramos,4320
+MU,4311981,Mariana Pimentel,3916
+MU,4312005,Mariano Moro,1858
+MU,4312054,Marques de Souza,3969
+MU,4312104,Mata,4698
+MU,4312138,Mato Castelhano,2553
+MU,4312153,Mato Leitão,4859
+MU,4312179,Mato Queimado,1795
+MU,4312203,Maximiliano de Almeida,4191
+MU,4312252,Minas do Leão,7505
+MU,4312302,Miraguaí,4427
+MU,4312351,Montauri,1499
+MU,4312377,Monte Alegre dos Campos,3180
+MU,4312385,Monte Belo do Sul,2557
+MU,4312401,Montenegro,64322
+MU,4312427,Mormaço,2756
+MU,4312443,Morrinhos do Sul,3071
+MU,4312450,Morro Redondo,6046
+MU,4312476,Morro Reuter,6029
+MU,4312500,Mostardas,12090
+MU,4312609,Muçum,4601
+MU,4312617,Muitos Capões,2879
+MU,4312625,Muliterno,1721
+MU,4312658,Não-Me-Toque,17898
+MU,4312674,Nicolau Vergueiro,1932
+MU,4312708,Nonoai,13719
+MU,4312757,Nova Alvorada,3163
+MU,4312807,Nova Araçá,4954
+MU,4312906,Nova Bassano,9649
+MU,4312955,Nova Boa Vista,2042
+MU,4313003,Nova Bréscia,3044
+MU,4313011,Nova Candelária,3061
+MU,4313037,Nova Esperança do Sul,4865
+MU,4313060,Nova Hartz,20088
+MU,4313086,Nova Pádua,2343
+MU,4313102,Nova Palma,5586
+MU,4313201,Nova Petrópolis,23300
+MU,4313300,Nova Prata,25692
+MU,4313334,Nova Ramada,2163
+MU,4313359,Nova Roma do Sul,3466
+MU,4313375,Nova Santa Rita,29024
+MU,4313391,Novo Cabrais,3568
+MU,4313409,Novo Hamburgo,227646
+MU,4313425,Novo Machado,3198
+MU,4313441,Novo Tiradentes,2146
+MU,4313466,Novo Xingu,1646
+MU,4313490,Novo Barreiro,4272
+MU,4313508,Osório,47396
+MU,4313607,Paim Filho,3629
+MU,4313656,Palmares do Sul,12844
+MU,4313706,Palmeira das Missões,33216
+MU,4313805,Palmitinho,7839
+MU,4313904,Panambi,43515
+MU,4313953,Pantano Grande,10212
+MU,4314001,Paraí,7194
+MU,4314027,Paraíso do Sul,6519
+MU,4314035,Pareci Novo,4319
+MU,4314050,Parobé,52058
+MU,4314068,Passa Sete,3983
+MU,4314076,Passo do Sobrado,6025
+MU,4314100,Passo Fundo,206215
+MU,4314134,Paulo Bento,2144
+MU,4314159,Paverama,7978
+MU,4314175,Pedras Altas,2061
+MU,4314209,Pedro Osório,7484
+MU,4314308,Pejuçara,3745
+MU,4314407,Pelotas,325685
+MU,4314423,Picada Café,5351
+MU,4314456,Pinhal,2959
+MU,4314464,Pinhal da Serra,2248
+MU,4314472,Pinhal Grande,3805
+MU,4314498,Pinheirinho do Vale,4540
+MU,4314506,Pinheiro Machado,11214
+MU,4314548,Pinto Bandeira,2723
+MU,4314555,Pirapó,2260
+MU,4314605,Piratini,17504
+MU,4314704,Planalto,10406
+MU,4314753,Poço das Antas,2171
+MU,4314779,Pontão,3296
+MU,4314787,Ponte Preta,1575
+MU,4314803,Portão,34071
+MU,4314902,Porto Alegre,1332845
+MU,4315008,Porto Lucena,4360
+MU,4315057,Porto Mauá,2142
+MU,4315073,Porto Vera Cruz,1560
+MU,4315107,Porto Xavier,9938
+MU,4315131,Pouso Novo,1739
+MU,4315149,Presidente Lucena,3077
+MU,4315156,Progresso,5340
+MU,4315172,Protásio Alves,2025
+MU,4315206,Putinga,3747
+MU,4315305,Quaraí,23500
+MU,4315313,Quatro Irmãos,1552
+MU,4315321,Quevedos,2507
+MU,4315354,Quinze de Novembro,3910
+MU,4315404,Redentora,9738
+MU,4315453,Relvado,1796
+MU,4315503,Restinga Sêca,14939
+MU,4315552,Rio dos Índios,2835
+MU,4315602,Rio Grande,191900
+MU,4315701,Rio Pardo,34654
+MU,4315750,Riozinho,4473
+MU,4315800,Roca Sales,10418
+MU,4315909,Rodeio Bonito,6654
+MU,4315958,Rolador,2291
+MU,4316006,Rolante,21253
+MU,4316105,Ronda Alta,9777
+MU,4316204,Rondinha,4991
+MU,4316303,Roque Gonzales,6576
+MU,4316402,Rosário do Sul,36630
+MU,4316428,Sagrada Família,2480
+MU,4316436,Saldanha Marinho,2575
+MU,4316451,Salto do Jacuí,10203
+MU,4316477,Salvador das Missões,2877
+MU,4316501,Salvador do Sul,6879
+MU,4316600,Sananduva,16399
+MU,4316709,Santa Bárbara do Sul,8122
+MU,4316733,Santa Cecília do Sul,1674
+MU,4316758,Santa Clara do Sul,6887
+MU,4316808,Santa Cruz do Sul,133230
+MU,4316907,Santa Maria,271735
+MU,4316956,Santa Maria do Herval,6340
+MU,4316972,Santa Margarida do Sul,2596
+MU,4317004,Santana da Boa Vista,7024
+MU,4317103,Sant'Ana do Livramento,84421
+MU,4317202,Santa Rosa,76963
+MU,4317251,Santa Tereza,1505
+MU,4317301,Santa Vitória do Palmar,30983
+MU,4317400,Santiago,48938
+MU,4317509,Santo Ângelo,76917
+MU,4317558,Santo Antônio do Palma,2091
+MU,4317608,Santo Antônio da Patrulha,42947
+MU,4317707,Santo Antônio das Missões,10300
+MU,4317756,Santo Antônio do Planalto,2089
+MU,4317806,Santo Augusto,13902
+MU,4317905,Santo Cristo,15320
+MU,4317954,Santo Expedito do Sul,2349
+MU,4318002,São Borja,59676
+MU,4318051,São Domingos do Sul,2754
+MU,4318101,São Francisco de Assis,17618
+MU,4318200,São Francisco de Paula,21893
+MU,4318309,São Gabriel,58487
+MU,4318408,São Jerônimo,21028
+MU,4318424,São João da Urtiga,4461
+MU,4318432,São João do Polêsine,2649
+MU,4318440,São Jorge,2912
+MU,4318457,São José das Missões,2362
+MU,4318465,São José do Herval,1902
+MU,4318481,São José do Hortêncio,4447
+MU,4318499,São José do Inhacorá,2406
+MU,4318507,São José do Norte,25443
+MU,4318606,São José do Ouro,6834
+MU,4318614,São José do Sul,2380
+MU,4318622,São José dos Ausentes,4172
+MU,4318705,São Leopoldo,217409
+MU,4318804,São Lourenço do Sul,41989
+MU,4318903,São Luiz Gonzaga,34752
+MU,4319000,São Marcos,21084
+MU,4319109,São Martinho,5481
+MU,4319125,São Martinho da Serra,2860
+MU,4319158,São Miguel das Missões,7056
+MU,4319208,São Nicolau,5118
+MU,4319307,São Paulo das Missões,5846
+MU,4319356,São Pedro da Serra,3548
+MU,4319364,São Pedro das Missões,1757
+MU,4319372,São Pedro do Butiá,3070
+MU,4319406,São Pedro do Sul,15577
+MU,4319505,São Sebastião do Caí,24428
+MU,4319604,São Sepé,21219
+MU,4319703,São Valentim,3264
+MU,4319711,São Valentim do Sul,2207
+MU,4319737,São Valério do Sul,2543
+MU,4319752,São Vendelino,2251
+MU,4319802,São Vicente do Sul,8097
+MU,4319901,Sapiranga,75648
+MU,4320008,Sapucaia do Sul,132107
+MU,4320107,Sarandi,22851
+MU,4320206,Seberi,11950
+MU,4320230,Sede Nova,2704
+MU,4320263,Segredo,6009
+MU,4320305,Selbach,5107
+MU,4320321,Senador Salgado Filho,2673
+MU,4320354,Sentinela do Sul,5306
+MU,4320404,Serafina Corrêa,16961
+MU,4320453,Sério,1941
+MU,4320503,Sertão,5541
+MU,4320552,Sertão Santana,5863
+MU,4320578,Sete de Setembro,1830
+MU,4320602,Severiano de Almeida,3406
+MU,4320651,Silveira Martins,2028
+MU,4320677,Sinimbu,8578
+MU,4320701,Sobradinho,14226
+MU,4320800,Soledade,29991
+MU,4320859,Tabaí,4461
+MU,4320909,Tapejara,24557
+MU,4321006,Tapera,10592
+MU,4321105,Tapes,14695
+MU,4321204,Taquara,53242
+MU,4321303,Taquari,25198
+MU,4321329,Taquaruçu do Sul,3119
+MU,4321352,Tavares,5212
+MU,4321402,Tenente Portela,14497
+MU,4321436,Terra de Areia,10334
+MU,4321451,Teutônia,32797
+MU,4321469,Tio Hugo,3267
+MU,4321477,Tiradentes do Sul,5129
+MU,4321493,Toropi,2554
+MU,4321501,Torres,41751
+MU,4321600,Tramandaí,54387
+MU,4321626,Travesseiro,2152
+MU,4321634,Três Arroios,2591
+MU,4321667,Três Cachoeiras,10962
+MU,4321709,Três Coroas,24425
+MU,4321808,Três de Maio,24916
+MU,4321832,Três Forquilhas,2760
+MU,4321857,Três Palmeiras,4716
+MU,4321907,Três Passos,25436
+MU,4321956,Trindade do Sul,7556
+MU,4322004,Triunfo,27498
+MU,4322103,Tucunduva,5542
+MU,4322152,Tunas,3681
+MU,4322186,Tupanci do Sul,1374
+MU,4322202,Tupanciretã,20005
+MU,4322251,Tupandi,5029
+MU,4322301,Tuparendi,8363
+MU,4322327,Turuçu,3419
+MU,4322343,Ubiretama,1994
+MU,4322350,União da Serra,1170
+MU,4322376,Unistalda,1995
+MU,4322400,Uruguaiana,117210
+MU,4322509,Vacaria,64197
+MU,4322525,Vale Verde,3150
+MU,4322533,Vale do Sol,9897
+MU,4322541,Vale Real,6058
+MU,4322558,Vanini,2004
+MU,4322608,Venâncio Aires,68763
+MU,4322707,Vera Cruz,26710
+MU,4322806,Veranópolis,24021
+MU,4322855,Vespasiano Corrêa,1818
+MU,4322905,Viadutos,4769
+MU,4323002,Viamão,224112
+MU,4323101,Vicente Dutra,4665
+MU,4323200,Victor Graeff,2780
+MU,4323309,Vila Flores,3646
+MU,4323358,Vila Lângaro,2079
+MU,4323408,Vila Maria,4413
+MU,4323457,Vila Nova do Sul,3863
+MU,4323507,Vista Alegre,2660
+MU,4323606,Vista Alegre do Prata,1590
+MU,4323705,Vista Gaúcha,2783
+MU,4323754,Vitória das Missões,3260
+MU,4323770,Westfália,3098
+MU,4323804,Xangri-lá,16463
+MU,5000203,Água Clara,16741
+MU,5000252,Alcinópolis,4537
+MU,5000609,Amambai,39325
+MU,5000708,Anastácio,24114
+MU,5000807,Anaurilândia,7653
+MU,5000856,Angélica,10729
+MU,5000906,Antônio João,9303
+MU,5001003,Aparecida do Taboado,27674
+MU,5001102,Aquidauana,46803
+MU,5001243,Aral Moreira,10748
+MU,5001508,Bandeirantes,7940
+MU,5001904,Bataguassu,23031
+MU,5002001,Batayporã,10712
+MU,5002100,Bela Vista,21613
+MU,5002159,Bodoquena,8567
+MU,5002209,Bonito,23659
+MU,5002308,Brasilândia,11579
+MU,5002407,Caarapó,30612
+MU,5002605,Camapuã,13583
+MU,5002704,Campo Grande,898100
+MU,5002803,Caracol,5036
+MU,5002902,Cassilândia,20988
+MU,5002951,Chapadão do Sul,30993
+MU,5003108,Corguinho,4783
+MU,5003157,Coronel Sapucaia,14289
+MU,5003207,Corumbá,96268
+MU,5003256,Costa Rica,26037
+MU,5003306,Coxim,32151
+MU,5003454,Deodápolis,13663
+MU,5003488,Dois Irmãos do Buriti,11100
+MU,5003504,Douradina,5578
+MU,5003702,Dourados,243367
+MU,5003751,Eldorado,11386
+MU,5003801,Fátima do Sul,20609
+MU,5003900,Figueirão,3539
+MU,5004007,Glória de Dourados,10444
+MU,5004106,Guia Lopes da Laguna,9940
+MU,5004304,Iguatemi,13808
+MU,5004403,Inocência,8404
+MU,5004502,Itaporã,24137
+MU,5004601,Itaquiraí,19423
+MU,5004700,Ivinhema,27821
+MU,5004809,Japorã,8148
+MU,5004908,Jaraguari,7139
+MU,5005004,Jardim,23981
+MU,5005103,Jateí,3586
+MU,5005152,Juti,6729
+MU,5005202,Ladário,21522
+MU,5005251,Laguna Carapã,6799
+MU,5005400,Maracaju,45047
+MU,5005608,Miranda,25536
+MU,5005681,Mundo Novo,19193
+MU,5005707,Naviraí,50457
+MU,5005806,Nioaque,13220
+MU,5006002,Nova Alvorada do Sul,21822
+MU,5006200,Nova Andradina,48563
+MU,5006259,Novo Horizonte do Sul,4721
+MU,5006275,Paraíso das Águas,5510
+MU,5006309,Paranaíba,40957
+MU,5006358,Paranhos,12921
+MU,5006408,Pedro Gomes,6941
+MU,5006606,Ponta Porã,92017
+MU,5006903,Porto Murtinho,12859
+MU,5007109,Ribas do Rio Pardo,23150
+MU,5007208,Rio Brilhante,37601
+MU,5007307,Rio Negro,4841
+MU,5007406,Rio Verde de Mato Grosso,19818
+MU,5007505,Rochedo,5199
+MU,5007554,Santa Rita do Pardo,7027
+MU,5007695,São Gabriel do Oeste,29579
+MU,5007703,Sete Quedas,10994
+MU,5007802,Selvíria,8142
+MU,5007901,Sidrolândia,47118
+MU,5007935,Sonora,14516
+MU,5007950,Tacuru,10808
+MU,5007976,Taquarussu,3625
+MU,5008008,Terenos,17652
+MU,5008305,Três Lagoas,132152
+MU,5008404,Vicentina,6336
+MU,5100102,Acorizal,5014
+MU,5100201,Água Boa,29219
+MU,5100250,Alta Floresta,58613
+MU,5100300,Alto Araguaia,17193
+MU,5100359,Alto Boa Vista,5715
+MU,5100409,Alto Garças,13052
+MU,5100508,Alto Paraguai,8009
+MU,5100607,Alto Taquari,10904
+MU,5100805,Apiacás,8590
+MU,5101001,Araguaiana,3795
+MU,5101209,Araguainha,1010
+MU,5101258,Araputanga,14786
+MU,5101308,Arenápolis,10576
+MU,5101407,Aripuanã,24626
+MU,5101605,Barão de Melgaço,7253
+MU,5101704,Barra do Bugres,29403
+MU,5101803,Barra do Garças,69210
+MU,5101852,Bom Jesus do Araguaia,7280
+MU,5101902,Brasnorte,17004
+MU,5102504,Cáceres,89681
+MU,5102603,Campinápolis,15347
+MU,5102637,Campo Novo do Parecis,45899
+MU,5102678,Campo Verde,44585
+MU,5102686,Campos de Júlio,8822
+MU,5102694,Canabrava do Norte,4485
+MU,5102702,Canarana,25858
+MU,5102793,Carlinda,10332
+MU,5102850,Castanheira,7506
+MU,5103007,Chapada dos Guimarães,18990
+MU,5103056,Cláudia,9593
+MU,5103106,Cocalinho,6220
+MU,5103205,Colíder,31370
+MU,5103254,Colniza,25766
+MU,5103304,Comodoro,18238
+MU,5103353,Confresa,35075
+MU,5103361,Conquista D'Oeste,3760
+MU,5103379,Cotriguaçu,11011
+MU,5103403,Cuiabá,650877
+MU,5103437,Curvelândia,4903
+MU,5103452,Denise,7014
+MU,5103502,Diamantino,21941
+MU,5103601,Dom Aquino,7872
+MU,5103700,Feliz Natal,10521
+MU,5103809,Figueirópolis D'Oeste,3187
+MU,5103858,Gaúcha do Norte,8642
+MU,5103908,General Carneiro,6037
+MU,5103957,Glória D'Oeste,2905
+MU,5104104,Guarantã do Norte,31024
+MU,5104203,Guiratinga,10966
+MU,5104500,Indiavaí,2213
+MU,5104526,Ipiranga do Norte,7815
+MU,5104542,Itanhangá,7539
+MU,5104559,Itaúba,5020
+MU,5104609,Itiquira,12236
+MU,5104807,Jaciara,28569
+MU,5104906,Jangada,7426
+MU,5105002,Jauru,8367
+MU,5105101,Juara,34906
+MU,5105150,Juína,45869
+MU,5105176,Juruena,10213
+MU,5105200,Juscimeira,11480
+MU,5105234,Lambari D'Oeste,4790
+MU,5105259,Lucas do Rio Verde,83798
+MU,5105309,Luciara,2509
+MU,5105507,Vila Bela da Santíssima Trindade,16774
+MU,5105580,Marcelândia,11396
+MU,5105606,Matupá,20091
+MU,5105622,Mirassol d'Oeste,26785
+MU,5105903,Nobres,15492
+MU,5106000,Nortelândia,5956
+MU,5106109,Nossa Senhora do Livramento,12940
+MU,5106158,Nova Bandeirantes,13635
+MU,5106174,Nova Nazaré,4200
+MU,5106182,Nova Lacerda,6670
+MU,5106190,Nova Santa Helena,4239
+MU,5106208,Nova Brasilândia,3932
+MU,5106216,Nova Canaã do Norte,11707
+MU,5106224,Nova Mutum,55839
+MU,5106232,Nova Olímpia,16352
+MU,5106240,Nova Ubiratã,11530
+MU,5106257,Nova Xavantina,24345
+MU,5106265,Novo Mundo,6520
+MU,5106273,Novo Horizonte do Norte,3349
+MU,5106281,Novo São Joaquim,6919
+MU,5106299,Paranaíta,11671
+MU,5106307,Paranatinga,26423
+MU,5106315,Novo Santo Antônio,2015
+MU,5106372,Pedra Preta,18066
+MU,5106422,Peixoto de Azevedo,32714
+MU,5106455,Planalto da Serra,3166
+MU,5106505,Poconé,31217
+MU,5106653,Pontal do Araguaia,6932
+MU,5106703,Ponte Branca,2008
+MU,5106752,Pontes e Lacerda,52018
+MU,5106778,Porto Alegre do Norte,12127
+MU,5106802,Porto dos Gaúchos,5593
+MU,5106828,Porto Esperidião,10204
+MU,5106851,Porto Estrela,3224
+MU,5107008,Poxoréu,23283
+MU,5107040,Primavera do Leste,85146
+MU,5107065,Querência,26769
+MU,5107107,São José dos Quatro Marcos,17849
+MU,5107156,Reserva do Cabaçal,2122
+MU,5107180,Ribeirão Cascalheira,10089
+MU,5107198,Ribeirãozinho,2593
+MU,5107206,Rio Branco,4535
+MU,5107248,Santa Carmem,5374
+MU,5107263,Santo Afonso,2519
+MU,5107297,São José do Povo,2875
+MU,5107305,São José do Rio Claro,14911
+MU,5107354,São José do Xingu,5964
+MU,5107404,São Pedro da Cipa,4191
+MU,5107578,Rondolândia,3505
+MU,5107602,Rondonópolis,244911
+MU,5107701,Rosário Oeste,15453
+MU,5107743,Santa Cruz do Xingu,2661
+MU,5107750,Salto do Céu,3679
+MU,5107768,Santa Rita do Trivelato,3276
+MU,5107776,Santa Terezinha,7596
+MU,5107792,Santo Antônio do Leste,4099
+MU,5107800,Santo Antônio de Leverger,15246
+MU,5107859,São Félix do Araguaia,13621
+MU,5107875,Sapezal,28944
+MU,5107883,Serra Nova Dourada,1800
+MU,5107909,Sinop,196312
+MU,5107925,Sorriso,110635
+MU,5107941,Tabaporã,9818
+MU,5107958,Tangará da Serra,106434
+MU,5108006,Tapurah,14370
+MU,5108055,Terra Nova do Norte,10616
+MU,5108105,Tesouro,3025
+MU,5108204,Torixoréu,4164
+MU,5108303,União do Sul,3838
+MU,5108352,Vale de São Domingos,2904
+MU,5108402,Várzea Grande,300078
+MU,5108501,Vera,12800
+MU,5108600,Vila Rica,19888
+MU,5108808,Nova Guarita,4590
+MU,5108857,Nova Marilândia,3529
+MU,5108907,Nova Maringá,5846
+MU,5108956,Nova Monte Verde,8313
+MU,5200050,Abadia de Goiás,19128
+MU,5200100,Abadiânia,17232
+MU,5200134,Acreúna,21568
+MU,5200159,Adelândia,2297
+MU,5200175,Água Fria de Goiás,4954
+MU,5200209,Água Limpa,1858
+MU,5200258,Águas Lindas de Goiás,225693
+MU,5200308,Alexânia,27008
+MU,5200506,Aloândia,1973
+MU,5200555,Alto Horizonte,6072
+MU,5200605,Alto Paraíso de Goiás,10306
+MU,5200803,Alvorada do Norte,8446
+MU,5200829,Amaralina,3268
+MU,5200852,Americano do Brasil,5259
+MU,5200902,Amorinópolis,3007
+MU,5201108,Anápolis,398869
+MU,5201207,Anhanguera,924
+MU,5201306,Anicuns,18503
+MU,5201405,Aparecida de Goiânia,527796
+MU,5201454,Aparecida do Rio Doce,2907
+MU,5201504,Aporé,4325
+MU,5201603,Araçu,3799
+MU,5201702,Aragarças,18390
+MU,5201801,Aragoiânia,11890
+MU,5202155,Araguapaz,7153
+MU,5202353,Arenópolis,2946
+MU,5202502,Aruanã,8300
+MU,5202601,Aurilândia,3284
+MU,5202809,Avelinópolis,2868
+MU,5203104,Baliza,3351
+MU,5203203,Barro Alto,10371
+MU,5203302,Bela Vista de Goiás,34445
+MU,5203401,Bom Jardim de Goiás,7826
+MU,5203500,Bom Jesus de Goiás,23958
+MU,5203559,Bonfinópolis,10296
+MU,5203575,Bonópolis,3299
+MU,5203609,Brazabrantes,3992
+MU,5203807,Britânia,5695
+MU,5203906,Buriti Alegre,10495
+MU,5203939,Buriti de Goiás,2732
+MU,5203962,Buritinópolis,3145
+MU,5204003,Cabeceiras,7560
+MU,5204102,Cachoeira Alta,11513
+MU,5204201,Cachoeira de Goiás,1405
+MU,5204250,Cachoeira Dourada,7782
+MU,5204300,Caçu,13774
+MU,5204409,Caiapônia,16513
+MU,5204508,Caldas Novas,98622
+MU,5204557,Caldazinha,4507
+MU,5204607,Campestre de Goiás,3755
+MU,5204656,Campinaçu,3708
+MU,5204706,Campinorte,12510
+MU,5204805,Campo Alegre de Goiás,7422
+MU,5204854,Campo Limpo de Goiás,8081
+MU,5204904,Campos Belos,18108
+MU,5204953,Campos Verdes,4005
+MU,5205000,Carmo do Rio Verde,9710
+MU,5205059,Castelândia,2985
+MU,5205109,Catalão,114427
+MU,5205208,Caturaí,5184
+MU,5205307,Cavalcante,9583
+MU,5205406,Ceres,22046
+MU,5205455,Cezarina,8090
+MU,5205471,Chapadão do Céu,12870
+MU,5205497,Cidade Ocidental,91767
+MU,5205513,Cocalzinho de Goiás,25016
+MU,5205521,Colinas do Sul,4030
+MU,5205703,Córrego do Ouro,2454
+MU,5205802,Corumbá de Goiás,10562
+MU,5205901,Corumbaíba,9164
+MU,5206206,Cristalina,62337
+MU,5206305,Cristianópolis,3504
+MU,5206404,Crixás,17065
+MU,5206503,Cromínia,3883
+MU,5206602,Cumari,2927
+MU,5206701,Damianópolis,3770
+MU,5206800,Damolândia,2724
+MU,5206909,Davinópolis,1902
+MU,5207105,Diorama,2062
+MU,5207253,Doverlândia,6956
+MU,5207352,Edealina,4001
+MU,5207402,Edéia,11747
+MU,5207501,Estrela do Norte,3205
+MU,5207535,Faina,7070
+MU,5207600,Fazenda Nova,5877
+MU,5207808,Firminópolis,10419
+MU,5207907,Flores de Goiás,13744
+MU,5208004,Formosa,115901
+MU,5208103,Formoso,4660
+MU,5208152,Gameleira de Goiás,3456
+MU,5208301,Divinópolis de Goiás,4457
+MU,5208400,Goianápolis,13967
+MU,5208509,Goiandira,4973
+MU,5208608,Goianésia,73707
+MU,5208707,Goiânia,1437366
+MU,5208806,Goianira,71916
+MU,5208905,Goiás,24071
+MU,5209101,Goiatuba,35664
+MU,5209150,Gouvelândia,4390
+MU,5209200,Guapó,19545
+MU,5209291,Guaraíta,2188
+MU,5209408,Guarani de Goiás,4085
+MU,5209457,Guarinos,2161
+MU,5209606,Heitoraí,3354
+MU,5209705,Hidrolândia,27742
+MU,5209804,Hidrolina,3545
+MU,5209903,Iaciara,10584
+MU,5209937,Inaciolândia,5954
+MU,5209952,Indiara,17061
+MU,5210000,Inhumas,52204
+MU,5210109,Ipameri,25548
+MU,5210158,Ipiranga de Goiás,2919
+MU,5210208,Iporá,35684
+MU,5210307,Israelândia,2560
+MU,5210406,Itaberaí,44734
+MU,5210562,Itaguari,4963
+MU,5210604,Itaguaru,4904
+MU,5210802,Itajá,4380
+MU,5210901,Itapaci,21087
+MU,5211008,Itapirapuã,8007
+MU,5211206,Itapuranga,26113
+MU,5211305,Itarumã,6101
+MU,5211404,Itauçu,7736
+MU,5211503,Itumbiara,107970
+MU,5211602,Ivolândia,2693
+MU,5211701,Jandaia,6272
+MU,5211800,Jaraguá,45223
+MU,5211909,Jataí,105729
+MU,5212006,Jaupaci,2924
+MU,5212055,Jesúpolis,2123
+MU,5212105,Joviânia,7159
+MU,5212204,Jussara,19620
+MU,5212253,Lagoa Santa,1390
+MU,5212303,Leopoldo de Bulhões,8745
+MU,5212501,Luziânia,209129
+MU,5212600,Mairipotaba,2561
+MU,5212709,Mambaí,8124
+MU,5212808,Mara Rosa,10700
+MU,5212907,Marzagão,2758
+MU,5212956,Matrinchã,4042
+MU,5213004,Maurilândia,10304
+MU,5213053,Mimoso de Goiás,2614
+MU,5213087,Minaçu,27075
+MU,5213103,Mineiros,70081
+MU,5213400,Moiporá,1685
+MU,5213509,Monte Alegre de Goiás,6692
+MU,5213707,Montes Claros de Goiás,8756
+MU,5213756,Montividiu,12521
+MU,5213772,Montividiu do Norte,3779
+MU,5213806,Morrinhos,51351
+MU,5213855,Morro Agudo de Goiás,2456
+MU,5213905,Mossâmedes,4654
+MU,5214002,Mozarlândia,14750
+MU,5214051,Mundo Novo,6189
+MU,5214101,Mutunópolis,3564
+MU,5214408,Nazário,8189
+MU,5214507,Nerópolis,31932
+MU,5214606,Niquelândia,34964
+MU,5214705,Nova América,2337
+MU,5214804,Nova Aurora,2101
+MU,5214838,Nova Crixás,12815
+MU,5214861,Nova Glória,8310
+MU,5214879,Nova Iguaçu de Goiás,3010
+MU,5214903,Nova Roma,3076
+MU,5215009,Nova Veneza,9481
+MU,5215207,Novo Brasil,3527
+MU,5215231,Novo Gama,103804
+MU,5215256,Novo Planalto,3716
+MU,5215306,Orizona,16399
+MU,5215405,Ouro Verde de Goiás,4057
+MU,5215504,Ouvidor,7200
+MU,5215603,Padre Bernardo,34967
+MU,5215652,Palestina de Goiás,3132
+MU,5215702,Palmeiras de Goiás,31858
+MU,5215801,Palmelo,2259
+MU,5215900,Palminópolis,3851
+MU,5216007,Panamá,2455
+MU,5216304,Paranaiguara,7607
+MU,5216403,Paraúna,10659
+MU,5216452,Perolândia,2964
+MU,5216809,Petrolina de Goiás,9573
+MU,5216908,Pilar de Goiás,2328
+MU,5217104,Piracanjuba,24883
+MU,5217203,Piranhas,11712
+MU,5217302,Pirenópolis,26690
+MU,5217401,Pires do Rio,32373
+MU,5217609,Planaltina,105031
+MU,5217708,Pontalina,18309
+MU,5218003,Porangatu,44317
+MU,5218052,Porteirão,4070
+MU,5218102,Portelândia,3280
+MU,5218300,Posse,34914
+MU,5218391,Professor Jamil,3649
+MU,5218508,Quirinópolis,48447
+MU,5218607,Rialma,12165
+MU,5218706,Rianápolis,3980
+MU,5218789,Rio Quente,3864
+MU,5218805,Rio Verde,225696
+MU,5218904,Rubiataba,19788
+MU,5219001,Sanclerlândia,7918
+MU,5219100,Santa Bárbara de Goiás,6149
+MU,5219209,Santa Cruz de Goiás,3002
+MU,5219258,Santa Fé de Goiás,4951
+MU,5219308,Santa Helena de Goiás,38492
+MU,5219357,Santa Isabel,3538
+MU,5219407,Santa Rita do Araguaia,5924
+MU,5219456,Santa Rita do Novo Destino,2689
+MU,5219506,Santa Rosa de Goiás,2820
+MU,5219605,Santa Tereza de Goiás,3293
+MU,5219704,Santa Terezinha de Goiás,10645
+MU,5219712,Santo Antônio da Barra,4267
+MU,5219738,Santo Antônio de Goiás,7386
+MU,5219753,Santo Antônio do Descoberto,72127
+MU,5219803,São Domingos,9711
+MU,5219902,São Francisco de Goiás,6378
+MU,5220009,São João d'Aliança,14041
+MU,5220058,São João da Paraúna,1774
+MU,5220108,São Luís de Montes Belos,33852
+MU,5220157,São Luiz do Norte,4837
+MU,5220207,São Miguel do Araguaia,21900
+MU,5220264,São Miguel do Passa Quatro,4464
+MU,5220280,São Patrício,2143
+MU,5220405,São Simão,17020
+MU,5220454,Senador Canedo,155635
+MU,5220504,Serranópolis,8027
+MU,5220603,Silvânia,22245
+MU,5220686,Simolândia,5742
+MU,5220702,Sítio d'Abadia,2927
+MU,5221007,Taquaral de Goiás,4026
+MU,5221080,Teresina de Goiás,2701
+MU,5221197,Terezópolis de Goiás,7944
+MU,5221304,Três Ranchos,2921
+MU,5221403,Trindade,142431
+MU,5221452,Trombas,3120
+MU,5221502,Turvânia,4480
+MU,5221551,Turvelândia,4985
+MU,5221577,Uirapuru,2798
+MU,5221601,Uruaçu,42546
+MU,5221700,Uruana,13729
+MU,5221809,Urutaí,3553
+MU,5221858,Valparaíso de Goiás,198861
+MU,5221908,Varjão,3716
+MU,5222005,Vianópolis,14956
+MU,5222054,Vicentinópolis,8768
+MU,5222203,Vila Boa,4215
+MU,5222302,Vila Propício,5815
+MU,5300108,Brasília,2817381
+Fonte: IBGE - Censo Demográfico,,,

@@ -1,0 +1,296 @@
+Segue uma versão mais enxuta e “afiada” da descrição da transformação, já cobrindo explicitamente o caso do **“Segurinho”**.
+
+---
+
+## 1. O que a transformação faz
+
+Dada uma ementa de PL em linguagem jurídica, a tarefa é gerar **uma recomendação de ação operacional**, no formato:
+
+> **[Verbo no infinitivo] + [objeto] + [complementos essenciais]**
+
+Exemplos:
+
+* *“Dispõe sobre a implantação de estufas com hortas produzidas com garrafas PET nas escolas municipais de Marabá…”*
+  → **“Implantar estufas com hortas produzidas com garrafas PET nas escolas municipais.”**
+
+* *“Institui o Projeto Criança Cidadã para emissão de registro de nascimento dentro das maternidades públicas.”*
+  → **“Emitir registros de nascimento dentro das maternidades públicas.”**
+
+* *“CRIA O PROGRAMA DE TRANSPORTE ESCOLAR SEGURINHO PARA CRIANÇAS DA EDUCAÇÃO PÚBLICA NO MUNICÍPIO DE MARABÁ.”*
+  → **“Criar um programa de transporte escolar para crianças da educação pública no município.”**
+
+A saída deve ser:
+
+* **Imperativa** (infinitivo impessoal: Criar, Implantar, Emitir, Garantir…)
+* **Curta** (sem juridiquês, só o que importa para executar)
+* **Operacional** (algo que “cabe num backlog”)
+
+---
+
+## 2. Princípios gerais
+
+1. **Remover casca jurídica**
+   Jogue fora fórmulas padrão que não mudam a ação:
+
+   * “Dispõe sobre…”, “Institui…”, “Cria…”, “Autoriza o Poder Executivo a…”
+   * “e dá outras providências”
+   * “no âmbito do Município de… / Estado de…”
+   * Referências a leis, Constituição, artigos, etc., quando não forem essenciais para a execução.
+
+2. **Preservar o conteúdo material da política**
+   Pergunta central: **o que passa a existir, ser feito, fornecido ou garantido?**
+
+3. **Transformar o núcleo em verbo operacional**
+
+   * criação → **criar**
+   * implantação → **implantar**
+   * emissão → **emitir**
+   * adaptação → **adaptar**
+   * fornecimento → **fornecer**
+   * atendimento → **atender**
+   * etc.
+
+4. **Escolher o nível certo: instrumento vs. resultado**
+
+   * Quando a ementa cria um **equipamento/serviço/programa** (app, centro de saúde, casa de parto, programa habitacional):
+     → ação é **criar/implantar** esse instrumento.
+
+   * Quando o programa é claramente um **meio** para prestar um serviço descrito como substantivo de ação (“emissão”, “fornecimento”, “realização”…):
+     → ação é o **serviço final** (Emitir, Fornecer, Realizar…), e o programa/projeto some da frase.
+
+5. **Eliminar excesso de contexto**
+
+   * Cortar justificativas, fundamentações e detalhes que não afetam a execução.
+   * Manter apenas: **tipo de ação**, **objeto**, **público-alvo** e **local** (se realmente necessário).
+
+6. **Neutralizar nomes fantasia quando o foco é a ação**
+
+   * Quando o nome fantasia do programa não é necessário para entender a ação, **generalize**:
+
+     * “Programa de Transporte Escolar Segurinho” → **“programa de transporte escolar”**
+     * “Programa Saúde ao Alcance” → **“programa de saúde digital para marcação de consultas”**, etc.
+
+   * **Exceção:** quando o próprio objetivo é criar/nomear **uma data comemorativa, prêmio, selo ou evento cultural** (ex.: “Dia Municipal da Juventude Negra”, “Prêmio Juventude Cidadã”, “Bloco Vai Quem Quer”), o nome é o objeto → deve ser mantido.
+
+---
+
+## 3. Pipeline de transformação
+
+### 3.1. Limpeza
+
+1. Normalizar o texto (internamente: caixa baixa, remover espaços duplicados, quebras estranhas).
+2. Remover:
+
+   * “dispõe sobre…”, “institui…”, “cria…”, “autoriza o poder executivo a…”
+   * “e dá outras providências”
+   * cabeçalhos do tipo “projeto de lei nº…”, “anteprojeto…”
+   * fórmulas jurídicas que não alteram a ação (“conforme especifica”, “nos termos da constituição federal”…).
+
+Resultado: um texto mais curto, contendo só o **corpo útil** da ementa.
+
+---
+
+### 3.2. Identificar o padrão e o núcleo
+
+1. Detectar o padrão principal:
+
+   * “dispõe sobre a [criação/implantação/adaptação/emissão] de X”
+   * “institui o Programa/Projeto X para [ação]”
+   * “cria X”
+   * “autoriza a X”
+
+2. Extrair o **núcleo material**:
+
+   * Substantivo de ação → verbo base
+   * Objeto principal
+   * Complementos relevantes:
+
+     * Local: “nas escolas municipais”, “no município”, “nos rios Itacaiúnas e Tocantins”
+     * Público-alvo: “para crianças da educação pública”, “para mulheres vítimas de violência doméstica”
+     * Finalidade direta: “para marcação de consultas”, “para prevenção de assoreamento”
+
+---
+
+### 3.3. Instrumento vs. serviço final
+
+**Heurística:**
+
+1. **Se há padrão “Programa/Projeto X para [substantivo de ação]…”**
+   → pegar o substantivo de ação como **verbo principal**:
+
+   * “Institui o Projeto Criança Cidadã para emissão de registro de nascimento…”
+     → **Emitir registros de nascimento dentro das maternidades públicas.**
+
+2. **Se o texto fala de criar/implantar um equipamento, órgão, serviço ou programa**, sem descrever um verbo de serviço explícito:
+
+   * “Cria o Programa Municipal de Terapia Nutricional do Aluno Autista.”
+     → **Criar programa municipal de terapia nutricional para alunos autistas.**
+   * “Cria o Programa de Transporte Escolar Segurinho para crianças da educação pública…”
+     → **Criar um programa de transporte escolar para crianças da educação pública no município.**
+
+   Aqui, o resultado concreto é a existência do **programa/serviço**. O nome fantasia (“Segurinho”) pode ser descartado para a ação operacional.
+
+---
+
+### 3.4. Reconstrução da frase
+
+Template:
+
+> **[Verbo no infinitivo] [objeto principal] [público-alvo] [local].**
+
+Regras:
+
+1. **Verbo no infinitivo impessoal** (Criar, Implantar, Emitir, Adaptar, Garantir, Fornecer…)
+
+2. **Objeto direto concreto**, sem juridiquês.
+
+3. **Complementos só se forem essenciais** para executar ou entender:
+
+   * Público-alvo: “para crianças da educação pública”, “para pessoas com deficiência”.
+   * Local: “no município”, “nas escolas municipais”, “nos rios Itacaiúnas e Tocantins”.
+
+4. **Tratar nomes próprios:**
+
+   * Se a política cria um “rótulo” como objetivo (datas, selos, prêmios, eventos culturais): **manter o nome**.
+   * Se o nome é apenas branding de um programa que presta um serviço genérico: **generalizar o tipo de programa**.
+
+---
+
+## 4. Exemplo trabalhado: caso “Segurinho”
+
+**Input**
+
+> “CRIA O PROGRAMA DE TRANSPORTE ESCOLAR SEGURINHO PARA CRIANÇAS DA EDUCAÇÃO PÚBLICA NO MUNICÍPIO DE MARABÁ.”
+
+**Passo a passo**
+
+1. **Limpeza da casca jurídica**
+   *Remover “CRIA” como fórmula e “NO MUNICÍPIO DE MARABÁ” como detalhe de âmbito se o contexto já é municipal.*
+
+   Corpo útil:
+   → “programa de transporte escolar Segurinho para crianças da educação pública no município”
+
+2. **Núcleo material**
+
+   * Substantivo de ação: **“criação” (implícito em “cria”)** → verbo **criar**
+   * Objeto: **programa de transporte escolar**
+   * Nome fantasia: **“Segurinho”** (não é necessário para executar a ação)
+   * Público-alvo: **crianças da educação pública**
+   * Local: **no município**
+
+3. **Tratamento do nome fantasia**
+
+   * “Segurinho” é um rótulo de programa, não a essência da ação.
+   * Para backlog de políticas, interessa a ação: **ter um programa de transporte escolar seguro para crianças**.
+   * Portanto, generalizar:
+
+   → **“programa de transporte escolar para crianças da educação pública”**
+
+4. **Reconstrução imperativa**
+
+   > **“Criar um programa de transporte escolar para crianças da educação pública no município.”**
+
+Curto, operacional, direto, sem carregar o “branding” do programa.
+
+Aplique a transformação nas seguintes frases, e retorne uma tabela com a ementa original e a ação transformada:
+
+['“INSTITUI A SEMANA MUNICIPAL DE CONSCIENTIZAÇÃO SOBRE OS CUIDADOS PALIATIVOS E DÁ OUTRAS PROVIDÊNCIAS.”',
+ 'INSTITUI NO MUNICÍPIO DE MARABÁ, O DIA 27 DE ABRIL COMO O DIA MUNICIPAL DA EMPREGADA DOMÉSTICA E DIARISTA.',
+ 'INSTITUI NO MUNICÍPIO DE MARABÁ, A SEMANA DE ENFRENTAMENTO À VIOLÊNCIA POLÍTICA DE GÊNERO, INICIADA, ANUALMENTE, NO DIA 14 DE MARÇO, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE NORMAS PREVENTIVAS AO ESQUECIMENTO DE ANIMAIS NO INTERIOR DE VEÍCULOS NO ÂMBITO DO MUNICÍPIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'AUTORIZA O INGRESSO E PERMANÊNCIA DE PESSOAS COM TRANSTORNO DO ESPECTRO AUTISTA EM LOCAIS PÚBLICOS OU PRIVADOS, PORTANDO ALIMENTOS PARA CONSUMO PRÓPRIO, BEM COMO UTENSÍLIOS DE USO PESSOAL E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARO DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, O GRUPO DE MULHERES ARCO-ÍRIS DA JUSTIÇA, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ O TERÇO DOS HOMENS DA DIOCESE DE MARABÁ.',
+ 'DECLARA COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ O GRUPO CATÓLICO DAS “MÃES QUE ORAM PELOS FILHOS”.',
+ 'DECLARA O MOVIMENTO EUCARÍSTICO CATÓLICO APOSTOLADO DA ORAÇÃO COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ.',
+ 'INSTITUI A SEMANA MUNICIPAL DA MATERNIDADE ATÍPICA E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE A DISPONIBILIZAÇÃO DO CARNÊ DE IPTU EM BRAILE PARA OS CONTRIBUINTES COM DEFICIÊNCIA VISUAL.',
+ 'INSTITUI E INCLUI NO CALENDÁRIO DO MUNICÍPIO DE MARABÁ O DIA DA COLABORAÇÃO AMIGA',
+ 'INSTITUI O PASSE DE ÔNIBUS GRATUITO PARA PORTADORES DE DOENÇAS CRÔNICAS E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'INSTITUI A PASTORAL DA CRIANÇA COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ.',
+ 'DECLARA O ENCONTRO DE JOVENS EM CRISTO - SEGUE-ME COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ.',
+ 'DISPÕE SOBRE ENTREGAS DE ENCOMENDAS POR ENTREGADORES DE APLICATIVO EM CONDOMÍNIOS NO MUNÍCIPIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICIPIO DE MARABÁ, ESTADO DO PARÁ, O INSTITUTO COMUNITÁRIO VIVENDO O AMANHÃ – INCOVIVA, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'ALTERA A LEI MUNICIPAL Nº 17.884, DE 06 DE DEZEMBRO DE 2018, QUE DISPÕE SOBRE AS DIRETRIZES PARA CONSTRUÇÃO, AMPLIAÇÃO, REFORMA E FUNCIONAMENTO DE POSTOS REVENDEDORES DE COMBUSTÍVEIS AUTOMOTIVOS, NO ÂMBITO DO MUNICÍPIO DE MARABÁ, PARA REDUZIR A DISTÂNCIA MÍNIMA DESTES PARA OS DEMAIS ESTABELECIMENTOS QUE OPEREM OU ARMAZENEM PRODUTOS INFLAMÁVEIS E/OU EXPLOSIVOS.',
+ 'DECLARA O ENCONTRO DE CASAIS EM CRISTO- ECC COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ.',
+ 'DECLARA COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ O MOVIMENTO CATÓLICO ESCALADA.',
+ 'DISPÕE SOBRE A OBRIGATORIEDADE DE COMUNICAÇÃO PELOS CONDOMÍNIOS RESIDENCIAIS AOS ÓRGÃOS DE SEGURANÇA PÚBLICA, SOBRE A OCORRÊNCIA DE INDÍCIOS DE VIOLÊNCIA DOMÉSTICA E FAMILIAR CONTRA A MULHER, CRIANÇA, ADOLESCENTE OU IDOSO, EM SEU INTERIOR, QUANDO HOUVER REGISTRO DA VIOLÊNCIA NO LIVRO DE OCORRÊNCIAS, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE A CRIAÇÃO DA SEMANA DE PREVENÇÃO E CUIDADOS DA VISÃO INFANTIL NO MUNICÍPIO DE MARABÁ, DENOMINADA “SEMANA DE ATENÇÃO AOS OLHINHOS”.',
+ 'INSTITUI NO CALENDÁRIO OFICIAL DO MUNICÍPIO DE MARABÁ, O  DIA DA COMUNIDADE CATÓLICA, A SER COMEMORADO ANUALMENTE NO DIA 12 DE OUTUBRO E  DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, A ASSOCIAÇÃO DOS PEQUENOS PRODUTORES DO ASSENTAMENTO MORAJUBA.',
+ '“DISPÕE SOBRE O ACOLHIMENTO DE ANIMAIS QUE ACOMPANHEM OS ABRIGADOS NOS ALBERGUES, ABRIGOS EMERGENCIAIS, CENTROS DE SERVIÇOS E CASAS DE CONVIVÊNCIA”.',
+ 'DISPÕE SOBRE O ATENDIMENTO PSICOSSOCIAL ÀS CRIANÇAS E ADOLESCENTES DE MÃES APENADAS NO MUNICÍPIO DE MARABÁ.',
+ '“INSTITUI A POLÍTICA MUNICIPAL DE ESTÍMULO E INCENTIVO AO APROVEITAMENTO DA ENERGIA SOLAR NO MUNICÍPIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS”.',
+ 'ABRE AO ORÇAMENTO ANUAL DO MUNICÍPIO DE MARABÁ, EM FAVOR DA SECRETARIA MUNICIPAL DE CULTURA (SECULT), CRÉDITO ADICIONAL ESPECIAL.',
+ 'REVOGA A LEI MUNICIPAL 2.870, DE 7 DE JULHO DE 1982, QUE CONCEDE, POR ENFITEUSE, UM TERRENO URBANO DO PATRIMÔNIO MUNICIPAL LOCALIZADO NA RUA L., QUADRA NORTE 14, LOTE 04 KM 07 DA RODOVIA PA-150, BAIRRO NOVA MARABÁ, MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, EM FAVOR DE INÁCIO GAMA ARCINO.',
+ 'REVOGA E LEI MUNICIPAL Nº 7.383, DE 28 DE NOVEMBRO DE 1985, QUE CONCEDE, POR ENFITEUSE, UM TERRENO URBANO DO PATRIMÔNIO MUNICIPAL LOCALIZADO NA FOLHA 34, QUADRA 05, LOTE 05, BAIRRO NOVA MARABÁ, MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, EM FAVOR DE MARIA LÚCIA DA SILVA LIMA.',
+ 'GARANTE DIREITO À PARTURIENTE DE SER ACOMPANHADA DE PROFISSIONAL DE FOTOGRAFIA E FILMAGEM DE SUA ESCOLHA DURANTE O PERÍODO DE TRABALHO DE PARTO, PARTO E PÓS-PARTO E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'NOMINA DE “PRAÇA DO MAÇOM”, O ESPAÇO CULTURAL DE ESPORTE E LASER, NO CANTEIRO CENTRAL DA AV. VE-03, ENTRE AS FOLHAS 29 E 30, NÚCLEO NOVA MARABÁ, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'INSTITUI O PROGRAMA “CUIDANDO DE QUEM CUIDA”, VISANDO PROMOVER AÇÕES DE ORIENTAÇÃO E ATENÇÃO ÀS MÃES ATÍPICAS NO MUNICÍPIO DE MARABÁ/PA.',
+ 'DISPÕE SOBRE A OBRIGAÇÃO DE INSTALAÇÃO DE REDES DE PROTEÇÃO DE SEGURANÇA EM SHOPPING E OUTROS ESTABELECIMENTOS COM GRANDE FLUXO DE PESSOAS, PARA FINS DE SEGURANÇA E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE A OBRIGATORIEDADE DA DIVULGAÇÃO, NO SÍTIO ELETRÔNICO OFICIAL DA PREFEITURA MUNICIPAL DE MARABÁ/PA, OS DADOS RELATIVOS AOS CASOS DE DENGUE, ZIKA OU CHIKUNGUNYA.',
+ 'DENOMINA DE GABRIEL SALES PIMENTA A PRAÇA LOCALIZADA NA AVENIDA DOS BURITIS, RESIDENCIAL CIDADE JARDIM, MARABÁ/PA.',
+ 'DECLARA COMO PATRIMÔNIO CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ O GRUPO DA GUARDA DE NOSSA SENHORA DE NAZARÉ DO CÍRIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, A ASSOCIAÇÃO CAMPISTA ANJOS DE MISERICÓRDIA DE MARABÁ-ACAMM.',
+ 'DECLARA COMO SENDO DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, A ASSOCIAÇÃO ESPORTIVA PARAZINHO (AEPA) E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'INSTITUI E INSERE NO CALENDÁRIO OFICIAL DO MUNICÍPIO DE MARABÁ O DIA DO PISCOLOGO A SER COMEMORADO NO DIA 27 DE AGOSTO.',
+ 'INSTITUI E INSERE NO CALENDÁRIO OFICIAL DO MUNICÍPIO DE MARABÁ O DIA DO PSICOPEDAGOGO A SER COMEMORADO NO DIA 12 DE NOVEMBRO.',
+ 'ALTERA O ART. 37 DA LEI MUNICIPAL Nº 17.639, 06 DE NOVEMBRO DE 2014, QUE DISPÕE SOBRE O SISTEMA MUNICIPAL DE CULTURA DE MARABÁ - ESTADO DO PARÁ, SEUS PRINCÍPIOS, OBJETIVOS, ESTRUTURA, ORGANIZAÇÃO, GESTÃO, INTER-RELAÇÕES ENTRE OS SEUS COMPONENTES, RECURSOS HUMANOS, FINANCIAMENTO, PARA FIXAR O PERCENTUAL DO ORÇAMENTO DESTINADO SECULT PARA O FUNDO MUNICIPAL DE CULTURA (FMC).',
+ 'ALTERA O ANEXO II DA LEI MUNICIPAL Nº 17.873, DE 16 DE NOVEMBRO DE 2018, QUE INSTITUI O PLANO MUNICIPAL DE MOBILIDADE URBANA NO MUNICÍPIO DE MARABÁ E REGULAMENTA AS POLÍTICAS PARA MOBILIDADE E ACESSIBILIDADE CONTIDAS NO PLANO DIRETOR PARTICIPATIVO DE MARABÁ.',
+ 'INSTITUI FERIADO MUNICIPAL EM HOMENAGEM AO SERVIDOR PÚBLICO DO MUNICÍPIO DE MARABÁ, A SER COMEMORADO NO DIA 28 DE OUTUBRO E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ A ASSOCIAÇÃO COMUNITÁRIA DE MORADORES DO BAIRRO ARAGUAIA ASCOMBA, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'INSTITUI E INCLUI NO CALENDÁRIO OFICIAL DE EVENTOS DO MUNICÍPIO DE MARABÁ/PA, O “DIA MUNICIPAL DA CULTURA CRISTÃ” E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'ALTERA OS ANEXOS I, III e X (ANEXOS DE METAS FISCAIS) DA LEI MUNICIPAL Nº 18.348, DE 28 DE JUNHO DE 2024, QUE DISPÕE SOBRE AS DIRETRIZES ORÇAMENTÁRIAS PARA O EXERCÍCIO FINANCEIRO DE 2025.',
+ 'ESTIMA A RECEITA E FIXA A DESPESA DO MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, PARA O EXERCÍCIO FINANCEIRO DE 2025.',
+ 'DECLARA DE UTILIDADE PÚBLICA A ASSOCIAÇÃO DE DESENVOLVIMENTO EDUCACIONAL, CULTURA, ESPORTIVO E DIREITOS SOCIAIS FORTALEZA DE JESUS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, O CRESCER INSTITUTO, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DENOMINA DE AMUJACI SERRANO - “CAMPO DO MUJACA” O CAMPINHO DA MAGALHÃES, NA CIDADE DE MARABÁ.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, O INSTITUTO RENOVAR E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'INSTITUI O USO DO “CORDÃO TULIPA VERMELHA COMO INSTRUMENTO AUXILIAR DE ORIENTAÇÃO PARA A IDENTIFICAÇÃO DE PESSOAS COM A DOENÇA DE PARKINSON” NO MUNICÍPIO DE MARABÁ, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE O QUADRO DE PESSOAL EFETIVO DA SECRETARIA MUNICIPAL DE SAÚDE (SMS) DO MUNICÍPIO DE MARABÁ.',
+ 'INSTITUI O PROGRAMA BANCA DO ESPORTE NO MUNICÍPIO DE MARABÁ.',
+ 'ESTABELECE A NOVA ESTRUTURA ORGANIZACIONAL E DISPÕE SOBRE O NOVO PLANO DE CARREIRA, CARGOS E SALÁRIOS DA CÂMARA MUNICIPAL DE MARABÁ A PARTIR DO EXERCÍCIO DE 2025.',
+ 'DISPÕE SOBRE O QUADRO DE PESSOAL DE PROVIMENTO EFETIVO DA ADMINISTRAÇÃO DIRETA DO MUNICÍPIO DE MARABÁ.',
+ 'ASSEGURA AOS PROFISSIONAIS DA SAÚDE, DO SISTEMA PÚBLICO E PRIVADO DE SAÚDE DO MUNICÍPIO DE MARABÁ, O DIREITO À MEIA-ENTRADA NA AQUISIÇÃO DE INGRESSOS PARA EVENTOS ARTÍSTICOS, CULTURAIS, CINEMATOGRÁFICOS E DESPORTIVOS REALIZADOS NO MUNICÍPIO DE MARABÁ, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, O INSTITUTO DE TECNOLOGIA E INOVAÇÃO EVERESTE E O DISQUE DENÚNCIA, NO MUNICÍPIO DE MARABÁ, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'REVOGA A LEI MUNICIPAL Nº 7.115, DE 15 DE OUTUBRO DE 1985, QUE CONCEDEU, POR ENFITEUSE, UM TERRENO URBANO DO PATRIMÔNIO MUNICIPAL LOCALIZADO NA FOLHA 30, QUADRA 07, LOTE Nº 18, BAIRRO NOVA MARABÁ, MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, EM FAVOR DE CARLOS SILAU AMOURY.',
+ 'REVOGA A LEI MUNICIPAL Nº 4.060, DE 14 DE OUTUBRO DE 1968, QUE CONCEDEU, POR ENFITEUSE, UM TERRENO URBANO DO PATRIMÔNIO MUNICIPAL LOCALIZADO NA RUA 5 DE ABRIL, Nº 1568, BAIRRO MARABÁ PIONEIRA, MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, EM FAVOR DE DOMINGOS FERREIRA.',
+ 'Dispõe sobre a criação de ajuda de custo a ser fornecida pelo Município de Marabá aos médicos bolsistas vinculados ao Programa Médicos pelo Brasil (PMpB).',
+ 'REVOGA A LEI MUNICIPAL Nº 10.354, DE 10 DE JULHO DE 1988, QUE CONCEDEU, POR ENFITEUSE, UM TERRENO URBANO DO PATRIMÔNIO MUNICIPAL LOCALIZADO NA FOLHA 11, QUADRA 17, LOTE Nº 04, BAIRRO NOVA MARABÁ, MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, EM FAVOR DE LUIS DA SILVA COSTA.',
+ 'GARANTE O DIREITO DE PRIORIDADE DE MATRÍCULA DE IRMÃOS NA MESMA UNIDADE ESCOLAR DA REDE MUNICIPAL DE EDUCAÇÃO DE MARABÁ, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'SUBSTITUTIVO DO PROJETO QUE DISPÕE SOBRE A POLÍTICA MUNICIPAL DE USO DA CANNABIS PARA FINS MEDICINAIS E DISTRIBUIÇÃO GRATUITA DE MEDICAMENTOS PRESCRITOS A BASE DA PLANTA INTEIRA OU ISOLADO, QUE CONTENHA EM SUA FÓRMULA AS SUBSTÂNCIAS CANABIDIOL (CBD) E/OU TETRAHIDROCANABINOL (THC), NAS UNIDADES DE SAÚDE PÚBLICA MUNICIPAL E PRIVADA OU CONVENIADA AO SISTEMA ÚNICO DE SAÚDE - SUS, NO ÂMBITO DO MUNICÍPIO DE MARABÁ, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA DE UTILIDADE PÚBLICA PARA O MUNICÍPIO DE MARABÁ, ESTADO DO PARÁ, A ASSOCIAÇÃO COMUNIDADE MONTE CARMELO E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'Estabelece a Nova Reestruturação organizacional e Dispõe sobre o novo Plano de Carreira, Cargos e Salários da Câmara Municipal de Marabá a partir do Exercício de 2023.',
+ 'DISPÕE SOBRE O VENCIMENTO BASE DOS CARGOS DE AGENTES COMUNITÁRIOS DE SAÚDE (ACS) E DE AGENTE DE COMBATE ÀS ENDEMIAS (ACE).',
+ 'Altera o art. 108, VI, letra “b” da Lei Complementar 04/2010 (Código Tributário Municipal de marabá-PA). Que dispõe sobre a vedação do Município a instituir impostos sobre templos de qualquer culto, e acrescentando-lhes os § 1°, §2°;§3°, com amparo na alteração do art. 156, da CF/88, através da EC 116/2022.',
+ '“DECLARA A EXPOAMA (EXPOSIÇÃO AGROPECUÁRIA DE MARABÁ) COMO PATRIMÔNIO HISTÓRICO, CULTURAL E IMATERIAL DO MUNICÍPIO DE MARABÁ”.',
+ 'INSTITUI A CAMPANHA “ABRIL LARANJA”, NO MUNICÍPIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'Autoriza o Poder Executivo Municipal de Marabá a fazer doação do imóvel público situado na Avenida Sororó, nº 1850-A, Quindangues, Município de Marabá, Estado do Pará, ao Governo do Estado do Pará.',
+ 'Institui a Política Municipal de Incentivo à Prática de Esportes para Idosos e dá outras providências.',
+ 'DISPÕE SOBRE O FORNECIMENTO CONTÍNUO DE ABSORVENTES, POR PARTE DA PREFEITURA DE MARABÁ-PA, PARA AS MULHERES EM SITUAÇÃO DE VULNERABILIDADE ECONÔMICA, QUE POR VEZES NÃO DISPÕEM DA CONDIÇÃO FINANCEIRA MÍNIMA DE COMPRA-LOS, E QUE POR ESSE MOTIVO, SÃO IMPEDIDAS DE SEGUIR SUAS RESPECTIVAS ROTINAS, NORMALMENTE, QUANDO ESTÃO MENSTRUADAS.',
+ 'SUBSTITUTIVO DO PROJETO QUE DISPÕE SOBRE A CRIAÇÃO E ESTABELECE AS DIRETRIZES DE ATUAÇÃO DO GRUPAMENTO PATRULHA MARIA DA PENHA (GPMP) NO MUNICÍPIO DE MARABÁ.',
+ 'PROIBE A INSTALAÇÃO, A ADEQUAÇÃO E O USO COMUM DE BANHEIROS PÚBLICOS COLETIVOS POR PESSOAS DE SEXOS DIFERENTES, NAS ESCOLAS MUNICIPAIS, SECRETARIAS, AGÊNCIAS, AUTARQUIAS, FUNDAÇÕES, INSTITUTOS, E DEMAIS REPARTIÇÕES PÚBLICAS E PRIVADAS DO MUNICÍPIO DE MARABÁ/PA.',
+ 'INSTITUI A “SEMANA MUNICIPAL DE CONSCIENTIZAÇÃO E INCENTIVO À PRESERVAÇÃO DO PATRIMÔNIO PÚBLICO ESCOLAR” MUNICÍPIO DE MARABÁ-PA.',
+ 'Dispõe sobre a isenção da Contribuição de Iluminação Pública para imóveis utilizados como templo religioso e dá outras providencias.',
+ 'ALTERA A LEI MUNICIPAL Nº 17.374 DE 18 DE DEZEMBRO DE 2009 QUE DISPÕE SOBRE A REGULAMENTAÇÃO DA ATIVIDADE DO PROFISSIONAL EM TRANSPORTE DE PASSAGEIROS DENOMINADO “MOTOTAXISTA”, PARA AMPLIAR O PERÍODO DE RENOVAÇÃO DAS MOTOCICLETAS.',
+ 'Dispõe sobre a implementação da Assistência Militar no âmbito da Câmara Municipal de Marabá e dá outras providências.',
+ 'Cria o Programa Restaurante Popular no âmbito do município de Marabá/PA e dá outras providências.',
+ 'Dispõe sobre os procedimentos a serem tomados para a adoção de medidas de vigilância sanitária e epidemiológica sempre que se verificar situação de iminente perigo à saúde pública pela presença do mosquito transmissor da dengue e da febre chikungunya e dá outras providências, no âmbito de Marabá.',
+ 'DECLARA A IGREJA SÃO FÉLIX DE VALOIS COMO PATRIMÔNIO HISTÓRICO E CULTURAL DO MUNICÍPIO DE MARABÁ.',
+ 'AUTORIZA O CANCELAMENTO DE CRÉDITOS FISCAIS PRESCRITOS DOS EXERCÍCIOS DE 2016 E 2017.',
+ 'DISPÕE SOBRE OBRIGATORIEDADE DE A EMPRESA CONCESSIONÁRIA DE ENERGIA ELÉTRICA ATUANTE NO MUNICÍPIO REALIZAR A RETIRADA E O ALINHAMENTO DE FIOS E CABOS INÚTEIS DOS POSTES E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'DECLARA ÁGUIA DE MARABÁ FUTEBOL CLUBE COMO PATRIMÔNIO HISTÓRICO E CULTURAL DO MUNICÍPIO DE MARABÁ.',
+ '“Dispõe sobre a obrigatoriedade de construção de faixa elevada de segurança para pedestres defronte aos estabelecimentos de educação das redes públicas e particulares de ensino do município de Marabá”.',
+ 'DISPÕE SOBRE A OBRIGATORIEDADE DE INSTALAÇÃO DE PIA ADAPTADA AS PESSOAS COM DEFICIÊNCIA E MOBILIDADE REDUZIDA NOS ESTABELECIMENTOS COMERCIAIS QUE POSSUAM PRAÇA DE ALIMENTAÇÃO E DA OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE A CRIAÇÃO DO SELO “ESCOLA AMIGA DA PESSOA COM TRANSTORNO DO ESPECTRO AUTISTA (TEA)” E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'Dispõe sobre a obrigatoriedade de instalação de equipamentos detectores de metais fixos e/ou móveis, interfones e vedação permanente nas unidades escolares da rede municipal de ensino do município de Marabá e zona rural, e dá outras providências.',
+ '“Institui o Programa Horta Escolar no Município de Marabá e dá outras providências”.',
+ 'INSTITUI A SEMANA MUNICIPAL DE CONSCIENTIZAÇÃO SOBRE O USO DA INTERNET POR CRIANÇAS E ADOLESCENTES NO MUNICÍPIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'Atualiza o subsídio mensal dos vereadores a partir do mês de abril de 2023.',
+ 'INSTITUI “O DIA DE CONSCIENTIZAÇÃO E DEFESA DA LIBERDADE DE CULTO” NO MUNICÍPIO DE MARABÁ E DÁ OUTRAS PROVIDÊNCIAS”.',
+ 'DISPÕE SOBRE O RECONHECIMENTO DO BEACH TENNIS COMO MODALIDADE ESPORTIVA E INSTITUI, NO CALENDÁRIO OFICIAL DA CIDADE DE MARABÁ, O DIA MUNICIPAL DE BEACH TENNIS.',
+ 'DISPÕE SOBRE A QUEIMA E SOLTURA DE FOGOS DE ARTIFÍCIOS, BEM COMO ARTEFATOS PIROTÉCNICOS DE EFEITO SONORO COM RUÍDOS E DA OUTRAS PROVIDÊNCIAS.',
+ 'DISPÕE SOBRE AS DIRETRIZES ORÇAMENTÁRIAS PARA O EXERCÍCIO FINANCEIRO DE 2024, E DÁ OUTRAS PROVIDÊNCIAS.',
+ 'Altera a Lei Municipal nº 17.418, de 1º de junho de 2010, para possibilitar o provimento dos cargos efetivos de Agente de Combate a Endemias (ACE) e Agente Comunitário de Saúde (ACS) por meio de concurso público e dá outras providências.',
+ 'DISPÕE SOBRE A ALTERAÇÃO DO QUADRO 02 DO ANEXO II DA LEI MUNICIPAL Nº 17.838, DE 04 DE JANEIRO DE 2018, NO QUE SE REFERE AOS CARGOS DE OPERADOR DE MÁQUINAS PESADAS, AGENTE DE CONSERVAÇÃO E MOTORISTA.',
+ 'INSTITUI A ASSISTÊNCIA TÉCNICA PÚBLICA E GRATUITA PARA PROJETO E CONSTRUÇÃO DE HABITAÇÃO DE INTERESSE SOCIAL PARA AS FAMÍLIAS DE BAIXA RENDA E DÁ OUTRAS PROVIDÊNCIAS.']
