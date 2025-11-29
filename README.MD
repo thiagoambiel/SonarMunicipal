@@ -1,103 +1,73 @@
-# CityManager Core
+# CityManager
 
-Funções reutilizáveis para trabalhar com o dataset de ações e projetos de lei do CityManager fora dos notebooks.
+Ferramentas para descobrir instâncias SAPL, raspar projetos de lei municipais, gerar ações operacionais a partir das ementas e trabalhar com o dataset resultante (busca semântica e geração de políticas).
 
-Estrutura em módulos pequenos dentro do pacote `core/`:
-- `data.py`: carregamento de dataset/embeddings
-- `model.py`: carregamento do modelo de texto
-- `search.py`: busca semântica
-- `text.py`: utilidades de texto/tokenização
-- `policies.py`: agrupamento e métricas de políticas
-- `indicators.py`: cálculo de efeito a partir de indicadores
+## Visão geral
+- `sapl_finder`: encontra portais SAPL ativos (IBGE + crt.sh) e salva endpoints confirmados.
+- `sapl_scrapper`: coleta Projetos de Lei (PLs) via API do SAPL e salva em CSV/JSON/JSONL.
+- `notebooks/citymanager-ptt5-v2-text2action-*`: inferência e fine-tuning do modelo que converte ementa -> ação.
+- `core/`: funções reutilizáveis para carregar o dataset (`.npy`), fazer busca semântica e agrupar políticas por efeito.
+- `DATASET.MD`: guia passo a passo para reconstruir o dataset do zero.
 
-## O que está pronto
-- Carregar o dataset salvo em `.npy`.
-- Carregar o modelo de embeddings `sentence-transformers`.
-- Buscar projetos de lei por similaridade semântica.
-- Agrupar projetos e gerar candidatas a políticas públicas com métricas simples.
-- (Opcional) Calcular efeito de projetos usando uma tabela de indicadores semestrais.
+## Estrutura do repositório
+- `core/`: módulo Python organizado em submódulos (`data`, `model`, `search`, `text`, `policies`, `indicators`).
+- `sapl_finder/`: CLI assíncrona para descobrir instâncias SAPL.
+- `sapl_scrapper/`: CLI assíncrona para coletar PLs dos SAPLs encontrados.
+- `notebooks/`: scripts/notebooks de treinamento, inferência e análises.
+- `DATASET.MD`: documentação de criação do dataset.
 
-## Instalação rápida
-```bash
-pip install numpy sentence-transformers scipy pandas
-```
-`scipy` e `pandas` só são usados nas funções de efeito/indicador; para busca semântica, apenas `numpy` e `sentence-transformers` já funcionam.
+## Requisitos rápidos
+- Python 3.9+
+- Dependências principais: `httpx`, `tqdm`, `pandas`, `numpy`, `sentence-transformers`, `torch`, `transformers`, `scipy`.
+- Instalação típica para uso do módulo `core/` e das CLIs:
+  ```bash
+  pip install httpx tqdm pandas numpy sentence-transformers torch transformers scipy
+  ```
+  GPUs aceleram a etapa de geração de ações, mas o scraping funciona só com CPU.
 
-## Como usar
-
-### 1) Carregar dados e buscar por semântica
+## Usar os dados do autor (dataset pronto)
+Se você já possui o arquivo `dataset.npy` (gerado pelos notebooks ou baixado do autor):
 ```python
-from core import load_actions_dataset, load_sentence_model, extract_embeddings, semantic_search
+from core import load_actions_dataset, extract_embeddings, load_sentence_model, semantic_search
 
-# dataset.npy deve conter os dicionários com campos como municipio, uf, acao, embedding, data_apresentacao
 dataset = load_actions_dataset("data/dataset.npy")
+emb = extract_embeddings(dataset)
 model = load_sentence_model()
-embeddings = extract_embeddings(dataset)
 
-matches = semantic_search(
-    "Como reduzir a criminalidade no município?",
-    dataset,
-    model,
-    embeddings=embeddings,
-    top_k=5,
-)
-
+matches = semantic_search("Como reduzir a criminalidade no município?", dataset, model, emb, top_k=5)
 for m in matches:
-    print(f"{m['municipio']} ({m.get('uf', '-')}) | score={m['score']:.3f}")
-    print("  ", m.get("acao", ""))
+    print(m["municipio"], m.get("uf", "-"), m["acao"], f"(score={m['score']:.3f})")
 ```
 
-### 2) Gerar políticas a partir de efeitos medidos
-Passe uma lista de `(municipio, descricao_do_pl, efeito)` onde `efeito` é a variação do indicador (negativo = melhora).
-```python
-from core import generate_policies_from_bills
+## Criar seus próprios dados
+Siga o guia detalhado em `DATASET.MD`. Resumo:
+1. **Descobrir SAPLs**: `python -m sapl_finder --strategy all --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json`
+2. **Raspar PLs**: `python -m sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json`
+3. **Gerar ações (ementa -> ação)** com o modelo `thiagoambiel/ptt5v2-pl-text2action` usando o notebook `citymanager-ptt5-v2-text2action-inference-on-pls.py`, produzindo `pl_actions.jsonl`.
+4. **Montar o dataset final** (`dataset.npy`) combinando `pl.jsonl` + `pl_actions.jsonl` e gerando embeddings (veja `CityManager_Build_the_Base_Action_Recommendation_Dataset.py`).
+5. **(Opcional)** Rodar análises e geração de políticas com `CityManager_Correlation_Between_Policies_and_Indicators.py`.
 
-bills = [
-    ("Campinas", "Instalação de câmeras de monitoramento em praças", -1.8),
-    ("Sorocaba", "Programa de iluminação de vias locais", -0.4),
-    ("Campinas", "Expansão de rondas comunitárias", -1.2),
-]
+## Modelos e notebooks
+- Modelo de inferência: `thiagoambiel/ptt5v2-pl-text2action` (Hugging Face). Notebook `citymanager-ptt5-v2-text2action-inference-on-pls.py` mostra como gerar ações em lote.
+- Fine-tuning: `citymanager-ptt5-v2-fine-tuning-ementa2action.py` (treino LoRA/QLoRA sobre PTT5).
+- Análises: `CityManager_Action_Recommendation_Dataset_Analysis.py` e `CityManager_Correlation_Between_Policies_and_Indicators.py` exploram similaridade e impacto em indicadores.
 
-policies = generate_policies_from_bills(bills, similarity_threshold=0.7)
+## Uso do módulo core
+APIs disponíveis via `from core import ...`:
+- `load_actions_dataset`, `extract_embeddings`, `load_sentence_model`
+- `semantic_search` (busca semântica)
+- `generate_policies_from_bills` e utilitários em `policies`/`indicators` para agrupar ações e medir efeito com indicadores externos.
 
-for p in policies:
-    if len(p["actions"]) < 2:
-        continue
-    print(f"Política: {p['policy']}")
-    print(f"  qualidade: {p['quality_score']:.3f}")
-    print(f"  efeito médio: {p['effect_mean']:.3f} (std {p['effect_std']:.3f})")
-    print(f"  efetiva? {p['effective']}")
-    print("  ações:")
-    for mun, desc, score in p["actions"]:
-        print(f"    - {mun}: {score:.3f} | {desc}")
-    print()
-```
+## CLI rápida (finder/scrapper)
+- Descobrir SAPLs:
+  ```bash
+  python -m sapl_finder --strategy all --concurrency 200 --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json
+  ```
+- Raspar PLs:
+  ```bash
+  python -m sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json
+  ```
 
-### 3) Medir efeito usando indicadores (opcional)
-Se você tiver um CSV com colunas `municipio_norm`, `ano`, `semestre` e um valor de indicador (ex.: `taxa_homicidios_100k`), dá para calcular o delta e alimentar o gerador de políticas.
-```python
-import pandas as pd
-from core import compute_effects_from_indicator, generate_policies_from_bills
-
-indicator = pd.read_csv("data/criminal_indicator.csv")
-
-# Cada item do dataset deve ter 'municipio', 'data_apresentacao' (YYYY-MM-DD) e 'acao'
-effects = compute_effects_from_indicator(
-    bills=dataset,  # pode ser o mesmo dataset carregado acima
-    indicator_df=indicator,
-    city_col="municipio_norm",
-    value_col="taxa_homicidios_100k",
-)
-
-policies = generate_policies_from_bills(effects, similarity_threshold=0.7)
-```
-
-## Funções principais (pacote `core`)
-- `load_actions_dataset(path)` – lê o `.npy` com as ações/projetos.
-- `load_sentence_model(model_name, device)` – carrega o modelo de texto.
-- `extract_embeddings(dataset)` – empilha embeddings do dataset.
-- `semantic_search(query, dataset, model, embeddings, top_k)` – busca projetos similares.
-- `compute_effects_from_indicator(bills, indicator_df, city_col, value_col)` – calcula delta de indicador semestre a semestre.
-- `generate_policies_from_bills(bills, similarity_threshold, alpha)` – agrupa projetos parecidos e gera políticas ranqueadas por `quality_score`.
-
-Mantive as ideias dos notebooks, mas com funções diretas e sem dependências do Jupyter. Qualquer ajuste de nomes de colunas/datasets pode ser feito alterando os parâmetros das funções.
+## Observações
+- Os dados brutos (PLs, ações, indicadores) não estão no repositório; siga `DATASET.MD` para reconstruí-los.
+- Ajuste caminhos e tamanhos de lote conforme sua infraestrutura (GPU/CPU, memória, rede).
