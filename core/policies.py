@@ -56,26 +56,6 @@ def compute_mean_and_std(values: List[float]) -> Tuple[float, float]:
     return mean(values), stdev(values)
 
 
-def wilcoxon_less_than_zero(values: List[float], alpha: float = 0.05) -> Dict[str, Any]:
-    """
-    Wilcoxon signed-rank test (mediana < 0). Usa fallback simples se scipy não estiver disponível.
-    """
-    filtered = [v for v in values if v != 0.0]
-
-    if len(filtered) < 1:
-        return {"test": "wilcoxon_signed_rank", "p_value": None, "reject_h0": False}
-
-    try:
-        from scipy.stats import wilcoxon
-
-        _, p_value = wilcoxon(filtered, alternative="less", zero_method="wilcox")
-        reject = (p_value is not None) and (p_value < alpha)
-        return {"test": "wilcoxon_signed_rank", "p_value": float(p_value), "reject_h0": bool(reject)}
-    except Exception:
-        m = mean(values)
-        return {"test": "simple_mean_sign", "p_value": None, "reject_h0": bool(m < 0)}
-
-
 def compute_policy_quality(scores: List[float]) -> float:
     """
     Combina fração de municípios com efeito negativo e magnitude média do efeito.
@@ -93,8 +73,8 @@ def compute_policy_quality(scores: List[float]) -> float:
 
 def generate_policies_from_bills(
     bills: List[Tuple[str, str, float]],
+    min_group_members: int = 2,
     similarity_threshold: float = 0.75,
-    alpha: float = 0.05,
 ) -> List[Dict[str, Any]]:
     """
     Recebe (municipio, descricao_PL, efeito) e devolve candidatos a políticas.
@@ -104,10 +84,13 @@ def generate_policies_from_bills(
 
     for g in groups:
         members = g["members"]
+
+        if len(members) < min_group_members:
+            continue
+
         scores = [s for (_, _, s, _) in members]
 
         effect_mean, effect_std = compute_mean_and_std(scores)
-        test_result = wilcoxon_less_than_zero(scores, alpha=alpha)
         quality_score = compute_policy_quality(scores)
         actions = [(mun, frase, score) for (mun, frase, score, _) in members]
 
@@ -116,10 +99,8 @@ def generate_policies_from_bills(
             "actions": actions,
             "effect_mean": effect_mean,
             "effect_std": effect_std,
-            "effective": test_result,
             "quality_score": quality_score,
         })
 
     policies.sort(key=lambda p: p["quality_score"], reverse=True)
     return policies
-

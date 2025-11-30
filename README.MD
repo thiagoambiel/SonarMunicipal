@@ -58,6 +58,68 @@ APIs disponíveis via `from core import ...`:
 - `semantic_search` (busca semântica)
 - `generate_policies_from_bills` e utilitários em `policies`/`indicators` para agrupar ações e medir efeito com indicadores externos.
 
+### Exemplo: gerar políticas públicas a partir de efeitos
+```python
+from core import generate_policies_from_bills
+
+# Lista de (municipio, descricao_do_pl, efeito_no_indicador)
+# efeito < 0 indica melhora (ex.: redução de homicídios)
+bills = [
+    ("Campinas", "Instalação de câmeras de monitoramento em praças", -1.8),
+    ("Sorocaba", "Programa de iluminação de vias locais", -0.4),
+    ("Campinas", "Expansão de rondas comunitárias", -1.2),
+    ("Jundiaí", "Criação de patrulha escolar", 0.3),
+]
+
+policies = generate_policies_from_bills(bills, similarity_threshold=0.7)
+
+for p in policies:
+    if len(p["actions"]) < 2:
+        continue  # pede pelo menos 2 ações similares
+    print(f"Política: {p['policy']}")
+    print(f"  qualidade: {p['quality_score']:.3f}")
+    print(f"  efeito médio: {p['effect_mean']:.3f} (std {p['effect_std']:.3f})")
+    print("  ações:")
+    for mun, desc, score in p["actions"]:
+        print(f"    - {mun}: {score:.3f} | {desc}")
+```
+
+### Exemplo: calcular efeitos usando um indicador real
+Baseado em `notebooks/CityManager_Correlation_Between_Policies_and_Indicators.py`, o fluxo é:
+1. Ter um DataFrame de indicadores semestrais por município (ex.: `taxa_homicidios_100k` com colunas `municipio_norm`, `ano`, `semestre`).
+2. Calcular o delta semestre a semestre para cada PL.
+3. Gerar políticas com as ações e efeitos calculados.
+
+```python
+import pandas as pd
+from core import load_actions_dataset, compute_effects_from_indicator, generate_policies_from_bills
+
+# 1) Carregue o dataset de PLs/ações (precisa ter 'municipio', 'data_apresentacao', 'acao')
+dataset = load_actions_dataset("data/dataset.npy")
+
+# 2) Carregue o indicador (mesma normalização de nomes de cidade usada no indicador)
+indicator = pd.read_csv("data/criminal_indicator.csv")  # deve conter municipio_norm, ano, semestre, taxa_homicidios_100k
+
+# 3) Compute os efeitos (delta entre semestre atual e próximo)
+effects = compute_effects_from_indicator(
+    bills=dataset,
+    indicator_df=indicator,
+    city_col="municipio_norm",
+    value_col="taxa_homicidios_100k",
+)
+
+# effects é uma lista de (municipio, descricao_do_pl, delta_indicador)
+policies = generate_policies_from_bills(effects, similarity_threshold=0.75)
+
+# 4) Ordene e inspecione
+policies = sorted(policies, key=lambda x: x["quality_score"], reverse=True)
+for p in policies[:5]:
+    print(f"Política: {p['policy']}")
+    print(f"  qualidade: {p['quality_score']:.3f}")
+    print(f"  efeito médio: {p['effect_mean']:.3f}")
+    print(f"  ações: {len(p['actions'])}")
+```
+
 ## CLI rápida (finder/scrapper)
 - Descobrir SAPLs:
   ```bash
