@@ -1,7 +1,7 @@
-ementa2action/pl_actions.jsonl
-indicators/security/MJSP/*.xlsx
-indicators/security/MJSP.csv
-indicators/security/*.xlsx
+tools/ementa2action/pl_actions.jsonl
+tools/indicators/security/MJSP/*.xlsx
+tools/indicators/security/MJSP.csv
+tools/indicators/security/*.xlsx
 
 data/*
 !data/.gitkeep

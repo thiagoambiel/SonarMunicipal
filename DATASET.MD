@@ -10,14 +10,14 @@ Este guia explica o pipeline completo para produzir o dataset de projetos de lei
 
 Os passos abaixo assumem Python 3.9+ e `pip`.
 
-## 1) Encontrar instâncias SAPL (sapl_finder)
+## 1) Encontrar instâncias SAPL (tools/sapl_finder)
 O módulo `sapl_finder` localiza portais SAPL ativos varrendo:
 - heurística de domínio por lista de municípios do IBGE;
 - certificados do crt.sh.
 
 Comando típico:
 ```bash
-python -m sapl_finder \
+python -m tools.sapl_finder \
   --strategy all \
   --concurrency 200 \
   --out-csv data/sapl_hosts.csv \
@@ -30,12 +30,12 @@ Saídas:
 - `data/sapl_hosts.jsonl`: escrito incrementalmente durante a busca (usado pelo scrapper).
 - `data/sapl_hosts_candidates.jsonl`: lista de hosts candidatos vindos do crt.sh (sem validação).
 
-## 2) Baixar projetos de lei (sapl_scrapper)
+## 2) Baixar projetos de lei (tools/sapl_scrapper)
 O módulo `sapl_scrapper` lê o JSONL produzido pelo finder e coleta PLs via API do SAPL.
 
 Exemplo:
 ```bash
-python -m sapl_scrapper \
+python -m tools.sapl_scrapper \
   --in-jsonl data/sapl_hosts.jsonl \
   --out-csv data/pl.csv \
   --out-json data/pl.json \

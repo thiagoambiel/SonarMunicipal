@@ -11,9 +11,11 @@ Ferramentas para descobrir instâncias SAPL, raspar projetos de lei municipais, 
 
 ## Estrutura do repositório
 - `core/`: módulo Python organizado em submódulos (`data`, `model`, `search`, `text`, `policies`, `indicators`).
-- `sapl_finder/`: CLI assíncrona para descobrir instâncias SAPL.
-- `sapl_scrapper/`: CLI assíncrona para coletar PLs dos SAPLs encontrados.
+- `tools/sapl_finder/`: CLI assíncrona para descobrir instâncias SAPL.
+- `tools/sapl_scrapper/`: CLI assíncrona para coletar PLs dos SAPLs encontrados.
+- `tools/ementa2action/` e `tools/indicators/`: scripts auxiliares.
 - `notebooks/`: scripts/notebooks de treinamento, inferência e análises.
+- `api/`: backend FastAPI que expõe as funções do core.
 - `DATASET.MD`: documentação de criação do dataset.
 
 ## Requisitos rápidos
@@ -41,8 +43,8 @@ for m in matches:
 
 ## Criar seus próprios dados
 Siga o guia detalhado em `DATASET.MD`. Resumo:
-1. **Descobrir SAPLs**: `python -m sapl_finder --strategy all --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json`
-2. **Raspar PLs**: `python -m sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json`
+1. **Descobrir SAPLs**: `python -m tools.sapl_finder --strategy all --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json`
+2. **Raspar PLs**: `python -m tools.sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json`
 3. **Gerar ações (ementa -> ação)** com o modelo `thiagoambiel/ptt5v2-pl-text2action` usando o notebook `citymanager-ptt5-v2-text2action-inference-on-pls.py`, produzindo `pl_actions.jsonl`.
 4. **Montar o dataset final** (`dataset.npy`) combinando `pl.jsonl` + `pl_actions.jsonl` e gerando embeddings (veja `CityManager_Build_the_Base_Action_Recommendation_Dataset.py`).
 5. **(Opcional)** Rodar análises e geração de políticas com `CityManager_Correlation_Between_Policies_and_Indicators.py`.
@@ -120,14 +122,26 @@ for p in policies[:5]:
     print(f"  ações: {len(p['actions'])}")
 ```
 
+## API FastAPI
+- Instale dependências: `pip install -r requirements.txt` (inclui FastAPI, uvicorn, pandas/numpy, sentence-transformers e torch).
+- Suba o servidor local: `uvicorn api.main:app --reload --port 8000`.
+  - Variáveis de ambiente úteis: `DATASET_PATH`, `SENTENCE_MODEL_NAME`, `CRIMINAL_INDICATOR_PATH`, `CRIMINAL_INDICATOR_CITY_COL`, `CRIMINAL_INDICATOR_VALUE_COL`.
+- Endpoints principais:
+  - `GET /health`: status e indicadores carregados.
+  - `GET /indicators`: indicadores registrados (ex.: `criminal_indicator` lido de `data/criminal_indicator.csv`).
+  - `POST /search`: body `{"query": "...", "top_k": 5}` retorna PLs semanticamente similares (inclui `index` para reuso).
+  - `POST /indicator-effects`: body `{"indicator": "criminal_indicator", "bill_indexes": [1,2,3]}` devolve apenas os PLs com dados de indicador + delta calculado.
+  - `POST /policies`: body `{"indicator": "criminal_indicator", "bill_indexes": [...], "min_group_members": 2, "similarity_threshold": 0.75}` gera políticas a partir dos efeitos.
+- Fluxo sugerido: `/search` → `index` dos resultados → `/indicator-effects` → `/policies`.
+
 ## CLI rápida (finder/scrapper)
 - Descobrir SAPLs:
   ```bash
-  python -m sapl_finder --strategy all --concurrency 200 --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json
+  python -m tools.sapl_finder --strategy all --concurrency 200 --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json
   ```
 - Raspar PLs:
   ```bash
-  python -m sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json
+  python -m tools.sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json
   ```
 
 ## Observações

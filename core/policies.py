@@ -57,6 +57,21 @@ def compute_mean_and_std(values: List[float]) -> Tuple[float, float]:
     return mean(values), stdev(values)
 
 
+def _best_members_per_city(members: List[Tuple[str, str, float, float]]) -> List[Tuple[str, str, float, float]]:
+    """
+    Mantém apenas uma entrada por município, escolhendo o melhor efeito.
+
+    Para os indicadores atuais, efeito menor (mais negativo) indica melhora,
+    então escolhemos o valor mínimo.
+    """
+    best: Dict[str, Tuple[str, str, float, float]] = {}
+    for mun, frase, score, sim in members:
+        current = best.get(mun)
+        if current is None or score < current[2]:
+            best[mun] = (mun, frase, score, sim)
+    return list(best.values())
+
+
 def generate_policies_from_bills(
     bills: List[Tuple[str, str, float]],
     min_group_members: int = 2,
@@ -70,7 +85,7 @@ def generate_policies_from_bills(
     policies: List[Dict[str, Any]] = []
 
     for g in groups:
-        members = g["members"]
+        members = _best_members_per_city(g["members"])
 
         if len(members) < min_group_members:
             continue

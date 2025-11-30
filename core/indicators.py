@@ -35,7 +35,7 @@ def compute_effects_from_indicator(
         uf = str(row['uf']).upper()
 
         current = lookup.get((city, uf, year, semester))
-        next_key = (city, uf, year, 2) if semester == 1 else (city, year + 1, 1)
+        next_key = (city, uf, year, 2) if semester == 1 else (city, uf, year + 1, 1)
         future = lookup.get(next_key)
 
         if current is None or future is None:
@@ -45,4 +45,3 @@ def compute_effects_from_indicator(
         results.append((row["municipio"], row.get("acao", ""), delta))
 
     return results
-
