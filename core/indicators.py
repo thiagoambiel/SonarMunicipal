@@ -22,7 +22,7 @@ def compute_effects_from_indicator(
     """
     lookup: Dict[Tuple[str, int, int], float] = {}
     for _, row in indicator_df.iterrows():
-        key = (str(row[city_col]).upper(), int(row["ano"]), int(row["semestre"]))
+        key = (str(row[city_col]).upper(), str(row['uf']), int(row["ano"]), int(row["semestre"]))
         lookup[key] = float(row[value_col])
 
     results: List[Tuple[str, str, float]] = []
@@ -32,9 +32,10 @@ def compute_effects_from_indicator(
 
         year, semester = _encode_semester(str(row["data_apresentacao"]))
         city = str(row["municipio"]).upper()
+        uf = str(row['uf']).upper()
 
-        current = lookup.get((city, year, semester))
-        next_key = (city, year, 2) if semester == 1 else (city, year + 1, 1)
+        current = lookup.get((city, uf, year, semester))
+        next_key = (city, uf, year, 2) if semester == 1 else (city, year + 1, 1)
         future = lookup.get(next_key)
 
         if current is None or future is None:

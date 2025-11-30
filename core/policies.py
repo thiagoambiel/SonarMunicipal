@@ -1,6 +1,7 @@
 from statistics import mean, stdev
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from .criterion import by_win_rate
 from .text import jaccard_similarity, normalize_and_tokenize
 
 
@@ -56,25 +57,11 @@ def compute_mean_and_std(values: List[float]) -> Tuple[float, float]:
     return mean(values), stdev(values)
 
 
-def compute_policy_quality(scores: List[float]) -> float:
-    """
-    Combina fração de municípios com efeito negativo e magnitude média do efeito.
-    """
-    if not scores:
-        return 0.0
-
-    n = len(scores)
-    neg_count = sum(1 for s in scores if s < 0)
-    fraction_neg = neg_count / n if n else 0.0
-    effect_mean = mean(scores)
-    quality = fraction_neg * (-effect_mean)
-    return max(0.0, quality)
-
-
 def generate_policies_from_bills(
     bills: List[Tuple[str, str, float]],
     min_group_members: int = 2,
     similarity_threshold: float = 0.75,
+    criterion: Callable[[List[float]], float] = by_win_rate,
 ) -> List[Dict[str, Any]]:
     """
     Recebe (municipio, descricao_PL, efeito) e devolve candidatos a políticas.
@@ -91,7 +78,7 @@ def generate_policies_from_bills(
         scores = [s for (_, _, s, _) in members]
 
         effect_mean, effect_std = compute_mean_and_std(scores)
-        quality_score = compute_policy_quality(scores)
+        quality_score = criterion(scores) if criterion else 0.0
         actions = [(mun, frase, score) for (mun, frase, score, _) in members]
 
         policies.append({
