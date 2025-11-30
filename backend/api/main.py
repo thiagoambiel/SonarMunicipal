@@ -1,6 +1,7 @@
 from typing import Dict, List
 
 from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 
 from .config import Settings
 from .resources import CoreResources
@@ -19,6 +20,22 @@ app = FastAPI(
     title="CityManager API",
     version="0.1.0",
     description="API para busca semântica de PLs e geração de políticas públicas.",
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:4173",
+        "http://127.0.0.1:4173",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:3001",
+        "http://127.0.0.1:3001",
+    ],
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -104,4 +121,3 @@ def generate_policies(
 
     policies = generate_policies_from_indexes(payload, resources)
     return PolicyGenerationResponse(indicator=payload.indicator, total_candidates=len(policies), policies=policies)
-

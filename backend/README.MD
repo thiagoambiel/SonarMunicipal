@@ -2,6 +2,8 @@
 
 Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, transformar ementas em ações operacionais e gerar recomendações de políticas públicas com busca semântica e análise de indicadores.
 
+> Estrutura atualizada: todo o backend está agora dentro de `backend/`. Considere os caminhos e comandos abaixo relativos a essa pasta.
+
 ## Para que serve
 - Montar um dataset estruturado de projetos de lei + ações executáveis geradas por IA.
 - Localizar rapidamente PLs semelhantes a uma necessidade (“query → PLs”).
