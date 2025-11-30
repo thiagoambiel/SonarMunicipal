@@ -355,6 +355,21 @@ textarea {
   font-size: 12px;
 }
 
+.policy-details-btn {
+  margin-top: 8px;
+  border: 1px solid #dadce0;
+  background: #f8f9fa;
+  color: #1a73e8;
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.policy-details-btn:hover {
+  background: #f1f3f4;
+}
+
 @media (max-width: 720px) {
   .page.google-layout {
     padding: 48px 12px 32px;

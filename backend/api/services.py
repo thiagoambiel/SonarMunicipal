@@ -120,6 +120,8 @@ def _build_bill_tuples(
         bill = resources.dataset[int(idx)]
         municipio = str(bill.get("municipio") or "")
         acao = str(bill.get("acao") or "")
+        data_apresentacao = bill.get("data_apresentacao")
+        ementa = bill.get("ementa")
         url = str(bill.get("link_publico") or bill.get("sapl_url") or bill.get("url") or "").strip() or None
         if url:
             cleaned = url.rstrip("/")
@@ -146,6 +148,10 @@ def _build_bill_tuples(
             current["effect"] = effect_value if prev_effect is None else min(float(prev_effect), effect_value)
         if url:
             current["url"] = url
+        if data_apresentacao:
+            current["data_apresentacao"] = data_apresentacao
+        if ementa:
+            current["ementa"] = ementa
         if current:
             action_meta[key] = current
 
@@ -180,6 +186,8 @@ def generate_policies_from_indexes(
                 PolicyAction(
                     municipio=mun,
                     acao=desc,
+                    data_apresentacao=str(meta.get("data_apresentacao")) if meta.get("data_apresentacao") else None,
+                    ementa=str(meta.get("ementa")) if meta.get("ementa") else None,
                     effect=action_effect if action_effect is None else float(action_effect),
                     url=meta.get("url") if isinstance(meta.get("url"), str) else None,
                 )

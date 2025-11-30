@@ -3,6 +3,7 @@
 import Link from "next/link";
 import type { FormEvent } from "react";
 import { useEffect, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 
 type IndicatorDescriptor = {
   id: string;
@@ -65,6 +66,7 @@ const suggestionPrompts = [
 const MAX_RESULTS = 500;
 
 export default function Home() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -191,6 +193,27 @@ export default function Home() {
     void fetchPolicies();
   }, [results, useIndicator, selectedIndicator, hasSearched]);
 
+  const makeSlug = (text: string) =>
+    text
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "") || "politica";
+
+  const handleViewDetails = (policy: PolicySuggestion) => {
+    const slug = makeSlug(policy.policy);
+    const payload = {
+      policy,
+      used_indicator: policiesUseIndicator,
+    };
+    try {
+      sessionStorage.setItem(`policy-detail-${slug}`, JSON.stringify(payload));
+    } catch (error) {
+      console.error("Erro ao salvar política", error);
+    }
+    router.push(`/policy/${slug}`);
+  };
+
   return (
     <div className="page google-layout">
       <div className="google-box">
@@ -291,7 +314,7 @@ export default function Home() {
                   <div className="policy-actions">
                     <p className="policy-actions-title">Aplicada em:</p>
                     <ul>
-                      {policy.actions.map((action) => (
+                      {policy.actions.slice(0, 4).map((action) => (
                         <li key={`${policy.policy}-${action.municipio}-${action.acao}`}>
                           {action.url ? (
                             <a href={action.url} target="_blank" rel="noreferrer">
@@ -306,6 +329,18 @@ export default function Home() {
                         </li>
                       ))}
                     </ul>
+                    {policy.actions.length > 4 && (
+                      <p className="policy-count muted">
+                        +{policy.actions.length - 4} municípios
+                      </p>
+                    )}
+                    <button
+                      className="policy-details-btn"
+                      type="button"
+                      onClick={() => handleViewDetails(policy)}
+                    >
+                      Ver detalhes
+                    </button>
                   </div>
                 </article>
               ))}

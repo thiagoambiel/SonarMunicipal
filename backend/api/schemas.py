@@ -58,6 +58,8 @@ class PolicyGenerationRequest(BaseModel):
 class PolicyAction(BaseModel):
     municipio: str
     acao: str
+    data_apresentacao: Optional[str] = Field(None, description="Data de apresentação do PL (se disponível)")
+    ementa: Optional[str] = Field(None, description="Ementa original do PL (se disponível)")
     effect: Optional[float] = Field(None, description="Efeito no indicador (se calculado)")
     url: Optional[str] = Field(None, description="Link oficial do projeto de lei (se disponível)")
 
