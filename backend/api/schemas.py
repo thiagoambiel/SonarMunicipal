@@ -46,7 +46,8 @@ class IndicatorFilterResponse(BaseModel):
 
 
 class PolicyGenerationRequest(BaseModel):
-    indicator: str = Field(..., description="Identificador do indicador a ser usado")
+    indicator: Optional[str] = Field(None, description="Identificador do indicador a ser usado (opcional)")
+    use_indicator: bool = Field(False, description="Se true, calcula efeitos usando o indicador escolhido")
     bill_indexes: List[int] = Field(..., min_items=1, description="Índices dos PLs retornados na busca")
     min_group_members: int = Field(2, ge=1, description="Tamanho mínimo para formar um grupo de ações")
     similarity_threshold: float = Field(
@@ -57,19 +58,21 @@ class PolicyGenerationRequest(BaseModel):
 class PolicyAction(BaseModel):
     municipio: str
     acao: str
-    effect: float
+    effect: Optional[float] = Field(None, description="Efeito no indicador (se calculado)")
+    url: Optional[str] = Field(None, description="Link oficial do projeto de lei (se disponível)")
 
 
 class PolicySuggestion(BaseModel):
     policy: str
-    effect_mean: float
-    effect_std: float
-    quality_score: float
+    effect_mean: Optional[float] = Field(None, description="Média dos efeitos (se indicador foi usado)")
+    effect_std: Optional[float] = Field(None, description="Desvio padrão dos efeitos (se indicador foi usado)")
+    quality_score: Optional[float] = Field(None, description="Score de qualidade (se indicador foi usado)")
     actions: List[PolicyAction]
 
 
 class PolicyGenerationResponse(BaseModel):
-    indicator: str
+    indicator: Optional[str]
+    used_indicator: bool
     total_candidates: int
     policies: List[PolicySuggestion]
 

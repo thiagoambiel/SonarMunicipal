@@ -114,10 +114,18 @@ def generate_policies(
     payload: PolicyGenerationRequest,
     resources: CoreResources = Depends(get_resources),
 ) -> PolicyGenerationResponse:
-    try:
-        resources.settings.get_indicator(payload.indicator)
-    except KeyError as exc:
-        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    use_indicator = bool(payload.use_indicator and payload.indicator)
+
+    if use_indicator:
+        try:
+            resources.settings.get_indicator(payload.indicator or "")
+        except KeyError as exc:
+            raise HTTPException(status_code=404, detail=str(exc)) from exc
 
     policies = generate_policies_from_indexes(payload, resources)
-    return PolicyGenerationResponse(indicator=payload.indicator, total_candidates=len(policies), policies=policies)
+    return PolicyGenerationResponse(
+        indicator=payload.indicator if use_indicator else None,
+        used_indicator=use_indicator,
+        total_candidates=len(policies),
+        policies=policies,
+    )
