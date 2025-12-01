@@ -483,74 +483,130 @@ export default function Home() {
               </div>
 
               <div className="policy-grid">
-                {policies.map((policy) => (
-                  <article key={policy.policy} className="policy-card">
-                    <header className="policy-card-header">
-                      <div>
-                        <p className="policy-title">{policy.policy}</p>
-                        <p className="policy-count">
-                          Aplicada em {policy.actions.length} município{policy.actions.length === 1 ? "" : "s"}
-                        </p>
-                      </div>
-                    </header>
+                {policies.map((policy) => {
+                  const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
+                  const effectStd = policiesUseIndicator && policy.effect_std != null ? policy.effect_std.toFixed(2) : null;
+                  const qualityValue =
+                    policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
 
-                    {policiesUseIndicator && policy.effect_mean != null && (
-                      <div className="policy-meta">
-                        <div>
-                          <p className="label">Efeito médio</p>
-                          <p className="metric">{policy.effect_mean.toFixed(2)}</p>
+                  return (
+                    <article
+                      key={policy.policy}
+                      className="policy-card"
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => handleViewDetails(policy)}
+                      onKeyDown={(event) => {
+                        if (event.key === "Enter" || event.key === " ") {
+                          event.preventDefault();
+                          handleViewDetails(policy);
+                        }
+                      }}
+                    >
+                      <p className="policy-title">{policy.policy}</p>
+
+                      <div className="policy-badges">
+                        <div className="metric-badge">
+                          <span className="badge-label">Efeito médio ± desvio</span>
+                          <span className="badge-value">
+                            {effectAvailable ? (
+                              <>
+                                {policy.effect_mean?.toFixed(2)}
+                                {effectStd ? ` ± ${effectStd}` : ""}
+                              </>
+                            ) : (
+                              "Não calculado"
+                            )}
+                          </span>
                         </div>
-                        {policy.effect_std != null && (
-                          <div>
-                            <p className="label">Desvio</p>
-                            <p className="metric">{policy.effect_std.toFixed(2)}</p>
-                          </div>
-                        )}
-                        {policy.quality_score != null && (
-                          <div>
-                            <p className="label">Qualidade</p>
-                            <p className="metric">{policy.quality_score.toFixed(2)}</p>
-                          </div>
-                        )}
-                        <p className="hint">Impacto estimado com base no indicador selecionado.</p>
+                        <div className="metric-badge soft">
+                          <span className="badge-label">Qualidade</span>
+                          <span className="badge-value">{qualityValue}</span>
+                        </div>
                       </div>
-                    )}
 
-                    <div className="policy-actions">
-                      <p className="policy-actions-title">Cidades com a política aplicada</p>
-                      <ul>
-                        {policy.actions.slice(0, 4).map((action) => (
-                          <li key={`${policy.policy}-${action.municipio}-${action.acao}`}>
-                            <div className="city-block">
-                              {action.url ? (
-                                <a href={action.url} target="_blank" rel="noreferrer">
-                                  {action.municipio}
-                                </a>
-                              ) : (
+                      <p className="policy-count">
+                        Política aplicada em {policy.actions.length} município
+                        {policy.actions.length === 1 ? "" : "s"}:
+                      </p>
+
+                      <ul className="policy-city-list">
+                        {policy.actions.map((action) => {
+                          const effectLabel =
+                            policiesUseIndicator && action.effect != null
+                              ? `Efeito ${action.effect.toFixed(2)}`
+                              : "Sem indicador";
+
+                          return (
+                            <li
+                              key={`${policy.policy}-${action.municipio}-${action.acao}`}
+                              className="policy-city-item"
+                            >
+                              <div className="city-name">
                                 <span>{action.municipio}</span>
-                              )}
-                              {policiesUseIndicator && action.effect != null && (
-                                <span className="pill-effect">Efeito: {action.effect.toFixed(2)}</span>
-                              )}
-                            </div>
-                          </li>
-                        ))}
+                                {action.url && (
+                                  <a
+                                    href={action.url}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="city-link"
+                                    onClick={(event) => event.stopPropagation()}
+                                    aria-label={`Abrir ementa original de ${action.municipio}`}
+                                  >
+                                    <svg
+                                      width="14"
+                                      height="14"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      aria-hidden="true"
+                                    >
+                                      <path
+                                        d="M14 4H20V10"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M10 14L20 4"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                      <path
+                                        d="M20 14V20H4V4H10"
+                                        stroke="currentColor"
+                                        strokeWidth="2"
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                      />
+                                    </svg>
+                                  </a>
+                                )}
+                              </div>
+                              <span className="city-effect">{effectLabel}</span>
+                            </li>
+                          );
+                        })}
                       </ul>
-                      {policy.actions.length > 4 && (
-                        <p className="policy-count muted">+{policy.actions.length - 4} municípios</p>
-                      )}
-                      <div className="policy-ctas">
+
+                      <div className="policy-card-footer">
                         <button
                           className="secondary-btn"
                           type="button"
-                          onClick={() => handleViewDetails(policy)}
+                          onClick={(event) => {
+                            event.stopPropagation();
+                            handleViewDetails(policy);
+                          }}
                         >
-                          Ver detalhes completos
+                          Ver detalhes
                         </button>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  );
+                })}
               </div>
             </section>
           )}
