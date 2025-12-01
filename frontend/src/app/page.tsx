@@ -615,7 +615,7 @@ export default function Home() {
                         {policy.actions.map((action) => {
                           const effectLabel =
                             policiesUseIndicator && action.effect != null
-                              ? `Efeito em ${effectWindowMonths}m: ${formatEffectValue(action.effect)}`
+                              ? `Efeito: ${formatEffectValue(action.effect)}`
                               : "Sem indicador";
                           const effectTone = getEffectTone(action.effect);
 
