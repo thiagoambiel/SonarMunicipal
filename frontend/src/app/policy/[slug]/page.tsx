@@ -89,6 +89,15 @@ export default function PolicyDetailPage() {
     return value > 0 ? `+${fixed}` : fixed;
   };
 
+  const effectNarrative = (value?: number | null) => {
+    if (value == null) return "Não calculado";
+    if (value === 0) return "Sem variação estimada";
+    const magnitude = Math.abs(value).toFixed(2);
+    const target = indicatorAlias || "indicador selecionado";
+    const direction = value < 0 ? "Redução" : "Aumento";
+    return `${direction} de ${magnitude} na ${target}`;
+  };
+
   const getEffectTone = (value?: number | null) => {
     if (!used_indicator || value == null) return "effect-neutral";
     if (value === 0) return "effect-neutral";
@@ -132,8 +141,8 @@ export default function PolicyDetailPage() {
               <div className="hero-badges">
                 {used_indicator && <span className="pill neutral">{indicatorAlias || "Indicador ativado"}</span>}
                 {used_indicator && (
-                  <span className={`pill ${indicatorPositiveIsGood ? "success" : "danger"}`}>
-                    {indicatorPositiveIsGood ? "Positivo melhora indicador" : "Positivo piora indicador"}
+                  <span className={`pill ${indicatorPositiveIsGood ? "success" : "info"}`}>
+                    {indicatorPositiveIsGood ? "Objetivo é aumentar o indicador" : "Objetivo é reduzir o indicador"}
                   </span>
                 )}
                 <span className="pill neutral">Fonte: projetos públicos</span>
@@ -151,7 +160,7 @@ export default function PolicyDetailPage() {
               <div className="stat-card">
                 <p className="stat-label">Efeito médio</p>
                 <p className={`stat-value ${getEffectTone(policy.effect_mean)}`}>
-                  {used_indicator && policy.effect_mean != null ? formatEffectValue(policy.effect_mean) : "Não calculado"}
+                  {used_indicator ? effectNarrative(policy.effect_mean) : "Não calculado"}
                 </p>
                 <p className="stat-detail">Estimativa com base no indicador selecionado.</p>
               </div>
@@ -184,13 +193,49 @@ export default function PolicyDetailPage() {
               {policy.actions.map((action) => (
                 <div key={`${policy.policy}-${action.municipio}-${action.acao}`} className="table-row">
                   <div>
-                    {action.url ? (
-                      <a href={action.url} target="_blank" rel="noreferrer" className="strong">
-                        {action.municipio}
-                      </a>
-                    ) : (
-                      <p className="strong">{action.municipio}</p>
-                    )}
+                    <div className="city-block">
+                      <span className="strong">{action.municipio}</span>
+                      {action.url && (
+                        <a
+                          href={action.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="city-link"
+                          aria-label={`Abrir ementa de ${action.municipio}`}
+                        >
+                          <svg
+                            width="14"
+                            height="14"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            aria-hidden="true"
+                          >
+                            <path
+                              d="M14 4H20V10"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M10 14L20 4"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                            <path
+                              d="M20 14V20H4V4H10"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            />
+                          </svg>
+                        </a>
+                      )}
+                    </div>
                     {action.ementa && <p className="muted small">{action.ementa}</p>}
                   </div>
                   <p>{action.acao}</p>

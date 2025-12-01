@@ -246,6 +246,11 @@ textarea {
   color: var(--muted);
 }
 
+.pill.info {
+  background: #e8f1ff;
+  color: #1952a2;
+}
+
 .pill.success {
   background: #e5f6ee;
   color: #0f9d58;
