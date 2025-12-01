@@ -84,3 +84,5 @@ class IndicatorDescriptor(BaseModel):
     path: str
     city_col: str
     value_col: str
+    alias: str
+    positive_is_good: bool

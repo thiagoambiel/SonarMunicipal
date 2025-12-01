@@ -25,6 +25,7 @@ type StoredPolicy = {
   policy: PolicySuggestion;
   used_indicator: boolean;
   indicator_positive_is_good?: boolean;
+  indicator_alias?: string;
 };
 
 export default function PolicyDetailPage() {
@@ -80,6 +81,7 @@ export default function PolicyDetailPage() {
 
   const { policy, used_indicator } = data;
   const indicatorPositiveIsGood = data.indicator_positive_is_good ?? true;
+  const indicatorAlias = data.indicator_alias ?? "";
 
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
@@ -128,7 +130,7 @@ export default function PolicyDetailPage() {
                 para seu contexto. Revise os precedentes e adapte ao seu plano de implementação.
               </p>
               <div className="hero-badges">
-                {used_indicator && <span className="pill neutral">Indicador ativado</span>}
+                {used_indicator && <span className="pill neutral">{indicatorAlias || "Indicador ativado"}</span>}
                 {used_indicator && (
                   <span className={`pill ${indicatorPositiveIsGood ? "success" : "danger"}`}>
                     {indicatorPositiveIsGood ? "Positivo melhora indicador" : "Positivo piora indicador"}

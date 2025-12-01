@@ -424,38 +424,6 @@ textarea {
   flex-wrap: wrap;
 }
 
-.direction-switch {
-  display: inline-flex;
-  gap: 6px;
-}
-
-.direction-btn {
-  padding: 6px 10px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--muted);
-  cursor: pointer;
-  font-weight: 600;
-  transition: all 0.15s ease;
-}
-
-.direction-btn:hover:not(:disabled) {
-  color: var(--primary);
-  border-color: #cfd8e6;
-}
-
-.direction-btn.active {
-  background: #e7f1ff;
-  color: var(--primary-strong);
-  border-color: #c7d5ef;
-}
-
-.direction-btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
 .direction-flag {
   display: inline-flex;
   align-items: center;

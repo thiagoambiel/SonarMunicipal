@@ -79,6 +79,8 @@ def list_indicators(resources: CoreResources = Depends(get_resources)) -> List[I
                 path=spec.path,
                 city_col=spec.city_col,
                 value_col=spec.value_col,
+                alias=spec.alias or key,
+                positive_is_good=spec.positive_is_good,
             )
         )
     return descriptors

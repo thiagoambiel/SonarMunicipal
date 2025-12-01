@@ -12,6 +12,8 @@ class IndicatorSpec:
     path: str
     city_col: str = "municipio_norm"
     value_col: str = "taxa_homicidios_100k"
+    alias: str = ""
+    positive_is_good: bool = True
 
 
 def _default_indicator_specs() -> Dict[str, "IndicatorSpec"]:
@@ -24,6 +26,8 @@ def _default_indicator_specs() -> Dict[str, "IndicatorSpec"]:
             path=os.getenv("CRIMINAL_INDICATOR_PATH", "data/criminal_indicator.csv"),
             city_col=os.getenv("CRIMINAL_INDICATOR_CITY_COL", "municipio_norm"),
             value_col=os.getenv("CRIMINAL_INDICATOR_VALUE_COL", "taxa_homicidios_100k"),
+            alias="Taxa de Homicídios por 100 mil Habitantes",
+            positive_is_good=False,
         ),
     }
 
@@ -44,4 +48,3 @@ class Settings:
         if key not in self.indicators:
             raise KeyError(f"Indicador '{key}' não registrado")
         return self.indicators[key]
-

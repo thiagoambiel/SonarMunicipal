@@ -10,7 +10,8 @@ type IndicatorDescriptor = {
   path: string;
   city_col: string;
   value_col: string;
-  positive_is_good?: boolean;
+  alias: string;
+  positive_is_good: boolean;
 };
 
 type SearchResult = {
@@ -68,6 +69,7 @@ type HomePageState = {
   filterUf: string;
   filterYear: string;
   indicatorPositiveIsGood: boolean;
+  indicatorAlias: string;
 };
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000").replace(
@@ -106,6 +108,7 @@ export default function Home() {
   const skipPolicyFetchRef = useRef(false);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
+  const [indicatorAlias, setIndicatorAlias] = useState("");
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
 
@@ -171,6 +174,15 @@ export default function Home() {
     };
     loadIndicators();
   }, []);
+
+  useEffect(() => {
+    if (!useIndicator || !selectedIndicator) return;
+    const found = indicators.find((indicator) => indicator.id === selectedIndicator);
+    if (found) {
+      setIndicatorAlias(found.alias || found.id);
+      setIndicatorPositiveIsGood(found.positive_is_good);
+    }
+  }, [indicators, selectedIndicator, useIndicator]);
 
   const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -307,6 +319,7 @@ export default function Home() {
       setUseIndicator(Boolean(stored.useIndicator));
       setSelectedIndicator(stored.selectedIndicator ?? "");
       setIndicatorPositiveIsGood(stored.indicatorPositiveIsGood ?? true);
+      setIndicatorAlias(stored.indicatorAlias ?? "");
       setPolicies(stored.policies ?? []);
       setPoliciesStatus(stored.policiesStatus ?? "idle");
       setPoliciesError(stored.policiesError ?? null);
@@ -338,6 +351,7 @@ export default function Home() {
       useIndicator,
       selectedIndicator,
       indicatorPositiveIsGood,
+      indicatorAlias,
       policies,
       policiesStatus,
       policiesError,
@@ -362,6 +376,7 @@ export default function Home() {
     useIndicator,
     selectedIndicator,
     indicatorPositiveIsGood,
+    indicatorAlias,
     policies,
     policiesStatus,
     policiesError,
@@ -385,6 +400,7 @@ export default function Home() {
       policy,
       used_indicator: policiesUseIndicator,
       indicator_positive_is_good: indicatorPositiveIsGood,
+      indicator_alias: indicatorAlias,
     };
     try {
       sessionStorage.setItem(`policy-detail-${slug}`, JSON.stringify(payload));
@@ -558,9 +574,11 @@ export default function Home() {
                       setSelectedIndicator(value);
                       const found = indicators.find((indicator) => indicator.id === value);
                       if (found) {
-                        setIndicatorPositiveIsGood(found.positive_is_good ?? true);
+                        setIndicatorPositiveIsGood(found.positive_is_good);
+                        setIndicatorAlias(found.alias || found.id);
                       } else {
                         setIndicatorPositiveIsGood(true);
+                        setIndicatorAlias("");
                       }
                     }}
                     disabled={!useIndicator}
@@ -569,37 +587,27 @@ export default function Home() {
                     <option value="">Sem indicador</option>
                     {indicators.map((indicator) => (
                       <option key={indicator.id} value={indicator.id}>
-                        {indicator.id}
+                        {indicator.alias || indicator.id}
                       </option>
                     ))}
                   </select>
                   <p className="hint">
                     Ative para simular impacto esperado usando dados históricos do indicador escolhido.
                   </p>
-                  <div className="indicator-direction">
-                    <span className="muted small">Valores positivos são:</span>
-                    <div className="direction-switch">
-                      <button
-                        type="button"
-                        className={`direction-btn ${indicatorPositiveIsGood ? "active" : ""}`}
-                        onClick={() => setIndicatorPositiveIsGood(true)}
-                        disabled={!useIndicator}
-                      >
-                        Bons
-                      </button>
-                      <button
-                        type="button"
-                        className={`direction-btn ${!indicatorPositiveIsGood ? "active" : ""}`}
-                        onClick={() => setIndicatorPositiveIsGood(false)}
-                        disabled={!useIndicator}
-                      >
-                        Ruins (melhor reduzir)
-                      </button>
+                  {useIndicator && selectedIndicator && (
+                    <div className="indicator-direction">
+                      <span className={`direction-flag ${indicatorPositiveIsGood ? "good" : "bad"}`}>
+                        {indicatorPositiveIsGood
+                          ? "Valores positivos melhoram o indicador"
+                          : "Valores positivos pioram o indicador (reduzir é bom)"}
+                      </span>
+                      {indicatorAlias && (
+                        <span className="muted small" aria-label="Nome do indicador selecionado">
+                          {indicatorAlias}
+                        </span>
+                      )}
                     </div>
-                    <span className={`direction-flag ${indicatorPositiveIsGood ? "good" : "bad"}`}>
-                      {indicatorPositiveIsGood ? "Positivo melhora o indicador" : "Positivo piora o indicador"}
-                    </span>
-                  </div>
+                  )}
                 </div>
               </div>
             </form>
