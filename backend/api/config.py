@@ -14,6 +14,7 @@ class IndicatorSpec:
     value_col: str = "taxa_homicidios_100k"
     alias: str = ""
     positive_is_good: bool = True
+    min_value: float = 0.0
 
 
 def _default_indicator_specs() -> Dict[str, "IndicatorSpec"]:
@@ -28,6 +29,7 @@ def _default_indicator_specs() -> Dict[str, "IndicatorSpec"]:
             value_col=os.getenv("CRIMINAL_INDICATOR_VALUE_COL", "taxa_homicidios_100k"),
             alias="Taxa de Homicídios por 100 mil Habitantes",
             positive_is_good=False,
+            min_value=5,
         ),
     }
 

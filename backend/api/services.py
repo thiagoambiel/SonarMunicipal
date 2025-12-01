@@ -94,6 +94,10 @@ def compute_effects_for_indexes(
         if current is None or future is None:
             continue
 
+        if current < spec.min_value:
+            # Indicador abaixo do mínimo configurado na data de apresentação do PL.
+            continue
+
         try:
             delta = float(_percent_change(current, future))
         except ZeroDivisionError:

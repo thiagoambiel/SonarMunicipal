@@ -28,6 +28,7 @@ def compute_effects_from_indicator(
     city_col: str = "municipio_norm",
     value_col: str = "taxa_homicidios_100k",
     effect_window_months: int = 6,
+    min_value: float = 0.0,
 ) -> List[Tuple[str, str, float]]:
     """
     Calcula variação percentual do indicador entre semestres para cada PL.
@@ -35,6 +36,7 @@ def compute_effects_from_indicator(
     bills: sequência com 'municipio', 'data_apresentacao' (YYYY-MM-DD) e 'acao'.
     indicator_df: DataFrame com colunas cidade, ano, semestre e valor do indicador.
     effect_window_months: janela temporal para comparar o indicador (múltiplos de 6 meses).
+    min_value: valor mínimo do indicador para considerar o município elegível.
     """
     lookup: Dict[Tuple[str, int, int], float] = {}
     for _, row in indicator_df.iterrows():
@@ -56,6 +58,10 @@ def compute_effects_from_indicator(
         future = lookup.get((city, uf, future_year, future_semester))
 
         if current is None or future is None:
+            continue
+
+        if current < min_value:
+            # Ignora municípios cujo indicador está abaixo do mínimo na data de apresentação.
             continue
 
         try:

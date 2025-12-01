@@ -12,6 +12,7 @@ type IndicatorDescriptor = {
   value_col: string;
   alias: string;
   positive_is_good: boolean;
+  min_value: number;
 };
 
 type SearchResult = {

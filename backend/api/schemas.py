@@ -98,3 +98,4 @@ class IndicatorDescriptor(BaseModel):
     value_col: str
     alias: str
     positive_is_good: bool
+    min_value: float
