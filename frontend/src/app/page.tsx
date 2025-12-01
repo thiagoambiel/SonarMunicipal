@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { FormEvent } from "react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 
 type IndicatorDescriptor = {
@@ -50,6 +50,24 @@ type PolicyResponse = {
   policies: PolicySuggestion[];
 };
 
+type HomePageState = {
+  query: string;
+  results: SearchResult[];
+  status: "idle" | "loading" | "error";
+  errorMessage: string | null;
+  hasSearched: boolean;
+  lastQuery: string;
+  useIndicator: boolean;
+  selectedIndicator: string;
+  policies: PolicySuggestion[];
+  policiesStatus: "idle" | "loading" | "error";
+  policiesError: string | null;
+  policiesUseIndicator: boolean;
+  suggestionsVisible: boolean;
+  filterUf: string;
+  filterYear: string;
+};
+
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000").replace(
   /\/$/,
   "",
@@ -83,6 +101,8 @@ export default function Home() {
   const [suggestionsVisible, setSuggestionsVisible] = useState(true);
   const [filterUf, setFilterUf] = useState<string>("all");
   const [filterYear, setFilterYear] = useState<string>("all");
+  const skipPolicyFetchRef = useRef(false);
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
 
@@ -184,6 +204,8 @@ export default function Home() {
   };
 
   useEffect(() => {
+    if (!hasHydrated) return;
+
     const fetchPolicies = async () => {
       if (!hasSearched || results.length === 0) {
         setPolicies([]);
@@ -238,8 +260,97 @@ export default function Home() {
       }
     };
 
+    if (skipPolicyFetchRef.current) {
+      skipPolicyFetchRef.current = false;
+      return;
+    }
+
     void fetchPolicies();
-  }, [results, filteredResults, useIndicator, selectedIndicator, hasSearched, hasActiveFilters]);
+  }, [results, filteredResults, useIndicator, selectedIndicator, hasSearched, hasActiveFilters, hasHydrated]);
+
+  useLayoutEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("home-page-state");
+      if (!raw) {
+        setHasHydrated(true);
+        return;
+      }
+      const stored = JSON.parse(raw) as Partial<HomePageState>;
+      if (!stored) {
+        setHasHydrated(true);
+        return;
+      }
+
+      setQuery(stored.query ?? "");
+      setResults(stored.results ?? []);
+      setStatus(stored.status ?? "idle");
+      setErrorMessage(stored.errorMessage ?? null);
+      setHasSearched(Boolean(stored.hasSearched));
+      setLastQuery(stored.lastQuery ?? "");
+      setUseIndicator(Boolean(stored.useIndicator));
+      setSelectedIndicator(stored.selectedIndicator ?? "");
+      setPolicies(stored.policies ?? []);
+      setPoliciesStatus(stored.policiesStatus ?? "idle");
+      setPoliciesError(stored.policiesError ?? null);
+      setPoliciesUseIndicator(Boolean(stored.policiesUseIndicator));
+      setSuggestionsVisible(stored.suggestionsVisible ?? true);
+      setFilterUf(stored.filterUf ?? "all");
+      setFilterYear(stored.filterYear ?? "all");
+
+      if (stored.policies && stored.policies.length > 0) {
+        skipPolicyFetchRef.current = true;
+      }
+    } catch (error) {
+      console.error("Erro ao restaurar estado anterior", error);
+    } finally {
+      setHasHydrated(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) return;
+
+    const state: HomePageState = {
+      query,
+      results,
+      status,
+      errorMessage,
+      hasSearched,
+      lastQuery,
+      useIndicator,
+      selectedIndicator,
+      policies,
+      policiesStatus,
+      policiesError,
+      policiesUseIndicator,
+      suggestionsVisible,
+      filterUf,
+      filterYear,
+    };
+
+    try {
+      sessionStorage.setItem("home-page-state", JSON.stringify(state));
+    } catch (error) {
+      console.error("Erro ao salvar estado", error);
+    }
+  }, [
+    query,
+    results,
+    status,
+    errorMessage,
+    hasSearched,
+    lastQuery,
+    useIndicator,
+    selectedIndicator,
+    policies,
+    policiesStatus,
+    policiesError,
+    policiesUseIndicator,
+    suggestionsVisible,
+    filterUf,
+    filterYear,
+    hasHydrated,
+  ]);
 
   const makeSlug = (text: string) =>
     text
