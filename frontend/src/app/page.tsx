@@ -10,6 +10,7 @@ type IndicatorDescriptor = {
   path: string;
   city_col: string;
   value_col: string;
+  positive_is_good?: boolean;
 };
 
 type SearchResult = {
@@ -66,6 +67,7 @@ type HomePageState = {
   suggestionsVisible: boolean;
   filterUf: string;
   filterYear: string;
+  indicatorPositiveIsGood: boolean;
 };
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000").replace(
@@ -103,8 +105,23 @@ export default function Home() {
   const [filterYear, setFilterYear] = useState<string>("all");
   const skipPolicyFetchRef = useRef(false);
   const [hasHydrated, setHasHydrated] = useState(false);
+  const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
+
+  const formatEffectValue = (value?: number | null) => {
+    if (value == null) return "—";
+    const fixed = value.toFixed(2);
+    return value > 0 ? `+${fixed}` : fixed;
+  };
+
+  const getEffectTone = (value?: number | null) => {
+    if (!policiesUseIndicator || value == null) return "effect-neutral";
+    if (value === 0) return "effect-neutral";
+    const isPositive = value > 0;
+    const isGood = indicatorPositiveIsGood ? isPositive : !isPositive;
+    return isGood ? "effect-good" : "effect-bad";
+  };
 
   const extractYear = (value?: string | null) => {
     if (!value) return null;
@@ -289,6 +306,7 @@ export default function Home() {
       setLastQuery(stored.lastQuery ?? "");
       setUseIndicator(Boolean(stored.useIndicator));
       setSelectedIndicator(stored.selectedIndicator ?? "");
+      setIndicatorPositiveIsGood(stored.indicatorPositiveIsGood ?? true);
       setPolicies(stored.policies ?? []);
       setPoliciesStatus(stored.policiesStatus ?? "idle");
       setPoliciesError(stored.policiesError ?? null);
@@ -319,6 +337,7 @@ export default function Home() {
       lastQuery,
       useIndicator,
       selectedIndicator,
+      indicatorPositiveIsGood,
       policies,
       policiesStatus,
       policiesError,
@@ -342,6 +361,7 @@ export default function Home() {
     lastQuery,
     useIndicator,
     selectedIndicator,
+    indicatorPositiveIsGood,
     policies,
     policiesStatus,
     policiesError,
@@ -364,6 +384,7 @@ export default function Home() {
     const payload = {
       policy,
       used_indicator: policiesUseIndicator,
+      indicator_positive_is_good: indicatorPositiveIsGood,
     };
     try {
       sessionStorage.setItem(`policy-detail-${slug}`, JSON.stringify(payload));
@@ -532,7 +553,16 @@ export default function Home() {
                   </div>
                   <select
                     value={selectedIndicator}
-                    onChange={(event) => setSelectedIndicator(event.target.value)}
+                    onChange={(event) => {
+                      const value = event.target.value;
+                      setSelectedIndicator(value);
+                      const found = indicators.find((indicator) => indicator.id === value);
+                      if (found) {
+                        setIndicatorPositiveIsGood(found.positive_is_good ?? true);
+                      } else {
+                        setIndicatorPositiveIsGood(true);
+                      }
+                    }}
                     disabled={!useIndicator}
                     aria-label="Selecionar indicador"
                   >
@@ -546,6 +576,30 @@ export default function Home() {
                   <p className="hint">
                     Ative para simular impacto esperado usando dados históricos do indicador escolhido.
                   </p>
+                  <div className="indicator-direction">
+                    <span className="muted small">Valores positivos são:</span>
+                    <div className="direction-switch">
+                      <button
+                        type="button"
+                        className={`direction-btn ${indicatorPositiveIsGood ? "active" : ""}`}
+                        onClick={() => setIndicatorPositiveIsGood(true)}
+                        disabled={!useIndicator}
+                      >
+                        Bons
+                      </button>
+                      <button
+                        type="button"
+                        className={`direction-btn ${!indicatorPositiveIsGood ? "active" : ""}`}
+                        onClick={() => setIndicatorPositiveIsGood(false)}
+                        disabled={!useIndicator}
+                      >
+                        Ruins (melhor reduzir)
+                      </button>
+                    </div>
+                    <span className={`direction-flag ${indicatorPositiveIsGood ? "good" : "bad"}`}>
+                      {indicatorPositiveIsGood ? "Positivo melhora o indicador" : "Positivo piora o indicador"}
+                    </span>
+                  </div>
                 </div>
               </div>
             </form>
@@ -599,6 +653,7 @@ export default function Home() {
                   const effectStd = policiesUseIndicator && policy.effect_std != null ? policy.effect_std.toFixed(2) : null;
                   const qualityValue =
                     policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
+                  const meanTone = getEffectTone(policy.effect_mean);
 
                   return (
                     <article
@@ -619,10 +674,10 @@ export default function Home() {
                       <div className="policy-badges">
                         <div className="metric-badge">
                           <span className="badge-label">Efeito médio ± desvio</span>
-                          <span className="badge-value">
+                          <span className={`badge-value ${meanTone}`}>
                             {effectAvailable ? (
                               <>
-                                {policy.effect_mean?.toFixed(2)}
+                                {formatEffectValue(policy.effect_mean)}
                                 {effectStd ? ` ± ${effectStd}` : ""}
                               </>
                             ) : (
@@ -645,8 +700,9 @@ export default function Home() {
                         {policy.actions.map((action) => {
                           const effectLabel =
                             policiesUseIndicator && action.effect != null
-                              ? `Efeito ${action.effect.toFixed(2)}`
+                              ? `Efeito ${formatEffectValue(action.effect)}`
                               : "Sem indicador";
+                          const effectTone = getEffectTone(action.effect);
 
                           return (
                             <li
@@ -697,7 +753,7 @@ export default function Home() {
                                   </a>
                                 )}
                               </div>
-                              <span className="city-effect">{effectLabel}</span>
+                              <span className={`city-effect ${effectTone}`}>{effectLabel}</span>
                             </li>
                           );
                         })}

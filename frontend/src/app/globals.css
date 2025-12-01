@@ -246,6 +246,16 @@ textarea {
   color: var(--muted);
 }
 
+.pill.success {
+  background: #e5f6ee;
+  color: #0f9d58;
+}
+
+.pill.danger {
+  background: #fdecea;
+  color: #c62828;
+}
+
 .pill.accent {
   background: #fff9e6;
   color: #8c6c00;
@@ -405,6 +415,67 @@ textarea {
   gap: 8px;
   color: var(--text);
   font-weight: 600;
+}
+
+.indicator-direction {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.direction-switch {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.direction-btn {
+  padding: 6px 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--muted);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+
+.direction-btn:hover:not(:disabled) {
+  color: var(--primary);
+  border-color: #cfd8e6;
+}
+
+.direction-btn.active {
+  background: #e7f1ff;
+  color: var(--primary-strong);
+  border-color: #c7d5ef;
+}
+
+.direction-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.direction-flag {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 10px;
+  padding: 4px 10px;
+  font-weight: 700;
+  font-size: 12px;
+  border: 1px solid var(--border);
+}
+
+.direction-flag.good {
+  background: #e5f6ee;
+  color: #0f9d58;
+  border-color: #c8e6d6;
+}
+
+.direction-flag.bad {
+  background: #fdecea;
+  color: #c62828;
+  border-color: #f6c7c7;
 }
 
 .hint {
@@ -604,7 +675,7 @@ textarea {
 .city-effect {
   font-size: 13px;
   font-weight: 700;
-  color: var(--primary-strong);
+  color: var(--muted);
 }
 
 .policy-card-footer {
@@ -714,6 +785,18 @@ textarea {
   margin: 0;
   font-weight: 700;
   color: var(--text);
+}
+
+.effect-good {
+  color: #0f9d58;
+}
+
+.effect-bad {
+  color: #c62828;
+}
+
+.effect-neutral {
+  color: var(--muted);
 }
 
 .info-grid {

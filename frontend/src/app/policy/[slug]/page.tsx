@@ -24,6 +24,7 @@ type PolicySuggestion = {
 type StoredPolicy = {
   policy: PolicySuggestion;
   used_indicator: boolean;
+  indicator_positive_is_good?: boolean;
 };
 
 export default function PolicyDetailPage() {
@@ -78,6 +79,21 @@ export default function PolicyDetailPage() {
   }
 
   const { policy, used_indicator } = data;
+  const indicatorPositiveIsGood = data.indicator_positive_is_good ?? true;
+
+  const formatEffectValue = (value?: number | null) => {
+    if (value == null) return "—";
+    const fixed = value.toFixed(2);
+    return value > 0 ? `+${fixed}` : fixed;
+  };
+
+  const getEffectTone = (value?: number | null) => {
+    if (!used_indicator || value == null) return "effect-neutral";
+    if (value === 0) return "effect-neutral";
+    const isPositive = value > 0;
+    const isGood = indicatorPositiveIsGood ? isPositive : !isPositive;
+    return isGood ? "effect-good" : "effect-bad";
+  };
 
   return (
     <div className="page google-layout">
@@ -113,6 +129,11 @@ export default function PolicyDetailPage() {
               </p>
               <div className="hero-badges">
                 {used_indicator && <span className="pill neutral">Indicador ativado</span>}
+                {used_indicator && (
+                  <span className={`pill ${indicatorPositiveIsGood ? "success" : "danger"}`}>
+                    {indicatorPositiveIsGood ? "Positivo melhora indicador" : "Positivo piora indicador"}
+                  </span>
+                )}
                 <span className="pill neutral">Fonte: projetos públicos</span>
               </div>
               <div className="hero-actions">
@@ -127,8 +148,8 @@ export default function PolicyDetailPage() {
             <div className="hero-panel">
               <div className="stat-card">
                 <p className="stat-label">Efeito médio</p>
-                <p className="stat-value">
-                  {used_indicator && policy.effect_mean != null ? policy.effect_mean.toFixed(2) : "Não calculado"}
+                <p className={`stat-value ${getEffectTone(policy.effect_mean)}`}>
+                  {used_indicator && policy.effect_mean != null ? formatEffectValue(policy.effect_mean) : "Não calculado"}
                 </p>
                 <p className="stat-detail">Estimativa com base no indicador selecionado.</p>
               </div>
@@ -172,8 +193,8 @@ export default function PolicyDetailPage() {
                   </div>
                   <p>{action.acao}</p>
                   <p>{action.data_apresentacao ?? "—"}</p>
-                  <p className="strong">
-                    {used_indicator && action.effect != null ? action.effect.toFixed(2) : "—"}
+                  <p className={`strong ${getEffectTone(action.effect)}`}>
+                    {used_indicator && action.effect != null ? formatEffectValue(action.effect) : "—"}
                   </p>
                 </div>
               ))}
