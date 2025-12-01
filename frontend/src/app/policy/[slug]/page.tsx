@@ -159,7 +159,7 @@ export default function PolicyDetailPage() {
             <div className="hero-panel">
               <div className="stat-card">
                 <p className="stat-label">Efeito médio</p>
-                <p className={`stat-value ${getEffectTone(policy.effect_mean)}`}>
+                <p className={`stat-value`}>
                   {used_indicator ? effectNarrative(policy.effect_mean) : "Não calculado"}
                 </p>
                 <p className="stat-detail">Estimativa com base no indicador selecionado.</p>
