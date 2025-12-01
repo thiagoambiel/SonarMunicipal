@@ -3,7 +3,7 @@
 import Link from "next/link";
 import type { FormEvent } from "react";
 import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type IndicatorDescriptor = {
   id: string;
@@ -98,6 +98,7 @@ const formatEffectWindowLabel = (months: number) => {
 
 export default function Home() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
@@ -254,10 +255,8 @@ export default function Home() {
   }, [results, selectedIndicator, effectWindowMonths, hasSearched, hasHydrated]);
 
   useLayoutEffect(() => {
-    // Limpa estado persistido quando a página é recarregada explicitamente
-    const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
-    const isReload = navEntry?.type === "reload" || (performance as Performance & { navigation?: { type?: number } }).navigation?.type === 1;
-    if (isReload) {
+    const hasQueryInUrl = Boolean(searchParams.get("q"));
+    if (!hasQueryInUrl) {
       sessionStorage.removeItem("home-page-state");
     }
 
@@ -343,6 +342,33 @@ export default function Home() {
     policiesUseIndicator,
     suggestionsVisible,
     hasHydrated,
+  ]);
+
+  useEffect(() => {
+    if (!hasHydrated || !hasSearched) return;
+
+    const params = new URLSearchParams();
+    if (lastQuery) {
+      params.set("q", lastQuery);
+    }
+    if (selectedIndicator) {
+      params.set("indicator", selectedIndicator);
+    }
+    if (policiesUseIndicator && effectWindowMonths) {
+      params.set("window", String(effectWindowMonths));
+    }
+
+    const queryString = params.toString();
+    const target = queryString ? `/?${queryString}` : "/";
+    router.replace(target, { scroll: false });
+  }, [
+    hasHydrated,
+    hasSearched,
+    lastQuery,
+    selectedIndicator,
+    effectWindowMonths,
+    policiesUseIndicator,
+    router,
   ]);
 
   const makeSlug = (text: string) =>
@@ -499,7 +525,7 @@ export default function Home() {
                   {selectedIndicator && (
                     <div className="indicator-direction">
 
-                      <span className={`direction-flag ${indicatorPositiveIsGood ? "good" : "bad"}`}>
+                      <span className={`direction-flag good`}>
                         {indicatorPositiveIsGood
                           ? "O Objetivo é Aumentar o Valor desse Indicador"
                           : "O Objetivo é Diminuir o Valor desse Indicador"}
