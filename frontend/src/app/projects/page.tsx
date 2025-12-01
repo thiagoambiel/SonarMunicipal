@@ -28,8 +28,50 @@ function ProjectsContent() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q");
+  const [filterUf, setFilterUf] = useState<string>("all");
+  const [filterYear, setFilterYear] = useState<string>("all");
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
+
+  const extractYear = (value?: string | null) => {
+    if (!value) return null;
+    const match = value.match(/(20\\d{2})/);
+    return match ? match[1] : null;
+  };
+
+  const availableUfs = useMemo(() => {
+    const ufs = new Set<string>();
+    results.forEach((item) => {
+      if (item.uf) ufs.add(item.uf);
+    });
+    return Array.from(ufs).sort();
+  }, [results]);
+
+  const availableYears = useMemo(() => {
+    const years = new Set<string>();
+    results.forEach((item) => {
+      const year = extractYear(item.data_apresentacao);
+      if (year) years.add(year);
+    });
+    return Array.from(years).sort((a, b) => Number(b) - Number(a));
+  }, [results]);
+
+  const filteredResults = useMemo(
+    () =>
+      results.filter((item) => {
+        const matchesUf = filterUf === "all" || item.uf === filterUf;
+        const matchesYear = filterYear === "all" || extractYear(item.data_apresentacao) === filterYear;
+        return matchesUf && matchesYear;
+      }),
+    [results, filterUf, filterYear],
+  );
+
+  const sortedResults = useMemo(
+    () => [...filteredResults].sort((a, b) => b.score - a.score),
+    [filteredResults],
+  );
+
+  const hasActiveFilters = filterUf !== "all" || filterYear !== "all";
 
   useEffect(() => {
     if (initialQuery) {
@@ -81,60 +123,149 @@ function ProjectsContent() {
 
   return (
     <div className="page google-layout">
-      <div className="google-box">
-        <nav className="nav">
-          <h1 className="logo" style={{ margin: 0 }}>
-            CityManager
-          </h1>
-          <div className="nav-links">
-            <Link className="nav-link" href="/">
-              Políticas Públicas
-            </Link>
-            <span className="nav-link active">Projetos de Lei</span>
-          </div>
-        </nav>
-
-        <form className="search google-search" onSubmit={handleSearch}>
-          <div className="google-input">
-            <input
-              type="search"
-              name="query"
-              placeholder="Pesquise políticas públicas"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              aria-label="Pergunta para busca semântica"
-              autoComplete="off"
-            />
-            <button type="submit" disabled={status === "loading"}>
-              {searchButtonLabel}
-            </button>
-          </div>
-        </form>
-
-        <section className="results" aria-live="polite">
-          {errorMessage && (
-            <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
-          )}
-
-          {results.length > 0 && (
-            <div className="result-list">
-              {results.map((item) => (
-                <article key={item.index} className="result-card google-result">
-                  <p className="result-link">
-                    {item.municipio ? item.municipio : "Município não informado"}
-                    {item.uf && <span className="pill-uf"> · {item.uf}</span>}
-                  </p>
-                  <p className="result-title">{item.acao ?? "Ação não informada"}</p>
-                  <div className="meta">
-                    {item.data_apresentacao && <span>{item.data_apresentacao}</span>}
-                    <span>Índice #{item.index}</span>
-                    <span>Relevância {item.score.toFixed(2)}</span>
-                  </div>
-                </article>
-              ))}
+      <div className="page-surface">
+        <header className="topbar">
+          <div className="brand">
+            <div className="brand-mark">CM</div>
+            <div>
+              <p className="brand-title">CityManager</p>
+              <p className="brand-subtitle">Banco vivo de projetos de lei</p>
             </div>
-          )}
-        </section>
+          </div>
+          <nav className="nav">
+            <div className="nav-links">
+              <Link className="nav-link" href="/">
+                Políticas Públicas
+              </Link>
+              <span className="nav-link active">Projetos de Lei</span>
+            </div>
+            <div className="nav-actions">
+              <a className="ghost-btn" href="#filtros">
+                Filtros
+              </a>
+            </div>
+          </nav>
+        </header>
+
+        <main className="page-body">
+          <section className="search-section">
+            <div className="section-header">
+              <div>
+                <p className="eyebrow">Navegar por projetos</p>
+                <h2>Resultados completos para sua consulta</h2>
+                <p className="muted">
+                  Ordenamos por relevância semântica. Use os filtros para focar em UF e ano de apresentação.
+                </p>
+              </div>
+              {hasActiveFilters && (
+                <div className="chips-inline">
+                  {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
+                  {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+                  <button
+                    type="button"
+                    className="ghost-link"
+                    onClick={() => {
+                      setFilterUf("all");
+                      setFilterYear("all");
+                    }}
+                  >
+                    Limpar filtros
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <form className="search-panel" onSubmit={handleSearch}>
+              <div className="search-row">
+                <div className="search-input">
+                  <label htmlFor="projects-query">Pergunte ou descreva uma necessidade</label>
+                  <input
+                    id="projects-query"
+                    type="search"
+                    name="query"
+                    placeholder="Ex.: Projetos de mobilidade ativa em capitais"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    aria-label="Pergunta para busca semântica"
+                    autoComplete="off"
+                  />
+                </div>
+                <button type="submit" className="primary-btn" disabled={status === "loading"}>
+                  {searchButtonLabel}
+                </button>
+              </div>
+
+              <div id="filtros" className="filter-grid">
+                <div className="filter-field">
+                  <label htmlFor="projects-uf-select">UF</label>
+                  <select
+                    id="projects-uf-select"
+                    value={filterUf}
+                    onChange={(event) => setFilterUf(event.target.value)}
+                  >
+                    <option value="all">Todas as UF</option>
+                    {availableUfs.map((uf) => (
+                      <option key={uf} value={uf}>
+                        {uf}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="filter-field">
+                  <label htmlFor="projects-year-select">Ano de apresentação</label>
+                  <select
+                    id="projects-year-select"
+                    value={filterYear}
+                    onChange={(event) => setFilterYear(event.target.value)}
+                  >
+                    <option value="all">Todos os anos</option>
+                    {availableYears.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section className="results" aria-live="polite">
+            {errorMessage && (
+              <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
+            )}
+
+            {sortedResults.length > 0 ? (
+              <div className="table-card">
+                <div className="table-head">
+                  <span>Município</span>
+                  <span>Tema</span>
+                  <span>Ano</span>
+                  <span>Relevância</span>
+                </div>
+                {sortedResults.map((item) => (
+                  <div key={item.index} className="table-row">
+                    <div>
+                      <p className="strong">
+                        {item.municipio ? item.municipio : "Município não informado"}
+                        {item.uf && <span className="pill-uf"> · {item.uf}</span>}
+                      </p>
+                      <p className="muted small">Índice #{item.index}</p>
+                    </div>
+                    <p>{item.acao ?? "Ação não informada"}</p>
+                    <p>{item.data_apresentacao ?? "—"}</p>
+                    <p className="strong">{item.score.toFixed(2)}</p>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="message muted">
+                Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}.
+                Ajuste o texto ou revise os filtros.
+              </div>
+            )}
+          </section>
+        </main>
       </div>
     </div>
   );

@@ -81,8 +81,45 @@ export default function Home() {
   const [policiesError, setPoliciesError] = useState<string | null>(null);
   const [policiesUseIndicator, setPoliciesUseIndicator] = useState(false);
   const [suggestionsVisible, setSuggestionsVisible] = useState(true);
+  const [filterUf, setFilterUf] = useState<string>("all");
+  const [filterYear, setFilterYear] = useState<string>("all");
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
+
+  const extractYear = (value?: string | null) => {
+    if (!value) return null;
+    const match = value.match(/(20\\d{2})/);
+    return match ? match[1] : null;
+  };
+
+  const availableUfs = useMemo(() => {
+    const ufs = new Set<string>();
+    results.forEach((result) => {
+      if (result.uf) ufs.add(result.uf);
+    });
+    return Array.from(ufs).sort();
+  }, [results]);
+
+  const availableYears = useMemo(() => {
+    const years = new Set<string>();
+    results.forEach((result) => {
+      const year = extractYear(result.data_apresentacao);
+      if (year) years.add(year);
+    });
+    return Array.from(years).sort((a, b) => Number(b) - Number(a));
+  }, [results]);
+
+  const filteredResults = useMemo(
+    () =>
+      results.filter((result) => {
+        const matchesUf = filterUf === "all" || result.uf === filterUf;
+        const matchesYear = filterYear === "all" || extractYear(result.data_apresentacao) === filterYear;
+        return matchesUf && matchesYear;
+      }),
+    [results, filterUf, filterYear],
+  );
+
+  const hasActiveFilters = filterUf !== "all" || filterYear !== "all";
 
   useEffect(() => {
     const loadIndicators = async () => {
@@ -153,6 +190,17 @@ export default function Home() {
         return;
       }
 
+      if (filteredResults.length === 0) {
+        setPolicies([]);
+        setPoliciesStatus("idle");
+        setPoliciesError(
+          hasActiveFilters
+            ? "Nenhuma política encontrada com os filtros aplicados. Ajuste os filtros e tente novamente."
+            : null,
+        );
+        return;
+      }
+
       if (useIndicator && !selectedIndicator) {
         setPolicies([]);
         setPoliciesError("Selecione um indicador ou desabilite o cálculo de efeito.");
@@ -167,7 +215,7 @@ export default function Home() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            bill_indexes: results.map((r) => r.index),
+            bill_indexes: filteredResults.map((r) => r.index),
             similarity_threshold: 0.75,
             min_group_members: 2,
             use_indicator: useIndicator,
@@ -191,7 +239,7 @@ export default function Home() {
     };
 
     void fetchPolicies();
-  }, [results, useIndicator, selectedIndicator, hasSearched]);
+  }, [results, filteredResults, useIndicator, selectedIndicator, hasSearched, hasActiveFilters]);
 
   const makeSlug = (text: string) =>
     text
@@ -216,155 +264,347 @@ export default function Home() {
 
   return (
     <div className="page google-layout">
-      <div className="google-box">
-        <h1 className="logo">CityManager</h1>
-        <nav className="nav">
-          <div className="nav-links">
-            <span className="nav-link active">Políticas Públicas</span>
-            <Link
-              className="nav-link"
-              href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
-            >
-              Projetos de Lei
-            </Link>
-          </div>
-        </nav>
-        <form className="search google-search" onSubmit={handleSearch}>
-          <div className="google-input">
-            <input
-              type="search"
-              name="query"
-              placeholder="Pesquise políticas públicas"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              aria-label="Pergunta para busca semântica"
-              autoComplete="off"
-            />
-            <button type="submit" disabled={status === "loading"}>
-              {searchButtonLabel}
-            </button>
-          </div>
-        </form>
-
-        <div className="indicator-row">
-          <label className="indicator-toggle">
-            <input
-              type="checkbox"
-              checked={useIndicator}
-              onChange={(event) => setUseIndicator(event.target.checked)}
-            />
-            <span>Calcular efeito por indicador</span>
-          </label>
-          <select
-            value={selectedIndicator}
-            onChange={(event) => setSelectedIndicator(event.target.value)}
-            disabled={!useIndicator}
-          >
-            <option value="">Sem indicador</option>
-            {indicators.map((indicator) => (
-              <option key={indicator.id} value={indicator.id}>
-                {indicator.id}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {suggestionsVisible ? (
-          <div className="suggestions google-suggestions">
-            {suggestionPrompts.map((text) => (
-              <button
-                type="button"
-                key={text}
-                onClick={() => handleSuggestionClick(text)}
-                className="suggestion"
-              >
-                {text}
-              </button>
-            ))}
-          </div>
-        ) : (
-          <button className="toggle-suggestions" onClick={() => setSuggestionsVisible(true)} type="button">
-            Ver sugestões
-          </button>
-        )}
-
-        {policiesError && <div className="message error">{policiesError}</div>}
-
-        {policiesStatus === "loading" && <div className="message muted">Gerando políticas...</div>}
-
-        {policies.length > 0 && (
-          <section className="policy-section">
-            <h2>Políticas sugeridas</h2>
-            <div className="policy-grid">
-              {policies.map((policy) => (
-                <article key={policy.policy} className="policy-card">
-                  <p className="policy-title">{policy.policy}</p>
-                  <p className="policy-count">
-                    Aplicada em {policy.actions.length} município{policy.actions.length === 1 ? "" : "s"}
-                  </p>
-                  {policiesUseIndicator && policy.effect_mean != null && (
-                    <div className="policy-meta">
-                      <span>Efeito médio: {policy.effect_mean.toFixed(2)}</span>
-                      {policy.effect_std != null && <span>Desvio: {policy.effect_std.toFixed(2)}</span>}
-                      {policy.quality_score != null && (
-                        <span>Qualidade: {policy.quality_score.toFixed(2)}</span>
-                      )}
-                    </div>
-                  )}
-                  <div className="policy-actions">
-                    <p className="policy-actions-title">Aplicada em:</p>
-                    <ul>
-                      {policy.actions.slice(0, 4).map((action) => (
-                        <li key={`${policy.policy}-${action.municipio}-${action.acao}`}>
-                          {action.url ? (
-                            <a href={action.url} target="_blank" rel="noreferrer">
-                              {action.municipio}
-                            </a>
-                          ) : (
-                            <span>{action.municipio}</span>
-                          )}
-                          {policiesUseIndicator && action.effect != null && (
-                            <span className="pill-effect">Efeito: {action.effect.toFixed(2)}</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                    {policy.actions.length > 4 && (
-                      <p className="policy-count muted">
-                        +{policy.actions.length - 4} municípios
-                      </p>
-                    )}
-                    <button
-                      className="policy-details-btn"
-                      type="button"
-                      onClick={() => handleViewDetails(policy)}
-                    >
-                      Ver detalhes
-                    </button>
-                  </div>
-                </article>
-              ))}
+      <div className="page-surface">
+        <header className="topbar">
+          <div className="brand">
+            <div className="brand-mark">CM</div>
+            <div>
+              <p className="brand-title">CityManager</p>
+              <p className="brand-subtitle">Inteligência para gestores municipais</p>
             </div>
-          </section>
-        )}
-
-        <section className="results" aria-live="polite">
-          {errorMessage && (
-            <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
-          )}
-          {hasSearched && results.length > 0 && (
-            <div className="message muted">
-              {results.length} projetos encontrados. Veja a lista completa em{" "}
+          </div>
+          <nav className="nav">
+            <div className="nav-links">
+              <span className="nav-link active">Políticas Públicas</span>
               <Link
                 className="nav-link"
                 href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
               >
                 Projetos de Lei
               </Link>
-              .
             </div>
+            <div className="nav-actions">
+              <a className="ghost-btn" href="#metodologia">
+                Metodologia
+              </a>
+              <a className="ghost-btn" href="#transparencia">
+                Transparência
+              </a>
+            </div>
+          </nav>
+        </header>
+
+        <main className="page-body">
+          <section className="hero">
+            <div className="hero-text">
+              <p className="eyebrow">Implantação segura de leis municipais</p>
+              <h1>Transforme evidências em políticas aplicáveis</h1>
+              <p className="lede">
+                A plataforma cruza projetos de lei, jurisprudência e indicadores municipais para sugerir
+                políticas públicas que já funcionaram em cidades com perfis parecidos.
+              </p>
+              <div className="hero-badges">
+                <span className="pill neutral">Dados oficiais</span>
+                <span className="pill neutral">Transparência metodológica</span>
+                <span className="pill accent">Foco em gestores</span>
+              </div>
+              <div className="hero-actions">
+                <a className="primary-btn" href="#busca">
+                  Começar uma busca
+                </a>
+                <Link className="ghost-btn" href="/projects">
+                  Ver projetos de lei
+                </Link>
+              </div>
+            </div>
+            <div className="hero-panel">
+              <div className="stat-card">
+                <p className="stat-label">Confiabilidade</p>
+                <p className="stat-value">Análise explicável</p>
+                <p className="stat-detail">Similaridade semântica + seleção por indicador.</p>
+              </div>
+              <div className="stat-card">
+                <p className="stat-label">Próximo passo</p>
+                <p className="stat-value">Escolha o indicador</p>
+                <p className="stat-detail">Simule impacto médio antes de replicar políticas.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="busca" className="search-section">
+            <div className="section-header">
+              <div>
+                <p className="eyebrow">Busca guiada</p>
+                <h2>Encontre políticas semelhantes e avalie impacto</h2>
+                <p className="muted">
+                  Pergunte em linguagem natural, refine por estado e ano e ative um indicador para estimar
+                  o efeito esperado.
+                </p>
+              </div>
+              {hasActiveFilters && (
+                <div className="chips-inline">
+                  {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
+                  {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+                  <button type="button" className="ghost-link" onClick={() => {
+                    setFilterUf("all");
+                    setFilterYear("all");
+                  }}>
+                    Limpar filtros
+                  </button>
+                </div>
+              )}
+            </div>
+
+            <form className="search-panel" onSubmit={handleSearch}>
+              <div className="search-row">
+                <div className="search-input">
+                  <label htmlFor="query">Pergunte ou descreva uma necessidade</label>
+                  <input
+                    id="query"
+                    type="search"
+                    name="query"
+                    placeholder="Ex.: Como reduzir filas de atendimento na atenção básica?"
+                    value={query}
+                    onChange={(event) => setQuery(event.target.value)}
+                    aria-label="Pergunta para busca semântica"
+                    autoComplete="off"
+                  />
+                </div>
+                <button type="submit" className="primary-btn" disabled={status === "loading"}>
+                  {searchButtonLabel}
+                </button>
+              </div>
+
+              <div className="filter-grid">
+                <div className="filter-field">
+                  <label htmlFor="uf-select">UF</label>
+                  <select
+                    id="uf-select"
+                    value={filterUf}
+                    onChange={(event) => setFilterUf(event.target.value)}
+                    aria-label="Filtrar por estado"
+                  >
+                    <option value="all">Todas as UF</option>
+                    {availableUfs.map((uf) => (
+                      <option key={uf} value={uf}>
+                        {uf}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="filter-field">
+                  <label htmlFor="year-select">Ano de apresentação</label>
+                  <select
+                    id="year-select"
+                    value={filterYear}
+                    onChange={(event) => setFilterYear(event.target.value)}
+                    aria-label="Filtrar por ano de apresentação"
+                  >
+                    <option value="all">Todos os anos</option>
+                    {availableYears.map((year) => (
+                      <option key={year} value={year}>
+                        {year}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="filter-field indicator-field">
+                  <label>Indicador de impacto</label>
+                  <div className="indicator-toggle">
+                    <input
+                      id="indicator-toggle"
+                      type="checkbox"
+                      checked={useIndicator}
+                      onChange={(event) => setUseIndicator(event.target.checked)}
+                    />
+                    <span>Calcular efeito médio por indicador</span>
+                  </div>
+                  <select
+                    value={selectedIndicator}
+                    onChange={(event) => setSelectedIndicator(event.target.value)}
+                    disabled={!useIndicator}
+                    aria-label="Selecionar indicador"
+                  >
+                    <option value="">Sem indicador</option>
+                    {indicators.map((indicator) => (
+                      <option key={indicator.id} value={indicator.id}>
+                        {indicator.id}
+                      </option>
+                    ))}
+                  </select>
+                  <p className="hint">
+                    Ative para simular impacto esperado usando dados históricos do indicador escolhido.
+                  </p>
+                </div>
+              </div>
+            </form>
+
+            {suggestionsVisible ? (
+              <div className="suggestions-panel">
+                <p className="muted">Sugestões rápidas</p>
+                <div className="suggestions">
+                  {suggestionPrompts.map((text) => (
+                    <button
+                      type="button"
+                      key={text}
+                      onClick={() => handleSuggestionClick(text)}
+                      className="suggestion"
+                    >
+                      {text}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            ) : (
+              <button className="toggle-suggestions" onClick={() => setSuggestionsVisible(true)} type="button">
+                Ver sugestões
+              </button>
+            )}
+          </section>
+
+          {policiesError && <div className="message error">{policiesError}</div>}
+
+          {policiesStatus === "loading" && <div className="message muted">Gerando políticas com base na busca...</div>}
+
+          {policies.length > 0 && (
+            <section className="policy-section">
+              <div className="section-header">
+                <div>
+                  <p className="eyebrow">Políticas sugeridas</p>
+                  <h2>Opções priorizadas para implementação</h2>
+                  <p className="muted">
+                    Agrupamos políticas similares aplicadas em cidades próximas ao seu contexto. Abra os
+                    detalhes para ver precedentes e replicar com segurança.
+                  </p>
+                </div>
+                <div className="pill neutral">
+                  {filteredResults.length} projetos considerados {hasActiveFilters && "(filtros aplicados)"}
+                </div>
+              </div>
+
+              <div className="policy-grid">
+                {policies.map((policy) => (
+                  <article key={policy.policy} className="policy-card">
+                    <header className="policy-card-header">
+                      <div>
+                        <p className="policy-title">{policy.policy}</p>
+                        <p className="policy-count">
+                          Aplicada em {policy.actions.length} município{policy.actions.length === 1 ? "" : "s"}
+                        </p>
+                      </div>
+                      <div className="pill accent">Próximo passo: avaliar aderência</div>
+                    </header>
+
+                    {policiesUseIndicator && policy.effect_mean != null && (
+                      <div className="policy-meta">
+                        <div>
+                          <p className="label">Efeito médio</p>
+                          <p className="metric">{policy.effect_mean.toFixed(2)}</p>
+                        </div>
+                        {policy.effect_std != null && (
+                          <div>
+                            <p className="label">Desvio</p>
+                            <p className="metric">{policy.effect_std.toFixed(2)}</p>
+                          </div>
+                        )}
+                        {policy.quality_score != null && (
+                          <div>
+                            <p className="label">Qualidade</p>
+                            <p className="metric">{policy.quality_score.toFixed(2)}</p>
+                          </div>
+                        )}
+                        <p className="hint">Impacto estimado com base no indicador selecionado.</p>
+                      </div>
+                    )}
+
+                    <div className="policy-actions">
+                      <p className="policy-actions-title">Aplicações validadas</p>
+                      <ul>
+                        {policy.actions.slice(0, 4).map((action) => (
+                          <li key={`${policy.policy}-${action.municipio}-${action.acao}`}>
+                            <div className="city-block">
+                              {action.url ? (
+                                <a href={action.url} target="_blank" rel="noreferrer">
+                                  {action.municipio}
+                                </a>
+                              ) : (
+                                <span>{action.municipio}</span>
+                              )}
+                              {policiesUseIndicator && action.effect != null && (
+                                <span className="pill-effect">Efeito: {action.effect.toFixed(2)}</span>
+                              )}
+                            </div>
+                            <p className="muted small">{action.acao}</p>
+                          </li>
+                        ))}
+                      </ul>
+                      {policy.actions.length > 4 && (
+                        <p className="policy-count muted">+{policy.actions.length - 4} municípios</p>
+                      )}
+                      <div className="policy-ctas">
+                        <button
+                          className="secondary-btn"
+                          type="button"
+                          onClick={() => handleViewDetails(policy)}
+                        >
+                          Ver detalhes completos
+                        </button>
+                        <button className="ghost-link" type="button" onClick={() => handleSuggestionClick(policy.policy)}>
+                          Ajustar busca com esta política
+                        </button>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </section>
           )}
-        </section>
+
+          <section className="results" aria-live="polite">
+            {errorMessage && (
+              <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
+            )}
+            {hasSearched && results.length > 0 && (
+              <div className="message muted">
+                {filteredResults.length} de {results.length} projetos correspondem aos filtros. Veja a lista completa em{" "}
+                <Link
+                  className="nav-link"
+                  href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
+                >
+                  Projetos de Lei
+                </Link>
+                .
+              </div>
+            )}
+          </section>
+
+          <section id="metodologia" className="info-grid">
+            <div className="info-card">
+              <p className="eyebrow">Como geramos as políticas</p>
+              <h3>Similaridade semântica e agrupamento</h3>
+              <p>
+                Buscamos em linguagem natural, agrupamos projetos próximos e priorizamos políticas aplicadas em
+                municípios comparáveis. Indicadores podem ser ativados para estimar impacto médio.
+              </p>
+            </div>
+            <div className="info-card">
+              <p className="eyebrow">Quando usar</p>
+              <h3>Planejamento e replicação</h3>
+              <p>
+                Útil para mapear soluções similares, preparar dossiês para o legislativo e identificar cidades
+                referência. Use os filtros para focar em realidades parecidas.
+              </p>
+            </div>
+            <div id="transparencia" className="info-card">
+              <p className="eyebrow">Transparência</p>
+              <h3>Fontes públicas e documentação</h3>
+              <p>
+                Trabalhamos apenas com dados públicos. Acompanhe indicadores utilizados e revisite cada projeto na
+                origem antes de propor a adoção local.
+              </p>
+            </div>
+          </section>
+        </main>
       </div>
     </div>
   );
