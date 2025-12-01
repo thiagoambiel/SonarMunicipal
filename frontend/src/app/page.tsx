@@ -245,6 +245,13 @@ export default function Home() {
   }, [results, selectedIndicator, effectWindowMonths, hasSearched, hasHydrated]);
 
   useLayoutEffect(() => {
+    // Limpa estado persistido quando a página é recarregada explicitamente
+    const navEntry = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const isReload = navEntry?.type === "reload" || (performance as Performance & { navigation?: { type?: number } }).navigation?.type === 1;
+    if (isReload) {
+      sessionStorage.removeItem("home-page-state");
+    }
+
     try {
       const raw = sessionStorage.getItem("home-page-state");
       if (!raw) {
@@ -543,7 +550,7 @@ export default function Home() {
 
           {policiesStatus === "loading" && <div className="message muted">Gerando políticas com base na busca...</div>}
 
-          {policies.length > 0 && (
+          {policiesStatus !== "loading" && policies.length > 0 && (
             <section className="policy-section">
               <div className="section-header">
                 <div>
