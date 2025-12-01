@@ -596,16 +596,13 @@ export default function Home() {
                   </p>
                   {useIndicator && selectedIndicator && (
                     <div className="indicator-direction">
+
                       <span className={`direction-flag ${indicatorPositiveIsGood ? "good" : "bad"}`}>
                         {indicatorPositiveIsGood
-                          ? "Valores positivos melhoram o indicador"
-                          : "Valores positivos pioram o indicador (reduzir é bom)"}
+                          ? "O Objetivo é Aumentar o Valor desse Indicador"
+                          : "O Objetivo é Diminuir o Valor desse Indicador"}
                       </span>
-                      {indicatorAlias && (
-                        <span className="muted small" aria-label="Nome do indicador selecionado">
-                          {indicatorAlias}
-                        </span>
-                      )}
+
                     </div>
                   )}
                 </div>
