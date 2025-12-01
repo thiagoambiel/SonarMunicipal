@@ -13,6 +13,15 @@ def _advance_semester(year: int, semester: int, semesters_ahead: int) -> Tuple[i
     return year + target // 2, (target % 2) + 1
 
 
+def _percent_change(current: float, future: float) -> float:
+    """
+    Calcula variação percentual entre valores atual e futuro.
+    """
+    if current == 0:
+        raise ZeroDivisionError("Não é possível calcular variação percentual com valor base zero.")
+    return ((future - current) / current) * 100.0
+
+
 def compute_effects_from_indicator(
     bills: Sequence[Dict[str, Any]],
     indicator_df: Any,
@@ -21,7 +30,7 @@ def compute_effects_from_indicator(
     effect_window_months: int = 6,
 ) -> List[Tuple[str, str, float]]:
     """
-    Calcula delta de indicador entre semestres para cada PL.
+    Calcula variação percentual do indicador entre semestres para cada PL.
 
     bills: sequência com 'municipio', 'data_apresentacao' (YYYY-MM-DD) e 'acao'.
     indicator_df: DataFrame com colunas cidade, ano, semestre e valor do indicador.
@@ -49,7 +58,11 @@ def compute_effects_from_indicator(
         if current is None or future is None:
             continue
 
-        delta = future - current
-        results.append((row["municipio"], row.get("acao", ""), delta))
+        try:
+            delta_pct = _percent_change(current, future)
+        except ZeroDivisionError:
+            continue
+
+        results.append((row["municipio"], row.get("acao", ""), delta_pct))
 
     return results

@@ -87,20 +87,21 @@ export default function PolicyDetailPage() {
   const indicatorAlias = data.indicator_alias ?? "";
   const effectWindowMonths = data.effect_window_months ?? DEFAULT_EFFECT_WINDOW;
 
-  const formatEffectValue = (value?: number | null) => {
-    if (value == null) return "—";
-    const fixed = value.toFixed(2);
-    return value > 0 ? `+${fixed}` : fixed;
-  };
+const formatEffectValue = (value?: number | null) => {
+  if (value == null) return "—";
+  const fixed = value.toFixed(2);
+  const signed = value > 0 ? `+${fixed}` : fixed;
+  return `${signed}%`;
+};
 
   const effectNarrative = (value?: number | null) => {
-    if (value == null) return "Não calculado";
-    if (value === 0) return "Sem variação estimada";
-    const magnitude = Math.abs(value).toFixed(2);
-    const target = indicatorAlias || "indicador selecionado";
-    const direction = value < 0 ? "Redução" : "Aumento";
-    return `${direction} de ${magnitude} na ${target} em ${effectWindowMonths} meses`;
-  };
+  if (value == null) return "Não calculado";
+  if (value === 0) return "Sem variação estimada";
+  const magnitude = Math.abs(value).toFixed(2);
+  const target = indicatorAlias || "indicador selecionado";
+  const direction = value < 0 ? "Redução" : "Aumento";
+  return `${direction} de ${magnitude}% na ${target} em ${effectWindowMonths} meses`;
+};
 
   const getEffectTone = (value?: number | null) => {
     if (!used_indicator || value == null) return "effect-neutral";
@@ -193,7 +194,7 @@ export default function PolicyDetailPage() {
                 <span>Município</span>
                 <span>Ação</span>
                 <span>Apresentação</span>
-                <span>Efeito (em {effectWindowMonths}m)</span>
+                <span>Efeito (% em {effectWindowMonths}m)</span>
               </div>
               {policy.actions.map((action) => (
                 <div key={`${policy.policy}-${action.municipio}-${action.acao}`} className="table-row">

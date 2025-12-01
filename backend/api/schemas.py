@@ -42,7 +42,7 @@ class IndicatorEffect(BaseModel):
     uf: Optional[str] = None
     acao: Optional[str] = None
     data_apresentacao: Optional[str] = None
-    effect: float
+    effect: float = Field(..., description="Variação percentual do indicador na janela escolhida")
 
 
 class IndicatorFilterResponse(BaseModel):
@@ -72,14 +72,14 @@ class PolicyAction(BaseModel):
     acao: str
     data_apresentacao: Optional[str] = Field(None, description="Data de apresentação do PL (se disponível)")
     ementa: Optional[str] = Field(None, description="Ementa original do PL (se disponível)")
-    effect: Optional[float] = Field(None, description="Efeito no indicador (se calculado)")
+    effect: Optional[float] = Field(None, description="Variação percentual no indicador (se calculada)")
     url: Optional[str] = Field(None, description="Link oficial do projeto de lei (se disponível)")
 
 
 class PolicySuggestion(BaseModel):
     policy: str
-    effect_mean: Optional[float] = Field(None, description="Média dos efeitos (se indicador foi usado)")
-    effect_std: Optional[float] = Field(None, description="Desvio padrão dos efeitos (se indicador foi usado)")
+    effect_mean: Optional[float] = Field(None, description="Média das variações percentuais (se indicador foi usado)")
+    effect_std: Optional[float] = Field(None, description="Desvio padrão das variações percentuais (se indicador foi usado)")
     quality_score: Optional[float] = Field(None, description="Score de qualidade (se indicador foi usado)")
     actions: List[PolicyAction]
 

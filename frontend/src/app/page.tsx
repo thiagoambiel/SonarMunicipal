@@ -123,7 +123,8 @@ export default function Home() {
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
     const fixed = value.toFixed(2);
-    return value > 0 ? `+${fixed}` : fixed;
+    const signed = value > 0 ? `+${fixed}` : fixed;
+    return `${signed}%`;
   };
 
   const getEffectTone = (value?: number | null) => {
@@ -607,7 +608,8 @@ export default function Home() {
               <div className="policy-grid">
                 {policies.map((policy) => {
                   const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
-                  const effectStd = policiesUseIndicator && policy.effect_std != null ? policy.effect_std.toFixed(2) : null;
+                  const effectStd =
+                    policiesUseIndicator && policy.effect_std != null ? `${policy.effect_std.toFixed(2)}%` : null;
                   const qualityValue =
                     policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
                   const meanTone = getEffectTone(policy.effect_mean);
@@ -630,7 +632,7 @@ export default function Home() {
 
                       <div className="policy-badges">
                         <div className="metric-badge">
-                          <span className="badge-label">Efeito médio em {effectWindowMonths} meses</span>
+                          <span className="badge-label">Efeito médio (% em {effectWindowMonths} meses)</span>
                           <span className={`badge-value ${meanTone}`}>
                             {effectAvailable ? (
                               <>
@@ -657,7 +659,7 @@ export default function Home() {
                         {policy.actions.map((action) => {
                           const effectLabel =
                             policiesUseIndicator && action.effect != null
-                              ? `Efeito: ${formatEffectValue(action.effect)}`
+                              ? `Variação: ${formatEffectValue(action.effect)}`
                               : "Sem indicador";
                           const effectTone = getEffectTone(action.effect);
 

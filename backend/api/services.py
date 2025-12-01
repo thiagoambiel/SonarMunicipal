@@ -1,6 +1,6 @@
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
-from core.indicators import _encode_semester
+from core.indicators import _encode_semester, _percent_change
 from core.search import semantic_search
 from core.policies import generate_policies_from_bills
 
@@ -94,7 +94,10 @@ def compute_effects_for_indexes(
         if current is None or future is None:
             continue
 
-        delta = float(future - current)
+        try:
+            delta = float(_percent_change(current, future))
+        except ZeroDivisionError:
+            continue
         effects.append(
             IndicatorEffect(
                 index=int(idx),
