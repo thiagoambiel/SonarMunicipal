@@ -492,7 +492,6 @@ export default function Home() {
                           Aplicada em {policy.actions.length} município{policy.actions.length === 1 ? "" : "s"}
                         </p>
                       </div>
-                      <div className="pill accent">Próximo passo: avaliar aderência</div>
                     </header>
 
                     {policiesUseIndicator && policy.effect_mean != null && (
@@ -518,7 +517,7 @@ export default function Home() {
                     )}
 
                     <div className="policy-actions">
-                      <p className="policy-actions-title">Aplicações validadas</p>
+                      <p className="policy-actions-title">Cidades com a política aplicada</p>
                       <ul>
                         {policy.actions.slice(0, 4).map((action) => (
                           <li key={`${policy.policy}-${action.municipio}-${action.acao}`}>
@@ -534,7 +533,6 @@ export default function Home() {
                                 <span className="pill-effect">Efeito: {action.effect.toFixed(2)}</span>
                               )}
                             </div>
-                            <p className="muted small">{action.acao}</p>
                           </li>
                         ))}
                       </ul>
@@ -548,9 +546,6 @@ export default function Home() {
                           onClick={() => handleViewDetails(policy)}
                         >
                           Ver detalhes completos
-                        </button>
-                        <button className="ghost-link" type="button" onClick={() => handleSuggestionClick(policy.policy)}>
-                          Ajustar busca com esta política
                         </button>
                       </div>
                     </div>
