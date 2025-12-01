@@ -87,6 +87,15 @@ const MAX_RESULTS = 500;
 const DEFAULT_EFFECT_WINDOW = 6;
 const EFFECT_WINDOW_OPTIONS = [6, 12, 18, 24, 30, 36];
 
+const formatEffectWindowLabel = (months: number) => {
+  const semesters = months / 6;
+  const years = months / 12;
+  const yearsLabel = Number.isInteger(years)
+    ? `${years} ano${years === 1 ? "" : "s"}`
+    : `${years.toFixed(1)} ano${years > 1 ? "s" : ""}`;
+  return `${months} meses · ${semesters} semestre${semesters === 1 ? "" : "s"} · ${yearsLabel}`;
+};
+
 export default function Home() {
   const router = useRouter();
   const [query, setQuery] = useState("");
@@ -512,7 +521,7 @@ export default function Home() {
                   >
                     {EFFECT_WINDOW_OPTIONS.map((months) => (
                       <option key={months} value={months}>
-                        {months} meses ({months / 6} semestre{months === 6 ? "" : "s"})
+                        {formatEffectWindowLabel(months)}
                       </option>
                     ))}
                   </select>
