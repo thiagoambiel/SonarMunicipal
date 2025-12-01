@@ -193,7 +193,7 @@ export default function PolicyDetailPage() {
               {policy.actions.map((action) => (
                 <div key={`${policy.policy}-${action.municipio}-${action.acao}`} className="table-row">
                   <div>
-                    <div className="city-block">
+                    <div className="city-block tight">
                       <span className="strong">{action.municipio}</span>
                       {action.url && (
                         <a
