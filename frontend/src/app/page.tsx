@@ -59,15 +59,12 @@ type HomePageState = {
   errorMessage: string | null;
   hasSearched: boolean;
   lastQuery: string;
-  useIndicator: boolean;
   selectedIndicator: string;
   policies: PolicySuggestion[];
   policiesStatus: "idle" | "loading" | "error";
   policiesError: string | null;
   policiesUseIndicator: boolean;
   suggestionsVisible: boolean;
-  filterUf: string;
-  filterYear: string;
   indicatorPositiveIsGood: boolean;
   indicatorAlias: string;
 };
@@ -96,15 +93,12 @@ export default function Home() {
   const [hasSearched, setHasSearched] = useState(false);
   const [lastQuery, setLastQuery] = useState("");
   const [indicators, setIndicators] = useState<IndicatorDescriptor[]>([]);
-  const [useIndicator, setUseIndicator] = useState(false);
   const [selectedIndicator, setSelectedIndicator] = useState("");
   const [policies, setPolicies] = useState<PolicySuggestion[]>([]);
   const [policiesStatus, setPoliciesStatus] = useState<"idle" | "loading" | "error">("idle");
   const [policiesError, setPoliciesError] = useState<string | null>(null);
   const [policiesUseIndicator, setPoliciesUseIndicator] = useState(false);
   const [suggestionsVisible, setSuggestionsVisible] = useState(true);
-  const [filterUf, setFilterUf] = useState<string>("all");
-  const [filterYear, setFilterYear] = useState<string>("all");
   const skipPolicyFetchRef = useRef(false);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
@@ -126,41 +120,6 @@ export default function Home() {
     return isGood ? "effect-good" : "effect-bad";
   };
 
-  const extractYear = (value?: string | null) => {
-    if (!value) return null;
-    const match = value.match(/(20\\d{2})/);
-    return match ? match[1] : null;
-  };
-
-  const availableUfs = useMemo(() => {
-    const ufs = new Set<string>();
-    results.forEach((result) => {
-      if (result.uf) ufs.add(result.uf);
-    });
-    return Array.from(ufs).sort();
-  }, [results]);
-
-  const availableYears = useMemo(() => {
-    const years = new Set<string>();
-    results.forEach((result) => {
-      const year = extractYear(result.data_apresentacao);
-      if (year) years.add(year);
-    });
-    return Array.from(years).sort((a, b) => Number(b) - Number(a));
-  }, [results]);
-
-  const filteredResults = useMemo(
-    () =>
-      results.filter((result) => {
-        const matchesUf = filterUf === "all" || result.uf === filterUf;
-        const matchesYear = filterYear === "all" || extractYear(result.data_apresentacao) === filterYear;
-        return matchesUf && matchesYear;
-      }),
-    [results, filterUf, filterYear],
-  );
-
-  const hasActiveFilters = filterUf !== "all" || filterYear !== "all";
-
   useEffect(() => {
     const loadIndicators = async () => {
       try {
@@ -176,13 +135,13 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    if (!useIndicator || !selectedIndicator) return;
+    if (!selectedIndicator) return;
     const found = indicators.find((indicator) => indicator.id === selectedIndicator);
     if (found) {
       setIndicatorAlias(found.alias || found.id);
       setIndicatorPositiveIsGood(found.positive_is_good);
     }
-  }, [indicators, selectedIndicator, useIndicator]);
+  }, [indicators, selectedIndicator]);
 
   const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -241,23 +200,6 @@ export default function Home() {
         return;
       }
 
-      if (filteredResults.length === 0) {
-        setPolicies([]);
-        setPoliciesStatus("idle");
-        setPoliciesError(
-          hasActiveFilters
-            ? "Nenhuma política encontrada com os filtros aplicados. Ajuste os filtros e tente novamente."
-            : null,
-        );
-        return;
-      }
-
-      if (useIndicator && !selectedIndicator) {
-        setPolicies([]);
-        setPoliciesError("Selecione um indicador ou desabilite o cálculo de efeito.");
-        return;
-      }
-
       setPoliciesStatus("loading");
       setPoliciesError(null);
 
@@ -266,11 +208,11 @@ export default function Home() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            bill_indexes: filteredResults.map((r) => r.index),
+            bill_indexes: results.map((r) => r.index),
             similarity_threshold: 0.75,
             min_group_members: 2,
-            use_indicator: useIndicator,
-            indicator: useIndicator ? selectedIndicator : null,
+            use_indicator: Boolean(selectedIndicator),
+            indicator: selectedIndicator || null,
           }),
         });
 
@@ -295,7 +237,7 @@ export default function Home() {
     }
 
     void fetchPolicies();
-  }, [results, filteredResults, useIndicator, selectedIndicator, hasSearched, hasActiveFilters, hasHydrated]);
+  }, [results, selectedIndicator, hasSearched, hasHydrated]);
 
   useLayoutEffect(() => {
     try {
@@ -316,7 +258,6 @@ export default function Home() {
       setErrorMessage(stored.errorMessage ?? null);
       setHasSearched(Boolean(stored.hasSearched));
       setLastQuery(stored.lastQuery ?? "");
-      setUseIndicator(Boolean(stored.useIndicator));
       setSelectedIndicator(stored.selectedIndicator ?? "");
       setIndicatorPositiveIsGood(stored.indicatorPositiveIsGood ?? true);
       setIndicatorAlias(stored.indicatorAlias ?? "");
@@ -325,9 +266,6 @@ export default function Home() {
       setPoliciesError(stored.policiesError ?? null);
       setPoliciesUseIndicator(Boolean(stored.policiesUseIndicator));
       setSuggestionsVisible(stored.suggestionsVisible ?? true);
-      setFilterUf(stored.filterUf ?? "all");
-      setFilterYear(stored.filterYear ?? "all");
-
       if (stored.policies && stored.policies.length > 0) {
         skipPolicyFetchRef.current = true;
       }
@@ -348,7 +286,6 @@ export default function Home() {
       errorMessage,
       hasSearched,
       lastQuery,
-      useIndicator,
       selectedIndicator,
       indicatorPositiveIsGood,
       indicatorAlias,
@@ -357,8 +294,6 @@ export default function Home() {
       policiesError,
       policiesUseIndicator,
       suggestionsVisible,
-      filterUf,
-      filterYear,
     };
 
     try {
@@ -373,7 +308,6 @@ export default function Home() {
     errorMessage,
     hasSearched,
     lastQuery,
-    useIndicator,
     selectedIndicator,
     indicatorPositiveIsGood,
     indicatorAlias,
@@ -382,8 +316,6 @@ export default function Home() {
     policiesError,
     policiesUseIndicator,
     suggestionsVisible,
-    filterUf,
-    filterYear,
     hasHydrated,
   ]);
 
@@ -484,23 +416,8 @@ export default function Home() {
               <div>
                 <p className="eyebrow">Busca guiada</p>
                 <h2>Encontre políticas semelhantes e avalie impacto</h2>
-                <p className="muted">
-                  Pergunte em linguagem natural, refine por estado e ano e ative um indicador para estimar
-                  o efeito esperado.
-                </p>
+                <p className="muted">Pergunte em linguagem natural e ative um indicador para estimar o efeito esperado.</p>
               </div>
-              {hasActiveFilters && (
-                <div className="chips-inline">
-                  {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
-                  {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
-                  <button type="button" className="ghost-link" onClick={() => {
-                    setFilterUf("all");
-                    setFilterYear("all");
-                  }}>
-                    Limpar filtros
-                  </button>
-                </div>
-              )}
             </div>
 
             <form className="search-panel" onSubmit={handleSearch}>
@@ -523,50 +440,9 @@ export default function Home() {
                 </button>
               </div>
 
-              <div className="filter-grid">
-                <div className="filter-field">
-                  <label htmlFor="uf-select">UF</label>
-                  <select
-                    id="uf-select"
-                    value={filterUf}
-                    onChange={(event) => setFilterUf(event.target.value)}
-                    aria-label="Filtrar por estado"
-                  >
-                    <option value="all">Todas as UF</option>
-                    {availableUfs.map((uf) => (
-                      <option key={uf} value={uf}>
-                        {uf}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="filter-field">
-                  <label htmlFor="year-select">Ano de apresentação</label>
-                  <select
-                    id="year-select"
-                    value={filterYear}
-                    onChange={(event) => setFilterYear(event.target.value)}
-                    aria-label="Filtrar por ano de apresentação"
-                  >
-                    <option value="all">Todos os anos</option>
-                    {availableYears.map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+              <div className="filter-grid single">
                 <div className="filter-field indicator-field">
                   <label>Indicador de impacto</label>
-                  <div className="indicator-toggle">
-                    <input
-                      id="indicator-toggle"
-                      type="checkbox"
-                      checked={useIndicator}
-                      onChange={(event) => setUseIndicator(event.target.checked)}
-                    />
-                    <span>Calcular efeito médio por indicador</span>
-                  </div>
                   <select
                     value={selectedIndicator}
                     onChange={(event) => {
@@ -581,7 +457,6 @@ export default function Home() {
                         setIndicatorAlias("");
                       }
                     }}
-                    disabled={!useIndicator}
                     aria-label="Selecionar indicador"
                   >
                     <option value="">Sem indicador</option>
@@ -594,7 +469,7 @@ export default function Home() {
                   <p className="hint">
                     Ative para simular impacto esperado usando dados históricos do indicador escolhido.
                   </p>
-                  {useIndicator && selectedIndicator && (
+                  {selectedIndicator && (
                     <div className="indicator-direction">
 
                       <span className={`direction-flag ${indicatorPositiveIsGood ? "good" : "bad"}`}>
@@ -648,7 +523,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="pill neutral">
-                  {filteredResults.length} projetos considerados {hasActiveFilters && "(filtros aplicados)"}
+                  {results.length} projetos considerados
                 </div>
               </div>
 
@@ -789,7 +664,7 @@ export default function Home() {
             )}
             {hasSearched && results.length > 0 && (
               <div className="message muted">
-                {filteredResults.length} de {results.length} projetos correspondem aos filtros. Veja a lista completa em{" "}
+                {results.length} projetos correspondem à sua busca. Veja a lista completa em{" "}
                 <Link
                   className="nav-link"
                   href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}

@@ -392,6 +392,10 @@ textarea {
   gap: 12px;
 }
 
+.filter-grid.single {
+  grid-template-columns: 1fr;
+}
+
 .filter-field {
   background: var(--surface-alt);
   border-radius: 12px;
