@@ -28,6 +28,12 @@ class SearchResponse(BaseModel):
 class IndicatorFilterRequest(BaseModel):
     indicator: str = Field(..., description="Identificador do indicador (ex.: criminal_indicator)")
     bill_indexes: List[int] = Field(..., min_items=1, description="Índices dos PLs retornados na busca")
+    effect_window_months: int = Field(
+        6,
+        ge=6,
+        multiple_of=6,
+        description="Janela temporal em meses para calcular o efeito (múltiplos de 6)",
+    )
 
 
 class IndicatorEffect(BaseModel):
@@ -50,6 +56,12 @@ class PolicyGenerationRequest(BaseModel):
     use_indicator: bool = Field(False, description="Se true, calcula efeitos usando o indicador escolhido")
     bill_indexes: List[int] = Field(..., min_items=1, description="Índices dos PLs retornados na busca")
     min_group_members: int = Field(2, ge=1, description="Tamanho mínimo para formar um grupo de ações")
+    effect_window_months: int = Field(
+        6,
+        ge=6,
+        multiple_of=6,
+        description="Janela temporal em meses para calcular o efeito (múltiplos de 6)",
+    )
     similarity_threshold: float = Field(
         0.75, ge=0.0, le=1.0, description="Similaridade mínima (Jaccard) para agrupar ações"
     )

@@ -60,6 +60,7 @@ type HomePageState = {
   hasSearched: boolean;
   lastQuery: string;
   selectedIndicator: string;
+  effectWindowMonths: number;
   policies: PolicySuggestion[];
   policiesStatus: "idle" | "loading" | "error";
   policiesError: string | null;
@@ -83,6 +84,8 @@ const suggestionPrompts = [
 ];
 
 const MAX_RESULTS = 500;
+const DEFAULT_EFFECT_WINDOW = 6;
+const EFFECT_WINDOW_OPTIONS = [6, 12, 18, 24, 30, 36];
 
 export default function Home() {
   const router = useRouter();
@@ -94,6 +97,7 @@ export default function Home() {
   const [lastQuery, setLastQuery] = useState("");
   const [indicators, setIndicators] = useState<IndicatorDescriptor[]>([]);
   const [selectedIndicator, setSelectedIndicator] = useState("");
+  const [effectWindowMonths, setEffectWindowMonths] = useState(DEFAULT_EFFECT_WINDOW);
   const [policies, setPolicies] = useState<PolicySuggestion[]>([]);
   const [policiesStatus, setPoliciesStatus] = useState<"idle" | "loading" | "error">("idle");
   const [policiesError, setPoliciesError] = useState<string | null>(null);
@@ -213,6 +217,7 @@ export default function Home() {
             min_group_members: 2,
             use_indicator: Boolean(selectedIndicator),
             indicator: selectedIndicator || null,
+            effect_window_months: effectWindowMonths,
           }),
         });
 
@@ -237,7 +242,7 @@ export default function Home() {
     }
 
     void fetchPolicies();
-  }, [results, selectedIndicator, hasSearched, hasHydrated]);
+  }, [results, selectedIndicator, effectWindowMonths, hasSearched, hasHydrated]);
 
   useLayoutEffect(() => {
     try {
@@ -259,6 +264,9 @@ export default function Home() {
       setHasSearched(Boolean(stored.hasSearched));
       setLastQuery(stored.lastQuery ?? "");
       setSelectedIndicator(stored.selectedIndicator ?? "");
+      setEffectWindowMonths(
+        typeof stored.effectWindowMonths === "number" ? stored.effectWindowMonths : DEFAULT_EFFECT_WINDOW,
+      );
       setIndicatorPositiveIsGood(stored.indicatorPositiveIsGood ?? true);
       setIndicatorAlias(stored.indicatorAlias ?? "");
       setPolicies(stored.policies ?? []);
@@ -287,6 +295,7 @@ export default function Home() {
       hasSearched,
       lastQuery,
       selectedIndicator,
+      effectWindowMonths,
       indicatorPositiveIsGood,
       indicatorAlias,
       policies,
@@ -309,6 +318,7 @@ export default function Home() {
     hasSearched,
     lastQuery,
     selectedIndicator,
+    effectWindowMonths,
     indicatorPositiveIsGood,
     indicatorAlias,
     policies,
@@ -333,6 +343,7 @@ export default function Home() {
       used_indicator: policiesUseIndicator,
       indicator_positive_is_good: indicatorPositiveIsGood,
       indicator_alias: indicatorAlias,
+      effect_window_months: effectWindowMonths,
     };
     try {
       sessionStorage.setItem(`policy-detail-${slug}`, JSON.stringify(payload));
@@ -440,7 +451,7 @@ export default function Home() {
                 </button>
               </div>
 
-              <div className="filter-grid single">
+              <div className="filter-grid">
                 <div className="filter-field indicator-field">
                   <label>Indicador de impacto</label>
                   <select
@@ -480,6 +491,27 @@ export default function Home() {
 
                     </div>
                   )}
+                </div>
+                <div className="filter-field">
+                  <label htmlFor="effect-window">Janela do efeito</label>
+                  <select
+                    id="effect-window"
+                    value={effectWindowMonths}
+                    onChange={(event) => {
+                      const parsed = Number(event.target.value);
+                      setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
+                    }}
+                    aria-label="Selecionar janela temporal para cálculo do efeito"
+                  >
+                    {EFFECT_WINDOW_OPTIONS.map((months) => (
+                      <option key={months} value={months}>
+                        {months} meses ({months / 6} semestre{months === 6 ? "" : "s"})
+                      </option>
+                    ))}
+                  </select>
+                  <p className="hint">
+                    Dados semestrais: PLs muito recentes podem não ter efeito se a janela for longa.
+                  </p>
                 </div>
               </div>
             </form>
@@ -522,8 +554,11 @@ export default function Home() {
                     detalhes para ver precedentes e replicar com segurança.
                   </p>
                 </div>
-                <div className="pill neutral">
-                  {results.length} projetos considerados
+                <div className="chips-inline">
+                  <div className="pill neutral">{results.length} projetos considerados</div>
+                  {policiesUseIndicator && (
+                    <div className="pill neutral">Efeito em {effectWindowMonths} meses</div>
+                  )}
                 </div>
               </div>
 
@@ -553,7 +588,7 @@ export default function Home() {
 
                       <div className="policy-badges">
                         <div className="metric-badge">
-                          <span className="badge-label">Efeito médio ± desvio</span>
+                          <span className="badge-label">Efeito médio em {effectWindowMonths} meses</span>
                           <span className={`badge-value ${meanTone}`}>
                             {effectAvailable ? (
                               <>
@@ -580,7 +615,7 @@ export default function Home() {
                         {policy.actions.map((action) => {
                           const effectLabel =
                             policiesUseIndicator && action.effect != null
-                              ? `Efeito ${formatEffectValue(action.effect)}`
+                              ? `Efeito em ${effectWindowMonths}m: ${formatEffectValue(action.effect)}`
                               : "Sem indicador";
                           const effectTone = getEffectTone(action.effect);
 

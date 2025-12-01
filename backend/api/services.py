@@ -57,13 +57,21 @@ def _build_indicator_lookup(indicator_df: Any, city_col: str, value_col: str) ->
     return lookup
 
 
+def _advance_semester(year: int, semester: int, semesters_ahead: int) -> Tuple[int, int]:
+    target = (semester - 1) + semesters_ahead
+    return year + target // 2, (target % 2) + 1
+
+
 def compute_effects_for_indexes(
     indexes: Iterable[int],
     resources: CoreResources,
     indicator_key: str,
+    effect_window_months: int = 6,
 ) -> List[IndicatorEffect]:
     spec, indicator_df = resources.get_indicator(indicator_key)
     lookup = _build_indicator_lookup(indicator_df, city_col=spec.city_col, value_col=spec.value_col)
+
+    semesters_ahead = max(1, effect_window_months // 6)
 
     effects: List[IndicatorEffect] = []
 
@@ -80,8 +88,8 @@ def compute_effects_for_indexes(
         uf = str(bill.get("uf", "")).upper()
 
         current = lookup.get((city, uf, year, semester))
-        next_key = (city, uf, year, 2) if semester == 1 else (city, uf, year + 1, 1)
-        future = lookup.get(next_key)
+        future_year, future_semester = _advance_semester(year, semester, semesters_ahead)
+        future = lookup.get((city, uf, future_year, future_semester))
 
         if current is None or future is None:
             continue
@@ -165,7 +173,12 @@ def generate_policies_from_indexes(
     effects_lookup: Optional[Dict[int, IndicatorEffect]] = None
 
     if payload.use_indicator and payload.indicator:
-        effects = compute_effects_for_indexes(payload.bill_indexes, resources, payload.indicator)
+        effects = compute_effects_for_indexes(
+            payload.bill_indexes,
+            resources,
+            payload.indicator,
+            effect_window_months=payload.effect_window_months,
+        )
         effects_lookup = {e.index: e for e in effects}
 
     tuples, action_meta = _build_bill_tuples(payload.bill_indexes, resources, effects_lookup)

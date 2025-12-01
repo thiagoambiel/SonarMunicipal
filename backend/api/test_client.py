@@ -23,6 +23,12 @@ def main() -> None:
     parser.add_argument("--query", default="Como reduzir a criminalidade no município?", help="Consulta semântica.")
     parser.add_argument("--top-k", type=int, default=500, help="Número de resultados na busca.")
     parser.add_argument("--max-indexes", type=int, default=500, help="Máximo de índices para efeitos/políticas.")
+    parser.add_argument(
+        "--effect-window-months",
+        type=int,
+        default=6,
+        help="Janela, em meses (múltiplos de 6), usada para calcular efeitos de indicadores.",
+    )
     args = parser.parse_args()
 
     with httpx.Client(base_url=args.base_url, timeout=30.0) as client:
@@ -51,7 +57,7 @@ def main() -> None:
 
         effects = client.post(
             "/indicator-effects",
-            json={"indicator": indicator, "bill_indexes": indexes},
+            json={"indicator": indicator, "bill_indexes": indexes, "effect_window_months": args.effect_window_months},
         )
         effects.raise_for_status()
         effects_data = effects.json()
@@ -68,6 +74,7 @@ def main() -> None:
                 "bill_indexes": indexes,
                 "min_group_members": 2,
                 "similarity_threshold": 0.75,
+                "effect_window_months": args.effect_window_months,
             },
         )
         policies.raise_for_status()

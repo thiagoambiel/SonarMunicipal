@@ -88,7 +88,7 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
   - `extract_embeddings(dataset)`: empilha `embedding` em matriz `N x D`.
   - `load_sentence_model(model_name, device)`: carrega modelo E5 (ou outro) via `sentence-transformers`.
   - `semantic_search(query, dataset, model, embeddings=None, top_k=5)`: retorna PLs mais semelhantes (com `score` e `index`).
-  - `compute_effects_from_indicator(bills, indicator_df, city_col, value_col)`: calcula delta semestre a semestre do indicador para cada PL.
+  - `compute_effects_from_indicator(bills, indicator_df, city_col, value_col, effect_window_months=6)`: calcula delta do indicador na janela escolhida (múltiplos de 6 meses) para cada PL.
   - `generate_policies_from_bills(bills, min_group_members, similarity_threshold, criterion)`: agrupa ações parecidas em políticas, removendo duplicatas por município e ranqueando por qualidade.
 - Exemplo rápido (gerar políticas a partir de efeitos simulados):
   ```python
@@ -125,8 +125,8 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
   - `GET /health`: status e indicadores carregados.
   - `GET /indicators`: lista indicadores disponíveis.
   - `POST /search`: body `{"query": "...", "top_k": 5}` → PLs similares com `index`.
-  - `POST /indicator-effects`: body `{"indicator": "criminal_indicator", "bill_indexes": [1,2,3]}` → somente PLs com indicador + delta.
-  - `POST /policies`: body `{"indicator": "criminal_indicator", "bill_indexes": [...], "min_group_members": 2, "similarity_threshold": 0.75}` → políticas agregadas.
+  - `POST /indicator-effects`: body `{"indicator": "criminal_indicator", "bill_indexes": [1,2,3], "effect_window_months": 6}` → somente PLs com indicador + delta calculado na janela (múltiplos de 6 meses).
+  - `POST /policies`: body `{"indicator": "criminal_indicator", "bill_indexes": [...], "min_group_members": 2, "similarity_threshold": 0.75, "effect_window_months": 6}` → políticas agregadas.
 - Fluxo sugerido: `/search` → coletar `index` → `/indicator-effects` → `/policies`.
 
 ## CLIs principais

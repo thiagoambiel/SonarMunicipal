@@ -107,7 +107,12 @@ def indicator_effects(
     except KeyError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
 
-    effects = compute_effects_for_indexes(payload.bill_indexes, resources, payload.indicator)
+    effects = compute_effects_for_indexes(
+        payload.bill_indexes,
+        resources,
+        payload.indicator,
+        effect_window_months=payload.effect_window_months,
+    )
     return IndicatorFilterResponse(indicator=payload.indicator, returned=len(effects), effects=effects)
 
 

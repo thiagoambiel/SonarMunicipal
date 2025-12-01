@@ -26,7 +26,10 @@ type StoredPolicy = {
   used_indicator: boolean;
   indicator_positive_is_good?: boolean;
   indicator_alias?: string;
+  effect_window_months?: number;
 };
+
+const DEFAULT_EFFECT_WINDOW = 6;
 
 export default function PolicyDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -82,6 +85,7 @@ export default function PolicyDetailPage() {
   const { policy, used_indicator } = data;
   const indicatorPositiveIsGood = data.indicator_positive_is_good ?? true;
   const indicatorAlias = data.indicator_alias ?? "";
+  const effectWindowMonths = data.effect_window_months ?? DEFAULT_EFFECT_WINDOW;
 
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
@@ -95,7 +99,7 @@ export default function PolicyDetailPage() {
     const magnitude = Math.abs(value).toFixed(2);
     const target = indicatorAlias || "indicador selecionado";
     const direction = value < 0 ? "Redução" : "Aumento";
-    return `${direction} de ${magnitude} na ${target}`;
+    return `${direction} de ${magnitude} na ${target} em ${effectWindowMonths} meses`;
   };
 
   const getEffectTone = (value?: number | null) => {
@@ -140,6 +144,7 @@ export default function PolicyDetailPage() {
               </p>
               <div className="hero-badges">
                 {used_indicator && <span className="pill neutral">{indicatorAlias || "Indicador ativado"}</span>}
+                {used_indicator && <span className="pill neutral">Efeito em {effectWindowMonths} meses</span>}
                 {used_indicator && (
                   <span className={`pill ${indicatorPositiveIsGood ? "success" : "info"}`}>
                     {indicatorPositiveIsGood ? "Objetivo é aumentar o indicador" : "Objetivo é reduzir o indicador"}
@@ -162,7 +167,7 @@ export default function PolicyDetailPage() {
                 <p className={`stat-value`}>
                   {used_indicator ? effectNarrative(policy.effect_mean) : "Não calculado"}
                 </p>
-                <p className="stat-detail">Estimativa com base no indicador selecionado.</p>
+                <p className="stat-detail">Estimativa com base no indicador selecionado e janela de {effectWindowMonths} meses.</p>
               </div>
               <div className="stat-card">
                 <p className="stat-label">Qualidade</p>
@@ -188,7 +193,7 @@ export default function PolicyDetailPage() {
                 <span>Município</span>
                 <span>Ação</span>
                 <span>Apresentação</span>
-                <span>Efeito</span>
+                <span>Efeito (em {effectWindowMonths}m)</span>
               </div>
               {policy.actions.map((action) => (
                 <div key={`${policy.policy}-${action.municipio}-${action.acao}`} className="table-row">
@@ -241,7 +246,7 @@ export default function PolicyDetailPage() {
                   <p>{action.acao}</p>
                   <p>{action.data_apresentacao ?? "—"}</p>
                   <p className={`strong ${getEffectTone(action.effect)}`}>
-                    {used_indicator && action.effect != null ? formatEffectValue(action.effect) : "—"}
+                    {used_indicator && action.effect != null ? `${formatEffectValue(action.effect)}` : "—"}
                   </p>
                 </div>
               ))}
