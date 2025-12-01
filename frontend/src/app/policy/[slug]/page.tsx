@@ -53,13 +53,13 @@ export default function PolicyDetailPage() {
       <div className="page google-layout">
         <div className="page-surface">
           <header className="topbar">
-            <div className="brand">
+            <Link className="brand" href="/">
               <div className="brand-mark">CM</div>
               <div>
                 <p className="brand-title">CityManager</p>
                 <p className="brand-subtitle">Detalhamento de política</p>
               </div>
-            </div>
+            </Link>
             <nav className="nav">
               <div className="nav-links">
                 <Link className="nav-link" href="/">
@@ -114,13 +114,13 @@ export default function PolicyDetailPage() {
     <div className="page google-layout">
       <div className="page-surface">
         <header className="topbar">
-          <div className="brand">
+          <Link className="brand" href="/">
             <div className="brand-mark">CM</div>
             <div>
               <p className="brand-title">CityManager</p>
               <p className="brand-subtitle">Detalhamento de política</p>
             </div>
-          </div>
+          </Link>
           <nav className="nav">
             <div className="nav-links">
               <Link className="nav-link active" href="/">

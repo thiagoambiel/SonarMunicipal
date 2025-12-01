@@ -399,13 +399,13 @@ export default function Home() {
     <div className="page google-layout">
       <div className="page-surface">
         <header className="topbar">
-          <div className="brand">
+          <Link className="brand" href="/">
             <div className="brand-mark">CM</div>
             <div>
               <p className="brand-title">CityManager</p>
               <p className="brand-subtitle">Inteligência para gestores municipais</p>
             </div>
-          </div>
+          </Link>
           <nav className="nav">
             <div className="nav-links">
               <span className="nav-link active">Políticas Públicas</span>
