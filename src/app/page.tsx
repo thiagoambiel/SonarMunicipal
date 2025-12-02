@@ -71,10 +71,8 @@ type HomePageState = {
   indicatorAlias: string;
 };
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000").replace(
-  /\/$/,
-  "",
-);
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
+const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
 
 const suggestionPrompts = [
   "Como reduzir a violência urbana em bairros centrais?",
@@ -139,7 +137,7 @@ export default function Home() {
   useEffect(() => {
     const loadIndicators = async () => {
       try {
-        const response = await fetch(`${API_BASE_URL}/indicators`);
+        const response = await fetch(apiUrl("/api/indicators"));
         if (!response.ok) return;
         const payload = (await response.json()) as IndicatorDescriptor[];
         setIndicators(payload);
@@ -148,7 +146,7 @@ export default function Home() {
       }
     };
     loadIndicators();
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!selectedIndicator) return;
@@ -173,7 +171,7 @@ export default function Home() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/search`, {
+      const response = await fetch(apiUrl("/api/search"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: normalizedQuery, top_k: MAX_RESULTS }),
@@ -220,7 +218,7 @@ export default function Home() {
       setPoliciesError(null);
 
       try {
-        const response = await fetch(`${API_BASE_URL}/policies`, {
+        const response = await fetch(apiUrl("/api/policies"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -299,7 +297,7 @@ export default function Home() {
     } finally {
       setHasHydrated(true);
     }
-  }, []);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!hasHydrated) return;
@@ -607,7 +605,7 @@ export default function Home() {
               </div>
 
               <div className="policy-grid">
-                {policies.map((policy) => {
+                {policies.map((policy, policyIndex) => {
                   const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
                   const effectStd =
                     policiesUseIndicator && policy.effect_std != null ? `${policy.effect_std.toFixed(2)}%` : null;
@@ -617,7 +615,7 @@ export default function Home() {
 
                   return (
                     <article
-                      key={policy.policy}
+                      key={`${policy.policy}-${policyIndex}`}
                       className="policy-card"
                       role="button"
                       tabIndex={0}
@@ -657,7 +655,7 @@ export default function Home() {
                       </p>
 
                       <ul className="policy-city-list">
-                        {policy.actions.map((action) => {
+                        {policy.actions.map((action, actionIndex) => {
                           const effectLabel =
                             policiesUseIndicator && action.effect != null
                               ? `Variação: ${formatEffectValue(action.effect)}`
@@ -666,7 +664,7 @@ export default function Home() {
 
                           return (
                             <li
-                              key={`${policy.policy}-${action.municipio}-${action.acao}`}
+                              key={`${policy.policy}-${action.municipio}-${action.acao}-${actionIndex}`}
                               className="policy-city-item"
                             >
                               <div className="city-name">

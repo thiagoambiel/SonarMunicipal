@@ -1,26 +1,40 @@
-backend/tools/ementa2action/pl_actions.jsonl
-backend/tools/indicators/security/MJSP/*.xlsx
-backend/tools/indicators/security/MJSP.csv
-backend/tools/indicators/security/*.xlsx
+# Backend (agora em experiments/backend)
+experiments/backend/tools/ementa2action/pl_actions.jsonl
+experiments/backend/tools/indicators/security/MJSP/*.xlsx
+experiments/backend/tools/indicators/security/MJSP.csv
+experiments/backend/tools/indicators/security/*.xlsx
+experiments/backend/data/*
+!experiments/backend/data/.gitkeep
+experiments/backend/.venv
+experiments/backend/.env
 
-backend/data/*
-!backend/data/.gitkeep
-
-backend/.venv
-backend/.env
+# Env files na raiz do Next.js
 .env
+.env.local
+.env.development
+.env.production
 
-frontend/node_modules
-frontend/dist
-frontend/.next
-frontend/.vite
-frontend/.env
-frontend/.env.local
-frontend/.env.development
-frontend/.env.production
-frontend/.vercel
-frontend/.turbo
+# Node/Next build artefacts
+/node_modules
+/dist
+/.next
+/.vite
+/.vercel
+/.turbo
 
+# Pacotes alternativos
+/.pnp
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/versions
+
+# Test/coverage
+/coverage
+
+# Outros
 **/.vscode
 **/__pycache__/
 **/.pytest_cache/
@@ -28,3 +42,9 @@ frontend/.turbo
 **/*.py[cod]
 .DS_Store
 .idea
+*.tsbuildinfo
+next-env.d.ts
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*

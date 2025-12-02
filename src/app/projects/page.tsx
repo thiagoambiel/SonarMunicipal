@@ -14,10 +14,8 @@ type SearchResult = {
   data_apresentacao?: string;
 };
 
-const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000").replace(
-  /\/$/,
-  "",
-);
+const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
+const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
 
 const MAX_RESULTS = 500;
 
@@ -94,7 +92,7 @@ function ProjectsContent() {
     setErrorMessage(null);
 
     try {
-      const response = await fetch(`${API_BASE_URL}/search`, {
+      const response = await fetch(apiUrl("/api/search"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: normalizedQuery, top_k: MAX_RESULTS }),

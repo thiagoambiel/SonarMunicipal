@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { startTransition, useEffect, useState } from "react";
 
 type PolicyAction = {
   municipio: string;
@@ -41,10 +41,12 @@ export default function PolicyDetailPage() {
     try {
       const raw = sessionStorage.getItem(`policy-detail-${params.slug}`);
       if (raw) {
-        setData(JSON.parse(raw) as StoredPolicy);
+        startTransition(() => {
+          setData(JSON.parse(raw) as StoredPolicy);
+        });
       }
     } catch (error) {
-        console.error("Erro ao recuperar detalhes da política", error);
+      console.error("Erro ao recuperar detalhes da política", error);
     }
   }, [params?.slug]);
 
@@ -196,8 +198,8 @@ const formatEffectValue = (value?: number | null) => {
                 <span>Apresentação</span>
                 <span>Efeito (% em {effectWindowMonths}m)</span>
               </div>
-              {policy.actions.map((action) => (
-                <div key={`${policy.policy}-${action.municipio}-${action.acao}`} className="table-row">
+              {policy.actions.map((action, index) => (
+                <div key={`${policy.policy}-${action.municipio}-${action.acao}-${index}`} className="table-row">
                   <div>
                     <div className="city-block tight">
                       <span className="strong">{action.municipio}</span>
