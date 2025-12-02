@@ -38,6 +38,20 @@ type ActionMeta = {
 const DEFAULT_SIMILARITY_THRESHOLD = 0.75;
 const DEFAULT_MIN_GROUP_MEMBERS = 2;
 const DEFAULT_EFFECT_WINDOW_MONTHS = 6;
+const ACOMPANHAR_SUFFIX = "/acompanhar-materia";
+
+const sanitizeBillUrl = (raw?: string | null): string | undefined => {
+  if (!raw || typeof raw !== "string") return undefined;
+  const trimmed = raw.trim();
+  if (!trimmed) return undefined;
+
+  let cleaned = trimmed.replace(/\/+$/, "");
+  if (cleaned.endsWith(ACOMPANHAR_SUFFIX)) {
+    cleaned = cleaned.slice(0, -ACOMPANHAR_SUFFIX.length);
+  }
+
+  return cleaned || undefined;
+};
 
 const normalizeString = (value: unknown, fallback: string | null = null): string | null => {
   if (typeof value === "string") {
@@ -55,7 +69,7 @@ const buildBillRecords = (items: SearchHit[]): BillRecord[] =>
     acao: hit.acao ?? undefined,
     ementa: hit.ementa ?? undefined,
     data_apresentacao: hit.data_apresentacao ?? undefined,
-    url: hit.link_publico ?? hit.sapl_url ?? undefined,
+    url: sanitizeBillUrl(hit.link_publico) ?? sanitizeBillUrl(hit.sapl_url) ?? undefined,
   }));
 
 const pickBestEffect = (
