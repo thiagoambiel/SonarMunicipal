@@ -5,3 +5,4 @@ numpy<2
 sentence-transformers
 torch
 httpx
+qdrant-client
