@@ -2,6 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 import { searchProjects } from "@/lib/semantic-search";
 
+const MAX_TOP_K = (() => {
+  const raw = Number.parseInt(process.env.SEARCH_MAX_RESULTS ?? "", 10);
+  if (Number.isFinite(raw) && raw > 0) return raw;
+  return 1000;
+})();
+
 export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
@@ -26,7 +32,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ detail: "Informe a query para buscar." }, { status: 400 });
   }
 
-  const limit = Math.max(1, Math.min(topK ?? 50, 500));
+  const limit = Math.max(1, Math.min(topK ?? 50, MAX_TOP_K));
 
   try {
     const results = await searchProjects({ query, limit });

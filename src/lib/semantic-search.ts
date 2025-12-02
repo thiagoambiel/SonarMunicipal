@@ -3,7 +3,11 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 
 const HF_MODEL_ID = process.env.HF_MODEL_ID ?? "embaas/sentence-transformers-multilingual-e5-base";
 const QDRANT_COLLECTION = process.env.QDRANT_COLLECTION ?? "projetos-de-lei";
-const MAX_TOP_K = 500;
+const MAX_TOP_K = (() => {
+  const raw = Number.parseInt(process.env.SEARCH_MAX_RESULTS ?? "", 10);
+  if (Number.isFinite(raw) && raw > 0) return raw;
+  return 1000;
+})();
 
 type SearchParams = {
   query: string;

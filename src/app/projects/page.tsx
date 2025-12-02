@@ -17,7 +17,9 @@ type SearchResult = {
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
 const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
 
-const MAX_RESULTS = 500;
+const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
+  ? Number(process.env.NEXT_PUBLIC_MAX_TOP_K)
+  : 500;
 
 function ProjectsContent() {
   const [query, setQuery] = useState("");

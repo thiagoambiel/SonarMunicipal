@@ -82,7 +82,9 @@ const suggestionPrompts = [
   "Como ampliar o acesso a saneamento básico rapidamente?",
 ];
 
-const MAX_RESULTS = 500;
+const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
+  ? Number(process.env.NEXT_PUBLIC_MAX_TOP_K)
+  : 500;
 const DEFAULT_EFFECT_WINDOW = 6;
 const EFFECT_WINDOW_OPTIONS = [6, 12, 18, 24, 30, 36];
 
