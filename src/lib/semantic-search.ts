@@ -136,7 +136,7 @@ export const searchProjects = async ({ query, limit }: SearchParams): Promise<Se
     vector,
     limit: safeLimit,
     with_payload: true,
-    with_vectors: false,
+    with_vector: false,
   });
 
   return results.map((item) => toSearchHit(item));
@@ -150,8 +150,14 @@ export const fetchProjectsByIds = async (ids: Array<number | string>): Promise<S
   const items = await client.retrieve(QDRANT_COLLECTION, {
     ids: unique,
     with_payload: true,
-    with_vectors: false,
+    with_vector: false,
   });
 
-  return items.map((item) => toSearchHit({ ...item, score: item.score ?? 0 }));
+  return items.map((item) =>
+    toSearchHit({
+      id: item.id,
+      payload: item.payload,
+      score: (item as { score?: number }).score ?? 0,
+    }),
+  );
 };

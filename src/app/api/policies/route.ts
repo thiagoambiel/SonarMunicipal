@@ -27,6 +27,14 @@ type PolicySuggestion = {
   actions: PolicyAction[];
 };
 
+type ActionMeta = {
+  effect?: number | null;
+  score?: number;
+  url?: string;
+  data_apresentacao?: string;
+  ementa?: string;
+};
+
 const DEFAULT_SIMILARITY_THRESHOLD = 0.75;
 const DEFAULT_MIN_GROUP_MEMBERS = 2;
 const DEFAULT_EFFECT_WINDOW_MONTHS = 6;
@@ -51,13 +59,13 @@ const buildBillRecords = (items: SearchHit[]): BillRecord[] =>
   }));
 
 const pickBestEffect = (
-  current: { score?: number; effect?: number | null },
+  current: ActionMeta,
   score: number,
   rawEffect: number | null,
 ) => {
   if (rawEffect == null) return current;
   if (current.score == null || score < current.score) {
-    return { score, effect: rawEffect };
+    return { ...current, score, effect: rawEffect };
   }
   return current;
 };
@@ -128,10 +136,7 @@ export async function POST(request: NextRequest) {
     }
 
     const groupingTuples: GroupedPolicyAction[] = [];
-    const actionMeta = new Map<
-      string,
-      { effect?: number | null; score?: number; url?: string; data_apresentacao?: string; ementa?: string }
-    >();
+    const actionMeta = new Map<string, ActionMeta>();
 
     for (const bill of bills) {
       const description =
@@ -163,7 +168,7 @@ export async function POST(request: NextRequest) {
       });
 
       const key = `${municipioName}|||${description}`;
-      const current = actionMeta.get(key) ?? {};
+      const current: ActionMeta = actionMeta.get(key) ?? {};
       const updated = pickBestEffect(current, normalizedScore, rawEffect);
       if (bill.url) updated.url = bill.url;
       if (bill.data_apresentacao) updated.data_apresentacao = bill.data_apresentacao;
