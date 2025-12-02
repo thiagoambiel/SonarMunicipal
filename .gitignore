@@ -1,12 +1,12 @@
 # Experimentos
-backend/tools/ementa2action/pl_actions.jsonl
-backend/tools/indicators/security/MJSP/*.xlsx
-backend/tools/indicators/security/MJSP.csv
-backend/tools/indicators/security/*.xlsx
-backend/data/*
-!backend/data/.gitkeep
-backend/.venv
-backend/.env
+experiments/tools/ementa2action/pl_actions.jsonl
+experiments/tools/indicators/security/MJSP/*.xlsx
+experiments/tools/indicators/security/MJSP.csv
+experiments/tools/indicators/security/*.xlsx
+experiments/data/*
+!experiments/data/.gitkeep
+experiments/.venv
+experiments/.env
 
 # Env files na raiz do Next.js
 .env
