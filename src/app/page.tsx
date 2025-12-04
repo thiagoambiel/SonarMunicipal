@@ -120,46 +120,33 @@ const formatEffectWindowLabel = (months: number) => {
   return `${months} meses • ${semestersValue} semestre${semestersValue === 1 ? "" : "s"} • ${yearsLabel}`;
 };
 
+type DropdownValue = string | number;
+
 type DropdownBadge = {
   label: string;
   tone: "quality" | "effect";
 };
 
-type EffectWindowDropdownProps = {
-  options: number[];
-  value: number;
+type DropdownOption = {
+  value: DropdownValue;
+  label: string;
+  badges?: DropdownBadge[];
+};
+
+type CustomDropdownProps = {
+  options: DropdownOption[];
+  value: DropdownValue;
   disabled?: boolean;
-  bestQualityWindows: number[];
-  bestEffectMeanWindows: number[];
-  onChange: (value: number) => void;
+  onChange: (value: DropdownValue) => void;
   id?: string;
   ariaLabel?: string;
 };
 
-function EffectWindowDropdown({
-  options,
-  value,
-  disabled,
-  bestQualityWindows,
-  bestEffectMeanWindows,
-  onChange,
-  id,
-  ariaLabel,
-}: EffectWindowDropdownProps) {
+function CustomDropdown({ options, value, disabled, onChange, id, ariaLabel }: CustomDropdownProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const selectedBadges = useMemo(
-    () =>
-      [
-        bestQualityWindows.includes(value)
-          ? ({ label: "Melhor Qualidade", tone: "quality" } as DropdownBadge)
-          : null,
-        bestEffectMeanWindows.includes(value)
-          ? ({ label: "Melhor Efeito Médio", tone: "effect" } as DropdownBadge)
-          : null,
-      ].filter((item): item is DropdownBadge => item != null),
-    [bestEffectMeanWindows, bestQualityWindows, value],
-  );
+  const selectedOption = useMemo(() => options.find((item) => item.value === value), [options, value]);
+  const selectedBadges = selectedOption?.badges ?? [];
 
   useEffect(() => {
     if (!open || disabled) return;
@@ -187,22 +174,15 @@ function EffectWindowDropdown({
     };
   }, []);
 
-  const buildBadges = (current: number): DropdownBadge[] =>
-    [
-      bestQualityWindows.includes(current)
-        ? ({ label: "Melhor Qualidade", tone: "quality" } as DropdownBadge)
-        : null,
-      bestEffectMeanWindows.includes(current)
-        ? ({ label: "Melhor Efeito Médio", tone: "effect" } as DropdownBadge)
-        : null,
-    ].filter((item): item is DropdownBadge => item != null);
+  const buildBadges = (current: DropdownValue): DropdownBadge[] =>
+    options.find((item) => item.value === current)?.badges ?? [];
 
-  const handleSelection = (selectedValue: number) => {
+  const handleSelection = (selectedValue: DropdownValue) => {
     onChange(selectedValue);
     setOpen(false);
   };
 
-  const selectedLabel = formatEffectWindowLabel(value);
+  const selectedLabel = selectedOption?.label ?? "";
   const isDisabled = Boolean(disabled);
   const isMenuOpen = !isDisabled && open;
 
@@ -250,24 +230,24 @@ function EffectWindowDropdown({
       </button>
       {isMenuOpen && (
         <div className="dropdown-menu" role="listbox">
-          {options.map((months) => {
-            const badges = buildBadges(months);
-            const isActive = months === value;
+          {options.map((option) => {
+            const badges = buildBadges(option.value);
+            const isActive = option.value === value;
             return (
               <button
-                key={months}
+                key={option.value}
                 type="button"
                 className={`dropdown-option ${isActive ? "active" : ""}`}
                 role="option"
                 aria-selected={isActive}
-                onClick={() => handleSelection(months)}
+                onClick={() => handleSelection(option.value)}
               >
                 <div className="option-line">
-                  <span className="option-label">{formatEffectWindowLabel(months)}</span>
+                  <span className="option-label">{option.label}</span>
                   {badges.length > 0 && (
                     <div className="option-badges">
                       {badges.map((badge) => (
-                        <span key={`${months}-${badge.label}`} className={`option-badge ${badge.tone}`}>
+                        <span key={`${option.value}-${badge.label}`} className={`option-badge ${badge.tone}`}>
                           {badge.label}
                         </span>
                       ))}
@@ -315,6 +295,30 @@ function HomeContent() {
   const effectWindowOptions = useMemo(
     () => buildEffectWindowOptions(selectedIndicatorObj),
     [selectedIndicatorObj],
+  );
+  const effectWindowDropdownOptions = useMemo<DropdownOption[]>(
+    () =>
+      effectWindowOptions.map((months) => {
+        const badges: DropdownBadge[] = [];
+        if (bestQualityWindows.includes(months)) {
+          badges.push({ label: "Melhor Qualidade", tone: "quality" });
+        }
+        if (bestEffectMeanWindows.includes(months)) {
+          badges.push({ label: "Melhor Efeito Médio", tone: "effect" });
+        }
+        return { value: months, label: formatEffectWindowLabel(months), badges };
+      }),
+    [bestEffectMeanWindows, bestQualityWindows, effectWindowOptions],
+  );
+  const indicatorDropdownOptions = useMemo<DropdownOption[]>(
+    () => [
+      { value: "", label: "Sem indicador" },
+      ...indicators.map((indicator) => ({
+        value: indicator.id,
+        label: indicator.alias || indicator.id,
+      })),
+    ],
+    [indicators],
   );
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
@@ -769,10 +773,13 @@ function HomeContent() {
               <div className="filter-grid">
                 <div className="filter-field indicator-field">
                   <label>Indicador de impacto</label>
-                  <select
+                  <CustomDropdown
+                    id="indicator-select"
+                    ariaLabel="Selecionar indicador"
                     value={selectedIndicator}
-                    onChange={(event) => {
-                      const value = event.target.value;
+                    options={indicatorDropdownOptions}
+                    onChange={(newValue) => {
+                      const value = String(newValue);
                       setSelectedIndicator(value);
                       const found = indicators.find((indicator) => indicator.id === value);
                       if (found) {
@@ -783,15 +790,7 @@ function HomeContent() {
                         setIndicatorAlias("");
                       }
                     }}
-                    aria-label="Selecionar indicador"
-                  >
-                    <option value="">Sem indicador</option>
-                    {indicators.map((indicator) => (
-                      <option key={indicator.id} value={indicator.id}>
-                        {indicator.alias || indicator.id}
-                      </option>
-                    ))}
-                  </select>
+                  />
                   <p className="hint">
                     Ative para simular impacto esperado usando dados históricos do indicador escolhido.
                   </p>
@@ -809,17 +808,16 @@ function HomeContent() {
                 </div>
                 <div className="filter-field">
                   <label htmlFor="effect-window">Janela do efeito</label>
-                  <EffectWindowDropdown
+                  <CustomDropdown
                     key={selectedIndicator ? "effect-window-enabled" : "effect-window-disabled"}
                     id="effect-window"
                     ariaLabel="Selecionar janela temporal para cálculo do efeito"
                     disabled={!selectedIndicator}
-                    options={effectWindowOptions}
+                    options={effectWindowDropdownOptions}
                     value={effectWindowMonths}
-                    bestQualityWindows={bestQualityWindows}
-                    bestEffectMeanWindows={bestEffectMeanWindows}
                     onChange={(newValue) => {
-                      setEffectWindowMonths(Number.isFinite(newValue) ? newValue : DEFAULT_EFFECT_WINDOW);
+                      const parsed = typeof newValue === "number" ? newValue : Number(newValue);
+                      setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
                     }}
                   />
                   <p className="hint">
