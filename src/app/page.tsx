@@ -13,6 +13,7 @@ type IndicatorDescriptor = {
   alias: string;
   positive_is_good: boolean;
   min_value: number;
+  periods_per_year?: number;
 };
 
 type SearchResult = {
@@ -88,6 +89,20 @@ const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
 const DEFAULT_EFFECT_WINDOW = 6;
 const EFFECT_WINDOW_OPTIONS = [6, 12, 18, 24, 30, 36];
 
+const monthsPerIndicator = (indicator: IndicatorDescriptor | null | undefined): number => {
+  const periods = indicator?.periods_per_year ?? 2; // padrão semestral
+  const months = Math.round(12 / (periods > 0 ? periods : 2));
+  return months > 0 ? months : 6;
+};
+
+const buildEffectWindowOptions = (indicator: IndicatorDescriptor | null | undefined): number[] => {
+  const step = monthsPerIndicator(indicator);
+  const filtered = EFFECT_WINDOW_OPTIONS.filter((value) => value % step === 0);
+  if (filtered.length > 0) return filtered;
+  const fallback = [step, step * 2, step * 3].filter((value, index, arr) => value > 0 && arr.indexOf(value) === index);
+  return fallback.length > 0 ? fallback : [DEFAULT_EFFECT_WINDOW];
+};
+
 const formatEffectWindowLabel = (months: number) => {
   const semesters = months / 6;
   const years = months / 12;
@@ -118,6 +133,14 @@ function HomeContent() {
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
   const [indicatorAlias, setIndicatorAlias] = useState("");
+  const selectedIndicatorObj = useMemo(
+    () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
+    [indicators, selectedIndicator],
+  );
+  const effectWindowOptions = useMemo(
+    () => buildEffectWindowOptions(selectedIndicatorObj),
+    [selectedIndicatorObj],
+  );
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
 
@@ -151,13 +174,17 @@ function HomeContent() {
   }, [searchParams]);
 
   useEffect(() => {
-    if (!selectedIndicator) return;
-    const found = indicators.find((indicator) => indicator.id === selectedIndicator);
-    if (found) {
-      setIndicatorAlias(found.alias || found.id);
-      setIndicatorPositiveIsGood(found.positive_is_good);
+    if (!selectedIndicatorObj) return;
+    setIndicatorAlias(selectedIndicatorObj.alias || selectedIndicatorObj.id);
+    setIndicatorPositiveIsGood(selectedIndicatorObj.positive_is_good);
+  }, [selectedIndicatorObj]);
+
+  useEffect(() => {
+    if (!effectWindowOptions.length) return;
+    if (!effectWindowOptions.includes(effectWindowMonths)) {
+      setEffectWindowMonths(effectWindowOptions[0]);
     }
-  }, [indicators, selectedIndicator]);
+  }, [effectWindowOptions, effectWindowMonths]);
 
   const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -547,7 +574,7 @@ function HomeContent() {
                     }}
                     aria-label="Selecionar janela temporal para cálculo do efeito"
                   >
-                    {EFFECT_WINDOW_OPTIONS.map((months) => (
+                    {effectWindowOptions.map((months) => (
                       <option key={months} value={months}>
                         {formatEffectWindowLabel(months)}
                       </option>
