@@ -598,6 +598,7 @@ function HomeContent() {
                   <label htmlFor="effect-window">Janela do efeito</label>
                   <select
                     id="effect-window"
+                    disabled={!selectedIndicator}
                     value={effectWindowMonths}
                     onChange={(event) => {
                       const parsed = Number(event.target.value);
