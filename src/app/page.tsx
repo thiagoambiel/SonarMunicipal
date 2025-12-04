@@ -276,13 +276,7 @@ function HomeContent() {
         }
 
         const payload = (await response.json()) as PolicyResponse;
-        const bestWindow = payload.selected_effect_window ?? (selectedIndicator ? effectWindowMonths : null);
-        setBestEffectWindow(bestWindow ?? null);
-        const shouldAdoptBest = selectedIndicator && bestWindow != null && bestEffectWindow == null;
-        if (shouldAdoptBest && bestWindow !== effectWindowMonths) {
-          skipPolicyFetchRef.current = true;
-          setEffectWindowMonths(bestWindow);
-        }
+        setBestEffectWindow(payload.selected_effect_window ?? null);
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
