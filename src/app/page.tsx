@@ -53,6 +53,8 @@ type PolicyResponse = {
   total_candidates: number;
   policies: PolicySuggestion[];
   selected_effect_window?: number | null;
+  best_quality_effect_window?: number | null;
+  best_effect_mean_window?: number | null;
 };
 
 type HomePageState = {
@@ -71,7 +73,8 @@ type HomePageState = {
   suggestionsVisible: boolean;
   indicatorPositiveIsGood: boolean;
   indicatorAlias: string;
-  bestEffectWindow: number | null;
+  bestQualityWindow: number | null;
+  bestEffectMeanWindow: number | null;
 };
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
@@ -105,17 +108,178 @@ const buildEffectWindowOptions = (indicator: IndicatorDescriptor | null | undefi
   return fallback.length > 0 ? fallback : [DEFAULT_EFFECT_WINDOW];
 };
 
-const formatEffectWindowLabel = (months: number, bestWindow: number | null) => {
+const formatEffectWindowLabel = (months: number) => {
   const semesters = months / 6;
   const years = months / 12;
   const semestersValue = Number.isInteger(semesters) ? semesters : Number(semesters.toFixed(1));
   const yearsLabel = Number.isInteger(years)
     ? `${years} ano${years === 1 ? "" : "s"}`
     : `${years.toFixed(1)} ano${years > 1 ? "s" : ""}`;
-  const baseLabel = `${months} meses • ${semestersValue} semestre${semestersValue === 1 ? "" : "s"} • ${yearsLabel}`;
-  const isBest = bestWindow != null && months === bestWindow;
-  return isBest ? `${baseLabel} (Melhor Opção)` : baseLabel;
+  return `${months} meses • ${semestersValue} semestre${semestersValue === 1 ? "" : "s"} • ${yearsLabel}`;
 };
+
+type DropdownBadge = {
+  label: string;
+  tone: "quality" | "effect";
+};
+
+type EffectWindowDropdownProps = {
+  options: number[];
+  value: number;
+  disabled?: boolean;
+  bestQualityWindow: number | null;
+  bestEffectMeanWindow: number | null;
+  onChange: (value: number) => void;
+  id?: string;
+  ariaLabel?: string;
+};
+
+function EffectWindowDropdown({
+  options,
+  value,
+  disabled,
+  bestQualityWindow,
+  bestEffectMeanWindow,
+  onChange,
+  id,
+  ariaLabel,
+}: EffectWindowDropdownProps) {
+  const [open, setOpen] = useState(false);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const selectedBadges = useMemo(
+    () =>
+      [
+        bestQualityWindow != null && value === bestQualityWindow
+          ? ({ label: "Melhor Qualidade", tone: "quality" } as DropdownBadge)
+          : null,
+        bestEffectMeanWindow != null && value === bestEffectMeanWindow
+          ? ({ label: "Melhor Efeito Médio", tone: "effect" } as DropdownBadge)
+          : null,
+      ].filter((item): item is DropdownBadge => item != null),
+    [bestEffectMeanWindow, bestQualityWindow, value],
+  );
+
+  useEffect(() => {
+    if (!open || disabled) return;
+    const handleClick = (event: MouseEvent) => {
+      if (!containerRef.current) return;
+      if (!containerRef.current.contains(event.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+    };
+  }, [disabled, open]);
+
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, []);
+
+  const buildBadges = (current: number): DropdownBadge[] =>
+    [
+      bestQualityWindow != null && current === bestQualityWindow
+        ? ({ label: "Melhor Qualidade", tone: "quality" } as DropdownBadge)
+        : null,
+      bestEffectMeanWindow != null && current === bestEffectMeanWindow
+        ? ({ label: "Melhor Efeito Médio", tone: "effect" } as DropdownBadge)
+        : null,
+    ].filter((item): item is DropdownBadge => item != null);
+
+  const handleSelection = (selectedValue: number) => {
+    onChange(selectedValue);
+    setOpen(false);
+  };
+
+  const selectedLabel = formatEffectWindowLabel(value);
+  const isDisabled = Boolean(disabled);
+  const isMenuOpen = !isDisabled && open;
+
+  return (
+    <div className={`custom-dropdown ${isDisabled ? "disabled" : ""}`} ref={containerRef}>
+      <button
+        type="button"
+        className="dropdown-trigger"
+        onClick={() => !isDisabled && setOpen((prev) => !prev)}
+        aria-haspopup="listbox"
+        aria-expanded={isMenuOpen}
+        disabled={isDisabled}
+        id={id}
+        aria-label={ariaLabel}
+      >
+        <div className="dropdown-trigger-content">
+          <span className="dropdown-value">{selectedLabel}</span>
+          {selectedBadges.length > 0 && (
+            <div className="option-badges">
+              {selectedBadges.map((badge) => (
+                <span key={badge.label} className={`option-badge ${badge.tone}`}>
+                  {badge.label}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
+        <svg
+          className={`chevron ${isMenuOpen ? "open" : ""}`}
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+        >
+          <path
+            d="M6 9L12 15L18 9"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+        </svg>
+      </button>
+      {isMenuOpen && (
+        <div className="dropdown-menu" role="listbox">
+          {options.map((months) => {
+            const badges = buildBadges(months);
+            const isActive = months === value;
+            return (
+              <button
+                key={months}
+                type="button"
+                className={`dropdown-option ${isActive ? "active" : ""}`}
+                role="option"
+                aria-selected={isActive}
+                onClick={() => handleSelection(months)}
+              >
+                <div className="option-line">
+                  <span className="option-label">{formatEffectWindowLabel(months)}</span>
+                  {badges.length > 0 && (
+                    <div className="option-badges">
+                      {badges.map((badge) => (
+                        <span key={`${months}-${badge.label}`} className={`option-badge ${badge.tone}`}>
+                          {badge.label}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
 
 function HomeContent() {
   const router = useRouter();
@@ -140,7 +304,8 @@ function HomeContent() {
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
   const [indicatorAlias, setIndicatorAlias] = useState("");
-  const [bestEffectWindow, setBestEffectWindow] = useState<number | null>(null);
+  const [bestQualityWindow, setBestQualityWindow] = useState<number | null>(null);
+  const [bestEffectMeanWindow, setBestEffectMeanWindow] = useState<number | null>(null);
   const selectedIndicatorObj = useMemo(
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
@@ -190,7 +355,8 @@ function HomeContent() {
   useEffect(() => {
     const previous = previousIndicatorRef.current;
     if (previous !== selectedIndicator) {
-      setBestEffectWindow(null);
+      setBestQualityWindow(null);
+      setBestEffectMeanWindow(null);
       previousIndicatorRef.current = selectedIndicator;
       return;
     }
@@ -287,11 +453,14 @@ function HomeContent() {
 
         const payload = (await response.json()) as PolicyResponse;
         if (requestId !== latestPoliciesRequestRef.current) return;
-        const bestFromPayload = payload.selected_effect_window;
-        setBestEffectWindow((current) => {
-          if (!selectedIndicator) return null;
-          return typeof bestFromPayload === "number" ? bestFromPayload : current;
-        });
+        const bestQualityFromPayload = payload.best_quality_effect_window ?? payload.selected_effect_window;
+        const bestEffectMeanFromPayload = payload.best_effect_mean_window;
+        setBestQualityWindow(
+          selectedIndicator && typeof bestQualityFromPayload === "number" ? bestQualityFromPayload : null,
+        );
+        setBestEffectMeanWindow(
+          selectedIndicator && typeof bestEffectMeanFromPayload === "number" ? bestEffectMeanFromPayload : null,
+        );
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
@@ -346,7 +515,17 @@ function HomeContent() {
       setPoliciesError(stored.policiesError ?? null);
       setPoliciesUseIndicator(Boolean(stored.policiesUseIndicator));
       setSuggestionsVisible(stored.suggestionsVisible ?? true);
-      setBestEffectWindow(typeof stored.bestEffectWindow === "number" ? stored.bestEffectWindow : null);
+      const legacyBestEffect = (stored as { bestEffectWindow?: number | null }).bestEffectWindow;
+      const bestQualityFromStorage =
+        typeof stored.bestQualityWindow === "number"
+          ? stored.bestQualityWindow
+          : typeof legacyBestEffect === "number"
+            ? legacyBestEffect
+            : null;
+      setBestQualityWindow(bestQualityFromStorage);
+      setBestEffectMeanWindow(
+        typeof stored.bestEffectMeanWindow === "number" ? stored.bestEffectMeanWindow : null,
+      );
       if (stored.policies && stored.policies.length > 0) {
         skipPolicyFetchRef.current = true;
       }
@@ -376,7 +555,8 @@ function HomeContent() {
       policiesError,
       policiesUseIndicator,
       suggestionsVisible,
-      bestEffectWindow,
+      bestQualityWindow,
+      bestEffectMeanWindow,
     };
 
     try {
@@ -401,7 +581,8 @@ function HomeContent() {
     policiesUseIndicator,
     suggestionsVisible,
     hasHydrated,
-    bestEffectWindow,
+    bestQualityWindow,
+    bestEffectMeanWindow,
   ]);
 
   useEffect(() => {
@@ -596,22 +777,19 @@ function HomeContent() {
                 </div>
                 <div className="filter-field">
                   <label htmlFor="effect-window">Janela do efeito</label>
-                  <select
+                  <EffectWindowDropdown
+                    key={selectedIndicator ? "effect-window-enabled" : "effect-window-disabled"}
                     id="effect-window"
+                    ariaLabel="Selecionar janela temporal para cálculo do efeito"
                     disabled={!selectedIndicator}
+                    options={effectWindowOptions}
                     value={effectWindowMonths}
-                    onChange={(event) => {
-                      const parsed = Number(event.target.value);
-                      setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
+                    bestQualityWindow={bestQualityWindow}
+                    bestEffectMeanWindow={bestEffectMeanWindow}
+                    onChange={(newValue) => {
+                      setEffectWindowMonths(Number.isFinite(newValue) ? newValue : DEFAULT_EFFECT_WINDOW);
                     }}
-                    aria-label="Selecionar janela temporal para cálculo do efeito"
-                  >
-                    {effectWindowOptions.map((months) => (
-                      <option key={months} value={months}>
-                        {formatEffectWindowLabel(months, bestEffectWindow)}
-                      </option>
-                    ))}
-                  </select>
+                  />
                   <p className="hint">
                     A janela em meses é arredondada para a granularidade do indicador (semestral, anual); PLs muito
                     recentes podem não ter efeito calculado.

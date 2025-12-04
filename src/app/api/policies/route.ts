@@ -152,6 +152,18 @@ export async function POST(request: NextRequest) {
       return Math.max(...policies.map((item) => item.qualityScore ?? 0));
     };
 
+    const computeMeanEffectScore = (
+      policies: PolicySuggestion[],
+      positiveIsGood: boolean,
+    ): number | null => {
+      const values = policies
+        .map((item) => item.effect_mean)
+        .filter((value): value is number => value != null && Number.isFinite(value));
+      if (values.length === 0) return null;
+      const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
+      return positiveIsGood ? mean : -mean;
+    };
+
     const buildPolicies = (windowMonths: number): {
       policies: PolicySuggestion[];
       used_indicator: boolean;
@@ -241,14 +253,29 @@ export async function POST(request: NextRequest) {
       ? Array.from(new Set(effectWindowCandidates))
       : [effectWindowMonths];
 
-    let bestWindow = windowsToTest[0];
-    let bestResult = buildPolicies(bestWindow);
+    let bestQualityWindow = windowsToTest[0];
+    let bestResult = buildPolicies(bestQualityWindow);
+
+    const initialEffectScore =
+      indicatorSpec && bestResult.used_indicator
+        ? computeMeanEffectScore(bestResult.policies, indicatorSpec.positive_is_good)
+        : null;
+    let bestEffectMeanWindow = initialEffectScore == null ? null : bestQualityWindow;
+    let bestEffectScore = initialEffectScore;
 
     for (const candidate of windowsToTest.slice(1)) {
       const result = buildPolicies(candidate);
       if (result.quality > bestResult.quality) {
-        bestWindow = candidate;
+        bestQualityWindow = candidate;
         bestResult = result;
+      }
+
+      if (indicatorSpec) {
+        const score = computeMeanEffectScore(result.policies, indicatorSpec.positive_is_good);
+        if (score != null && (bestEffectScore == null || score > bestEffectScore)) {
+          bestEffectScore = score;
+          bestEffectMeanWindow = candidate;
+        }
       }
     }
 
@@ -257,7 +284,9 @@ export async function POST(request: NextRequest) {
       used_indicator: bestResult.used_indicator,
       total_candidates: bestResult.total_candidates,
       policies: bestResult.policies,
-      selected_effect_window: bestWindow,
+      selected_effect_window: bestQualityWindow,
+      best_quality_effect_window: bestQualityWindow,
+      best_effect_mean_window: bestEffectMeanWindow ?? null,
     });
   } catch (error) {
     console.error("Erro ao gerar políticas:", error);
