@@ -135,6 +135,8 @@ function HomeContent() {
   const [policiesUseIndicator, setPoliciesUseIndicator] = useState(false);
   const [suggestionsVisible, setSuggestionsVisible] = useState(true);
   const skipPolicyFetchRef = useRef(false);
+  const latestPoliciesRequestRef = useRef(0);
+  const previousIndicatorRef = useRef<string | null>(null);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
   const [indicatorAlias, setIndicatorAlias] = useState("");
@@ -186,8 +188,14 @@ function HomeContent() {
   }, [selectedIndicatorObj]);
 
   useEffect(() => {
-    setBestEffectWindow(null);
-  }, [selectedIndicator, effectWindowOptions, results]);
+    const previous = previousIndicatorRef.current;
+    if (previous !== selectedIndicator) {
+      setBestEffectWindow(null);
+      previousIndicatorRef.current = selectedIndicator;
+      return;
+    }
+    previousIndicatorRef.current = selectedIndicator;
+  }, [selectedIndicator]);
 
   useEffect(() => {
     if (!effectWindowOptions.length) return;
@@ -255,6 +263,8 @@ function HomeContent() {
 
       setPoliciesStatus("loading");
       setPoliciesError(null);
+      const requestId = latestPoliciesRequestRef.current + 1;
+      latestPoliciesRequestRef.current = requestId;
       try {
         const candidateWindows = selectedIndicator ? effectWindowOptions : [];
         const response = await fetch(apiUrl("/api/policies"), {
@@ -276,12 +286,18 @@ function HomeContent() {
         }
 
         const payload = (await response.json()) as PolicyResponse;
-        setBestEffectWindow(payload.selected_effect_window ?? null);
+        if (requestId !== latestPoliciesRequestRef.current) return;
+        const bestFromPayload = payload.selected_effect_window;
+        setBestEffectWindow((current) => {
+          if (!selectedIndicator) return null;
+          return typeof bestFromPayload === "number" ? bestFromPayload : current;
+        });
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
       } catch (error) {
         console.error(error);
+        if (requestId !== latestPoliciesRequestRef.current) return;
         setPoliciesStatus("error");
         setPoliciesError("Não foi possível gerar políticas agora.");
       }
