@@ -7,7 +7,7 @@ import {
   IndicatorEffect,
   listIndicatorSpecs,
 } from "@/lib/indicators";
-import { generatePoliciesFromBills, GroupedPolicyAction } from "@/lib/policies";
+import { generatePoliciesFromBills, GroupedPolicyAction, PolicyCandidate } from "@/lib/policies";
 import { fetchProjectsByIds, SearchHit } from "@/lib/semantic-search";
 
 type PolicyAction = {
@@ -91,6 +91,7 @@ export async function POST(request: NextRequest) {
   let indicator: string | null = null;
   let useIndicator = false;
   let effectWindowMonths = DEFAULT_EFFECT_WINDOW_MONTHS;
+  let effectWindowCandidates: number[] = [];
   let similarityThreshold = DEFAULT_SIMILARITY_THRESHOLD;
   let minGroupMembers = DEFAULT_MIN_GROUP_MEMBERS;
 
@@ -107,6 +108,11 @@ export async function POST(request: NextRequest) {
     }
     if (typeof body?.effect_window_months === "number" && Number.isFinite(body.effect_window_months)) {
       effectWindowMonths = Math.max(1, Math.trunc(body.effect_window_months));
+    }
+    if (Array.isArray(body?.effect_window_months_candidates)) {
+      effectWindowCandidates = body.effect_window_months_candidates
+        .map((value: unknown) => (typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : null))
+        .filter((value: number | null): value is number => value != null && value > 0);
     }
     if (typeof body?.similarity_threshold === "number" && Number.isFinite(body.similarity_threshold)) {
       similarityThreshold = Math.min(1, Math.max(0, body.similarity_threshold));
@@ -141,83 +147,117 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    let effectsLookup: Map<number, IndicatorEffect> | null = null;
+    const computeQuality = (policies: PolicyCandidate[]): number => {
+      if (!policies.length) return 0;
+      return Math.max(...policies.map((item) => item.qualityScore ?? 0));
+    };
 
-    if (indicatorSpec) {
-      const effects = computeIndicatorEffects(bills, indicatorSpec, effectWindowMonths);
-      effectsLookup = new Map<number, IndicatorEffect>();
-      effects.forEach((item) => effectsLookup?.set(item.index, item));
-    }
+    const buildPolicies = (windowMonths: number): {
+      policies: PolicySuggestion[];
+      used_indicator: boolean;
+      total_candidates: number;
+      quality: number;
+    } => {
+      let effectsLookup: Map<number, IndicatorEffect> | null = null;
 
-    const groupingTuples: GroupedPolicyAction[] = [];
-    const actionMeta = new Map<string, ActionMeta>();
-
-    for (const bill of bills) {
-      const description =
-        normalizeString(bill.acao) ??
-        normalizeString(bill.ementa) ??
-        "Ação não informada";
-
-      const effectEntry = effectsLookup?.get(bill.index);
-      if (useIndicator && indicatorSpec && !effectEntry) {
-        // Indicador solicitado, mas sem dados para este PL -> ignorar
-        continue;
+      if (indicatorSpec) {
+        const effects = computeIndicatorEffects(bills, indicatorSpec, windowMonths);
+        effectsLookup = new Map<number, IndicatorEffect>();
+        effects.forEach((item) => effectsLookup?.set(item.index, item));
       }
 
-      const rawEffect = effectEntry?.effect ?? null;
-      const normalizedScore =
-        useIndicator && rawEffect != null
-          ? indicatorSpec?.positive_is_good
-            ? -rawEffect
-            : rawEffect
-          : 0;
+      const groupingTuples: GroupedPolicyAction[] = [];
+      const actionMeta = new Map<string, ActionMeta>();
 
-      const municipioName = bill.municipio ?? "Município não informado";
+      for (const bill of bills) {
+        const description =
+          normalizeString(bill.acao) ??
+          normalizeString(bill.ementa) ??
+          "Ação não informada";
 
-      groupingTuples.push({
-        municipio: municipioName,
-        acao: description,
-        score: normalizedScore,
-        rawEffect,
-      });
+        const effectEntry = effectsLookup?.get(bill.index);
+        if (useIndicator && indicatorSpec && !effectEntry) {
+          // Indicador solicitado, mas sem dados para este PL -> ignorar
+          continue;
+        }
 
-      const key = `${municipioName}|||${description}`;
-      const current: ActionMeta = actionMeta.get(key) ?? {};
-      const updated = pickBestEffect(current, normalizedScore, rawEffect);
-      if (bill.url) updated.url = bill.url;
-      if (bill.data_apresentacao) updated.data_apresentacao = bill.data_apresentacao;
-      if (bill.ementa) updated.ementa = bill.ementa;
-      actionMeta.set(key, updated);
+        const rawEffect = effectEntry?.effect ?? null;
+        const normalizedScore =
+          useIndicator && rawEffect != null
+            ? indicatorSpec?.positive_is_good
+              ? -rawEffect
+              : rawEffect
+            : 0;
+
+        const municipioName = bill.municipio ?? "Município não informado";
+
+        groupingTuples.push({
+          municipio: municipioName,
+          acao: description,
+          score: normalizedScore,
+          rawEffect,
+        });
+
+        const key = `${municipioName}|||${description}`;
+        const current: ActionMeta = actionMeta.get(key) ?? {};
+        const updated = pickBestEffect(current, normalizedScore, rawEffect);
+        if (bill.url) updated.url = bill.url;
+        if (bill.data_apresentacao) updated.data_apresentacao = bill.data_apresentacao;
+        if (bill.ementa) updated.ementa = bill.ementa;
+        actionMeta.set(key, updated);
+      }
+
+      const policiesRaw = generatePoliciesFromBills(groupingTuples, minGroupMembers, similarityThreshold);
+      const policies: PolicySuggestion[] = policiesRaw.map((policy) => ({
+        policy: policy.policy,
+        effect_mean: useIndicator ? policy.effectMean : null,
+        effect_std: useIndicator ? policy.effectStd : null,
+        quality_score: useIndicator ? policy.qualityScore : null,
+        actions: policy.actions.map((action) => {
+          const meta = actionMeta.get(`${action.municipio}|||${action.acao}`);
+          const effect = useIndicator
+            ? meta?.effect ?? action.rawEffect ?? null
+            : null;
+          return {
+            municipio: action.municipio,
+            acao: action.acao,
+            effect: effect == null ? null : effect,
+            url: meta?.url ?? null,
+            data_apresentacao: meta?.data_apresentacao ?? null,
+            ementa: meta?.ementa ?? null,
+          };
+        }),
+      }));
+
+      return {
+        policies,
+        used_indicator: Boolean(indicatorSpec) && useIndicator,
+        total_candidates: groupingTuples.length,
+        quality: computeQuality(policiesRaw),
+      };
+    };
+
+    const windowsToTest = useIndicator && effectWindowCandidates.length > 0
+      ? Array.from(new Set(effectWindowCandidates))
+      : [effectWindowMonths];
+
+    let bestWindow = windowsToTest[0];
+    let bestResult = buildPolicies(bestWindow);
+
+    for (const candidate of windowsToTest.slice(1)) {
+      const result = buildPolicies(candidate);
+      if (result.quality > bestResult.quality) {
+        bestWindow = candidate;
+        bestResult = result;
+      }
     }
-
-    const policiesRaw = generatePoliciesFromBills(groupingTuples, minGroupMembers, similarityThreshold);
-
-    const policies: PolicySuggestion[] = policiesRaw.map((policy) => ({
-      policy: policy.policy,
-      effect_mean: useIndicator ? policy.effectMean : null,
-      effect_std: useIndicator ? policy.effectStd : null,
-      quality_score: useIndicator ? policy.qualityScore : null,
-      actions: policy.actions.map((action) => {
-        const meta = actionMeta.get(`${action.municipio}|||${action.acao}`);
-        const effect = useIndicator
-          ? meta?.effect ?? action.rawEffect ?? null
-          : null;
-        return {
-          municipio: action.municipio,
-          acao: action.acao,
-          effect: effect == null ? null : effect,
-          url: meta?.url ?? null,
-          data_apresentacao: meta?.data_apresentacao ?? null,
-          ementa: meta?.ementa ?? null,
-        };
-      }),
-    }));
 
     return NextResponse.json({
       indicator,
-      used_indicator: Boolean(indicatorSpec) && useIndicator,
-      total_candidates: groupingTuples.length,
-      policies,
+      used_indicator: bestResult.used_indicator,
+      total_candidates: bestResult.total_candidates,
+      policies: bestResult.policies,
+      selected_effect_window: bestWindow,
     });
   } catch (error) {
     console.error("Erro ao gerar políticas:", error);

@@ -52,6 +52,7 @@ type PolicyResponse = {
   used_indicator: boolean;
   total_candidates: number;
   policies: PolicySuggestion[];
+  selected_effect_window?: number | null;
 };
 
 type HomePageState = {
@@ -70,6 +71,7 @@ type HomePageState = {
   suggestionsVisible: boolean;
   indicatorPositiveIsGood: boolean;
   indicatorAlias: string;
+  bestEffectWindow: number | null;
 };
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
@@ -103,13 +105,16 @@ const buildEffectWindowOptions = (indicator: IndicatorDescriptor | null | undefi
   return fallback.length > 0 ? fallback : [DEFAULT_EFFECT_WINDOW];
 };
 
-const formatEffectWindowLabel = (months: number) => {
+const formatEffectWindowLabel = (months: number, bestWindow: number | null) => {
   const semesters = months / 6;
   const years = months / 12;
+  const semestersValue = Number.isInteger(semesters) ? semesters : Number(semesters.toFixed(1));
   const yearsLabel = Number.isInteger(years)
     ? `${years} ano${years === 1 ? "" : "s"}`
     : `${years.toFixed(1)} ano${years > 1 ? "s" : ""}`;
-  return `${months} meses · ${semesters} semestre${semesters === 1 ? "" : "s"} · ${yearsLabel}`;
+  const baseLabel = `${months} meses • ${semestersValue} semestre${semestersValue === 1 ? "" : "s"} • ${yearsLabel}`;
+  const isBest = bestWindow != null && months === bestWindow;
+  return isBest ? `${baseLabel} (Melhor Opção)` : baseLabel;
 };
 
 function HomeContent() {
@@ -133,6 +138,7 @@ function HomeContent() {
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
   const [indicatorAlias, setIndicatorAlias] = useState("");
+  const [bestEffectWindow, setBestEffectWindow] = useState<number | null>(null);
   const selectedIndicatorObj = useMemo(
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
@@ -178,6 +184,10 @@ function HomeContent() {
     setIndicatorAlias(selectedIndicatorObj.alias || selectedIndicatorObj.id);
     setIndicatorPositiveIsGood(selectedIndicatorObj.positive_is_good);
   }, [selectedIndicatorObj]);
+
+  useEffect(() => {
+    setBestEffectWindow(null);
+  }, [selectedIndicator, effectWindowOptions, results]);
 
   useEffect(() => {
     if (!effectWindowOptions.length) return;
@@ -245,8 +255,8 @@ function HomeContent() {
 
       setPoliciesStatus("loading");
       setPoliciesError(null);
-
       try {
+        const candidateWindows = selectedIndicator ? effectWindowOptions : [];
         const response = await fetch(apiUrl("/api/policies"), {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -257,6 +267,7 @@ function HomeContent() {
             use_indicator: Boolean(selectedIndicator),
             indicator: selectedIndicator || null,
             effect_window_months: effectWindowMonths,
+            effect_window_months_candidates: candidateWindows,
           }),
         });
 
@@ -265,6 +276,13 @@ function HomeContent() {
         }
 
         const payload = (await response.json()) as PolicyResponse;
+        const bestWindow = payload.selected_effect_window ?? (selectedIndicator ? effectWindowMonths : null);
+        setBestEffectWindow(bestWindow ?? null);
+        const shouldAdoptBest = selectedIndicator && bestWindow != null && bestEffectWindow == null;
+        if (shouldAdoptBest && bestWindow !== effectWindowMonths) {
+          skipPolicyFetchRef.current = true;
+          setEffectWindowMonths(bestWindow);
+        }
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
@@ -281,7 +299,7 @@ function HomeContent() {
     }
 
     void fetchPolicies();
-  }, [results, selectedIndicator, effectWindowMonths, hasSearched, hasHydrated]);
+  }, [results, selectedIndicator, effectWindowMonths, hasSearched, hasHydrated, effectWindowOptions]);
 
   useLayoutEffect(() => {
     const hasQueryInUrl = Boolean(searchParams.get("q"));
@@ -318,6 +336,7 @@ function HomeContent() {
       setPoliciesError(stored.policiesError ?? null);
       setPoliciesUseIndicator(Boolean(stored.policiesUseIndicator));
       setSuggestionsVisible(stored.suggestionsVisible ?? true);
+      setBestEffectWindow(typeof stored.bestEffectWindow === "number" ? stored.bestEffectWindow : null);
       if (stored.policies && stored.policies.length > 0) {
         skipPolicyFetchRef.current = true;
       }
@@ -347,6 +366,7 @@ function HomeContent() {
       policiesError,
       policiesUseIndicator,
       suggestionsVisible,
+      bestEffectWindow,
     };
 
     try {
@@ -371,6 +391,7 @@ function HomeContent() {
     policiesUseIndicator,
     suggestionsVisible,
     hasHydrated,
+    bestEffectWindow,
   ]);
 
   useEffect(() => {
@@ -576,7 +597,7 @@ function HomeContent() {
                   >
                     {effectWindowOptions.map((months) => (
                       <option key={months} value={months}>
-                        {formatEffectWindowLabel(months)}
+                        {formatEffectWindowLabel(months, bestEffectWindow)}
                       </option>
                     ))}
                   </select>
