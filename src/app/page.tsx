@@ -54,7 +54,9 @@ type PolicyResponse = {
   policies: PolicySuggestion[];
   selected_effect_window?: number | null;
   best_quality_effect_window?: number | null;
+  best_quality_effect_windows?: number[];
   best_effect_mean_window?: number | null;
+  best_effect_mean_windows?: number[];
 };
 
 type HomePageState = {
@@ -73,8 +75,8 @@ type HomePageState = {
   suggestionsVisible: boolean;
   indicatorPositiveIsGood: boolean;
   indicatorAlias: string;
-  bestQualityWindow: number | null;
-  bestEffectMeanWindow: number | null;
+  bestQualityWindows: number[];
+  bestEffectMeanWindows: number[];
 };
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
@@ -127,8 +129,8 @@ type EffectWindowDropdownProps = {
   options: number[];
   value: number;
   disabled?: boolean;
-  bestQualityWindow: number | null;
-  bestEffectMeanWindow: number | null;
+  bestQualityWindows: number[];
+  bestEffectMeanWindows: number[];
   onChange: (value: number) => void;
   id?: string;
   ariaLabel?: string;
@@ -138,8 +140,8 @@ function EffectWindowDropdown({
   options,
   value,
   disabled,
-  bestQualityWindow,
-  bestEffectMeanWindow,
+  bestQualityWindows,
+  bestEffectMeanWindows,
   onChange,
   id,
   ariaLabel,
@@ -149,14 +151,14 @@ function EffectWindowDropdown({
   const selectedBadges = useMemo(
     () =>
       [
-        bestQualityWindow != null && value === bestQualityWindow
+        bestQualityWindows.includes(value)
           ? ({ label: "Melhor Qualidade", tone: "quality" } as DropdownBadge)
           : null,
-        bestEffectMeanWindow != null && value === bestEffectMeanWindow
+        bestEffectMeanWindows.includes(value)
           ? ({ label: "Melhor Efeito Médio", tone: "effect" } as DropdownBadge)
           : null,
       ].filter((item): item is DropdownBadge => item != null),
-    [bestEffectMeanWindow, bestQualityWindow, value],
+    [bestEffectMeanWindows, bestQualityWindows, value],
   );
 
   useEffect(() => {
@@ -187,10 +189,10 @@ function EffectWindowDropdown({
 
   const buildBadges = (current: number): DropdownBadge[] =>
     [
-      bestQualityWindow != null && current === bestQualityWindow
+      bestQualityWindows.includes(current)
         ? ({ label: "Melhor Qualidade", tone: "quality" } as DropdownBadge)
         : null,
-      bestEffectMeanWindow != null && current === bestEffectMeanWindow
+      bestEffectMeanWindows.includes(current)
         ? ({ label: "Melhor Efeito Médio", tone: "effect" } as DropdownBadge)
         : null,
     ].filter((item): item is DropdownBadge => item != null);
@@ -304,8 +306,8 @@ function HomeContent() {
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
   const [indicatorAlias, setIndicatorAlias] = useState("");
-  const [bestQualityWindow, setBestQualityWindow] = useState<number | null>(null);
-  const [bestEffectMeanWindow, setBestEffectMeanWindow] = useState<number | null>(null);
+  const [bestQualityWindows, setBestQualityWindows] = useState<number[]>([]);
+  const [bestEffectMeanWindows, setBestEffectMeanWindows] = useState<number[]>([]);
   const selectedIndicatorObj = useMemo(
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
@@ -355,8 +357,8 @@ function HomeContent() {
   useEffect(() => {
     const previous = previousIndicatorRef.current;
     if (previous !== selectedIndicator) {
-      setBestQualityWindow(null);
-      setBestEffectMeanWindow(null);
+      setBestQualityWindows([]);
+      setBestEffectMeanWindows([]);
       previousIndicatorRef.current = selectedIndicator;
       return;
     }
@@ -453,14 +455,31 @@ function HomeContent() {
 
         const payload = (await response.json()) as PolicyResponse;
         if (requestId !== latestPoliciesRequestRef.current) return;
-        const bestQualityFromPayload = payload.best_quality_effect_window ?? payload.selected_effect_window;
-        const bestEffectMeanFromPayload = payload.best_effect_mean_window;
-        setBestQualityWindow(
-          selectedIndicator && typeof bestQualityFromPayload === "number" ? bestQualityFromPayload : null,
-        );
-        setBestEffectMeanWindow(
-          selectedIndicator && typeof bestEffectMeanFromPayload === "number" ? bestEffectMeanFromPayload : null,
-        );
+        const toNumberArray = (input: unknown): number[] => {
+          if (!Array.isArray(input)) return [];
+          const values = input
+            .map((value) => (typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : null))
+            .filter((value): value is number => value != null);
+          return Array.from(new Set(values));
+        };
+        const bestQualityList = toNumberArray(payload.best_quality_effect_windows);
+        const bestEffectMeanList = toNumberArray(payload.best_effect_mean_windows);
+        const bestQualityFromPayload =
+          bestQualityList.length > 0
+            ? bestQualityList
+            : typeof payload.best_quality_effect_window === "number"
+              ? [payload.best_quality_effect_window]
+              : typeof payload.selected_effect_window === "number"
+                ? [payload.selected_effect_window]
+                : [];
+        const bestEffectMeanFromPayload =
+          bestEffectMeanList.length > 0
+            ? bestEffectMeanList
+            : typeof payload.best_effect_mean_window === "number"
+              ? [payload.best_effect_mean_window]
+              : [];
+        setBestQualityWindows(selectedIndicator ? bestQualityFromPayload : []);
+        setBestEffectMeanWindows(selectedIndicator ? bestEffectMeanFromPayload : []);
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
@@ -515,17 +534,30 @@ function HomeContent() {
       setPoliciesError(stored.policiesError ?? null);
       setPoliciesUseIndicator(Boolean(stored.policiesUseIndicator));
       setSuggestionsVisible(stored.suggestionsVisible ?? true);
+      const toNumberArray = (input: unknown): number[] => {
+        if (!Array.isArray(input)) return [];
+        const values = input
+          .map((value) => (typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : null))
+          .filter((value): value is number => value != null);
+        return Array.from(new Set(values));
+      };
       const legacyBestEffect = (stored as { bestEffectWindow?: number | null }).bestEffectWindow;
-      const bestQualityFromStorage =
-        typeof stored.bestQualityWindow === "number"
-          ? stored.bestQualityWindow
-          : typeof legacyBestEffect === "number"
-            ? legacyBestEffect
-            : null;
-      setBestQualityWindow(bestQualityFromStorage);
-      setBestEffectMeanWindow(
-        typeof stored.bestEffectMeanWindow === "number" ? stored.bestEffectMeanWindow : null,
+      const legacyBestQuality = (stored as { bestQualityWindow?: number | null }).bestQualityWindow;
+      const bestQualityFromStorage = toNumberArray((stored as { bestQualityWindows?: unknown }).bestQualityWindows);
+      if (!bestQualityFromStorage.length && typeof legacyBestQuality === "number") {
+        bestQualityFromStorage.push(legacyBestQuality);
+      } else if (!bestQualityFromStorage.length && typeof legacyBestEffect === "number") {
+        bestQualityFromStorage.push(legacyBestEffect);
+      }
+      const legacyBestEffectMean = (stored as { bestEffectMeanWindow?: number | null }).bestEffectMeanWindow;
+      const bestEffectMeanFromStorage = toNumberArray(
+        (stored as { bestEffectMeanWindows?: unknown }).bestEffectMeanWindows,
       );
+      if (!bestEffectMeanFromStorage.length && typeof legacyBestEffectMean === "number") {
+        bestEffectMeanFromStorage.push(legacyBestEffectMean);
+      }
+      setBestQualityWindows(bestQualityFromStorage);
+      setBestEffectMeanWindows(bestEffectMeanFromStorage);
       if (stored.policies && stored.policies.length > 0) {
         skipPolicyFetchRef.current = true;
       }
@@ -555,8 +587,8 @@ function HomeContent() {
       policiesError,
       policiesUseIndicator,
       suggestionsVisible,
-      bestQualityWindow,
-      bestEffectMeanWindow,
+      bestQualityWindows,
+      bestEffectMeanWindows,
     };
 
     try {
@@ -581,8 +613,8 @@ function HomeContent() {
     policiesUseIndicator,
     suggestionsVisible,
     hasHydrated,
-    bestQualityWindow,
-    bestEffectMeanWindow,
+    bestQualityWindows,
+    bestEffectMeanWindows,
   ]);
 
   useEffect(() => {
@@ -784,8 +816,8 @@ function HomeContent() {
                     disabled={!selectedIndicator}
                     options={effectWindowOptions}
                     value={effectWindowMonths}
-                    bestQualityWindow={bestQualityWindow}
-                    bestEffectMeanWindow={bestEffectMeanWindow}
+                    bestQualityWindows={bestQualityWindows}
+                    bestEffectMeanWindows={bestEffectMeanWindows}
                     onChange={(newValue) => {
                       setEffectWindowMonths(Number.isFinite(newValue) ? newValue : DEFAULT_EFFECT_WINDOW);
                     }}

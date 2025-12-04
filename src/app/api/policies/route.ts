@@ -249,44 +249,49 @@ export async function POST(request: NextRequest) {
       };
     };
 
-    const windowsToTest = useIndicator && effectWindowCandidates.length > 0
-      ? Array.from(new Set(effectWindowCandidates))
+    const windowsToTest = useIndicator
+      ? Array.from(new Set([effectWindowMonths, ...effectWindowCandidates]))
       : [effectWindowMonths];
 
-    let bestQualityWindow = windowsToTest[0];
-    let bestResult = buildPolicies(bestQualityWindow);
+    const baseResult = buildPolicies(effectWindowMonths);
 
-    const initialEffectScore =
-      indicatorSpec && bestResult.used_indicator
-        ? computeMeanEffectScore(bestResult.policies, indicatorSpec.positive_is_good)
-        : null;
-    let bestEffectMeanWindow = initialEffectScore == null ? null : bestQualityWindow;
-    let bestEffectScore = initialEffectScore;
+    let bestQualityScore = -Infinity;
+    let bestQualityWindows: number[] = [];
 
-    for (const candidate of windowsToTest.slice(1)) {
-      const result = buildPolicies(candidate);
-      if (result.quality > bestResult.quality) {
-        bestQualityWindow = candidate;
-        bestResult = result;
+    let bestEffectScore: number | null = null;
+    let bestEffectMeanWindows: number[] = [];
+
+    for (const candidate of windowsToTest) {
+      const result = candidate === effectWindowMonths ? baseResult : buildPolicies(candidate);
+      if (result.quality > bestQualityScore) {
+        bestQualityScore = result.quality;
+        bestQualityWindows = [candidate];
+      } else if (result.quality === bestQualityScore) {
+        bestQualityWindows.push(candidate);
       }
 
       if (indicatorSpec) {
         const score = computeMeanEffectScore(result.policies, indicatorSpec.positive_is_good);
-        if (score != null && (bestEffectScore == null || score > bestEffectScore)) {
+        if (score == null) continue;
+        if (bestEffectScore == null || score > bestEffectScore) {
           bestEffectScore = score;
-          bestEffectMeanWindow = candidate;
+          bestEffectMeanWindows = [candidate];
+        } else if (score === bestEffectScore) {
+          bestEffectMeanWindows.push(candidate);
         }
       }
     }
 
     return NextResponse.json({
       indicator,
-      used_indicator: bestResult.used_indicator,
-      total_candidates: bestResult.total_candidates,
-      policies: bestResult.policies,
-      selected_effect_window: bestQualityWindow,
-      best_quality_effect_window: bestQualityWindow,
-      best_effect_mean_window: bestEffectMeanWindow ?? null,
+      used_indicator: baseResult.used_indicator,
+      total_candidates: baseResult.total_candidates,
+      policies: baseResult.policies,
+      selected_effect_window: effectWindowMonths,
+      best_quality_effect_window: bestQualityWindows[0] ?? null,
+      best_quality_effect_windows: bestQualityWindows,
+      best_effect_mean_window: bestEffectMeanWindows[0] ?? null,
+      best_effect_mean_windows: bestEffectMeanWindows,
     });
   } catch (error) {
     console.error("Erro ao gerar políticas:", error);
