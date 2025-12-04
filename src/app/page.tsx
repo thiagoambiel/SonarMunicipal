@@ -554,7 +554,8 @@ function HomeContent() {
                     ))}
                   </select>
                   <p className="hint">
-                    Dados semestrais: PLs muito recentes podem não ter efeito se a janela for longa.
+                    A janela em meses é arredondada para a granularidade do indicador (semestral, anual); PLs muito
+                    recentes podem não ter efeito calculado.
                   </p>
                 </div>
               </div>

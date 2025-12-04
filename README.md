@@ -21,11 +21,14 @@ QDRANT_API_KEY=...
 QDRANT_COLLECTION=projetos-de-lei        # opcional; default igual ao notebook
 HF_MODEL_ID=embaas/sentence-transformers-multilingual-e5-base  # opcional; default igual ao notebook
 SEARCH_MAX_RESULTS=500                   # limite máximo de resultados por busca no backend
-# Indicador (dados reais)
-CRIMINAL_INDICATOR_PATH=experiments/backend/data/criminal_indicator.csv
+# Indicadores (dados reais)
+CRIMINAL_INDICATOR_PATH=indicators/homicidios.csv
 CRIMINAL_INDICATOR_CITY_COL=municipio_norm
 CRIMINAL_INDICATOR_VALUE_COL=taxa_homicidios_100k
 CRIMINAL_INDICATOR_MIN_VALUE=5
+EDUCATION_INDICATOR_PATH=indicators/matriculas.csv
+EDUCATION_INDICATOR_CITY_COL=municipio
+EDUCATION_INDICATOR_VALUE_COL=taxa_matriculas_100k
 # Frontend (opcionais)
 # NEXT_PUBLIC_API_BASE_URL=http://localhost:3000  # para apontar o frontend para outro host
 # NEXT_PUBLIC_MAX_TOP_K=500                       # mesma intenção do SEARCH_MAX_RESULTS, mas no cliente

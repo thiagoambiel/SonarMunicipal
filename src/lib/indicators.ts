@@ -11,6 +11,8 @@ export type IndicatorSpec = {
   alias: string;
   positive_is_good: boolean;
   min_value: number;
+  periods_per_year: number;
+  period_col?: string;
 };
 
 export type BillRecord = {
@@ -36,22 +38,38 @@ type IndicatorRow = {
   city: string;
   uf: string;
   year: number;
-  semester: number;
+  period: number;
   value: number;
 };
 
 const defaultIndicatorSpecs = (): IndicatorSpec[] => {
   const minValueRaw = Number.parseFloat(process.env.CRIMINAL_INDICATOR_MIN_VALUE ?? "5");
   const minValue = Number.isFinite(minValueRaw) ? minValueRaw : 0;
+  const minEducationRaw = Number.parseFloat(process.env.EDUCATION_INDICATOR_MIN_VALUE ?? "0");
+  const minEducationValue = Number.isFinite(minEducationRaw) ? minEducationRaw : 0;
+
   return [
     {
       id: process.env.CRIMINAL_INDICATOR_KEY ?? "criminal_indicator",
-      path: process.env.CRIMINAL_INDICATOR_PATH ?? "experiments/backend/data/criminal_indicator.csv",
+      path: process.env.CRIMINAL_INDICATOR_PATH ?? "indicators/homicidios.csv",
       city_col: process.env.CRIMINAL_INDICATOR_CITY_COL ?? "municipio_norm",
       value_col: process.env.CRIMINAL_INDICATOR_VALUE_COL ?? "taxa_homicidios_100k",
       alias: process.env.CRIMINAL_INDICATOR_ALIAS ?? "Taxa de Homicídios por 100 mil Habitantes",
       positive_is_good: false,
       min_value: minValue,
+      periods_per_year: 2,
+      period_col: process.env.CRIMINAL_INDICATOR_PERIOD_COL ?? "semestre",
+    },
+    {
+      id: process.env.EDUCATION_INDICATOR_KEY ?? "education_enrollment",
+      path: process.env.EDUCATION_INDICATOR_PATH ?? "indicators/matriculas.csv",
+      city_col: process.env.EDUCATION_INDICATOR_CITY_COL ?? "municipio",
+      value_col: process.env.EDUCATION_INDICATOR_VALUE_COL ?? "taxa_matriculas_100k",
+      alias:
+        process.env.EDUCATION_INDICATOR_ALIAS ?? "Taxa de Matrículas em Ensino Regular por 100 mil Habitantes",
+      positive_is_good: true,
+      min_value: minEducationValue,
+      periods_per_year: 1,
     },
   ];
 };
@@ -77,20 +95,49 @@ const toNumber = (value: unknown): number => {
   return Number.isFinite(parsed) ? parsed : NaN;
 };
 
-const normalizeCity = (value: unknown): string => String(value ?? "").trim().toUpperCase();
+const normalizeCity = (value: unknown): string => {
+  const base = String(value ?? "").trim();
+  if (!base) return "";
+  const withoutDiacritics = base.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const cleaned = withoutDiacritics.replace(/[^A-Za-z0-9\s-]/g, " ");
+  return cleaned.replace(/\s+/g, " ").trim().toUpperCase();
+};
 
-const encodeSemester = (dateStr: string): { year: number; semester: number } | null => {
+const monthsPerPeriod = (spec: IndicatorSpec): number => {
+  const periodsPerYear = spec.periods_per_year > 0 ? spec.periods_per_year : 1;
+  const months = 12 / periodsPerYear;
+  const rounded = Math.round(months);
+  return rounded > 0 ? rounded : 1;
+};
+
+const encodePeriod = (dateStr: string, spec: IndicatorSpec): { year: number; period: number } | null => {
   const [yearRaw, monthRaw] = dateStr.split("-").slice(0, 2);
   const year = Number.parseInt(yearRaw, 10);
   const month = Number.parseInt(monthRaw, 10);
   if (!Number.isFinite(year) || !Number.isFinite(month)) return null;
-  const semester = month <= 6 ? 1 : 2;
-  return { year, semester };
+
+  const periodSizeMonths = monthsPerPeriod(spec);
+  const periodsPerYear = spec.periods_per_year > 0 ? spec.periods_per_year : 1;
+  const computed = Math.floor((month - 1) / periodSizeMonths) + 1;
+  const period = Math.min(periodsPerYear, Math.max(1, computed));
+  return { year, period };
 };
 
-const advanceSemester = (year: number, semester: number, semestersAhead: number) => {
-  const target = semester - 1 + semestersAhead;
-  return { year: year + Math.floor(target / 2), semester: (target % 2) + 1 };
+const advancePeriod = (year: number, period: number, periodsAhead: number, spec: IndicatorSpec) => {
+  const periodsPerYear = spec.periods_per_year > 0 ? spec.periods_per_year : 1;
+  const target = period - 1 + periodsAhead;
+  return { year: year + Math.floor(target / periodsPerYear), period: (target % periodsPerYear) + 1 };
+};
+
+const resolvePeriodFromRow = (row: Record<string, unknown>, spec: IndicatorSpec): number | null => {
+  if (spec.periods_per_year <= 1) return 1;
+  const column = spec.period_col ?? "semestre";
+  const raw = row[column] ?? row[String(column).toUpperCase()];
+  const parsed = toNumber(raw);
+  if (!Number.isFinite(parsed)) return null;
+  const period = Math.trunc(parsed);
+  if (period < 1 || period > spec.periods_per_year) return null;
+  return period;
 };
 
 const percentChange = (current: number, future: number) => {
@@ -101,7 +148,7 @@ const percentChange = (current: number, future: number) => {
 const buildLookup = (rows: IndicatorRow[]) => {
   const lookup = new Map<string, number>();
   for (const row of rows) {
-    const key = `${row.city}|${row.uf}|${row.year}|${row.semester}`;
+    const key = `${row.city}|${row.uf}|${row.year}|${row.period}`;
     lookup.set(key, row.value);
   }
   return lookup;
@@ -124,17 +171,17 @@ export const loadIndicatorRows = (spec: IndicatorSpec): IndicatorRow[] => {
     const city = normalizeCity(row[spec.city_col]);
     const uf = normalizeCity(row["uf"] ?? row["UF"]);
     const year = toNumber(row["ano"] ?? row["ANO"]);
-    const semester = toNumber(row["semestre"] ?? row["SEMESTRE"]);
+    const period = resolvePeriodFromRow(row, spec);
     const value = toNumber(row[spec.value_col]);
 
-    if (!city || !uf || !Number.isFinite(year) || !Number.isFinite(semester) || !Number.isFinite(value)) {
+    if (!city || !uf || !Number.isFinite(year) || period == null || !Number.isFinite(value)) {
       continue;
     }
     rows.push({
       city,
       uf,
       year: Math.trunc(year),
-      semester: Math.trunc(semester),
+      period,
       value,
     });
   }
@@ -150,23 +197,23 @@ export const computeIndicatorEffects = (
 ): IndicatorEffect[] => {
   const rows = loadIndicatorRows(spec);
   const lookup = buildLookup(rows);
-  const semestersAhead = Math.max(1, Math.floor(effectWindowMonths / 6) || 1);
+  const periodsAhead = Math.max(1, Math.floor(effectWindowMonths / monthsPerPeriod(spec)) || 1);
 
   const effects: IndicatorEffect[] = [];
 
   for (const bill of bills) {
     if (!bill || bill.index == null) continue;
     if (!bill.municipio || !bill.uf || !bill.data_apresentacao) continue;
-    const semesterData = encodeSemester(String(bill.data_apresentacao));
-    if (!semesterData) continue;
+    const periodData = encodePeriod(String(bill.data_apresentacao), spec);
+    if (!periodData) continue;
 
     const city = normalizeCity(bill.municipio);
     const uf = normalizeCity(bill.uf);
-    const { year, semester } = semesterData;
+    const { year, period } = periodData;
 
-    const current = lookup.get(`${city}|${uf}|${year}|${semester}`);
-    const target = advanceSemester(year, semester, semestersAhead);
-    const future = lookup.get(`${city}|${uf}|${target.year}|${target.semester}`);
+    const current = lookup.get(`${city}|${uf}|${year}|${period}`);
+    const target = advancePeriod(year, period, periodsAhead, spec);
+    const future = lookup.get(`${city}|${uf}|${target.year}|${target.period}`);
 
     if (current == null || future == null) continue;
     if (current < spec.min_value) continue;
