@@ -258,7 +258,7 @@ export default function Home() {
       if (indicatorValue) params.set("indicator", indicatorValue);
       if (Number.isFinite(state.window ?? null)) params.set("window", String(state.window));
       const search = params.toString();
-      router.replace(search ? `/?${search}` : "/");
+      router.replace(search ? `/?${search}` : "/", { scroll: false });
     },
     [router],
   );
