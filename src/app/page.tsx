@@ -120,6 +120,14 @@ const formatEffectWindowLabel = (months: number) => {
   return `${months} meses • ${semestersValue} semestre${semestersValue === 1 ? "" : "s"} • ${yearsLabel}`;
 };
 
+const toNumberArray = (input: unknown): number[] => {
+  if (!Array.isArray(input)) return [];
+  const values = input
+    .map((value) => (typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : null))
+    .filter((value): value is number => value != null);
+  return Array.from(new Set(values));
+};
+
 type DropdownValue = string | number;
 
 type DropdownBadge = {
@@ -137,12 +145,13 @@ type CustomDropdownProps = {
   options: DropdownOption[];
   value: DropdownValue;
   disabled?: boolean;
+  loading?: boolean;
   onChange: (value: DropdownValue) => void;
   id?: string;
   ariaLabel?: string;
 };
 
-function CustomDropdown({ options, value, disabled, onChange, id, ariaLabel }: CustomDropdownProps) {
+function CustomDropdown({ options, value, disabled, loading, onChange, id, ariaLabel }: CustomDropdownProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const selectedOption = useMemo(() => options.find((item) => item.value === value), [options, value]);
@@ -185,12 +194,13 @@ function CustomDropdown({ options, value, disabled, onChange, id, ariaLabel }: C
   const selectedLabel = selectedOption?.label ?? "";
   const isDisabled = Boolean(disabled);
   const isMenuOpen = !isDisabled && open;
+  const isLoading = Boolean(loading);
 
   return (
     <div className={`custom-dropdown ${isDisabled ? "disabled" : ""}`} ref={containerRef}>
       <button
         type="button"
-        className="dropdown-trigger"
+        className={`dropdown-trigger ${isLoading ? "loading" : ""}`}
         onClick={() => !isDisabled && setOpen((prev) => !prev)}
         aria-haspopup="listbox"
         aria-expanded={isMenuOpen}
@@ -210,23 +220,26 @@ function CustomDropdown({ options, value, disabled, onChange, id, ariaLabel }: C
             </div>
           )}
         </div>
-        <svg
-          className={`chevron ${isMenuOpen ? "open" : ""}`}
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          aria-hidden="true"
-        >
-          <path
-            d="M6 9L12 15L18 9"
-            stroke="currentColor"
-            strokeWidth="1.8"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <div className="dropdown-icons">
+          {isLoading && <span className="dropdown-spinner" aria-hidden="true" />}
+          <svg
+            className={`chevron ${isMenuOpen ? "open" : ""}`}
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path
+              d="M6 9L12 15L18 9"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+        </div>
       </button>
       {isMenuOpen && (
         <div className="dropdown-menu" role="listbox">
@@ -280,8 +293,10 @@ function HomeContent() {
   const [policiesError, setPoliciesError] = useState<string | null>(null);
   const [policiesUseIndicator, setPoliciesUseIndicator] = useState(false);
   const [suggestionsVisible, setSuggestionsVisible] = useState(true);
+  const [badgeStatus, setBadgeStatus] = useState<"idle" | "loading" | "error">("idle");
   const skipPolicyFetchRef = useRef(false);
   const latestPoliciesRequestRef = useRef(0);
+  const latestBadgeRequestRef = useRef(0);
   const previousIndicatorRef = useRef<string | null>(null);
   const [hasHydrated, setHasHydrated] = useState(false);
   const [indicatorPositiveIsGood, setIndicatorPositiveIsGood] = useState(true);
@@ -293,22 +308,40 @@ function HomeContent() {
   );
   const searchControllerRef = useRef<AbortController | null>(null);
   const policiesControllerRef = useRef<AbortController | null>(null);
+  const badgeSearchControllerRef = useRef<AbortController | null>(null);
+  const badgePoliciesControllerRef = useRef<AbortController | null>(null);
   const selectedIndicatorObj = useMemo(
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
   );
-  const resetSearchOutputs = () => {
+  const resetSearchOutputs = (options?: { preserveResults?: boolean }) => {
+    const keepResults = Boolean(options?.preserveResults);
+    if (!keepResults && searchControllerRef.current) {
+      searchControllerRef.current.abort();
+    }
+    if (policiesControllerRef.current) {
+      latestPoliciesRequestRef.current += 1;
+      policiesControllerRef.current.abort();
+    }
+    if (badgeSearchControllerRef.current || badgePoliciesControllerRef.current) {
+      latestBadgeRequestRef.current += 1;
+      badgeSearchControllerRef.current?.abort();
+      badgePoliciesControllerRef.current?.abort();
+    }
     setErrorMessage(null);
-    setResults([]);
     setPolicies([]);
     setPoliciesError(null);
-    setPoliciesStatus("idle");
+    setPoliciesStatus(keepResults && results.length > 0 ? "loading" : "idle");
     setPoliciesUseIndicator(false);
-    setHasSearched(false);
-    setLastQuery("");
+    setBadgeStatus("idle");
+    skipPolicyFetchRef.current = false;
     const cached = selectedIndicator ? windowBadgesCache[selectedIndicator] : null;
     setBestQualityWindows(cached?.quality ?? []);
     setBestEffectMeanWindows(cached?.effect ?? []);
+    if (keepResults) return;
+    setResults([]);
+    setHasSearched(false);
+    setLastQuery("");
     setSuggestionsVisible(true);
   };
   const effectWindowOptions = useMemo(
@@ -344,6 +377,7 @@ function HomeContent() {
   const isLoadingPolicies = policiesStatus === "loading";
   const showPolicyArea = hasSearched || isLoadingPolicies || policies.length > 0 || Boolean(policiesError);
   const isProcessing = status === "loading" || isLoadingPolicies;
+  const isEffectWindowLoading = badgeStatus === "loading" || isLoadingPolicies;
 
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
@@ -358,6 +392,27 @@ function HomeContent() {
     const isPositive = value > 0;
     const isGood = indicatorPositiveIsGood ? isPositive : !isPositive;
     return isGood ? "effect-good" : "effect-bad";
+  };
+
+  const extractBestWindows = (payload: PolicyResponse) => {
+    const bestQualityList = toNumberArray(payload.best_quality_effect_windows);
+    const bestEffectMeanList = toNumberArray(payload.best_effect_mean_windows);
+    const bestQualityFromPayload =
+      bestQualityList.length > 0
+        ? bestQualityList
+        : typeof payload.best_quality_effect_window === "number"
+          ? [payload.best_quality_effect_window]
+          : typeof payload.selected_effect_window === "number"
+            ? [payload.selected_effect_window]
+            : [];
+    const bestEffectMeanFromPayload =
+      bestEffectMeanList.length > 0
+        ? bestEffectMeanList
+        : typeof payload.best_effect_mean_window === "number"
+          ? [payload.best_effect_mean_window]
+          : [];
+
+    return { bestQualityFromPayload, bestEffectMeanFromPayload };
   };
 
   useEffect(() => {
@@ -399,6 +454,118 @@ function HomeContent() {
     }
   }, [effectWindowOptions, effectWindowMonths]);
 
+  useEffect(() => {
+    if (!hasHydrated) return;
+    if (status === "loading") return;
+    const normalizedQuery = query.trim();
+    if (!selectedIndicator || !normalizedQuery) {
+      setBadgeStatus("idle");
+      setBestQualityWindows([]);
+      setBestEffectMeanWindows([]);
+      return;
+    }
+
+    const debounceHandle = window.setTimeout(() => {
+      const requestId = latestBadgeRequestRef.current + 1;
+      latestBadgeRequestRef.current = requestId;
+
+      if (badgeSearchControllerRef.current) {
+        badgeSearchControllerRef.current.abort();
+      }
+      if (badgePoliciesControllerRef.current) {
+        badgePoliciesControllerRef.current.abort();
+      }
+
+      const run = async () => {
+        try {
+          setBadgeStatus("loading");
+          const searchController = new AbortController();
+          badgeSearchControllerRef.current = searchController;
+          const searchResponse = await fetch(apiUrl("/api/search"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ query: normalizedQuery, top_k: MAX_RESULTS }),
+            signal: searchController.signal,
+          });
+          if (!searchResponse.ok) {
+            let detail = searchResponse.statusText;
+            try {
+              const body = (await searchResponse.json()) as { detail?: string };
+              detail = body.detail ?? detail;
+            } catch {
+              // ignore parse errors
+            }
+            throw new Error(detail);
+          }
+          const searchPayload = (await searchResponse.json()) as SearchResponse;
+          badgeSearchControllerRef.current = null;
+          if (requestId !== latestBadgeRequestRef.current) return;
+
+          const previewResults = searchPayload.results ?? [];
+          if (!previewResults.length) {
+            setBestQualityWindows([]);
+            setBestEffectMeanWindows([]);
+            setBadgeStatus("idle");
+            return;
+          }
+
+          const policyController = new AbortController();
+          badgePoliciesControllerRef.current = policyController;
+          const candidateWindows = selectedIndicator ? effectWindowOptions : [];
+          const policyResponse = await fetch(apiUrl("/api/policies"), {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              bill_indexes: previewResults.map((r) => r.index),
+              similarity_threshold: 0.75,
+              min_group_members: 2,
+              use_indicator: true,
+              indicator: selectedIndicator,
+              effect_window_months: effectWindowMonths,
+              effect_window_months_candidates: candidateWindows,
+            }),
+            signal: policyController.signal,
+          });
+          if (!policyResponse.ok) {
+            throw new Error(policyResponse.statusText);
+          }
+
+          const policyPayload = (await policyResponse.json()) as PolicyResponse;
+          badgePoliciesControllerRef.current = null;
+          if (requestId !== latestBadgeRequestRef.current) return;
+
+          const { bestQualityFromPayload, bestEffectMeanFromPayload } = extractBestWindows(policyPayload);
+          setBestQualityWindows(bestQualityFromPayload);
+          setBestEffectMeanWindows(bestEffectMeanFromPayload);
+          setWindowBadgesCache((prev) => ({
+            ...prev,
+            [selectedIndicator]: { quality: bestQualityFromPayload, effect: bestEffectMeanFromPayload },
+          }));
+          setBadgeStatus("idle");
+        } catch (error) {
+          if (error instanceof DOMException && error.name === "AbortError") return;
+          console.error("Erro ao pré-calcular badges", error);
+          if (requestId !== latestBadgeRequestRef.current) return;
+          setBadgeStatus("error");
+          setBestQualityWindows([]);
+          setBestEffectMeanWindows([]);
+        }
+      };
+
+      void run();
+    }, 400);
+
+    return () => {
+      window.clearTimeout(debounceHandle);
+      if (badgeSearchControllerRef.current) {
+        badgeSearchControllerRef.current.abort();
+      }
+      if (badgePoliciesControllerRef.current) {
+        badgePoliciesControllerRef.current.abort();
+      }
+    };
+  }, [query, selectedIndicator, effectWindowOptions, hasHydrated, effectWindowMonths, status]);
+
   const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const normalizedQuery = query.trim();
@@ -408,6 +575,13 @@ function HomeContent() {
       setHasSearched(false);
       return;
     }
+
+    if (badgeSearchControllerRef.current || badgePoliciesControllerRef.current) {
+      latestBadgeRequestRef.current += 1;
+      badgeSearchControllerRef.current?.abort();
+      badgePoliciesControllerRef.current?.abort();
+    }
+    setBadgeStatus("idle");
 
     setStatus("loading");
     setErrorMessage(null);
@@ -506,29 +680,7 @@ function HomeContent() {
 
         const payload = (await response.json()) as PolicyResponse;
         if (requestId !== latestPoliciesRequestRef.current) return;
-        const toNumberArray = (input: unknown): number[] => {
-          if (!Array.isArray(input)) return [];
-          const values = input
-            .map((value) => (typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : null))
-            .filter((value): value is number => value != null);
-          return Array.from(new Set(values));
-        };
-        const bestQualityList = toNumberArray(payload.best_quality_effect_windows);
-        const bestEffectMeanList = toNumberArray(payload.best_effect_mean_windows);
-        const bestQualityFromPayload =
-          bestQualityList.length > 0
-            ? bestQualityList
-            : typeof payload.best_quality_effect_window === "number"
-              ? [payload.best_quality_effect_window]
-              : typeof payload.selected_effect_window === "number"
-                ? [payload.selected_effect_window]
-                : [];
-        const bestEffectMeanFromPayload =
-          bestEffectMeanList.length > 0
-            ? bestEffectMeanList
-            : typeof payload.best_effect_mean_window === "number"
-              ? [payload.best_effect_mean_window]
-              : [];
+        const { bestQualityFromPayload, bestEffectMeanFromPayload } = extractBestWindows(payload);
         setBestQualityWindows(selectedIndicator ? bestQualityFromPayload : []);
         setBestEffectMeanWindows(selectedIndicator ? bestEffectMeanFromPayload : []);
         if (selectedIndicator) {
@@ -600,13 +752,6 @@ function HomeContent() {
       setPoliciesError(stored.policiesError ?? null);
       setPoliciesUseIndicator(Boolean(stored.policiesUseIndicator));
       setSuggestionsVisible(stored.suggestionsVisible ?? true);
-      const toNumberArray = (input: unknown): number[] => {
-        if (!Array.isArray(input)) return [];
-        const values = input
-          .map((value) => (typeof value === "number" && Number.isFinite(value) ? Math.trunc(value) : null))
-          .filter((value): value is number => value != null);
-        return Array.from(new Set(values));
-      };
       const legacyBestEffect = (stored as { bestEffectWindow?: number | null }).bestEffectWindow;
       const legacyBestQuality = (stored as { bestQualityWindow?: number | null }).bestQualityWindow;
       const bestQualityFromStorage = toNumberArray((stored as { bestQualityWindows?: unknown }).bestQualityWindows);
@@ -878,7 +1023,7 @@ function HomeContent() {
                         setIndicatorPositiveIsGood(true);
                         setIndicatorAlias("");
                       }
-                      resetSearchOutputs();
+                      resetSearchOutputs({ preserveResults: hasSearched || results.length > 0 });
                     }}
                   />
                     <p className="hint">
@@ -903,10 +1048,11 @@ function HomeContent() {
                     disabled={!selectedIndicator}
                     options={effectWindowDropdownOptions}
                     value={effectWindowMonths}
+                    loading={isEffectWindowLoading}
                     onChange={(newValue) => {
                       const parsed = typeof newValue === "number" ? newValue : Number(newValue);
                       setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
-                      resetSearchOutputs();
+                      resetSearchOutputs({ preserveResults: hasSearched || results.length > 0 });
                     }}
                   />
                     <p className="hint">

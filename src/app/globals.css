@@ -573,6 +573,27 @@ p {
   justify-content: space-between;
 }
 
+.dropdown-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-6);
+  color: var(--muted);
+}
+
+.dropdown-trigger.loading {
+  cursor: wait;
+}
+
+.dropdown-spinner {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #e7ecf6;
+  border-top-color: var(--primary);
+  border-right-color: var(--primary);
+  animation: spin 0.9s linear infinite;
+}
+
 .dropdown-value {
   font-weight: 700;
   color: var(--text);
