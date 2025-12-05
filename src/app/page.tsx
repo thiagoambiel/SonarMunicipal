@@ -291,6 +291,8 @@ function HomeContent() {
   const [windowBadgesCache, setWindowBadgesCache] = useState<Record<string, { quality: number[]; effect: number[] }>>(
     {},
   );
+  const searchControllerRef = useRef<AbortController | null>(null);
+  const policiesControllerRef = useRef<AbortController | null>(null);
   const selectedIndicatorObj = useMemo(
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
@@ -409,12 +411,18 @@ function HomeContent() {
 
     setStatus("loading");
     setErrorMessage(null);
+    if (searchControllerRef.current) {
+      searchControllerRef.current.abort();
+    }
+    const controller = new AbortController();
+    searchControllerRef.current = controller;
 
     try {
       const response = await fetch(apiUrl("/api/search"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ query: normalizedQuery, top_k: MAX_RESULTS }),
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -434,7 +442,12 @@ function HomeContent() {
       setHasSearched(true);
       setSuggestionsVisible(false);
       setStatus("idle");
+      searchControllerRef.current = null;
     } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        setStatus("idle");
+        return;
+      }
       console.error(error);
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
@@ -458,6 +471,11 @@ function HomeContent() {
       setPoliciesError(null);
       const requestId = latestPoliciesRequestRef.current + 1;
       latestPoliciesRequestRef.current = requestId;
+      if (policiesControllerRef.current) {
+        policiesControllerRef.current.abort();
+      }
+      const controller = new AbortController();
+      policiesControllerRef.current = controller;
       try {
         const candidateWindows = selectedIndicator ? effectWindowOptions : [];
         const response = await fetch(apiUrl("/api/policies"), {
@@ -472,6 +490,7 @@ function HomeContent() {
             effect_window_months: effectWindowMonths,
             effect_window_months_candidates: candidateWindows,
           }),
+          signal: controller.signal,
         });
 
         if (!response.ok) {
@@ -517,7 +536,13 @@ function HomeContent() {
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
+        policiesControllerRef.current = null;
       } catch (error) {
+        if (error instanceof DOMException && error.name === "AbortError") {
+          if (requestId !== latestPoliciesRequestRef.current) return;
+          setPoliciesStatus("idle");
+          return;
+        }
         console.error(error);
         if (requestId !== latestPoliciesRequestRef.current) return;
         setPoliciesStatus("error");
@@ -700,6 +725,18 @@ function HomeContent() {
       console.error("Erro ao salvar política", error);
     }
     router.push(`/policy/${slug}`);
+  };
+
+  const handleCancelProcessing = () => {
+    if (status === "loading" && searchControllerRef.current) {
+      searchControllerRef.current.abort();
+    }
+    if (policiesStatus === "loading" && policiesControllerRef.current) {
+      policiesControllerRef.current.abort();
+    }
+    setStatus((prev) => (prev === "loading" ? "idle" : prev));
+    setPoliciesStatus((prev) => (prev === "loading" ? "idle" : prev));
+    setPoliciesError("Processamento cancelado pelo usuário.");
   };
 
   return (
@@ -1142,9 +1179,17 @@ function HomeContent() {
             <p className="muted small">
               Agrupando projetos similares, aplicando indicador e selecionando as opções com melhor qualidade.
             </p>
+            <div className="overlay-actions">
+              <button className="secondary-btn" type="button" onClick={handleCancelProcessing}>
+                Cancelar
+              </button>
+            </div>
           </div>
         </div>
       )}
+      <a className="fab fab-btn" href="#busca" aria-label="Nova busca">
+        Nova busca
+      </a>
     </>
   );
 }
