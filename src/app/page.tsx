@@ -675,430 +675,441 @@ function HomeContent() {
   };
 
   return (
-    <div className="page google-layout">
-      <div className="page-surface">
-        <header className="topbar">
-          <Link className="brand" href="/">
-            <div className="brand-mark">CM</div>
-            <div>
-              <p className="brand-title">CityManager</p>
-              <p className="brand-subtitle">Inteligência para gestores municipais</p>
-            </div>
-          </Link>
-          <nav className="nav">
-            <div className="nav-links">
-              <span className="nav-link active">Políticas Públicas</span>
-              <Link
-                className="nav-link"
-                href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
-              >
-                Projetos de Lei
-              </Link>
-              <Link className="nav-link" href="/methodology">
-                Metodologia
-              </Link>
-            </div>
-            <div className="nav-actions">
-              <a className="ghost-btn" href="#busca">
-                Nova busca
-              </a>
-              <Link className="ghost-btn" href="/projects">
-                Ver projetos
-              </Link>
-            </div>
-          </nav>
-        </header>
-
-        <main className="page-body">
-          <section className="hero">
-            <div className="hero-text">
-              <p className="eyebrow">Implantação segura de leis municipais</p>
-              <h1>Transforme evidências em políticas aplicáveis</h1>
-              <p className="lede">
-                A plataforma cruza projetos de lei, jurisprudência e indicadores municipais para sugerir políticas
-                públicas que já funcionaram em cidades com perfis parecidos. Tudo explicado com links para a fonte.
-              </p>
-              <div className="hero-badges">
-                <span className="pill neutral">Dados oficiais</span>
-                <span className="pill neutral">Explicabilidade</span>
-                <span className="pill accent">Foco em gestores</span>
-              </div>
-              <div className="hero-actions">
-                <a className="primary-btn" href="#busca">
-                  Buscar políticas agora
-                </a>
-                <Link className="ghost-btn" href="/methodology">
-                  Metodologia e confiança
-                </Link>
-                <Link className="ghost-btn" href="/projects">
-                  Projetos de lei
-                </Link>
-              </div>
-            </div>
-            <div className="hero-panel">
-              <div className="stat-card highlight">
-                <p className="stat-label">Assistente de confiabilidade</p>
-                <p className="stat-value">Dados públicos + indicadores</p>
-                <p className="stat-detail">
-                  Similaridade semântica explicável, agrupamentos transparentes e links para a origem.
-                </p>
-                <Link className="ghost-btn compact" href="/methodology">
-                  Ver como calculamos
-                </Link>
-              </div>
-              <div className="stat-card">
-                <p className="stat-label">Próximo passo</p>
-                <p className="stat-value">Ative um indicador</p>
-                <p className="stat-detail">Selecione indicador e janela para simular impacto médio.</p>
-              </div>
-            </div>
-          </section>
-
-          <section id="busca" className="search-section">
-            <div className="section-header">
+    <>
+      <div className="page google-layout">
+        <div className="page-surface">
+          <header className="topbar">
+            <Link className="brand" href="/">
+              <div className="brand-mark">CM</div>
               <div>
-                <p className="eyebrow">Busca guiada</p>
-                <h2>Encontre políticas semelhantes e avalie impacto</h2>
-                <p className="muted">Pergunte em linguagem natural e ative um indicador para estimar o efeito esperado.</p>
+                <p className="brand-title">CityManager</p>
+                <p className="brand-subtitle">Inteligência para gestores municipais</p>
               </div>
-            </div>
-
-            <form className="search-panel" onSubmit={handleSearch}>
-              <div className="search-row">
-                <div className="search-input">
-                  <label htmlFor="query">Pergunte ou descreva uma necessidade</label>
-                  <input
-                    id="query"
-                    type="search"
-                    name="query"
-                    placeholder="Ex.: Como reduzir filas de atendimento na atenção básica?"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    aria-label="Pergunta para busca semântica"
-                    autoComplete="off"
-                  />
-                </div>
-                <button type="submit" className="primary-btn" disabled={status === "loading"}>
-                  {searchButtonLabel}
-                </button>
-              </div>
-
-              <div className="filter-grid">
-                <div className="filter-field indicator-field">
-                  <label>Indicador de impacto</label>
-                  <CustomDropdown
-                    id="indicator-select"
-                    ariaLabel="Selecionar indicador"
-                    value={selectedIndicator}
-                    options={indicatorDropdownOptions}
-                    onChange={(newValue) => {
-                      const value = String(newValue);
-                      setSelectedIndicator(value);
-                      const found = indicators.find((indicator) => indicator.id === value);
-                      if (found) {
-                        setIndicatorPositiveIsGood(found.positive_is_good);
-                        setIndicatorAlias(found.alias || found.id);
-                      } else {
-                        setIndicatorPositiveIsGood(true);
-                        setIndicatorAlias("");
-                      }
-                    }}
-                  />
-                  <p className="hint">
-                    Ative para simular impacto esperado usando dados históricos do indicador escolhido.
-                  </p>
-                  {selectedIndicator && (
-                    <div className="indicator-direction">
-
-                      <span className={`direction-flag good`}>
-                        {indicatorPositiveIsGood
-                          ? "O Objetivo é Aumentar o Valor desse Indicador"
-                          : "O Objetivo é Diminuir o Valor desse Indicador"}
-                      </span>
-
-                    </div>
-                  )}
-                </div>
-                <div className="filter-field">
-                  <label htmlFor="effect-window">Janela do efeito</label>
-                  <CustomDropdown
-                    key={selectedIndicator ? "effect-window-enabled" : "effect-window-disabled"}
-                    id="effect-window"
-                    ariaLabel="Selecionar janela temporal para cálculo do efeito"
-                    disabled={!selectedIndicator}
-                    options={effectWindowDropdownOptions}
-                    value={effectWindowMonths}
-                    onChange={(newValue) => {
-                      const parsed = typeof newValue === "number" ? newValue : Number(newValue);
-                      setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
-                    }}
-                  />
-                  <p className="hint">
-                    A janela em meses é arredondada para a granularidade do indicador (semestral, anual); PLs muito
-                    recentes podem não ter efeito calculado.
-                  </p>
-                </div>
-              </div>
-            </form>
-
-            {suggestionsVisible ? (
-              <div className="suggestions-panel">
-                <p className="muted">Sugestões rápidas</p>
-                <div className="suggestions">
-                  {suggestionPrompts.map((text) => (
-                    <button
-                      type="button"
-                      key={text}
-                      onClick={() => handleSuggestionClick(text)}
-                      className="suggestion"
-                    >
-                      {text}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            ) : (
-              <button className="toggle-suggestions" onClick={() => setSuggestionsVisible(true)} type="button">
-                Ver sugestões
-              </button>
-            )}
-          </section>
-
-          {showPolicyArea && (
-            <section className="policy-section">
-              <div className="section-header">
-                <div>
-                  <p className="eyebrow">Políticas sugeridas</p>
-                  <h2>Opções priorizadas para implementação</h2>
-                  <p className="muted">
-                    Agrupamos políticas similares aplicadas em cidades próximas ao seu contexto. Abra os
-                    detalhes para ver precedentes e replicar com segurança.
-                  </p>
-                </div>
-                <div className="section-actions">
-                  <div className="chips-inline">
-                    <div className="pill neutral">{results.length} projetos considerados</div>
-                    {policiesUseIndicator && (
-                      <div className="pill neutral">Efeito em {effectWindowMonths} meses</div>
-                    )}
-                    {selectedIndicator && (
-                      <div className="pill neutral">Indicador: {indicatorAlias || selectedIndicator}</div>
-                    )}
-                  </div>
-                  <Link
-                    className="ghost-btn"
-                    href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
-                  >
-                    Ver projetos analisados
-                  </Link>
-                </div>
-              </div>
-
-              {policiesError && <div className="message error">{policiesError}</div>}
-
-              {isLoadingPolicies && (
-                <>
-                  <div className="message muted">Gerando políticas com base na busca...</div>
-                  <div className="policy-grid skeleton-grid" aria-hidden="true">
-                    {[1, 2, 3].map((item) => (
-                      <div key={item} className="policy-card skeleton-card">
-                        <span className="skeleton-line w-70" />
-                        <span className="skeleton-line w-50" />
-                        <div className="skeleton-pill-row">
-                          <span className="skeleton-pill w-40" />
-                          <span className="skeleton-pill w-30" />
-                        </div>
-                        <div className="skeleton-list">
-                          <span className="skeleton-line w-80" />
-                          <span className="skeleton-line w-60" />
-                          <span className="skeleton-line w-50" />
-                        </div>
-                        <span className="skeleton-line w-45" />
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {!isLoadingPolicies && policies.length > 0 && (
-                <div className="policy-grid">
-                  {policies.map((policy, policyIndex) => {
-                    const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
-                    const effectStd =
-                      policiesUseIndicator && policy.effect_std != null ? `${policy.effect_std.toFixed(2)}%` : null;
-                    const qualityValue =
-                      policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
-                    const meanTone = getEffectTone(policy.effect_mean);
-
-                    return (
-                      <article
-                        key={`${policy.policy}-${policyIndex}`}
-                        className="policy-card"
-                        role="button"
-                        tabIndex={0}
-                        onClick={() => handleViewDetails(policy)}
-                        onKeyDown={(event) => {
-                          if (event.key === "Enter" || event.key === " ") {
-                            event.preventDefault();
-                            handleViewDetails(policy);
-                          }
-                        }}
-                      >
-                        <p className="policy-title">{policy.policy}</p>
-
-                        <div className="policy-badges">
-                          <div className="metric-badge">
-                            <span className="badge-label">Efeito médio (% em {effectWindowMonths} meses)</span>
-                            <span className={`badge-value ${meanTone}`}>
-                              {effectAvailable ? (
-                                <>
-                                  {formatEffectValue(policy.effect_mean)}
-                                  {effectStd ? ` ± ${effectStd}` : ""}
-                                </>
-                              ) : (
-                                "Não calculado"
-                              )}
-                            </span>
-                          </div>
-                          <div className="metric-badge soft">
-                            <span className="badge-label">Qualidade</span>
-                            <span className="badge-value">{qualityValue}</span>
-                          </div>
-                        </div>
-
-                        <p className="policy-count">
-                          Política aplicada em {policy.actions.length} município
-                          {policy.actions.length === 1 ? "" : "s"}:
-                        </p>
-
-                        <ul className="policy-city-list">
-                          {policy.actions.map((action, actionIndex) => {
-                            const effectLabel =
-                              policiesUseIndicator && action.effect != null
-                                ? `Variação: ${formatEffectValue(action.effect)}`
-                                : "Sem indicador";
-                            const effectTone = getEffectTone(action.effect);
-
-                            return (
-                              <li
-                                key={`${policy.policy}-${action.municipio}-${action.acao}-${actionIndex}`}
-                                className="policy-city-item"
-                              >
-                                <div className="city-name">
-                                  <span>{action.municipio}</span>
-                                  {action.url && (
-                                    <a
-                                      href={action.url}
-                                      target="_blank"
-                                      rel="noreferrer"
-                                      className="city-link"
-                                      onClick={(event) => event.stopPropagation()}
-                                      aria-label={`Abrir ementa original de ${action.municipio}`}
-                                    >
-                                      <svg
-                                        width="14"
-                                        height="14"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        aria-hidden="true"
-                                      >
-                                        <path
-                                          d="M14 4H20V10"
-                                          stroke="currentColor"
-                                          strokeWidth="2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                        <path
-                                          d="M10 14L20 4"
-                                          stroke="currentColor"
-                                          strokeWidth="2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                        <path
-                                          d="M20 14V20H4V4H10"
-                                          stroke="currentColor"
-                                          strokeWidth="2"
-                                          strokeLinecap="round"
-                                          strokeLinejoin="round"
-                                        />
-                                      </svg>
-                                    </a>
-                                  )}
-                                </div>
-                                <span className={`city-effect ${effectTone}`}>{effectLabel}</span>
-                              </li>
-                            );
-                          })}
-                        </ul>
-
-                        <div className="policy-card-footer">
-                          <button
-                            className="secondary-btn"
-                            type="button"
-                            onClick={(event) => {
-                              event.stopPropagation();
-                              handleViewDetails(policy);
-                            }}
-                          >
-                            Ver detalhes
-                          </button>
-                        </div>
-                      </article>
-                    );
-                  })}
-                </div>
-              )}
-
-              {!isLoadingPolicies && !policiesError && hasSearched && policies.length === 0 && (
-                <div className="message muted">
-                  Nenhuma política priorizada para esta busca. Ajuste o texto, refine os filtros ou ative um indicador
-                  para estimar impacto.
-                </div>
-              )}
-            </section>
-          )}
-
-          <section className="results" aria-live="polite">
-            {errorMessage && (
-              <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
-            )}
-            {hasSearched && results.length > 0 && (
-              <div className="message muted">
-                {results.length} projetos correspondem à sua busca. Veja a lista completa em{" "}
+            </Link>
+            <nav className="nav">
+              <div className="nav-links">
+                <span className="nav-link active">Políticas Públicas</span>
                 <Link
                   className="nav-link"
                   href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
                 >
                   Projetos de Lei
                 </Link>
-                .
+                <Link className="nav-link" href="/methodology">
+                  Metodologia
+                </Link>
               </div>
-            )}
-          </section>
+              <div className="nav-actions">
+                <a className="ghost-btn" href="#busca">
+                  Nova busca
+                </a>
+                <Link className="ghost-btn" href="/projects">
+                  Ver projetos
+                </Link>
+              </div>
+            </nav>
+          </header>
 
-          <section className="trust-strip">
-            <div>
-              <p className="eyebrow">Confiabilidade</p>
-              <h3>Metodologia e limites claros</h3>
-              <p className="muted">
-                Veja fontes, indicadores usados, privacidade e como calculamos efeitos médios antes de replicar.
-              </p>
-            </div>
-            <div className="trust-actions">
-              <Link className="secondary-btn" href="/methodology">
-                Abrir metodologia
-              </Link>
-              <Link className="ghost-btn" href="/projects">
-                Ver projetos
-              </Link>
-            </div>
-          </section>
-        </main>
+          <main className="page-body">
+            <section className="hero">
+              <div className="hero-text">
+                <p className="eyebrow">Implantação segura de leis municipais</p>
+                <h1>Transforme evidências em políticas aplicáveis</h1>
+                <p className="lede">
+                  A plataforma cruza projetos de lei, jurisprudência e indicadores municipais para sugerir políticas
+                  públicas que já funcionaram em cidades com perfis parecidos. Tudo explicado com links para a fonte.
+                </p>
+                <div className="hero-badges">
+                  <span className="pill neutral">Dados oficiais</span>
+                  <span className="pill neutral">Explicabilidade</span>
+                  <span className="pill accent">Foco em gestores</span>
+                </div>
+                <div className="hero-actions">
+                  <a className="primary-btn" href="#busca">
+                    Buscar políticas agora
+                  </a>
+                  <Link className="ghost-btn" href="/methodology">
+                    Metodologia e confiança
+                  </Link>
+                  <Link className="ghost-btn" href="/projects">
+                    Projetos de lei
+                  </Link>
+                </div>
+              </div>
+              <div className="hero-panel">
+                <div className="stat-card highlight">
+                  <p className="stat-label">Assistente de confiabilidade</p>
+                  <p className="stat-value">Dados públicos + indicadores</p>
+                  <p className="stat-detail">
+                    Similaridade semântica explicável, agrupamentos transparentes e links para a origem.
+                  </p>
+                  <Link className="ghost-btn compact" href="/methodology">
+                    Ver como calculamos
+                  </Link>
+                </div>
+                <div className="stat-card">
+                  <p className="stat-label">Próximo passo</p>
+                  <p className="stat-value">Ative um indicador</p>
+                  <p className="stat-detail">Selecione indicador e janela para simular impacto médio.</p>
+                </div>
+              </div>
+            </section>
+
+            <section id="busca" className="search-section">
+              <div className="section-header">
+                <div>
+                  <p className="eyebrow">Busca guiada</p>
+                  <h2>Encontre políticas semelhantes e avalie impacto</h2>
+                  <p className="muted">Pergunte em linguagem natural e ative um indicador para estimar o efeito esperado.</p>
+                </div>
+              </div>
+
+              <form className="search-panel" onSubmit={handleSearch}>
+                <div className="search-row">
+                  <div className="search-input">
+                    <label htmlFor="query">Pergunte ou descreva uma necessidade</label>
+                    <input
+                      id="query"
+                      type="search"
+                      name="query"
+                      placeholder="Ex.: Como reduzir filas de atendimento na atenção básica?"
+                      value={query}
+                      onChange={(event) => setQuery(event.target.value)}
+                      aria-label="Pergunta para busca semântica"
+                      autoComplete="off"
+                    />
+                  </div>
+                  <button type="submit" className="primary-btn search-btn" disabled={status === "loading"}>
+                    {searchButtonLabel}
+                  </button>
+                </div>
+
+                <div className="filter-grid">
+                  <div className="filter-field indicator-field">
+                    <label>Indicador de impacto</label>
+                    <CustomDropdown
+                      id="indicator-select"
+                      ariaLabel="Selecionar indicador"
+                      value={selectedIndicator}
+                      options={indicatorDropdownOptions}
+                      onChange={(newValue) => {
+                        const value = String(newValue);
+                        setSelectedIndicator(value);
+                        const found = indicators.find((indicator) => indicator.id === value);
+                        if (found) {
+                          setIndicatorPositiveIsGood(found.positive_is_good);
+                          setIndicatorAlias(found.alias || found.id);
+                        } else {
+                          setIndicatorPositiveIsGood(true);
+                          setIndicatorAlias("");
+                        }
+                      }}
+                    />
+                    <p className="hint">
+                      Ative para simular impacto esperado usando dados históricos do indicador escolhido.
+                    </p>
+                    {selectedIndicator && (
+                      <div className="indicator-direction">
+                        <span className={`direction-flag good`}>
+                          {indicatorPositiveIsGood
+                            ? "O Objetivo é Aumentar o Valor desse Indicador"
+                            : "O Objetivo é Diminuir o Valor desse Indicador"}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="filter-field">
+                    <label htmlFor="effect-window">Janela do efeito</label>
+                    <CustomDropdown
+                      key={selectedIndicator ? "effect-window-enabled" : "effect-window-disabled"}
+                      id="effect-window"
+                      ariaLabel="Selecionar janela temporal para cálculo do efeito"
+                      disabled={!selectedIndicator}
+                      options={effectWindowDropdownOptions}
+                      value={effectWindowMonths}
+                      onChange={(newValue) => {
+                        const parsed = typeof newValue === "number" ? newValue : Number(newValue);
+                        setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
+                      }}
+                    />
+                    <p className="hint">
+                      A janela em meses é arredondada para a granularidade do indicador (semestral, anual); PLs muito
+                      recentes podem não ter efeito calculado.
+                    </p>
+                  </div>
+                </div>
+              </form>
+
+              {suggestionsVisible ? (
+                <div className="suggestions-panel">
+                  <p className="muted">Sugestões rápidas</p>
+                  <div className="suggestions">
+                    {suggestionPrompts.map((text) => (
+                      <button
+                        type="button"
+                        key={text}
+                        onClick={() => handleSuggestionClick(text)}
+                        className="suggestion"
+                      >
+                        {text}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <button className="toggle-suggestions" onClick={() => setSuggestionsVisible(true)} type="button">
+                  Ver sugestões
+                </button>
+              )}
+            </section>
+
+            {showPolicyArea && (
+              <section className="policy-section">
+                <div className="section-header">
+                  <div>
+                    <p className="eyebrow">Políticas sugeridas</p>
+                    <h2>Opções priorizadas para implementação</h2>
+                    <p className="muted">
+                      Agrupamos políticas similares aplicadas em cidades próximas ao seu contexto. Abra os
+                      detalhes para ver precedentes e replicar com segurança.
+                    </p>
+                  </div>
+                  <div className="section-actions">
+                    <div className="chips-inline">
+                      <div className="pill neutral">{results.length} projetos considerados</div>
+                      {policiesUseIndicator && (
+                        <div className="pill neutral">Efeito em {effectWindowMonths} meses</div>
+                      )}
+                      {selectedIndicator && (
+                        <div className="pill neutral">Indicador: {indicatorAlias || selectedIndicator}</div>
+                      )}
+                    </div>
+                    <Link
+                      className="ghost-btn"
+                      href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
+                    >
+                      Ver projetos analisados
+                    </Link>
+                  </div>
+                </div>
+
+                {policiesError && <div className="message error">{policiesError}</div>}
+
+                {isLoadingPolicies && (
+                  <>
+                    <div className="message muted">Gerando políticas com base na busca...</div>
+                    <div className="policy-grid skeleton-grid" aria-hidden="true">
+                      {[1, 2, 3].map((item) => (
+                        <div key={item} className="policy-card skeleton-card">
+                          <span className="skeleton-line w-70" />
+                          <span className="skeleton-line w-50" />
+                          <div className="skeleton-pill-row">
+                            <span className="skeleton-pill w-40" />
+                            <span className="skeleton-pill w-30" />
+                          </div>
+                          <div className="skeleton-list">
+                            <span className="skeleton-line w-80" />
+                            <span className="skeleton-line w-60" />
+                            <span className="skeleton-line w-50" />
+                          </div>
+                          <span className="skeleton-line w-45" />
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                )}
+
+                {!isLoadingPolicies && policies.length > 0 && (
+                  <div className="policy-grid">
+                    {policies.map((policy, policyIndex) => {
+                      const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
+                      const effectStd =
+                        policiesUseIndicator && policy.effect_std != null ? `${policy.effect_std.toFixed(2)}%` : null;
+                      const qualityValue =
+                        policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
+                      const meanTone = getEffectTone(policy.effect_mean);
+
+                      return (
+                        <article
+                          key={`${policy.policy}-${policyIndex}`}
+                          className="policy-card"
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => handleViewDetails(policy)}
+                          onKeyDown={(event) => {
+                            if (event.key === "Enter" || event.key === " ") {
+                              event.preventDefault();
+                              handleViewDetails(policy);
+                            }
+                          }}
+                        >
+                          <p className="policy-title">{policy.policy}</p>
+
+                          <div className="policy-badges">
+                            <div className="metric-badge">
+                              <span className="badge-label">Efeito médio (% em {effectWindowMonths} meses)</span>
+                              <span className={`badge-value ${meanTone}`}>
+                                {effectAvailable ? (
+                                  <>
+                                    {formatEffectValue(policy.effect_mean)}
+                                    {effectStd ? ` ± ${effectStd}` : ""}
+                                  </>
+                                ) : (
+                                  "Não calculado"
+                                )}
+                              </span>
+                            </div>
+                            <div className="metric-badge soft">
+                              <span className="badge-label">Qualidade</span>
+                              <span className="badge-value">{qualityValue}</span>
+                            </div>
+                          </div>
+
+                          <p className="policy-count">
+                            Política aplicada em {policy.actions.length} município
+                            {policy.actions.length === 1 ? "" : "s"}:
+                          </p>
+
+                          <ul className="policy-city-list">
+                            {policy.actions.map((action, actionIndex) => {
+                              const effectLabel =
+                                policiesUseIndicator && action.effect != null
+                                  ? `Variação: ${formatEffectValue(action.effect)}`
+                                  : "Sem indicador";
+                              const effectTone = getEffectTone(action.effect);
+
+                              return (
+                                <li
+                                  key={`${policy.policy}-${action.municipio}-${action.acao}-${actionIndex}`}
+                                  className="policy-city-item"
+                                >
+                                  <div className="city-name">
+                                    <span>{action.municipio}</span>
+                                    {action.url && (
+                                      <a
+                                        href={action.url}
+                                        target="_blank"
+                                        rel="noreferrer"
+                                        className="city-link"
+                                        onClick={(event) => event.stopPropagation()}
+                                        aria-label={`Abrir ementa original de ${action.municipio}`}
+                                      >
+                                        <svg
+                                          width="14"
+                                          height="14"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                          aria-hidden="true"
+                                        >
+                                          <path
+                                            d="M14 4H20V10"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                          <path
+                                            d="M10 14L20 4"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                          <path
+                                            d="M20 14V20H4V4H10"
+                                            stroke="currentColor"
+                                            strokeWidth="2"
+                                            strokeLinecap="round"
+                                            strokeLinejoin="round"
+                                          />
+                                        </svg>
+                                      </a>
+                                    )}
+                                  </div>
+                                  <span className={`city-effect ${effectTone}`}>{effectLabel}</span>
+                                </li>
+                              );
+                            })}
+                          </ul>
+
+                          <div className="policy-card-footer">
+                            <button
+                              className="secondary-btn"
+                              type="button"
+                              onClick={(event) => {
+                                event.stopPropagation();
+                                handleViewDetails(policy);
+                              }}
+                            >
+                              Ver detalhes
+                            </button>
+                          </div>
+                        </article>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {!isLoadingPolicies && !policiesError && hasSearched && policies.length === 0 && (
+                  <div className="message muted">
+                    Nenhuma política priorizada para esta busca. Ajuste o texto, refine os filtros ou ative um indicador
+                    para estimar impacto.
+                  </div>
+                )}
+              </section>
+            )}
+
+            <section className="results" aria-live="polite">
+              {errorMessage && (
+                <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
+              )}
+              {hasSearched && results.length > 0 && (
+                <div className="message muted">
+                  {results.length} projetos correspondem à sua busca. Veja a lista completa em{" "}
+                  <Link
+                    className="nav-link"
+                    href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
+                  >
+                    Projetos de Lei
+                  </Link>
+                  .
+                </div>
+              )}
+            </section>
+
+            <section className="trust-strip">
+              <div>
+                <p className="eyebrow">Confiabilidade</p>
+                <h3>Metodologia e limites claros</h3>
+                <p className="muted">
+                  Veja fontes, indicadores usados, privacidade e como calculamos efeitos médios antes de replicar.
+                </p>
+              </div>
+              <div className="trust-actions">
+                <Link className="secondary-btn" href="/methodology">
+                  Abrir metodologia
+                </Link>
+                <Link className="ghost-btn" href="/projects">
+                  Ver projetos
+                </Link>
+              </div>
+            </section>
+          </main>
+        </div>
       </div>
-    </div>
+      {isLoadingPolicies && (
+        <div className="page-overlay" role="alert" aria-live="assertive">
+          <div className="overlay-card">
+            <div className="spinner" aria-hidden="true" />
+            <p className="overlay-title">Gerando políticas priorizadas…</p>
+            <p className="muted small">
+              Agrupando projetos similares, aplicando indicador e selecionando as opções com melhor qualidade.
+            </p>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 

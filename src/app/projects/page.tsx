@@ -197,7 +197,7 @@ function ProjectsContent() {
                     autoComplete="off"
                   />
                 </div>
-                <button type="submit" className="primary-btn" disabled={status === "loading"}>
+                <button type="submit" className="primary-btn search-btn" disabled={status === "loading"}>
                   {searchButtonLabel}
                 </button>
               </div>
