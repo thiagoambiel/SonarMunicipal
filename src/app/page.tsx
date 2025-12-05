@@ -437,10 +437,17 @@ function HomeContent() {
       }
 
       const payload = (await response.json()) as SearchResponse;
-      setResults(payload.results ?? []);
+      const payloadResults = payload.results ?? [];
+      setResults(payloadResults);
       setLastQuery(normalizedQuery);
       setHasSearched(true);
       setSuggestionsVisible(false);
+      setPoliciesError(null);
+      if (payloadResults.length > 0) {
+        setPoliciesStatus("loading");
+      } else {
+        setPoliciesStatus("idle");
+      }
       setStatus("idle");
       searchControllerRef.current = null;
     } catch (error) {
