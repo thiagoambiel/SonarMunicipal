@@ -1922,11 +1922,11 @@ p {
 }
 
 .policies-panel {
-  background: #fff;
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  padding: 12px;
-  box-shadow: var(--shadow-sm);
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
   min-height: 320px;
 }
 

@@ -349,11 +349,12 @@ export default function Home() {
   };
 
   const buildWindowLabel = (window: number) => {
-    const tags: string[] = [];
-    if (bestQualityWindows.includes(window)) tags.push("melhor qualidade");
-    if (bestEffectWindows.includes(window)) tags.push("melhor efeito");
-    const suffix = tags.length ? ` • ${tags.join(" • ")}` : "";
-    return `${window} meses${suffix}`;
+    const monthsLabel = `${window} ${window === 1 ? "mês" : "meses"}`;
+    const semesters = window / 6;
+    const years = window / 12;
+    const semestersLabel = `${semesters % 1 === 0 ? semesters : semesters.toFixed(1)} ${semesters === 1 ? "semestre" : "semestres"}`;
+    const yearsLabel = `${years % 1 === 0 ? years : years.toFixed(1)} ${years === 1 ? "ano" : "anos"}`;
+    return `${monthsLabel} · ${semestersLabel} · ${yearsLabel}`;
   };
 
   const handleViewDetails = (policy: PolicySuggestion) => {
