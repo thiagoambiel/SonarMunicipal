@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 type SearchResult = {
@@ -236,7 +236,23 @@ function CustomDropdown({ options, value, disabled, loading, onChange, id, ariaL
     </div>
   );
 }
+
 export default function Home() {
+  return (
+    <Suspense
+      fallback={
+        <div className="landing">
+          <main className="landing-body">
+            <div className="message muted">Carregando...</div>
+          </main>
+        </div>
+      }
+    >
+      <HomeContent />
+    </Suspense>
+  );
+}
+function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
