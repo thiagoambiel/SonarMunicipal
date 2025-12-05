@@ -288,6 +288,9 @@ function HomeContent() {
   const [indicatorAlias, setIndicatorAlias] = useState("");
   const [bestQualityWindows, setBestQualityWindows] = useState<number[]>([]);
   const [bestEffectMeanWindows, setBestEffectMeanWindows] = useState<number[]>([]);
+  const [windowBadgesCache, setWindowBadgesCache] = useState<Record<string, { quality: number[]; effect: number[] }>>(
+    {},
+  );
   const selectedIndicatorObj = useMemo(
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
@@ -301,8 +304,9 @@ function HomeContent() {
     setPoliciesUseIndicator(false);
     setHasSearched(false);
     setLastQuery("");
-    setBestQualityWindows([]);
-    setBestEffectMeanWindows([]);
+    const cached = selectedIndicator ? windowBadgesCache[selectedIndicator] : null;
+    setBestQualityWindows(cached?.quality ?? []);
+    setBestEffectMeanWindows(cached?.effect ?? []);
     setSuggestionsVisible(true);
   };
   const effectWindowOptions = useMemo(
@@ -377,13 +381,14 @@ function HomeContent() {
   useEffect(() => {
     const previous = previousIndicatorRef.current;
     if (previous !== selectedIndicator) {
-      setBestQualityWindows([]);
-      setBestEffectMeanWindows([]);
+      const cached = selectedIndicator ? windowBadgesCache[selectedIndicator] : null;
+      setBestQualityWindows(cached?.quality ?? []);
+      setBestEffectMeanWindows(cached?.effect ?? []);
       previousIndicatorRef.current = selectedIndicator;
       return;
     }
     previousIndicatorRef.current = selectedIndicator;
-  }, [selectedIndicator]);
+  }, [selectedIndicator, windowBadgesCache]);
 
   useEffect(() => {
     if (!effectWindowOptions.length) return;
@@ -500,6 +505,15 @@ function HomeContent() {
               : [];
         setBestQualityWindows(selectedIndicator ? bestQualityFromPayload : []);
         setBestEffectMeanWindows(selectedIndicator ? bestEffectMeanFromPayload : []);
+        if (selectedIndicator) {
+          setWindowBadgesCache((prev) => ({
+            ...prev,
+            [selectedIndicator]: {
+              quality: bestQualityFromPayload,
+              effect: bestEffectMeanFromPayload,
+            },
+          }));
+        }
         setPolicies(payload.policies ?? []);
         setPoliciesUseIndicator(Boolean(payload.used_indicator));
         setPoliciesStatus("idle");
