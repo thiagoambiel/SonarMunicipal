@@ -1392,9 +1392,12 @@ p {
 
 /* New landing layout */
 .landing {
+  width: 100%;
   min-height: 100vh;
   background: radial-gradient(120% 120% at 20% 20%, #f4f7fc 0%, #eef2f8 45%, #f7f9fc 100%);
   color: var(--text);
+  display: flex;
+  flex-direction: column;
 }
 
 .minimal-nav {
@@ -1406,8 +1409,6 @@ p {
   justify-content: space-between;
   color: var(--primary);
   background: transparent;
-  position: sticky;
-  top: 0;
   z-index: 12;
 }
 

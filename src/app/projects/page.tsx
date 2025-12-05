@@ -123,203 +123,245 @@ function ProjectsContent() {
   };
 
   return (
-    <div className="page google-layout">
-      <div className="page-surface">
-        <header className="topbar">
-          <Link className="brand" href="/">
-            <div className="brand-mark">CM</div>
-            <div>
-              <p className="brand-title">CityManager</p>
-              <p className="brand-subtitle">Banco vivo de projetos de lei</p>
-            </div>
+    <div className="landing">
+      <header className="minimal-nav">
+        <div className="nav-brand">
+          <div className="nav-logo">CM</div>
+          <span className="nav-title">CityManager</span>
+        </div>
+        <nav className="nav-links-minimal">
+          <Link className="nav-link-minimal" href="/">
+            Gerador de Políticas Públicas
           </Link>
-          <nav className="nav">
-            <div className="nav-links">
-              <Link className="nav-link" href="/">
-                Políticas Públicas
-              </Link>
-              <span className="nav-link active">Projetos de Lei</span>
-              <Link className="nav-link" href="/methodology">
-                Metodologia
-              </Link>
-            </div>
-            <div className="nav-actions">
+          <span className="nav-link-minimal active">Projetos de Lei</span>
+          <Link className="nav-link-minimal" href="/methodology">
+            Metodologia
+          </Link>
+        </nav>
+      </header>
+
+      <main className="landing-body page-body">
+        <section className="hero">
+          <div className="hero-text">
+            <p className="eyebrow">Banco vivo</p>
+            <h1>Resultados completos para sua consulta</h1>
+            <p className="lede">
+              Ordenamos por relevância semântica. Aplique filtros de UF e ano para focar na jurisdição certa sem perder
+              contexto.
+            </p>
+            <div className="hero-actions">
               <a className="ghost-btn" href="#filtros">
-                Filtros
+                Ir para filtros
               </a>
               <Link className="ghost-btn" href="/methodology">
-                Confiabilidade
+                Ver metodologia
               </Link>
             </div>
-          </nav>
-        </header>
-
-        <main className="page-body">
-          <section className="search-section">
-            <div className="section-header">
-              <div>
-                <p className="eyebrow">Navegar por projetos</p>
-                <h2>Resultados completos para sua consulta</h2>
-                <p className="muted">
-                  Ordenamos por relevância semântica. Use os filtros para focar em UF e ano de apresentação.
-                </p>
-              </div>
-              {hasActiveFilters && (
-                <div className="chips-inline">
-                  {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
-                  {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
-                  <button
-                    type="button"
-                    className="ghost-link"
-                    onClick={() => {
-                      setFilterUf("all");
-                      setFilterYear("all");
-                    }}
-                  >
-                    Limpar filtros
-                  </button>
-                </div>
-              )}
+          </div>
+          <div className="hero-panel">
+            <div className="stat-card">
+              <p className="stat-label">Busca</p>
+              <p className="stat-value">{query ? "Consulta ativa" : "Pronta para pesquisar"}</p>
+              <p className="stat-detail">Refine a pergunta em linguagem natural.</p>
             </div>
+            <div className="stat-card">
+              <p className="stat-label">Resultados</p>
+              <p className="stat-value">{sortedResults.length > 0 ? `${sortedResults.length} projetos` : "Sem itens"}</p>
+              <p className="stat-detail">Ordenados por relevância semântica.</p>
+            </div>
+          </div>
+        </section>
 
-            <form className="search-panel" onSubmit={handleSearch}>
-              <div className="search-row">
-                <div className="search-input">
-                  <label htmlFor="projects-query">Pergunte ou descreva uma necessidade</label>
-                  <input
-                    id="projects-query"
-                    type="search"
-                    name="query"
-                    placeholder="Ex.: Projetos de mobilidade ativa em capitais"
-                    value={query}
-                    onChange={(event) => setQuery(event.target.value)}
-                    aria-label="Pergunta para busca semântica"
-                    autoComplete="off"
-                  />
-                </div>
-                <button type="submit" className="primary-btn search-btn" disabled={status === "loading"}>
-                  {searchButtonLabel}
+        <section className="search-section">
+          <div className="section-header">
+            <div>
+              <p className="eyebrow">Navegar por projetos</p>
+              <h2>Busque por tema ou necessidade</h2>
+              <p className="muted">
+                Encontre precedentes para fundamentar novas políticas. Ajuste os filtros sem refazer a busca.
+              </p>
+            </div>
+            {hasActiveFilters && (
+              <div className="chips-inline">
+                {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
+                {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+                <button
+                  type="button"
+                  className="ghost-link"
+                  onClick={() => {
+                    setFilterUf("all");
+                    setFilterYear("all");
+                  }}
+                >
+                  Limpar filtros
                 </button>
               </div>
-
-              <div id="filtros" className="filter-grid">
-                <div className="filter-field">
-                  <label htmlFor="projects-uf-select">UF</label>
-                  <select
-                    id="projects-uf-select"
-                    value={filterUf}
-                    onChange={(event) => setFilterUf(event.target.value)}
-                  >
-                    <option value="all">Todas as UF</option>
-                    {availableUfs.map((uf) => (
-                      <option key={uf} value={uf}>
-                        {uf}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                <div className="filter-field">
-                  <label htmlFor="projects-year-select">Ano de apresentação</label>
-                  <select
-                    id="projects-year-select"
-                    value={filterYear}
-                    onChange={(event) => setFilterYear(event.target.value)}
-                  >
-                    <option value="all">Todos os anos</option>
-                    {availableYears.map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-            </form>
-          </section>
-
-          <section className="results" aria-live="polite">
-            {errorMessage && (
-              <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
             )}
+          </div>
 
-            {isLoading && (
-              <div className="table-card skeleton-table" aria-hidden="true">
-                <div className="table-head">
-                  <span className="skeleton-line w-60" />
+          <form className="search-panel" onSubmit={handleSearch}>
+            <div className="search-row">
+              <div className="search-input">
+                <label htmlFor="projects-query">Pergunte ou descreva uma necessidade</label>
+                <input
+                  id="projects-query"
+                  type="search"
+                  name="query"
+                  placeholder="Ex.: Projetos de mobilidade ativa em capitais"
+                  value={query}
+                  onChange={(event) => setQuery(event.target.value)}
+                  aria-label="Pergunta para busca semântica"
+                  autoComplete="off"
+                />
+              </div>
+              <button type="submit" className="primary-btn search-btn" disabled={status === "loading"}>
+                {searchButtonLabel}
+              </button>
+            </div>
+
+            <div id="filtros" className="filter-grid">
+              <div className="filter-field">
+                <label htmlFor="projects-uf-select">UF</label>
+                <select
+                  id="projects-uf-select"
+                  value={filterUf}
+                  onChange={(event) => setFilterUf(event.target.value)}
+                >
+                  <option value="all">Todas as UF</option>
+                  {availableUfs.map((uf) => (
+                    <option key={uf} value={uf}>
+                      {uf}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="filter-field">
+                <label htmlFor="projects-year-select">Ano de apresentação</label>
+                <select
+                  id="projects-year-select"
+                  value={filterYear}
+                  onChange={(event) => setFilterYear(event.target.value)}
+                >
+                  <option value="all">Todos os anos</option>
+                  {availableYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </form>
+        </section>
+
+        <section className="results-stage" aria-live="polite">
+          <div className="results-header">
+            <div>
+              <p className="eyebrow">Resultados</p>
+              <h2>Projetos encontrados</h2>
+              <p className="muted">
+                {sortedResults.length > 0
+                  ? `${sortedResults.length} resultados ordenados por relevância`
+                  : "Busque para ver os projetos priorizados"}
+              </p>
+            </div>
+            {hasActiveFilters && (
+              <div className="result-badges">
+                {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
+                {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+              </div>
+            )}
+          </div>
+
+          {errorMessage && (
+            <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
+          )}
+
+          {isLoading && (
+            <div className="table-card skeleton-table" aria-hidden="true">
+              <div className="table-head">
+                <span className="skeleton-line w-60" />
+                <span className="skeleton-line w-70" />
+                <span className="skeleton-line w-30" />
+                <span className="skeleton-line w-40" />
+              </div>
+              {[1, 2, 3, 4].map((row) => (
+                <div key={row} className="table-row">
                   <span className="skeleton-line w-70" />
+                  <span className="skeleton-line w-80" />
                   <span className="skeleton-line w-30" />
                   <span className="skeleton-line w-40" />
                 </div>
-                {[1, 2, 3, 4].map((row) => (
-                  <div key={row} className="table-row">
-                    <span className="skeleton-line w-70" />
-                    <span className="skeleton-line w-80" />
-                    <span className="skeleton-line w-30" />
-                    <span className="skeleton-line w-40" />
-                  </div>
-                ))}
-              </div>
-            )}
+              ))}
+            </div>
+          )}
 
-            {!isLoading && sortedResults.length > 0 && (
-              <div className="table-card">
-                <div className="table-head">
-                  <span>Município</span>
-                  <span>Tema</span>
-                  <span>Ano</span>
-                  <span>Relevância</span>
+          {!isLoading && sortedResults.length > 0 && (
+            <div className="table-card">
+              <div className="table-head">
+                <span>Município</span>
+                <span>Tema</span>
+                <span>Ano</span>
+                <span>Relevância</span>
+              </div>
+              {sortedResults.map((item) => (
+                <div key={item.index} className="table-row">
+                  <div>
+                    <p className="strong">
+                      {item.municipio ? item.municipio : "Município não informado"}
+                      {item.uf && <span className="pill-uf"> · {item.uf}</span>}
+                    </p>
+                    <p className="muted small">Índice #{item.index}</p>
+                  </div>
+                  <p>{item.acao ?? "Ação não informada"}</p>
+                  <p>{item.data_apresentacao ?? "—"}</p>
+                  <p className="strong">{item.score.toFixed(2)}</p>
                 </div>
-                {sortedResults.map((item) => (
-                  <div key={item.index} className="table-row">
-                    <div>
-                      <p className="strong">
-                        {item.municipio ? item.municipio : "Município não informado"}
-                        {item.uf && <span className="pill-uf"> · {item.uf}</span>}
-                      </p>
-                      <p className="muted small">Índice #{item.index}</p>
-                    </div>
-                    <p>{item.acao ?? "Ação não informada"}</p>
-                    <p>{item.data_apresentacao ?? "—"}</p>
-                    <p className="strong">{item.score.toFixed(2)}</p>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {!isLoading && sortedResults.length === 0 && (
-              <div className="message muted">
-                Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}.
-                Ajuste o texto ou revise os filtros.
-              </div>
-            )}
-          </section>
-
-          <section className="trust-strip">
-            <div>
-              <p className="eyebrow">Documentação</p>
-              <h3>Metodologia e limites</h3>
-              <p className="muted">
-                Consulte como calculamos similaridade, agrupamentos e impacto dos indicadores antes de replicar.
-              </p>
+              ))}
             </div>
-            <div className="trust-actions">
-              <Link className="secondary-btn" href="/methodology">
-                Abrir metodologia
-              </Link>
-              <Link className="ghost-btn" href="/">
-                Voltar para busca
-              </Link>
+          )}
+
+          {!isLoading && sortedResults.length === 0 && (
+            <div className="message muted">
+              Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}. Ajuste o
+              texto ou revise os filtros.
             </div>
-          </section>
-        </main>
-      </div>
+          )}
+        </section>
+
+        <section className="trust-strip">
+          <div>
+            <p className="eyebrow">Documentação</p>
+            <h3>Metodologia e limites</h3>
+            <p className="muted">
+              Consulte como calculamos similaridade, agrupamentos e impacto dos indicadores antes de replicar.
+            </p>
+          </div>
+          <div className="trust-actions">
+            <Link className="secondary-btn" href="/methodology">
+              Abrir metodologia
+            </Link>
+            <Link className="ghost-btn" href="/">
+              Voltar para busca
+            </Link>
+          </div>
+        </section>
+      </main>
     </div>
   );
 }
 
 export default function ProjectsPage() {
   return (
-    <Suspense fallback={<div className="page google-layout"><div className="google-box">Carregando...</div></div>}>
+    <Suspense
+      fallback={
+        <div className="landing">
+          <main className="landing-body page-body">
+            <div className="message muted">Carregando...</div>
+          </main>
+        </div>
+      }
+    >
       <ProjectsContent />
     </Suspense>
   );

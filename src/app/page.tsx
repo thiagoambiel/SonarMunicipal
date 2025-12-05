@@ -244,6 +244,7 @@ export default function Home() {
   const [data, setData] = useState<PolicyExplorerResponse | null>(null);
   const [selectedIndicator, setSelectedIndicator] = useState<string>(NO_INDICATOR_KEY);
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
+  const resultsRef = useRef<HTMLDivElement | null>(null);
 
   const bundles = useMemo(() => {
     if (!data) return [];
@@ -382,6 +383,12 @@ export default function Home() {
     return isGood ? "effect-good" : "effect-bad";
   };
 
+  useEffect(() => {
+    if (!loading && hasSearched && data && resultsRef.current) {
+      resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }, [loading, hasSearched, data]);
+
   return (
     <div className="landing">
       <header className="minimal-nav">
@@ -438,7 +445,7 @@ export default function Home() {
         </section>
 
         {hasSearched && !loading && data && (
-          <section className="results-stage full-bleed" id="resultado">
+          <section className="results-stage full-bleed" id="resultado" ref={resultsRef}>
             <div className="results-header">
               <div>
                 <p className="eyebrow">Resultados para</p>
