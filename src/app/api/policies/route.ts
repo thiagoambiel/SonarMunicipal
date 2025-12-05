@@ -1,88 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import {
-  BillRecord,
-  computeIndicatorEffects,
-  getIndicatorSpec,
-  IndicatorEffect,
-  listIndicatorSpecs,
-} from "@/lib/indicators";
-import { generatePoliciesFromBills, GroupedPolicyAction, PolicyCandidate } from "@/lib/policies";
-import { fetchProjectsByIds, SearchHit } from "@/lib/semantic-search";
-
-type PolicyAction = {
-  municipio: string;
-  acao: string;
-  effect?: number | null;
-  url?: string | null;
-  data_apresentacao?: string | null;
-  ementa?: string | null;
-};
-
-type PolicySuggestion = {
-  policy: string;
-  effect_mean?: number | null;
-  effect_std?: number | null;
-  quality_score?: number | null;
-  actions: PolicyAction[];
-};
-
-type ActionMeta = {
-  effect?: number | null;
-  score?: number;
-  url?: string;
-  data_apresentacao?: string;
-  ementa?: string;
-};
+import { getIndicatorSpec, listIndicatorSpecs } from "@/lib/indicators";
+import { buildBillRecords, buildPolicies, summarizeWindowResults } from "@/lib/policy-engine";
+import { fetchProjectsByIds } from "@/lib/semantic-search";
 
 const DEFAULT_SIMILARITY_THRESHOLD = 0.75;
 const DEFAULT_MIN_GROUP_MEMBERS = 2;
 const DEFAULT_EFFECT_WINDOW_MONTHS = 6;
-const ACOMPANHAR_SUFFIX = "/acompanhar-materia";
-
-const sanitizeBillUrl = (raw?: string | null): string | undefined => {
-  if (!raw || typeof raw !== "string") return undefined;
-  const trimmed = raw.trim();
-  if (!trimmed) return undefined;
-
-  let cleaned = trimmed.replace(/\/+$/, "");
-  if (cleaned.endsWith(ACOMPANHAR_SUFFIX)) {
-    cleaned = cleaned.slice(0, -ACOMPANHAR_SUFFIX.length);
-  }
-
-  return cleaned || undefined;
-};
-
-const normalizeString = (value: unknown, fallback: string | null = null): string | null => {
-  if (typeof value === "string") {
-    const trimmed = value.trim();
-    return trimmed.length > 0 ? trimmed : fallback;
-  }
-  return fallback;
-};
-
-const buildBillRecords = (items: SearchHit[]): BillRecord[] =>
-  items.map((hit) => ({
-    index: hit.index,
-    municipio: hit.municipio ?? undefined,
-    uf: hit.uf ?? undefined,
-    acao: hit.acao ?? undefined,
-    ementa: hit.ementa ?? undefined,
-    data_apresentacao: hit.data_apresentacao ?? undefined,
-    url: sanitizeBillUrl(hit.link_publico) ?? sanitizeBillUrl(hit.sapl_url) ?? undefined,
-  }));
-
-const pickBestEffect = (
-  current: ActionMeta,
-  score: number,
-  rawEffect: number | null,
-) => {
-  if (rawEffect == null) return current;
-  if (current.score == null || score < current.score) {
-    return { ...current, score, effect: rawEffect };
-  }
-  return current;
-};
 
 export const dynamic = "force-dynamic";
 
@@ -147,146 +71,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const computeQuality = (policies: PolicyCandidate[]): number => {
-      if (!policies.length) return 0;
-      return Math.max(...policies.map((item) => item.qualityScore ?? 0));
-    };
-
-    const computeMeanEffectScore = (
-      policies: PolicySuggestion[],
-      positiveIsGood: boolean,
-    ): number | null => {
-      const values = policies
-        .map((item) => item.effect_mean)
-        .filter((value): value is number => value != null && Number.isFinite(value));
-      if (values.length === 0) return null;
-      const mean = values.reduce((sum, value) => sum + value, 0) / values.length;
-      return positiveIsGood ? mean : -mean;
-    };
-
-    const buildPolicies = (windowMonths: number): {
-      policies: PolicySuggestion[];
-      used_indicator: boolean;
-      total_candidates: number;
-      quality: number;
-    } => {
-      let effectsLookup: Map<number, IndicatorEffect> | null = null;
-
-      if (indicatorSpec) {
-        const effects = computeIndicatorEffects(bills, indicatorSpec, windowMonths);
-        effectsLookup = new Map<number, IndicatorEffect>();
-        effects.forEach((item) => effectsLookup?.set(item.index, item));
-      }
-
-      const groupingTuples: GroupedPolicyAction[] = [];
-      const actionMeta = new Map<string, ActionMeta>();
-
-      for (const bill of bills) {
-        const description =
-          normalizeString(bill.acao) ??
-          normalizeString(bill.ementa) ??
-          "Ação não informada";
-
-        const effectEntry = effectsLookup?.get(bill.index);
-        if (useIndicator && indicatorSpec && !effectEntry) {
-          // Indicador solicitado, mas sem dados para este PL -> ignorar
-          continue;
-        }
-
-        const rawEffect = effectEntry?.effect ?? null;
-        const normalizedScore =
-          useIndicator && rawEffect != null
-            ? indicatorSpec?.positive_is_good
-              ? -rawEffect
-              : rawEffect
-            : 0;
-
-        const municipioName = bill.municipio ?? "Município não informado";
-
-        groupingTuples.push({
-          municipio: municipioName,
-          acao: description,
-          score: normalizedScore,
-          rawEffect,
-        });
-
-        const key = `${municipioName}|||${description}`;
-        const current: ActionMeta = actionMeta.get(key) ?? {};
-        const updated = pickBestEffect(current, normalizedScore, rawEffect);
-        if (bill.url) updated.url = bill.url;
-        if (bill.data_apresentacao) updated.data_apresentacao = bill.data_apresentacao;
-        if (bill.ementa) updated.ementa = bill.ementa;
-        actionMeta.set(key, updated);
-      }
-
-      const policiesRaw = generatePoliciesFromBills(groupingTuples, minGroupMembers, similarityThreshold);
-      const policies: PolicySuggestion[] = policiesRaw.map((policy) => ({
-        policy: policy.policy,
-        effect_mean: useIndicator ? policy.effectMean : null,
-        effect_std: useIndicator ? policy.effectStd : null,
-        quality_score: useIndicator ? policy.qualityScore : null,
-        actions: policy.actions.map((action) => {
-          const meta = actionMeta.get(`${action.municipio}|||${action.acao}`);
-          const effect = useIndicator
-            ? meta?.effect ?? action.rawEffect ?? null
-            : null;
-          return {
-            municipio: action.municipio,
-            acao: action.acao,
-            effect: effect == null ? null : effect,
-            url: meta?.url ?? null,
-            data_apresentacao: meta?.data_apresentacao ?? null,
-            ementa: meta?.ementa ?? null,
-          };
-        }),
-      }));
-
-      return {
-        policies,
-        used_indicator: Boolean(indicatorSpec) && useIndicator,
-        total_candidates: groupingTuples.length,
-        quality: computeQuality(policiesRaw),
-      };
-    };
-
     const windowsToTest = useIndicator
       ? Array.from(new Set([effectWindowMonths, ...effectWindowCandidates]))
       : [effectWindowMonths];
 
-    const baseResult = buildPolicies(effectWindowMonths);
+    const windowResults = windowsToTest.map((window) =>
+      buildPolicies({
+        bills,
+        indicatorSpec,
+        useIndicator,
+        effectWindowMonths: window,
+        minGroupMembers,
+        similarityThreshold,
+      }),
+    );
 
-    let bestQualityScore = -Infinity;
-    let bestQualityWindows: number[] = [];
-
-    let bestEffectScore: number | null = null;
-    let bestEffectMeanWindows: number[] = [];
-
-    for (const candidate of windowsToTest) {
-      const result = candidate === effectWindowMonths ? baseResult : buildPolicies(candidate);
-      if (result.quality > bestQualityScore) {
-        bestQualityScore = result.quality;
-        bestQualityWindows = [candidate];
-      } else if (result.quality === bestQualityScore) {
-        bestQualityWindows.push(candidate);
-      }
-
-      if (indicatorSpec) {
-        const score = computeMeanEffectScore(result.policies, indicatorSpec.positive_is_good);
-        if (score == null) continue;
-        if (bestEffectScore == null || score > bestEffectScore) {
-          bestEffectScore = score;
-          bestEffectMeanWindows = [candidate];
-        } else if (score === bestEffectScore) {
-          bestEffectMeanWindows.push(candidate);
-        }
-      }
-    }
+    const baseResult =
+      windowResults.find((item) => item.effectWindowMonths === effectWindowMonths) ??
+      windowResults[0] ??
+      null;
+    const { bestQualityWindows, bestEffectMeanWindows } = summarizeWindowResults(windowResults);
 
     return NextResponse.json({
       indicator,
-      used_indicator: baseResult.used_indicator,
-      total_candidates: baseResult.total_candidates,
-      policies: baseResult.policies,
+      used_indicator: baseResult?.usedIndicator ?? false,
+      total_candidates: baseResult?.totalCandidates ?? 0,
+      policies: baseResult?.policies ?? [],
       selected_effect_window: effectWindowMonths,
       best_quality_effect_window: bestQualityWindows[0] ?? null,
       best_quality_effect_windows: bestQualityWindows,
