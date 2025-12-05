@@ -13,7 +13,7 @@ import { searchProjects } from "@/lib/semantic-search";
 const MAX_TOP_K = (() => {
   const raw = Number.parseInt(process.env.SEARCH_MAX_RESULTS ?? "", 10);
   if (Number.isFinite(raw) && raw > 0) return raw;
-  return 500;
+  return 1000;
 })();
 
 const DEFAULT_SIMILARITY_THRESHOLD = 0.75;

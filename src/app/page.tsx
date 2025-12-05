@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { FormEvent, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type SearchResult = {
   index: number;
@@ -58,6 +58,7 @@ type PolicyExplorerResponse = {
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
 const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
+const CACHE_PREFIX = "policy-explorer-cache-";
 
 const suggestionPrompts = [
   "Como reduzir a violência urbana em bairros centrais?",
@@ -70,7 +71,7 @@ const suggestionPrompts = [
 const NO_INDICATOR_KEY = "__none__";
 const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
   ? Number(process.env.NEXT_PUBLIC_MAX_TOP_K)
-  : 400;
+  : 1000;
 
 const toKey = (value: string | null) => (value == null ? NO_INDICATOR_KEY : value);
 
@@ -237,6 +238,7 @@ function CustomDropdown({ options, value, disabled, loading, onChange, id, ariaL
 }
 export default function Home() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -245,6 +247,34 @@ export default function Home() {
   const [selectedIndicator, setSelectedIndicator] = useState<string>(NO_INDICATOR_KEY);
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
+  const [filtersFromUrlApplied, setFiltersFromUrlApplied] = useState(false);
+
+  const syncUrlState = useCallback(
+    (state: { query?: string; indicator?: string | null; window?: number | null }) => {
+      const params = new URLSearchParams();
+      const normalizedQuery = state.query?.trim();
+      if (normalizedQuery) params.set("q", normalizedQuery);
+      const indicatorValue = state.indicator && state.indicator !== NO_INDICATOR_KEY ? state.indicator : null;
+      if (indicatorValue) params.set("indicator", indicatorValue);
+      if (Number.isFinite(state.window ?? null)) params.set("window", String(state.window));
+      const search = params.toString();
+      router.replace(search ? `/?${search}` : "/");
+    },
+    [router],
+  );
+
+  const applyPayload = useCallback((payload: PolicyExplorerResponse) => {
+    setData(payload);
+    setSelectedIndicator(NO_INDICATOR_KEY);
+    const defaultWindow =
+      payload.baseline?.effect_windows?.[0] ??
+      payload.baseline?.windows?.[0]?.effect_window_months ??
+      payload.indicators?.[0]?.effect_windows?.[0] ??
+      null;
+    setSelectedWindow(defaultWindow ?? null);
+    setHasSearched(true);
+    setError(null);
+  }, []);
 
   const bundles = useMemo(() => {
     if (!data) return [];
@@ -283,7 +313,7 @@ export default function Home() {
     }
   }, [activeBundle, selectedWindow]);
 
-  const runSearch = async (text: string) => {
+  const runSearch = useCallback(async (text: string, options?: { skipUrlUpdate?: boolean }) => {
     const normalized = text.trim();
     if (!normalized) {
       setError("Digite uma pergunta para buscar.");
@@ -295,6 +325,10 @@ export default function Home() {
     setHasSearched(true);
 
     try {
+      if (!options?.skipUrlUpdate) {
+        syncUrlState({ query: normalized, indicator: selectedIndicator, window: selectedWindow });
+      }
+
       const response = await fetch(apiUrl("/api/policy-explorer"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -313,21 +347,19 @@ export default function Home() {
       }
 
       const payload = (await response.json()) as PolicyExplorerResponse;
-      setData(payload);
-      setSelectedIndicator(NO_INDICATOR_KEY);
-      const defaultWindow =
-        payload.baseline?.effect_windows?.[0] ??
-        payload.baseline?.windows?.[0]?.effect_window_months ??
-        payload.indicators?.[0]?.effect_windows?.[0] ??
-        null;
-      setSelectedWindow(defaultWindow ?? null);
+      applyPayload(payload);
+      try {
+        sessionStorage.setItem(`${CACHE_PREFIX}${normalized}`, JSON.stringify(payload));
+      } catch (storageError) {
+        console.error("Erro ao armazenar cache de políticas", storageError);
+      }
     } catch (fetchError) {
       console.error(fetchError);
       setError("Não foi possível gerar políticas agora. Tente novamente em instantes.");
     } finally {
       setLoading(false);
     }
-  };
+  }, [applyPayload, router, selectedIndicator, selectedWindow, syncUrlState]);
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -345,8 +377,59 @@ export default function Home() {
     const target = bundle?.best_quality_effect_windows?.[0] ?? bundle?.effect_windows?.[0] ?? selectedWindow;
     if (target != null) {
       setSelectedWindow(target);
+      syncUrlState({ query, indicator: key, window: target });
+    } else {
+      syncUrlState({ query, indicator: key, window: selectedWindow });
     }
   };
+
+  useEffect(() => {
+    const initialQuery = searchParams.get("q");
+    if (!initialQuery || hasSearched || loading) return;
+    const normalized = initialQuery.trim();
+    if (!normalized) return;
+
+    setQuery(normalized);
+
+    try {
+      const cached = sessionStorage.getItem(`${CACHE_PREFIX}${normalized}`);
+      if (cached) {
+        const payload = JSON.parse(cached) as PolicyExplorerResponse;
+        applyPayload(payload);
+        return;
+      }
+    } catch (storageError) {
+      console.error("Erro ao recuperar cache de políticas", storageError);
+    }
+
+    void runSearch(normalized, { skipUrlUpdate: true });
+  }, [applyPayload, hasSearched, loading, runSearch, searchParams]);
+
+  useEffect(() => {
+    if (!data || filtersFromUrlApplied) return;
+    const indicatorParam = searchParams.get("indicator");
+    const windowParam = searchParams.get("window");
+
+    if (indicatorParam) {
+      const exists = bundles.find((bundle) => toKey(bundle.indicator) === indicatorParam);
+      if (exists) {
+        setSelectedIndicator(indicatorParam);
+      }
+    }
+
+    if (windowParam) {
+      const parsed = Number(windowParam);
+      const targetBundle =
+        bundles.find((bundle) => toKey(bundle.indicator) === (indicatorParam ?? selectedIndicator)) ??
+        activeBundle ??
+        bundles[0];
+      if (Number.isFinite(parsed) && targetBundle?.effect_windows?.includes(parsed)) {
+        setSelectedWindow(parsed);
+      }
+    }
+
+    setFiltersFromUrlApplied(true);
+  }, [activeBundle, bundles, data, filtersFromUrlApplied, searchParams, selectedIndicator]);
 
   const buildWindowLabel = (window: number) => {
     const monthsLabel = `${window} ${window === 1 ? "mês" : "meses"}`;
@@ -389,6 +472,11 @@ export default function Home() {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [loading, hasSearched, data]);
+
+  useEffect(() => {
+    if (!hasSearched) return;
+    syncUrlState({ query, indicator: selectedIndicator, window: selectedWindow });
+  }, [hasSearched, query, selectedIndicator, selectedWindow, syncUrlState]);
 
   return (
     <div className="landing">
@@ -497,22 +585,24 @@ export default function Home() {
                     id="window-select"
                     ariaLabel="Selecionar janela de efeito"
                     value={selectedWindow ?? ""}
-                    options={(activeBundle?.effect_windows ?? []).map((window) => {
-                      const badges: DropdownBadge[] = [];
-                      if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
-                      if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
-                      return {
-                        value: window,
-                        label: buildWindowLabel(window),
-                        badges,
-                      };
-                    })}
-                    onChange={(newValue) => {
-                      const parsed = typeof newValue === "number" ? newValue : Number(newValue);
-                      setSelectedWindow(Number.isFinite(parsed) ? parsed : null);
-                    }}
-                  />
-                </div>
+                  options={(activeBundle?.effect_windows ?? []).map((window) => {
+                    const badges: DropdownBadge[] = [];
+                    if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
+                    if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
+                    return {
+                      value: window,
+                      label: buildWindowLabel(window),
+                      badges,
+                    };
+                  })}
+                  onChange={(newValue) => {
+                    const parsed = typeof newValue === "number" ? newValue : Number(newValue);
+                    const normalizedWindow = Number.isFinite(parsed) ? parsed : null;
+                    setSelectedWindow(normalizedWindow);
+                    syncUrlState({ query, indicator: selectedIndicator, window: normalizedWindow });
+                  }}
+                />
+              </div>
 
                 <div className="filter-card light">
                   <p className="muted small">
