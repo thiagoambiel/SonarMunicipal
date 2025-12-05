@@ -292,6 +292,19 @@ function HomeContent() {
     () => indicators.find((indicator) => indicator.id === selectedIndicator) ?? null,
     [indicators, selectedIndicator],
   );
+  const resetSearchOutputs = () => {
+    setErrorMessage(null);
+    setResults([]);
+    setPolicies([]);
+    setPoliciesError(null);
+    setPoliciesStatus("idle");
+    setPoliciesUseIndicator(false);
+    setHasSearched(false);
+    setLastQuery("");
+    setBestQualityWindows([]);
+    setBestEffectMeanWindows([]);
+    setSuggestionsVisible(true);
+  };
   const effectWindowOptions = useMemo(
     () => buildEffectWindowOptions(selectedIndicatorObj),
     [selectedIndicatorObj],
@@ -324,6 +337,7 @@ function HomeContent() {
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
   const isLoadingPolicies = policiesStatus === "loading";
   const showPolicyArea = hasSearched || isLoadingPolicies || policies.length > 0 || Boolean(policiesError);
+  const isProcessing = status === "loading" || isLoadingPolicies;
 
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
@@ -768,16 +782,19 @@ function HomeContent() {
                 <div className="search-row">
                   <div className="search-input">
                     <label htmlFor="query">Pergunte ou descreva uma necessidade</label>
-                    <input
-                      id="query"
-                      type="search"
-                      name="query"
-                      placeholder="Ex.: Como reduzir filas de atendimento na atenção básica?"
-                      value={query}
-                      onChange={(event) => setQuery(event.target.value)}
-                      aria-label="Pergunta para busca semântica"
-                      autoComplete="off"
-                    />
+                  <input
+                    id="query"
+                    type="search"
+                    name="query"
+                    placeholder="Ex.: Como reduzir filas de atendimento na atenção básica?"
+                    value={query}
+                    onChange={(event) => {
+                      setQuery(event.target.value);
+                      resetSearchOutputs();
+                    }}
+                    aria-label="Pergunta para busca semântica"
+                    autoComplete="off"
+                  />
                   </div>
                   <button type="submit" className="primary-btn search-btn" disabled={status === "loading"}>
                     {searchButtonLabel}
@@ -787,24 +804,25 @@ function HomeContent() {
                 <div className="filter-grid">
                   <div className="filter-field indicator-field">
                     <label>Indicador de impacto</label>
-                    <CustomDropdown
-                      id="indicator-select"
-                      ariaLabel="Selecionar indicador"
-                      value={selectedIndicator}
-                      options={indicatorDropdownOptions}
-                      onChange={(newValue) => {
-                        const value = String(newValue);
-                        setSelectedIndicator(value);
-                        const found = indicators.find((indicator) => indicator.id === value);
-                        if (found) {
-                          setIndicatorPositiveIsGood(found.positive_is_good);
-                          setIndicatorAlias(found.alias || found.id);
-                        } else {
-                          setIndicatorPositiveIsGood(true);
-                          setIndicatorAlias("");
-                        }
-                      }}
-                    />
+                  <CustomDropdown
+                    id="indicator-select"
+                    ariaLabel="Selecionar indicador"
+                    value={selectedIndicator}
+                    options={indicatorDropdownOptions}
+                    onChange={(newValue) => {
+                      const value = String(newValue);
+                      setSelectedIndicator(value);
+                      const found = indicators.find((indicator) => indicator.id === value);
+                      if (found) {
+                        setIndicatorPositiveIsGood(found.positive_is_good);
+                        setIndicatorAlias(found.alias || found.id);
+                      } else {
+                        setIndicatorPositiveIsGood(true);
+                        setIndicatorAlias("");
+                      }
+                      resetSearchOutputs();
+                    }}
+                  />
                     <p className="hint">
                       Ative para simular impacto esperado usando dados históricos do indicador escolhido.
                     </p>
@@ -820,18 +838,19 @@ function HomeContent() {
                   </div>
                   <div className="filter-field">
                     <label htmlFor="effect-window">Janela do efeito</label>
-                    <CustomDropdown
-                      key={selectedIndicator ? "effect-window-enabled" : "effect-window-disabled"}
-                      id="effect-window"
-                      ariaLabel="Selecionar janela temporal para cálculo do efeito"
-                      disabled={!selectedIndicator}
-                      options={effectWindowDropdownOptions}
-                      value={effectWindowMonths}
-                      onChange={(newValue) => {
-                        const parsed = typeof newValue === "number" ? newValue : Number(newValue);
-                        setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
-                      }}
-                    />
+                  <CustomDropdown
+                    key={selectedIndicator ? "effect-window-enabled" : "effect-window-disabled"}
+                    id="effect-window"
+                    ariaLabel="Selecionar janela temporal para cálculo do efeito"
+                    disabled={!selectedIndicator}
+                    options={effectWindowDropdownOptions}
+                    value={effectWindowMonths}
+                    onChange={(newValue) => {
+                      const parsed = typeof newValue === "number" ? newValue : Number(newValue);
+                      setEffectWindowMonths(Number.isFinite(parsed) ? parsed : DEFAULT_EFFECT_WINDOW);
+                      resetSearchOutputs();
+                    }}
+                  />
                     <p className="hint">
                       A janela em meses é arredondada para a granularidade do indicador (semestral, anual); PLs muito
                       recentes podem não ter efeito calculado.
@@ -843,17 +862,20 @@ function HomeContent() {
               {suggestionsVisible ? (
                 <div className="suggestions-panel">
                   <p className="muted">Sugestões rápidas</p>
-                  <div className="suggestions">
-                    {suggestionPrompts.map((text) => (
-                      <button
-                        type="button"
-                        key={text}
-                        onClick={() => handleSuggestionClick(text)}
-                        className="suggestion"
-                      >
-                        {text}
-                      </button>
-                    ))}
+              <div className="suggestions">
+                {suggestionPrompts.map((text) => (
+                  <button
+                    type="button"
+                    key={text}
+                    onClick={() => {
+                      handleSuggestionClick(text);
+                      resetSearchOutputs();
+                    }}
+                    className="suggestion"
+                  >
+                    {text}
+                  </button>
+                ))}
                   </div>
                 </div>
               ) : (
@@ -1098,7 +1120,7 @@ function HomeContent() {
           </main>
         </div>
       </div>
-      {isLoadingPolicies && (
+      {isProcessing && (
         <div className="page-overlay" role="alert" aria-live="assertive">
           <div className="overlay-card">
             <div className="spinner" aria-hidden="true" />
