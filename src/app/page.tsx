@@ -543,19 +543,14 @@ export default function Home() {
                   {data?.total_projects ?? 0} projetos analisados • {activePolicies.length} políticas priorizadas
                 </p>
               </div>
-              <div className="result-badges">
-                <span className="pill neutral">CityManager</span>
-                {usedIndicator ? <span className="pill neutral">{indicatorAlias}</span> : <span className="pill neutral">Sem indicador</span>}
-                {usedIndicator && (
-                  <span className="pill neutral">Janela: {effectWindowLabel} meses</span>
-                )}
-              </div>
+
             </div>
 
             <div className="results-grid">
               <aside className="filters-panel">
                 <div className="filter-card">
                   <p className="filter-title">Indicador</p>
+                  <p className="muted small">Escolha o indicador que deve subir ou descer para medir impacto.</p>
                   <CustomDropdown
                     id="indicator-select"
                     ariaLabel="Selecionar indicador"
@@ -581,12 +576,13 @@ export default function Home() {
 
                 <div className="filter-card">
                   <p className="filter-title">Janela de efeito</p>
+                  <p className="muted small">Defina em quanto tempo o impacto é estimado (meses, semestres ou anos).</p>
                   <CustomDropdown
                     id="window-select"
                     ariaLabel="Selecionar janela de efeito"
                     value={selectedWindow ?? ""}
-                  options={(activeBundle?.effect_windows ?? []).map((window) => {
-                    const badges: DropdownBadge[] = [];
+                    options={(activeBundle?.effect_windows ?? []).map((window) => {
+                      const badges: DropdownBadge[] = [];
                     if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
                     if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
                     return {
