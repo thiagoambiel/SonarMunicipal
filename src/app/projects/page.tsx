@@ -32,6 +32,7 @@ function ProjectsContent() {
   const [filterYear, setFilterYear] = useState<string>("all");
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
+  const isLoading = status === "loading";
 
   const extractYear = (value?: string | null) => {
     if (!value) return null;
@@ -138,11 +139,17 @@ function ProjectsContent() {
                 Políticas Públicas
               </Link>
               <span className="nav-link active">Projetos de Lei</span>
+              <Link className="nav-link" href="/methodology">
+                Metodologia
+              </Link>
             </div>
             <div className="nav-actions">
               <a className="ghost-btn" href="#filtros">
                 Filtros
               </a>
+              <Link className="ghost-btn" href="/methodology">
+                Confiabilidade
+              </Link>
             </div>
           </nav>
         </header>
@@ -235,7 +242,26 @@ function ProjectsContent() {
               <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
             )}
 
-            {sortedResults.length > 0 ? (
+            {isLoading && (
+              <div className="table-card skeleton-table" aria-hidden="true">
+                <div className="table-head">
+                  <span className="skeleton-line w-60" />
+                  <span className="skeleton-line w-70" />
+                  <span className="skeleton-line w-30" />
+                  <span className="skeleton-line w-40" />
+                </div>
+                {[1, 2, 3, 4].map((row) => (
+                  <div key={row} className="table-row">
+                    <span className="skeleton-line w-70" />
+                    <span className="skeleton-line w-80" />
+                    <span className="skeleton-line w-30" />
+                    <span className="skeleton-line w-40" />
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {!isLoading && sortedResults.length > 0 && (
               <div className="table-card">
                 <div className="table-head">
                   <span>Município</span>
@@ -258,12 +284,32 @@ function ProjectsContent() {
                   </div>
                 ))}
               </div>
-            ) : (
+            )}
+
+            {!isLoading && sortedResults.length === 0 && (
               <div className="message muted">
                 Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}.
                 Ajuste o texto ou revise os filtros.
               </div>
             )}
+          </section>
+
+          <section className="trust-strip">
+            <div>
+              <p className="eyebrow">Documentação</p>
+              <h3>Metodologia e limites</h3>
+              <p className="muted">
+                Consulte como calculamos similaridade, agrupamentos e impacto dos indicadores antes de replicar.
+              </p>
+            </div>
+            <div className="trust-actions">
+              <Link className="secondary-btn" href="/methodology">
+                Abrir metodologia
+              </Link>
+              <Link className="ghost-btn" href="/">
+                Voltar para busca
+              </Link>
+            </div>
           </section>
         </main>
       </div>

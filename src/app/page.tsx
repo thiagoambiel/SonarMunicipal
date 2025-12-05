@@ -322,6 +322,8 @@ function HomeContent() {
   );
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
+  const isLoadingPolicies = policiesStatus === "loading";
+  const showPolicyArea = hasSearched || isLoadingPolicies || policies.length > 0 || Boolean(policiesError);
 
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
@@ -692,14 +694,17 @@ function HomeContent() {
               >
                 Projetos de Lei
               </Link>
+              <Link className="nav-link" href="/methodology">
+                Metodologia
+              </Link>
             </div>
             <div className="nav-actions">
-              <a className="ghost-btn" href="#metodologia">
-                Metodologia
+              <a className="ghost-btn" href="#busca">
+                Nova busca
               </a>
-              <a className="ghost-btn" href="#transparencia">
-                Transparência
-              </a>
+              <Link className="ghost-btn" href="/projects">
+                Ver projetos
+              </Link>
             </div>
           </nav>
         </header>
@@ -710,33 +715,41 @@ function HomeContent() {
               <p className="eyebrow">Implantação segura de leis municipais</p>
               <h1>Transforme evidências em políticas aplicáveis</h1>
               <p className="lede">
-                A plataforma cruza projetos de lei, jurisprudência e indicadores municipais para sugerir
-                políticas públicas que já funcionaram em cidades com perfis parecidos.
+                A plataforma cruza projetos de lei, jurisprudência e indicadores municipais para sugerir políticas
+                públicas que já funcionaram em cidades com perfis parecidos. Tudo explicado com links para a fonte.
               </p>
               <div className="hero-badges">
                 <span className="pill neutral">Dados oficiais</span>
-                <span className="pill neutral">Transparência metodológica</span>
+                <span className="pill neutral">Explicabilidade</span>
                 <span className="pill accent">Foco em gestores</span>
               </div>
               <div className="hero-actions">
                 <a className="primary-btn" href="#busca">
-                  Começar uma busca
+                  Buscar políticas agora
                 </a>
+                <Link className="ghost-btn" href="/methodology">
+                  Metodologia e confiança
+                </Link>
                 <Link className="ghost-btn" href="/projects">
-                  Ver projetos de lei
+                  Projetos de lei
                 </Link>
               </div>
             </div>
             <div className="hero-panel">
-              <div className="stat-card">
-                <p className="stat-label">Confiabilidade</p>
-                <p className="stat-value">Análise explicável</p>
-                <p className="stat-detail">Similaridade semântica + seleção por indicador.</p>
+              <div className="stat-card highlight">
+                <p className="stat-label">Assistente de confiabilidade</p>
+                <p className="stat-value">Dados públicos + indicadores</p>
+                <p className="stat-detail">
+                  Similaridade semântica explicável, agrupamentos transparentes e links para a origem.
+                </p>
+                <Link className="ghost-btn compact" href="/methodology">
+                  Ver como calculamos
+                </Link>
               </div>
               <div className="stat-card">
                 <p className="stat-label">Próximo passo</p>
-                <p className="stat-value">Escolha o indicador</p>
-                <p className="stat-detail">Simule impacto médio antes de replicar políticas.</p>
+                <p className="stat-value">Ative um indicador</p>
+                <p className="stat-detail">Selecione indicador e janela para simular impacto médio.</p>
               </div>
             </div>
           </section>
@@ -851,11 +864,7 @@ function HomeContent() {
             )}
           </section>
 
-          {policiesError && <div className="message error">{policiesError}</div>}
-
-          {policiesStatus === "loading" && <div className="message muted">Gerando políticas com base na busca...</div>}
-
-          {policiesStatus !== "loading" && policies.length > 0 && (
+          {showPolicyArea && (
             <section className="policy-section">
               <div className="section-header">
                 <div>
@@ -866,143 +875,189 @@ function HomeContent() {
                     detalhes para ver precedentes e replicar com segurança.
                   </p>
                 </div>
-                <div className="chips-inline">
-                  <div className="pill neutral">{results.length} projetos considerados</div>
-                  {policiesUseIndicator && (
-                    <div className="pill neutral">Efeito em {effectWindowMonths} meses</div>
-                  )}
+                <div className="section-actions">
+                  <div className="chips-inline">
+                    <div className="pill neutral">{results.length} projetos considerados</div>
+                    {policiesUseIndicator && (
+                      <div className="pill neutral">Efeito em {effectWindowMonths} meses</div>
+                    )}
+                    {selectedIndicator && (
+                      <div className="pill neutral">Indicador: {indicatorAlias || selectedIndicator}</div>
+                    )}
+                  </div>
+                  <Link
+                    className="ghost-btn"
+                    href={hasSearched ? `/projects?q=${encodeURIComponent(lastQuery)}` : "/projects"}
+                  >
+                    Ver projetos analisados
+                  </Link>
                 </div>
               </div>
 
-              <div className="policy-grid">
-                {policies.map((policy, policyIndex) => {
-                  const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
-                  const effectStd =
-                    policiesUseIndicator && policy.effect_std != null ? `${policy.effect_std.toFixed(2)}%` : null;
-                  const qualityValue =
-                    policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
-                  const meanTone = getEffectTone(policy.effect_mean);
+              {policiesError && <div className="message error">{policiesError}</div>}
 
-                  return (
-                    <article
-                      key={`${policy.policy}-${policyIndex}`}
-                      className="policy-card"
-                      role="button"
-                      tabIndex={0}
-                      onClick={() => handleViewDetails(policy)}
-                      onKeyDown={(event) => {
-                        if (event.key === "Enter" || event.key === " ") {
-                          event.preventDefault();
-                          handleViewDetails(policy);
-                        }
-                      }}
-                    >
-                      <p className="policy-title">{policy.policy}</p>
-
-                      <div className="policy-badges">
-                        <div className="metric-badge">
-                          <span className="badge-label">Efeito médio (% em {effectWindowMonths} meses)</span>
-                          <span className={`badge-value ${meanTone}`}>
-                            {effectAvailable ? (
-                              <>
-                                {formatEffectValue(policy.effect_mean)}
-                                {effectStd ? ` ± ${effectStd}` : ""}
-                              </>
-                            ) : (
-                              "Não calculado"
-                            )}
-                          </span>
+              {isLoadingPolicies && (
+                <>
+                  <div className="message muted">Gerando políticas com base na busca...</div>
+                  <div className="policy-grid skeleton-grid" aria-hidden="true">
+                    {[1, 2, 3].map((item) => (
+                      <div key={item} className="policy-card skeleton-card">
+                        <span className="skeleton-line w-70" />
+                        <span className="skeleton-line w-50" />
+                        <div className="skeleton-pill-row">
+                          <span className="skeleton-pill w-40" />
+                          <span className="skeleton-pill w-30" />
                         </div>
-                        <div className="metric-badge soft">
-                          <span className="badge-label">Qualidade</span>
-                          <span className="badge-value">{qualityValue}</span>
+                        <div className="skeleton-list">
+                          <span className="skeleton-line w-80" />
+                          <span className="skeleton-line w-60" />
+                          <span className="skeleton-line w-50" />
                         </div>
+                        <span className="skeleton-line w-45" />
                       </div>
+                    ))}
+                  </div>
+                </>
+              )}
 
-                      <p className="policy-count">
-                        Política aplicada em {policy.actions.length} município
-                        {policy.actions.length === 1 ? "" : "s"}:
-                      </p>
+              {!isLoadingPolicies && policies.length > 0 && (
+                <div className="policy-grid">
+                  {policies.map((policy, policyIndex) => {
+                    const effectAvailable = policiesUseIndicator && policy.effect_mean != null;
+                    const effectStd =
+                      policiesUseIndicator && policy.effect_std != null ? `${policy.effect_std.toFixed(2)}%` : null;
+                    const qualityValue =
+                      policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
+                    const meanTone = getEffectTone(policy.effect_mean);
 
-                      <ul className="policy-city-list">
-                        {policy.actions.map((action, actionIndex) => {
-                          const effectLabel =
-                            policiesUseIndicator && action.effect != null
-                              ? `Variação: ${formatEffectValue(action.effect)}`
-                              : "Sem indicador";
-                          const effectTone = getEffectTone(action.effect);
-
-                          return (
-                            <li
-                              key={`${policy.policy}-${action.municipio}-${action.acao}-${actionIndex}`}
-                              className="policy-city-item"
-                            >
-                              <div className="city-name">
-                                <span>{action.municipio}</span>
-                                {action.url && (
-                                  <a
-                                    href={action.url}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="city-link"
-                                    onClick={(event) => event.stopPropagation()}
-                                    aria-label={`Abrir ementa original de ${action.municipio}`}
-                                  >
-                                    <svg
-                                      width="14"
-                                      height="14"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                      aria-hidden="true"
-                                    >
-                                      <path
-                                        d="M14 4H20V10"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <path
-                                        d="M10 14L20 4"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                      <path
-                                        d="M20 14V20H4V4H10"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                      />
-                                    </svg>
-                                  </a>
-                                )}
-                              </div>
-                              <span className={`city-effect ${effectTone}`}>{effectLabel}</span>
-                            </li>
-                          );
-                        })}
-                      </ul>
-
-                      <div className="policy-card-footer">
-                        <button
-                          className="secondary-btn"
-                          type="button"
-                          onClick={(event) => {
-                            event.stopPropagation();
+                    return (
+                      <article
+                        key={`${policy.policy}-${policyIndex}`}
+                        className="policy-card"
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => handleViewDetails(policy)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter" || event.key === " ") {
+                            event.preventDefault();
                             handleViewDetails(policy);
-                          }}
-                        >
-                          Ver detalhes
-                        </button>
-                      </div>
-                    </article>
-                  );
-                })}
-              </div>
+                          }
+                        }}
+                      >
+                        <p className="policy-title">{policy.policy}</p>
+
+                        <div className="policy-badges">
+                          <div className="metric-badge">
+                            <span className="badge-label">Efeito médio (% em {effectWindowMonths} meses)</span>
+                            <span className={`badge-value ${meanTone}`}>
+                              {effectAvailable ? (
+                                <>
+                                  {formatEffectValue(policy.effect_mean)}
+                                  {effectStd ? ` ± ${effectStd}` : ""}
+                                </>
+                              ) : (
+                                "Não calculado"
+                              )}
+                            </span>
+                          </div>
+                          <div className="metric-badge soft">
+                            <span className="badge-label">Qualidade</span>
+                            <span className="badge-value">{qualityValue}</span>
+                          </div>
+                        </div>
+
+                        <p className="policy-count">
+                          Política aplicada em {policy.actions.length} município
+                          {policy.actions.length === 1 ? "" : "s"}:
+                        </p>
+
+                        <ul className="policy-city-list">
+                          {policy.actions.map((action, actionIndex) => {
+                            const effectLabel =
+                              policiesUseIndicator && action.effect != null
+                                ? `Variação: ${formatEffectValue(action.effect)}`
+                                : "Sem indicador";
+                            const effectTone = getEffectTone(action.effect);
+
+                            return (
+                              <li
+                                key={`${policy.policy}-${action.municipio}-${action.acao}-${actionIndex}`}
+                                className="policy-city-item"
+                              >
+                                <div className="city-name">
+                                  <span>{action.municipio}</span>
+                                  {action.url && (
+                                    <a
+                                      href={action.url}
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="city-link"
+                                      onClick={(event) => event.stopPropagation()}
+                                      aria-label={`Abrir ementa original de ${action.municipio}`}
+                                    >
+                                      <svg
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                      >
+                                        <path
+                                          d="M14 4H20V10"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                        <path
+                                          d="M10 14L20 4"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                        <path
+                                          d="M20 14V20H4V4H10"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    </a>
+                                  )}
+                                </div>
+                                <span className={`city-effect ${effectTone}`}>{effectLabel}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+
+                        <div className="policy-card-footer">
+                          <button
+                            className="secondary-btn"
+                            type="button"
+                            onClick={(event) => {
+                              event.stopPropagation();
+                              handleViewDetails(policy);
+                            }}
+                          >
+                            Ver detalhes
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+              )}
+
+              {!isLoadingPolicies && !policiesError && hasSearched && policies.length === 0 && (
+                <div className="message muted">
+                  Nenhuma política priorizada para esta busca. Ajuste o texto, refine os filtros ou ative um indicador
+                  para estimar impacto.
+                </div>
+              )}
             </section>
           )}
 
@@ -1024,30 +1079,21 @@ function HomeContent() {
             )}
           </section>
 
-          <section id="metodologia" className="info-grid">
-            <div className="info-card">
-              <p className="eyebrow">Como geramos as políticas</p>
-              <h3>Similaridade semântica e agrupamento</h3>
-              <p>
-                Buscamos em linguagem natural, agrupamos projetos próximos e priorizamos políticas aplicadas em
-                municípios comparáveis. Indicadores podem ser ativados para estimar impacto médio.
+          <section className="trust-strip">
+            <div>
+              <p className="eyebrow">Confiabilidade</p>
+              <h3>Metodologia e limites claros</h3>
+              <p className="muted">
+                Veja fontes, indicadores usados, privacidade e como calculamos efeitos médios antes de replicar.
               </p>
             </div>
-            <div className="info-card">
-              <p className="eyebrow">Quando usar</p>
-              <h3>Planejamento e replicação</h3>
-              <p>
-                Útil para mapear soluções similares, preparar dossiês para o legislativo e identificar cidades
-                referência. Use os filtros para focar em realidades parecidas.
-              </p>
-            </div>
-            <div id="transparencia" className="info-card">
-              <p className="eyebrow">Transparência</p>
-              <h3>Fontes públicas e documentação</h3>
-              <p>
-                Trabalhamos apenas com dados públicos. Acompanhe indicadores utilizados e revisite cada projeto na
-                origem antes de propor a adoção local.
-              </p>
+            <div className="trust-actions">
+              <Link className="secondary-btn" href="/methodology">
+                Abrir metodologia
+              </Link>
+              <Link className="ghost-btn" href="/projects">
+                Ver projetos
+              </Link>
             </div>
           </section>
         </main>
@@ -1060,7 +1106,7 @@ export default function Home() {
   return (
     <Suspense
       fallback={
-        <div className="page">
+        <div className="page google-layout">
           <div className="page-surface">
             <p>Carregando...</p>
           </div>

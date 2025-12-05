@@ -62,17 +62,20 @@ export default function PolicyDetailPage() {
                 <p className="brand-subtitle">Detalhamento de política</p>
               </div>
             </Link>
-            <nav className="nav">
-              <div className="nav-links">
-                <Link className="nav-link" href="/">
-                  Políticas Públicas
-                </Link>
-                <Link className="nav-link" href="/projects">
-                  Projetos de Lei
-                </Link>
-              </div>
-            </nav>
-          </header>
+          <nav className="nav">
+            <div className="nav-links">
+              <Link className="nav-link" href="/">
+                Políticas Públicas
+              </Link>
+              <Link className="nav-link" href="/projects">
+                Projetos de Lei
+              </Link>
+              <Link className="nav-link" href="/methodology">
+                Metodologia
+              </Link>
+            </div>
+          </nav>
+        </header>
           <main className="page-body">
             <div className="message muted">Nenhuma política carregada. Volte e selecione uma política.</div>
             <button className="secondary-btn" onClick={() => router.push("/")}>
@@ -131,6 +134,9 @@ const formatEffectValue = (value?: number | null) => {
               </Link>
               <Link className="nav-link" href="/projects">
                 Projetos de Lei
+              </Link>
+              <Link className="nav-link" href="/methodology">
+                Metodologia
               </Link>
             </div>
           </nav>
