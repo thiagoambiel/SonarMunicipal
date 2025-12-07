@@ -128,14 +128,16 @@ const IndicatorChart = ({
   const valueRange = Math.max(1, maxValue - minValue);
 
   const width = 780;
-  const height = 360;
-  const paddingX = 70;
-  const paddingY = 24;
-  const innerWidth = width - paddingX * 2;
-  const innerHeight = height - paddingY * 2;
+  const height = 380;
+  const paddingLeft = 84;
+  const paddingRight = 28;
+  const paddingTop = 24;
+  const paddingBottom = 64;
+  const innerWidth = width - paddingLeft - paddingRight;
+  const innerHeight = height - paddingTop - paddingBottom;
 
-  const scaleX = (ts: number) => paddingX + ((ts - minTs) / timeRange) * innerWidth;
-  const scaleY = (value: number) => paddingY + innerHeight - ((value - minValue) / valueRange) * innerHeight;
+  const scaleX = (ts: number) => paddingLeft + ((ts - minTs) / timeRange) * innerWidth;
+  const scaleY = (value: number) => paddingTop + innerHeight - ((value - minValue) / valueRange) * innerHeight;
 
   const pathD = parsedPoints
     .map((point, index) => {
@@ -151,7 +153,7 @@ const IndicatorChart = ({
     .map((item) => item as (typeof parsedPoints)[number]);
 
   const findNearestPoint = (targetX: number) => {
-    const tsTarget = minTs + ((targetX - paddingX) / innerWidth) * timeRange;
+    const tsTarget = minTs + ((targetX - paddingLeft) / innerWidth) * timeRange;
     let nearest = parsedPoints[0];
     let bestDiff = Math.abs((nearest.ts as number) - tsTarget);
     for (let i = 1; i < parsedPoints.length; i += 1) {
@@ -172,7 +174,7 @@ const IndicatorChart = ({
     const scaleXFactor = rect.width / width;
     const scaleYFactor = rect.height / height;
 
-    const svgX = Math.min(width - paddingX, Math.max(paddingX, localX / scaleXFactor));
+    const svgX = Math.min(width - paddingRight, Math.max(paddingLeft, localX / scaleXFactor));
     const nearest = findNearestPoint(svgX);
     const svgY = scaleY(nearest.value);
 
@@ -200,15 +202,21 @@ const IndicatorChart = ({
         aria-label="Histórico do indicador"
         onMouseMove={handleMove}
       >
-        <line x1={paddingX} y1={paddingY} x2={paddingX} y2={height - paddingY} className="chart-axis" />
-        <line x1={paddingX} y1={height - paddingY} x2={width - paddingX} y2={height - paddingY} className="chart-axis" />
+        <line x1={paddingLeft} y1={paddingTop} x2={paddingLeft} y2={height - paddingBottom} className="chart-axis" />
+        <line
+          x1={paddingLeft}
+          y1={height - paddingBottom}
+          x2={width - paddingRight}
+          y2={height - paddingBottom}
+          className="chart-axis"
+        />
 
         {dateTicks.map((item, idx) => {
           const x = scaleX(item.ts as number);
           return (
             <g key={`dx-${idx}`}>
-              <line x1={x} y1={paddingY} x2={x} y2={height - paddingY} className="chart-grid" />
-              <text x={x} y={height - paddingY + 6} className="chart-tick" textAnchor="middle">
+              <line x1={x} y1={paddingTop} x2={x} y2={height - paddingBottom} className="chart-grid" />
+              <text x={x} y={height - paddingBottom + 16} className="chart-tick" textAnchor="middle">
                 {formatDateLabel(item.date)}
               </text>
             </g>
@@ -219,18 +227,24 @@ const IndicatorChart = ({
           const y = scaleY(value);
           return (
             <g key={`vy-${idx}`}>
-              <line x1={paddingX} y1={y} x2={width - paddingX} y2={y} className="chart-grid" />
-              <text x={paddingX - 12} y={y + 4} className="chart-tick" textAnchor="end">
+              <line x1={paddingLeft} y1={y} x2={width - paddingRight} y2={y} className="chart-grid" />
+              <text x={paddingLeft - 12} y={y + 4} className="chart-tick" textAnchor="end">
                 {formatIndicatorValue(value)}
               </text>
             </g>
           );
         })}
 
-        <text x={width / 2} y={height - 10} className="chart-axis-label" textAnchor="middle">
+        <text x={width / 2} y={height - 14} className="chart-axis-label" textAnchor="middle">
           Data
         </text>
-        <text x={16} y={height / 2} className="chart-axis-label" textAnchor="middle" transform={`rotate(-90 16 ${height / 2})`}>
+        <text
+          x={20}
+          y={height / 2}
+          className="chart-axis-label"
+          textAnchor="middle"
+          transform={`rotate(-90 20 ${height / 2})`}
+        >
           {indicatorLabel}
         </text>
 
@@ -252,17 +266,26 @@ const IndicatorChart = ({
 
         {parsedMarkers.map((marker, idx) => {
           const x = scaleX(marker.ts as number);
-          const y = marker.value != null && Number.isFinite(marker.value) ? scaleY(marker.value) : paddingY + innerHeight;
+          const y =
+            marker.value != null && Number.isFinite(marker.value)
+              ? scaleY(marker.value)
+              : paddingTop + innerHeight;
           return (
             <g key={`${marker.date}-${marker.kind}-${idx}`}>
-              <line className={`chart-marker-line ${marker.kind}`} x1={x} y1={paddingY} x2={x} y2={height - paddingY} />
+              <line
+                className={`chart-marker-line ${marker.kind}`}
+                x1={x}
+                y1={paddingTop}
+                x2={x}
+                y2={height - paddingBottom}
+              />
               <circle className={`chart-marker ${marker.kind}`} cx={x} cy={y} r={7} />
             </g>
           );
         })}
 
         {hover && (
-          <line className="chart-hover-line" x1={hover.svgX} y1={paddingY} x2={hover.svgX} y2={height - paddingY} />
+          <line className="chart-hover-line" x1={hover.svgX} y1={paddingTop} x2={hover.svgX} y2={height - paddingBottom} />
         )}
       </svg>
 
