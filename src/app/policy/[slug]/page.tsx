@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import type { KeyboardEvent } from "react";
 import { startTransition, useEffect, useState } from "react";
+
+import { buildProjectSlug } from "@/lib/projects";
 
 type PolicyAction = {
   municipio: string;
@@ -110,6 +113,43 @@ export default function PolicyDetailPage() {
     return isGood ? "effect-good" : "effect-bad";
   };
 
+  const handleProjectClick = (action: PolicyAction) => {
+    const slug = buildProjectSlug({
+      acao: action.acao,
+      ementa: action.ementa,
+      municipio: action.municipio,
+    });
+
+    const payload = {
+      slug,
+      municipio: action.municipio,
+      acao: action.acao,
+      ementa: action.ementa ?? null,
+      data_apresentacao: action.data_apresentacao ?? null,
+      link_publico: action.url ?? null,
+      effect: action.effect ?? null,
+      effect_window_months: effectWindowMonths,
+      indicator_alias: indicatorAlias,
+      indicator_positive_is_good: indicatorPositiveIsGood,
+      source: "policy" as const,
+    };
+
+    try {
+      sessionStorage.setItem(`project-detail-${slug}`, JSON.stringify(payload));
+    } catch (storageError) {
+      console.error("Erro ao salvar detalhes do projeto", storageError);
+    }
+
+    router.push(`/projects/${slug}`);
+  };
+
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLDivElement>, action: PolicyAction) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleProjectClick(action);
+    }
+  };
+
   return (
     <div className="landing">
       <header className="minimal-nav">
@@ -195,7 +235,15 @@ export default function PolicyDetailPage() {
               <span>Efeito (% em {effectWindowMonths}m)</span>
             </div>
             {policy.actions.map((action, index) => (
-              <div key={`${policy.policy}-${action.municipio}-${action.acao}-${index}`} className="table-row">
+              <div
+                key={`${policy.policy}-${action.municipio}-${action.acao}-${index}`}
+                className="table-row clickable-row"
+                role="button"
+                tabIndex={0}
+                aria-label={`Ver detalhes do projeto de ${action.municipio}`}
+                onClick={() => handleProjectClick(action)}
+                onKeyDown={(event) => handleRowKeyDown(event, action)}
+              >
                 <div>
                   <div className="city-block tight">
                     <span className="strong">{action.municipio}</span>
@@ -206,6 +254,7 @@ export default function PolicyDetailPage() {
                         rel="noreferrer"
                         className="city-link"
                         aria-label={`Abrir ementa de ${action.municipio}`}
+                        onClick={(event) => event.stopPropagation()}
                       >
                         <svg
                           width="14"

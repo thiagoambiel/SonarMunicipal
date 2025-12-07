@@ -1318,6 +1318,13 @@ p {
   margin: 4px 0 8px;
 }
 
+.detail-ementa {
+  margin: 0;
+  white-space: pre-line;
+  line-height: 1.6;
+  color: var(--text);
+}
+
 .helper-text {
   margin-top: 6px;
 }

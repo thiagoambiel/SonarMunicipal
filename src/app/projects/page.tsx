@@ -1,9 +1,11 @@
 "use client";
 
-import type { FormEvent } from "react";
+import type { FormEvent, KeyboardEvent } from "react";
 import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+
+import { buildProjectSlug } from "@/lib/projects";
 
 type SearchResult = {
   index: number;
@@ -67,6 +69,50 @@ function ProjectsContent() {
   const wasHiddenRef = useRef(false);
 
   const isLoading = status === "loading";
+
+  const persistProjectDetail = (item: SearchResult) => {
+    const slug = buildProjectSlug({
+      acao: item.acao,
+      ementa: item.ementa,
+      municipio: item.municipio,
+      index: item.index,
+    });
+
+    const payload = {
+      slug,
+      index: item.index,
+      score: item.score,
+      municipio: item.municipio ?? null,
+      uf: item.uf ?? null,
+      acao: item.acao ?? null,
+      ementa: item.ementa ?? null,
+      data_apresentacao: item.data_apresentacao ?? null,
+      link_publico: item.link_publico ?? null,
+      sapl_url: item.sapl_url ?? null,
+      tipo_label: item.tipo_label ?? null,
+      source: "search" as const,
+    };
+
+    try {
+      sessionStorage.setItem(`project-detail-${slug}`, JSON.stringify(payload));
+    } catch (storageError) {
+      console.error("Erro ao salvar detalhes do projeto", storageError);
+    }
+
+    return slug;
+  };
+
+  const openProjectDetail = (item: SearchResult) => {
+    const slug = persistProjectDetail(item);
+    router.push(`/projects/${slug}`);
+  };
+
+  const handleRowKeyDown = (event: KeyboardEvent<HTMLDivElement>, item: SearchResult) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      openProjectDetail(item);
+    }
+  };
 
   const extractYear = (value?: string | null) => {
     if (!value) return null;
@@ -469,8 +515,16 @@ function ProjectsContent() {
                       </div>
                       {paginatedResults.map((item) => {
                         const preferredLink = item.link_publico ?? item.sapl_url ?? null;
-                        const content = (
-                          <>
+                        return (
+                          <div
+                            key={item.index}
+                            className="table-row clickable-row"
+                            role="button"
+                            tabIndex={0}
+                            aria-label={`Ver detalhes do projeto ${item.acao ?? `#${item.index}`}`}
+                            onClick={() => openProjectDetail(item)}
+                            onKeyDown={(event) => handleRowKeyDown(event, item)}
+                          >
                             <div>
                               <p className="strong">
                                 {item.municipio ? item.municipio : "Município não informado"}
@@ -487,33 +541,19 @@ function ProjectsContent() {
                             <p className="strong">{item.score.toFixed(2)}</p>
                             <div className="row-actions">
                               {preferredLink ? (
-                                <span className="row-link">Abrir fonte</span>
+                                <a
+                                  className="row-link"
+                                  href={preferredLink}
+                                  target="_blank"
+                                  rel="noreferrer"
+                                  onClick={(event) => event.stopPropagation()}
+                                >
+                                  Abrir fonte
+                                </a>
                               ) : (
                                 <span className="muted small">Fonte indisponível</span>
                               )}
                             </div>
-                          </>
-                        );
-
-                        return preferredLink ? (
-                          <a
-                            key={item.index}
-                            className="table-row clickable-row"
-                            href={preferredLink}
-                            target="_blank"
-                            rel="noreferrer"
-                            title="Abrir fonte oficial em nova aba"
-                          >
-                            {content}
-                          </a>
-                        ) : (
-                          <div
-                            key={item.index}
-                            className="table-row"
-                            role="group"
-                            aria-label="Projeto sem link disponível"
-                          >
-                            {content}
                           </div>
                         );
                       })}
