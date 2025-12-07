@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, KeyboardEvent } from "react";
-import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -66,7 +66,6 @@ function ProjectsContent() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(1);
-  const wasHiddenRef = useRef(false);
 
   const isLoading = status === "loading";
 
@@ -188,38 +187,6 @@ function ProjectsContent() {
     },
     [router],
   );
-
-  const resetState = useCallback(() => {
-    setQuery("");
-    setResults([]);
-    setStatus("idle");
-    setErrorMessage(null);
-    setFilterUf("all");
-    setFilterYear("all");
-    setHasSearched(false);
-    setPage(1);
-    syncUrlState({});
-    try {
-      sessionStorage.removeItem(STORAGE_KEY);
-    } catch (error) {
-      console.error("Erro ao limpar estado salvo", error);
-    }
-  }, [syncUrlState]);
-
-  useEffect(() => {
-    const handleVisibility = () => {
-      if (document.hidden) {
-        wasHiddenRef.current = true;
-        return;
-      }
-      if (wasHiddenRef.current) {
-        resetState();
-        wasHiddenRef.current = false;
-      }
-    };
-    document.addEventListener("visibilitychange", handleVisibility);
-    return () => document.removeEventListener("visibilitychange", handleVisibility);
-  }, [resetState]);
 
   useEffect(() => {
     setPage(1);
@@ -487,7 +454,6 @@ function ProjectsContent() {
                     <div className="table-head">
                       <span className="skeleton-line w-60" />
                       <span className="skeleton-line w-70" />
-                      <span className="skeleton-line w-30" />
                       <span className="skeleton-line w-40" />
                       <span className="skeleton-line w-30" />
                     </div>
@@ -495,7 +461,6 @@ function ProjectsContent() {
                       <div key={row} className="table-row">
                         <span className="skeleton-line w-70" />
                         <span className="skeleton-line w-80" />
-                        <span className="skeleton-line w-30" />
                         <span className="skeleton-line w-40" />
                         <span className="skeleton-line w-30" />
                       </div>
@@ -510,7 +475,6 @@ function ProjectsContent() {
                         <span>Município</span>
                         <span>Tema e ementa</span>
                         <span>Ano</span>
-                        <span>Relevância</span>
                         <span>Fonte</span>
                       </div>
                       {paginatedResults.map((item) => {
@@ -538,7 +502,6 @@ function ProjectsContent() {
                               <p className="muted small">{item.ementa ?? "Ementa não informada"}</p>
                             </div>
                             <p>{item.data_apresentacao ?? "—"}</p>
-                            <p className="strong">{item.score.toFixed(2)}</p>
                             <div className="row-actions">
                               {preferredLink ? (
                                 <a

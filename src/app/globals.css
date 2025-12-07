@@ -1232,7 +1232,7 @@ p {
 .table-head,
 .table-row {
   display: grid;
-  grid-template-columns: 1.2fr 1.6fr 0.7fr 0.5fr 0.6fr;
+  grid-template-columns: 1.2fr 1.6fr 0.7fr 0.8fr;
   gap: var(--space-10);
   padding: var(--space-12) var(--space-14);
 }
