@@ -1348,6 +1348,54 @@ p {
   outline-offset: 4px;
 }
 
+.pagination {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.page-list {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.page-btn {
+  border: 1px solid var(--border);
+  background: #fff;
+  color: var(--text);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  transition: all 0.15s ease;
+}
+
+.page-btn.ghost {
+  background: #f7f9fe;
+}
+
+.page-btn.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  border-color: var(--primary-strong);
+  box-shadow: var(--shadow-sm);
+}
+
+.page-btn:hover:not(:disabled):not(.active) {
+  background: #f5f7fb;
+  transform: translateY(-1px);
+}
+
+.page-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .info-card ul {
   margin: 8px 0 0;
   padding-left: 18px;
