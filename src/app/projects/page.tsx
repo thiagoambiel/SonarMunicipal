@@ -662,6 +662,11 @@ function ProjectsContent() {
             <p className="muted small">
               Analisando semelhança semântica e carregando resultados. Ajuste filtros enquanto processamos.
             </p>
+            <div className="overlay-actions">
+              <button className="ghost-btn" type="button" onClick={() => setStatus("idle")}>
+                Cancelar busca
+              </button>
+            </div>
           </div>
         </div>
       )}
