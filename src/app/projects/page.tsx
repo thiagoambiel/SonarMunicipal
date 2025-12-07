@@ -20,6 +20,23 @@ type SearchResult = {
   tipo_label?: string | null;
 };
 
+type SortOption = "relevance" | "municipio-asc" | "municipio-desc" | "uf-asc" | "uf-desc" | "year-desc" | "year-asc";
+
+const sortOptions: Array<{ value: SortOption; label: string }> = [
+  { value: "relevance", label: "Relevância (padrão)" },
+  { value: "municipio-asc", label: "Município (A-Z)" },
+  { value: "municipio-desc", label: "Município (Z-A)" },
+  { value: "uf-asc", label: "Estado (A-Z)" },
+  { value: "uf-desc", label: "Estado (Z-A)" },
+  { value: "year-desc", label: "Ano (mais recentes primeiro)" },
+  { value: "year-asc", label: "Ano (mais antigos primeiro)" },
+];
+
+const sortLabels: Record<SortOption, string> = sortOptions.reduce(
+  (acc, option) => ({ ...acc, [option.value]: option.label }),
+  {} as Record<SortOption, string>,
+);
+
 const suggestionPrompts = [
   "Projetos de lei sobre segurança urbana em capitais",
   "Iniciativas de educação em tempo integral em grandes cidades",
@@ -44,6 +61,7 @@ type StoredSearchState = {
   results: SearchResult[];
   hasSearched: boolean;
   page: number;
+  sortBy: SortOption;
   timestamp: number;
 };
 
@@ -70,15 +88,21 @@ function ProjectsContent() {
   const initialQuery = searchParams.get("q");
   const initialUf = searchParams.get("uf");
   const initialYear = searchParams.get("year");
+  const initialSort = searchParams.get("sort");
   const [filterUf, setFilterUf] = useState<string>("all");
   const [filterYear, setFilterYear] = useState<string>("all");
+  const [sortBy, setSortBy] = useState<SortOption>("relevance");
   const [hasRestoredState, setHasRestoredState] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(1);
   const resultsRef = useRef<HTMLElement | null>(null);
   const initialPageParam = searchParams.get("page");
-  const prevFiltersRef = useRef<{ uf: string; year: string }>({ uf: "all", year: "all" });
+  const prevFiltersRef = useRef<{ uf: string; year: string; sort: SortOption }>({
+    uf: "all",
+    year: "all",
+    sort: "relevance",
+  });
 
   const isLoading = status === "loading";
 
@@ -132,6 +156,9 @@ function ProjectsContent() {
     return match ? match[1] : null;
   };
 
+  const isSortOption = (value: string | null | undefined): value is SortOption =>
+    sortOptions.some((option) => option.value === value);
+
   const availableUfs = useMemo(() => {
     const ufs = new Set<string>();
     results.forEach((item) => {
@@ -159,10 +186,85 @@ function ProjectsContent() {
     [results, filterUf, filterYear],
   );
 
-  const sortedResults = useMemo(
-    () => [...filteredResults].sort((a, b) => b.score - a.score),
-    [filteredResults],
-  );
+  const sortedResults = useMemo(() => {
+    const compareText = (
+      valueA?: string | null,
+      valueB?: string | null,
+      direction: "asc" | "desc" = "asc",
+    ) => {
+      const normalizedA = (valueA ?? "").trim().toLocaleLowerCase("pt-BR");
+      const normalizedB = (valueB ?? "").trim().toLocaleLowerCase("pt-BR");
+      const hasA = normalizedA.length > 0;
+      const hasB = normalizedB.length > 0;
+      if (!hasA && !hasB) return 0;
+      if (!hasA) return 1;
+      if (!hasB) return -1;
+      const result = normalizedA.localeCompare(normalizedB, "pt-BR");
+      return direction === "asc" ? result : -result;
+    };
+
+    const compareYear = (itemA: SearchResult, itemB: SearchResult, direction: "asc" | "desc") => {
+      const yearA = Number.parseInt(extractYear(itemA.data_apresentacao) ?? "", 10);
+      const yearB = Number.parseInt(extractYear(itemB.data_apresentacao) ?? "", 10);
+      const hasA = Number.isFinite(yearA);
+      const hasB = Number.isFinite(yearB);
+      if (!hasA && !hasB) return 0;
+      if (!hasA) return 1;
+      if (!hasB) return -1;
+      const diff = yearA - yearB;
+      return direction === "asc" ? diff : -diff;
+    };
+
+    const fallbackByScore = (itemA: SearchResult, itemB: SearchResult) => itemB.score - itemA.score;
+
+    const sorted = [...filteredResults].sort((a, b) => {
+      switch (sortBy) {
+        case "municipio-asc": {
+          const municipioCompare = compareText(a.municipio, b.municipio, "asc");
+          if (municipioCompare !== 0) return municipioCompare;
+          const ufCompare = compareText(a.uf, b.uf, "asc");
+          if (ufCompare !== 0) return ufCompare;
+          return fallbackByScore(a, b);
+        }
+        case "municipio-desc": {
+          const municipioCompare = compareText(a.municipio, b.municipio, "desc");
+          if (municipioCompare !== 0) return municipioCompare;
+          const ufCompare = compareText(a.uf, b.uf, "desc");
+          if (ufCompare !== 0) return ufCompare;
+          return fallbackByScore(a, b);
+        }
+        case "uf-asc": {
+          const ufCompare = compareText(a.uf, b.uf, "asc");
+          if (ufCompare !== 0) return ufCompare;
+          const municipioCompare = compareText(a.municipio, b.municipio, "asc");
+          if (municipioCompare !== 0) return municipioCompare;
+          return fallbackByScore(a, b);
+        }
+        case "uf-desc": {
+          const ufCompare = compareText(a.uf, b.uf, "desc");
+          if (ufCompare !== 0) return ufCompare;
+          const municipioCompare = compareText(a.municipio, b.municipio, "desc");
+          if (municipioCompare !== 0) return municipioCompare;
+          return fallbackByScore(a, b);
+        }
+        case "year-desc": {
+          const yearCompare = compareYear(a, b, "desc");
+          if (yearCompare !== 0) return yearCompare;
+          return fallbackByScore(a, b);
+        }
+        case "year-asc": {
+          const yearCompare = compareYear(a, b, "asc");
+          if (yearCompare !== 0) return yearCompare;
+          return fallbackByScore(a, b);
+        }
+        case "relevance":
+        default:
+          return fallbackByScore(a, b);
+      }
+    });
+
+    return sorted;
+  }, [filteredResults, sortBy]);
 
   const totalPages = Math.max(1, Math.ceil(Math.max(sortedResults.length, 1) / PAGE_SIZE));
   const pageStart = sortedResults.length === 0 ? 0 : (page - 1) * PAGE_SIZE + 1;
@@ -172,7 +274,7 @@ function ProjectsContent() {
     [page, sortedResults],
   );
 
-  const hasActiveFilters = filterUf !== "all" || filterYear !== "all";
+  const hasActiveFilters = filterUf !== "all" || filterYear !== "all" || sortBy !== "relevance";
   const hasYearOptions = availableYears.length > 0;
   const hasResults = sortedResults.length > 0;
   const shouldShowBackToTop = showBackToTop && hasResults;
@@ -201,12 +303,13 @@ function ProjectsContent() {
   }, [hasSearched, isLoading]);
 
   const syncUrlState = useCallback(
-    (state: { query?: string; uf?: string; year?: string; page?: number }) => {
+    (state: { query?: string; uf?: string; year?: string; sort?: SortOption; page?: number }) => {
       const params = new URLSearchParams();
       const normalizedQuery = state.query?.trim();
       if (normalizedQuery) params.set("q", normalizedQuery);
       if (state.uf && state.uf !== "all") params.set("uf", state.uf);
       if (state.year && state.year !== "all") params.set("year", state.year);
+      if (state.sort && state.sort !== "relevance") params.set("sort", state.sort);
       if (state.page && state.page > 1) params.set("page", String(state.page));
       const search = params.toString();
       router.replace(search ? `/projects?${search}` : "/projects", { scroll: false });
@@ -224,6 +327,7 @@ function ProjectsContent() {
           results,
           hasSearched,
           page,
+          sortBy,
           timestamp: Date.now(),
           ...state,
         };
@@ -232,20 +336,20 @@ function ProjectsContent() {
         console.error("Erro ao salvar estado da busca", storageError);
       }
     },
-    [filterUf, filterYear, hasSearched, page, query, results],
+    [filterUf, filterYear, hasSearched, page, query, results, sortBy],
   );
 
   useEffect(() => {
     if (!hasRestoredState) {
-      prevFiltersRef.current = { uf: filterUf, year: filterYear };
+      prevFiltersRef.current = { uf: filterUf, year: filterYear, sort: sortBy };
       return;
     }
     const prev = prevFiltersRef.current;
-    if (prev.uf !== filterUf || prev.year !== filterYear) {
+    if (prev.uf !== filterUf || prev.year !== filterYear || prev.sort !== sortBy) {
       setPage(1);
     }
-    prevFiltersRef.current = { uf: filterUf, year: filterYear };
-  }, [filterUf, filterYear, hasRestoredState]);
+    prevFiltersRef.current = { uf: filterUf, year: filterYear, sort: sortBy };
+  }, [filterUf, filterYear, hasRestoredState, sortBy]);
 
   useEffect(() => {
     if (page > totalPages) {
@@ -266,7 +370,7 @@ function ProjectsContent() {
     setHasSearched(true);
     setPage(1);
     setErrorMessage(null);
-    syncUrlState({ query: normalizedQuery, uf: filterUf, year: filterYear, page: 1 });
+    syncUrlState({ query: normalizedQuery, uf: filterUf, year: filterYear, sort: sortBy, page: 1 });
 
     try {
       const response = await fetch(apiUrl("/api/search"), {
@@ -295,7 +399,7 @@ function ProjectsContent() {
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
     }
-  }, [filterUf, filterYear, query, saveStateToStorage, syncUrlState]);
+  }, [filterUf, filterYear, query, saveStateToStorage, sortBy, syncUrlState]);
 
   const handleSuggestionClick = (text: string) => {
     setQuery(text);
@@ -307,6 +411,7 @@ function ProjectsContent() {
 
     let nextUf = initialUf ?? "all";
     let nextYear = initialYear ?? "all";
+    let nextSort: SortOption = isSortOption(initialSort) ? initialSort : "relevance";
     let nextResults: SearchResult[] = [];
     let nextHasSearched = false;
     let nextPage = 1;
@@ -321,6 +426,7 @@ function ProjectsContent() {
         const saved = JSON.parse(raw) as Partial<StoredSearchState>;
         if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
         if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
+        if (nextSort === "relevance" && saved.sortBy && isSortOption(saved.sortBy)) nextSort = saved.sortBy;
         if (Array.isArray(saved.results)) nextResults = saved.results;
         if (typeof saved.hasSearched === "boolean") nextHasSearched = saved.hasSearched;
         if (typeof saved.page === "number" && !(initialPageParam && Number.isFinite(parsedPage))) {
@@ -336,22 +442,23 @@ function ProjectsContent() {
 
     setFilterUf(nextUf);
     setFilterYear(nextYear);
+    setSortBy(nextSort);
     setResults(nextResults);
     setHasSearched(nextHasSearched && nextResults.length > 0);
     setPage(nextPage);
 
     setHasRestoredState(true);
-  }, [handleSearch, hasRestoredState, initialPageParam, initialQuery, initialUf, initialYear]);
+  }, [handleSearch, hasRestoredState, initialPageParam, initialQuery, initialSort, initialUf, initialYear]);
 
   useEffect(() => {
     if (!hasRestoredState) return;
     saveStateToStorage({});
-  }, [filterUf, filterYear, hasRestoredState, query, results, hasSearched, page, saveStateToStorage]);
+  }, [filterUf, filterYear, hasRestoredState, query, results, hasSearched, page, saveStateToStorage, sortBy]);
 
   useEffect(() => {
     if (!hasRestoredState || !hasSearched) return;
-    syncUrlState({ query, uf: filterUf, year: filterYear, page });
-  }, [filterUf, filterYear, hasRestoredState, hasSearched, page, query, syncUrlState]);
+    syncUrlState({ query, uf: filterUf, year: filterYear, sort: sortBy, page });
+  }, [filterUf, filterYear, hasRestoredState, hasSearched, page, query, sortBy, syncUrlState]);
 
   return (
     <div className="landing">
@@ -432,15 +539,17 @@ function ProjectsContent() {
                 <div className="chips-inline">
                   {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
                   {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+                  {sortBy !== "relevance" && <span className="pill neutral">Ordem: {sortLabels[sortBy]}</span>}
                   <button
                     type="button"
                     className="ghost-link"
                     onClick={() => {
                       setFilterUf("all");
                       setFilterYear("all");
+                      setSortBy("relevance");
                     }}
                   >
-                    Limpar filtros
+                    Limpar filtros e ordem
                   </button>
                 </div>
               )}
@@ -448,6 +557,26 @@ function ProjectsContent() {
 
             <div className="results-grid">
               <aside className="filters-panel">
+                <div className="filter-card">
+                  <p className="filter-title">Ordenar resultados</p>
+                  <p className="muted small">Reorganize a lista por município, estado ou ano.</p>
+                  <div className="filter-select">
+                    <select
+                      id="projects-sort-select"
+                      value={sortBy}
+                      onChange={(event) => {
+                        const selectedSort = event.target.value;
+                        setSortBy(isSortOption(selectedSort) ? selectedSort : "relevance");
+                      }}
+                    >
+                      {sortOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
                 <div className="filter-card">
                   <p className="filter-title">UF</p>
                   <p className="muted small">Foque nos projetos do estado desejado.</p>
@@ -615,8 +744,9 @@ function ProjectsContent() {
 
                 {!isLoading && !hasResults && (
                   <div className="message muted">
-                    Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}. Ajuste
-                    o texto ou revise os filtros.
+                    Nenhum projeto encontrado{" "}
+                    {hasActiveFilters ? "com os filtros ou ordenação aplicada" : "para esta busca"}. Ajuste o texto,
+                    filtros ou ordenação.
                   </div>
                 )}
               </div>
