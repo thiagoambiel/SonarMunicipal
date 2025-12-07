@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent, KeyboardEvent } from "react";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
@@ -37,6 +37,16 @@ const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
   ? Number(process.env.NEXT_PUBLIC_MAX_TOP_K)
   : 500;
 
+type StoredSearchState = {
+  query: string;
+  filterUf: string;
+  filterYear: string;
+  results: SearchResult[];
+  hasSearched: boolean;
+  page: number;
+  timestamp: number;
+};
+
 const SearchIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path
@@ -66,6 +76,9 @@ function ProjectsContent() {
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(1);
+  const resultsRef = useRef<HTMLElement | null>(null);
+  const initialPageParam = searchParams.get("page");
+  const prevFiltersRef = useRef<{ uf: string; year: string }>({ uf: "all", year: "all" });
 
   const isLoading = status === "loading";
 
@@ -165,6 +178,11 @@ function ProjectsContent() {
   const shouldShowBackToTop = showBackToTop && hasResults;
 
   const handleBackToTop = () => {
+    const target = resultsRef.current;
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -175,22 +193,59 @@ function ProjectsContent() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    if (isLoading || !hasSearched) return;
+    const node = resultsRef.current;
+    if (!node) return;
+    node.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [hasSearched, isLoading]);
+
   const syncUrlState = useCallback(
-    (state: { query?: string; uf?: string; year?: string }) => {
+    (state: { query?: string; uf?: string; year?: string; page?: number }) => {
       const params = new URLSearchParams();
       const normalizedQuery = state.query?.trim();
       if (normalizedQuery) params.set("q", normalizedQuery);
       if (state.uf && state.uf !== "all") params.set("uf", state.uf);
       if (state.year && state.year !== "all") params.set("year", state.year);
+      if (state.page && state.page > 1) params.set("page", String(state.page));
       const search = params.toString();
       router.replace(search ? `/projects?${search}` : "/projects", { scroll: false });
     },
     [router],
   );
 
+  const saveStateToStorage = useCallback(
+    (state: Partial<StoredSearchState>) => {
+      try {
+        const payload: StoredSearchState = {
+          query,
+          filterUf,
+          filterYear,
+          results,
+          hasSearched,
+          page,
+          timestamp: Date.now(),
+          ...state,
+        };
+        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+      } catch (storageError) {
+        console.error("Erro ao salvar estado da busca", storageError);
+      }
+    },
+    [filterUf, filterYear, hasSearched, page, query, results],
+  );
+
   useEffect(() => {
-    setPage(1);
-  }, [filterUf, filterYear, results]);
+    if (!hasRestoredState) {
+      prevFiltersRef.current = { uf: filterUf, year: filterYear };
+      return;
+    }
+    const prev = prevFiltersRef.current;
+    if (prev.uf !== filterUf || prev.year !== filterYear) {
+      setPage(1);
+    }
+    prevFiltersRef.current = { uf: filterUf, year: filterYear };
+  }, [filterUf, filterYear, hasRestoredState]);
 
   useEffect(() => {
     if (page > totalPages) {
@@ -211,7 +266,7 @@ function ProjectsContent() {
     setHasSearched(true);
     setPage(1);
     setErrorMessage(null);
-    syncUrlState({ query: normalizedQuery, uf: filterUf, year: filterYear });
+    syncUrlState({ query: normalizedQuery, uf: filterUf, year: filterYear, page: 1 });
 
     try {
       const response = await fetch(apiUrl("/api/search"), {
@@ -233,13 +288,14 @@ function ProjectsContent() {
 
       const payload = (await response.json()) as { results: SearchResult[] };
       setResults(payload.results ?? []);
+      saveStateToStorage({ query: normalizedQuery, results: payload.results ?? [], hasSearched: true, page: 1 });
       setStatus("idle");
     } catch (error) {
       console.error(error);
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
     }
-  }, [filterUf, filterYear, query, syncUrlState]);
+  }, [filterUf, filterYear, query, saveStateToStorage, syncUrlState]);
 
   const handleSuggestionClick = (text: string) => {
     setQuery(text);
@@ -249,48 +305,53 @@ function ProjectsContent() {
   useEffect(() => {
     if (hasRestoredState) return;
 
-    const nextQuery = "";
     let nextUf = initialUf ?? "all";
     let nextYear = initialYear ?? "all";
+    let nextResults: SearchResult[] = [];
+    let nextHasSearched = false;
+    let nextPage = 1;
+    const parsedPage = Number.parseInt(initialPageParam ?? "", 10);
+    if (Number.isFinite(parsedPage) && parsedPage > 0) {
+      nextPage = parsedPage;
+    }
 
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
-        const saved = JSON.parse(raw) as { query?: string; filterUf?: string; filterYear?: string };
+        const saved = JSON.parse(raw) as Partial<StoredSearchState>;
         if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
         if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
+        if (Array.isArray(saved.results)) nextResults = saved.results;
+        if (typeof saved.hasSearched === "boolean") nextHasSearched = saved.hasSearched;
+        if (typeof saved.page === "number" && !(initialPageParam && Number.isFinite(parsedPage))) {
+          nextPage = Math.max(1, Math.trunc(saved.page));
+        }
+        if (typeof saved.query === "string") {
+          setQuery(saved.query);
+        }
       }
     } catch (storageError) {
       console.error("Erro ao restaurar filtros anteriores", storageError);
     }
 
-    setQuery(nextQuery);
     setFilterUf(nextUf);
     setFilterYear(nextYear);
+    setResults(nextResults);
+    setHasSearched(nextHasSearched && nextResults.length > 0);
+    setPage(nextPage);
 
     setHasRestoredState(true);
-  }, [handleSearch, hasRestoredState, initialQuery, initialUf, initialYear]);
+  }, [handleSearch, hasRestoredState, initialPageParam, initialQuery, initialUf, initialYear]);
 
   useEffect(() => {
     if (!hasRestoredState) return;
-    try {
-      sessionStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify({
-          query,
-          filterUf,
-          filterYear,
-        }),
-      );
-    } catch (storageError) {
-      console.error("Erro ao salvar filtros de projetos", storageError);
-    }
-  }, [filterUf, filterYear, hasRestoredState, query]);
+    saveStateToStorage({});
+  }, [filterUf, filterYear, hasRestoredState, query, results, hasSearched, page, saveStateToStorage]);
 
   useEffect(() => {
     if (!hasRestoredState || !hasSearched) return;
-    syncUrlState({ query, uf: filterUf, year: filterYear });
-  }, [filterUf, filterYear, hasRestoredState, hasSearched, query, syncUrlState]);
+    syncUrlState({ query, uf: filterUf, year: filterYear, page });
+  }, [filterUf, filterYear, hasRestoredState, hasSearched, page, query, syncUrlState]);
 
   return (
     <div className="landing">
@@ -356,7 +417,7 @@ function ProjectsContent() {
         </section>
 
         {hasSearched && (
-          <section className="results-stage full-bleed" id="resultado" aria-live="polite">
+          <section className="results-stage full-bleed" id="resultado" aria-live="polite" ref={resultsRef}>
             <div className="results-header">
               <div>
                 <p className="eyebrow">Resultados para</p>
