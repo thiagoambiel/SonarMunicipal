@@ -1,9 +1,9 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type SearchResult = {
   index: number;
@@ -49,18 +49,22 @@ const SearchIcon = () => (
 );
 
 function ProjectsContent() {
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const searchParams = useSearchParams();
   const initialQuery = searchParams.get("q");
+  const initialUf = searchParams.get("uf");
+  const initialYear = searchParams.get("year");
   const [filterUf, setFilterUf] = useState<string>("all");
   const [filterYear, setFilterYear] = useState<string>("all");
   const [hasRestoredState, setHasRestoredState] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
   const [page, setPage] = useState(1);
+  const wasHiddenRef = useRef(false);
 
   const isLoading = status === "loading";
 
@@ -126,6 +130,51 @@ function ProjectsContent() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  const syncUrlState = useCallback(
+    (state: { query?: string; uf?: string; year?: string }) => {
+      const params = new URLSearchParams();
+      const normalizedQuery = state.query?.trim();
+      if (normalizedQuery) params.set("q", normalizedQuery);
+      if (state.uf && state.uf !== "all") params.set("uf", state.uf);
+      if (state.year && state.year !== "all") params.set("year", state.year);
+      const search = params.toString();
+      router.replace(search ? `/projects?${search}` : "/projects", { scroll: false });
+    },
+    [router],
+  );
+
+  const resetState = useCallback(() => {
+    setQuery("");
+    setResults([]);
+    setStatus("idle");
+    setErrorMessage(null);
+    setFilterUf("all");
+    setFilterYear("all");
+    setHasSearched(false);
+    setPage(1);
+    syncUrlState({});
+    try {
+      sessionStorage.removeItem(STORAGE_KEY);
+    } catch (error) {
+      console.error("Erro ao limpar estado salvo", error);
+    }
+  }, [syncUrlState]);
+
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (document.hidden) {
+        wasHiddenRef.current = true;
+        return;
+      }
+      if (wasHiddenRef.current) {
+        resetState();
+        wasHiddenRef.current = false;
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => document.removeEventListener("visibilitychange", handleVisibility);
+  }, [resetState]);
+
   useEffect(() => {
     setPage(1);
   }, [filterUf, filterYear, results]);
@@ -149,6 +198,7 @@ function ProjectsContent() {
     setHasSearched(true);
     setPage(1);
     setErrorMessage(null);
+    syncUrlState({ query: normalizedQuery, uf: filterUf, year: filterYear });
 
     try {
       const response = await fetch(apiUrl("/api/search"), {
@@ -176,7 +226,7 @@ function ProjectsContent() {
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
     }
-  }, [query]);
+  }, [filterUf, filterYear, query, syncUrlState]);
 
   const handleSuggestionClick = (text: string) => {
     setQuery(text);
@@ -184,32 +234,36 @@ function ProjectsContent() {
   };
 
   useEffect(() => {
-    if (initialQuery && !hasRestoredState) {
-      setQuery(initialQuery);
-      void handleSearch(undefined, initialQuery);
-      setHasRestoredState(true);
-      return;
-    }
-
     if (hasRestoredState) return;
+
+    let nextQuery = initialQuery ?? "";
+    let nextUf = initialUf ?? "all";
+    let nextYear = initialYear ?? "all";
 
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
         const saved = JSON.parse(raw) as { query?: string; filterUf?: string; filterYear?: string };
-        if (saved.query) {
-          setQuery(saved.query);
-          void handleSearch(undefined, saved.query);
-        }
-        if (saved.filterUf) setFilterUf(saved.filterUf);
-        if (saved.filterYear) setFilterYear(saved.filterYear);
+        if (!nextQuery && saved.query) nextQuery = saved.query;
+        if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
+        if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
       }
     } catch (storageError) {
       console.error("Erro ao restaurar filtros anteriores", storageError);
-    } finally {
-      setHasRestoredState(true);
     }
-  }, [handleSearch, hasRestoredState, initialQuery]);
+
+    setQuery(nextQuery);
+    setFilterUf(nextUf);
+    setFilterYear(nextYear);
+
+    // Só executa busca automática se vierem parâmetros na URL
+    if (initialQuery && nextQuery) {
+      setHasSearched(true);
+      void handleSearch(undefined, nextQuery);
+    }
+
+    setHasRestoredState(true);
+  }, [handleSearch, hasRestoredState, initialQuery, initialUf, initialYear]);
 
   useEffect(() => {
     if (!hasRestoredState) return;
@@ -226,6 +280,11 @@ function ProjectsContent() {
       console.error("Erro ao salvar filtros de projetos", storageError);
     }
   }, [filterUf, filterYear, hasRestoredState, query]);
+
+  useEffect(() => {
+    if (!hasRestoredState || !hasSearched) return;
+    syncUrlState({ query, uf: filterUf, year: filterYear });
+  }, [filterUf, filterYear, hasRestoredState, hasSearched, query, syncUrlState]);
 
   return (
     <div className="landing">
@@ -290,223 +349,223 @@ function ProjectsContent() {
           </div>
         </section>
 
-        <section className="results-stage full-bleed" id="resultado" aria-live="polite">
-          <div className="results-header">
-            <div>
-              <p className="eyebrow">Resultados para</p>
-              <h2>{query || initialQuery || "Projetos de Lei"}</h2>
-              <p className="muted">
-                {hasResults
-                  ? `Mostrando ${pageStart}-${pageEnd} de ${sortedResults.length} projetos`
-                  : hasSearched
-                    ? "Nenhum projeto encontrado. Ajuste os filtros ou refine a busca."
-                    : "Busque para ver os projetos priorizados"}
-              </p>
-            </div>
-            {hasActiveFilters && (
-              <div className="chips-inline">
-                {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
-                {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
-                <button
-                  type="button"
-                  className="ghost-link"
-                  onClick={() => {
-                    setFilterUf("all");
-                    setFilterYear("all");
-                  }}
-                >
-                  Limpar filtros
-                </button>
-              </div>
-            )}
-          </div>
-
-          <div className="results-grid">
-            <aside className="filters-panel">
-              <div className="filter-card">
-                <p className="filter-title">UF</p>
-                <p className="muted small">Foque nos projetos do estado desejado.</p>
-                <div className="filter-select">
-                  <select
-                    id="projects-uf-select"
-                    value={filterUf}
-                    onChange={(event) => setFilterUf(event.target.value)}
-                  >
-                    <option value="all">Todas as UF</option>
-                    {availableUfs.map((uf) => (
-                      <option key={uf} value={uf}>
-                        {uf}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-              <div className="filter-card">
-                <p className="filter-title">Ano de apresentação</p>
-                <p className="muted small">Mantenha o contexto temporal da política.</p>
-                <div className="filter-select">
-                  <select
-                    id="projects-year-select"
-                    value={filterYear}
-                    disabled={!hasYearOptions}
-                    aria-disabled={!hasYearOptions}
-                    onChange={(event) => setFilterYear(event.target.value)}
-                  >
-                    <option value="all">Todos os anos</option>
-                    {availableYears.map((year) => (
-                      <option key={year} value={year}>
-                        {year}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-                {!hasYearOptions && (
-                  <p className="muted small helper-text">
-                    Nenhum ano disponível nesta busca ainda. Vamos mostrar opções assim que os resultados carregarem.
-                  </p>
-                )}
-              </div>
-              <div className="filter-card light">
-                <p className="muted small">
-                  Resultados ficam no navegador. Troque filtros e navegue pelas páginas sem refazer a busca.
+        {hasSearched && (
+          <section className="results-stage full-bleed" id="resultado" aria-live="polite">
+            <div className="results-header">
+              <div>
+                <p className="eyebrow">Resultados para</p>
+                <h2>{query || initialQuery || "Projetos de Lei"}</h2>
+                <p className="muted">
+                  {hasResults
+                    ? `Mostrando ${pageStart}-${pageEnd} de ${sortedResults.length} projetos`
+                    : "Nenhum projeto encontrado. Ajuste os filtros ou refine a busca."}
                 </p>
               </div>
-            </aside>
-
-            <div className="policies-panel">
-              {errorMessage && status !== "loading" && (
-                <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
+              {hasActiveFilters && (
+                <div className="chips-inline">
+                  {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
+                  {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+                  <button
+                    type="button"
+                    className="ghost-link"
+                    onClick={() => {
+                      setFilterUf("all");
+                      setFilterYear("all");
+                    }}
+                  >
+                    Limpar filtros
+                  </button>
+                </div>
               )}
+            </div>
 
-              {isLoading && (
-                <div className="table-card skeleton-table" aria-hidden="true">
-                  <div className="table-head">
-                    <span className="skeleton-line w-60" />
-                    <span className="skeleton-line w-70" />
-                    <span className="skeleton-line w-30" />
-                    <span className="skeleton-line w-40" />
-                    <span className="skeleton-line w-30" />
+            <div className="results-grid">
+              <aside className="filters-panel">
+                <div className="filter-card">
+                  <p className="filter-title">UF</p>
+                  <p className="muted small">Foque nos projetos do estado desejado.</p>
+                  <div className="filter-select">
+                    <select
+                      id="projects-uf-select"
+                      value={filterUf}
+                      onChange={(event) => setFilterUf(event.target.value)}
+                    >
+                      <option value="all">Todas as UF</option>
+                      {availableUfs.map((uf) => (
+                        <option key={uf} value={uf}>
+                          {uf}
+                        </option>
+                      ))}
+                    </select>
                   </div>
-                  {[1, 2, 3, 4].map((row) => (
-                    <div key={row} className="table-row">
+                </div>
+                <div className="filter-card">
+                  <p className="filter-title">Ano de apresentação</p>
+                  <p className="muted small">Mantenha o contexto temporal da política.</p>
+                  <div className="filter-select">
+                    <select
+                      id="projects-year-select"
+                      value={filterYear}
+                      disabled={!hasYearOptions}
+                      aria-disabled={!hasYearOptions}
+                      onChange={(event) => setFilterYear(event.target.value)}
+                    >
+                      <option value="all">Todos os anos</option>
+                      {availableYears.map((year) => (
+                        <option key={year} value={year}>
+                          {year}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {!hasYearOptions && (
+                    <p className="muted small helper-text">
+                      Nenhum ano disponível nesta busca ainda. Vamos mostrar opções assim que os resultados carregarem.
+                    </p>
+                  )}
+                </div>
+                <div className="filter-card light">
+                  <p className="muted small">
+                    Resultados ficam no navegador. Troque filtros e navegue pelas páginas sem refazer a busca.
+                  </p>
+                </div>
+              </aside>
+
+              <div className="policies-panel">
+                {errorMessage && status !== "loading" && (
+                  <div className={`message ${status === "error" ? "error" : "warning"}`}>{errorMessage}</div>
+                )}
+
+                {isLoading && (
+                  <div className="table-card skeleton-table" aria-hidden="true">
+                    <div className="table-head">
+                      <span className="skeleton-line w-60" />
                       <span className="skeleton-line w-70" />
-                      <span className="skeleton-line w-80" />
                       <span className="skeleton-line w-30" />
                       <span className="skeleton-line w-40" />
                       <span className="skeleton-line w-30" />
                     </div>
-                  ))}
-                </div>
-              )}
-
-              {!isLoading && hasResults && (
-                <>
-                  <div className="table-card">
-                    <div className="table-head">
-                      <span>Município</span>
-                      <span>Tema e ementa</span>
-                      <span>Ano</span>
-                      <span>Relevância</span>
-                      <span>Fonte</span>
-                    </div>
-                    {paginatedResults.map((item) => {
-                      const preferredLink = item.link_publico ?? item.sapl_url ?? null;
-                      const content = (
-                        <>
-                          <div>
-                            <p className="strong">
-                              {item.municipio ? item.municipio : "Município não informado"}
-                              {item.uf && <span className="pill-uf"> · {item.uf}</span>}
-                            </p>
-                            <p className="muted small">Índice #{item.index}</p>
-                            {item.tipo_label && <p className="muted small">Tipo: {item.tipo_label}</p>}
-                          </div>
-                          <div>
-                            <p>{item.acao ?? "Ação não informada"}</p>
-                            <p className="muted small">{item.ementa ?? "Ementa não informada"}</p>
-                          </div>
-                          <p>{item.data_apresentacao ?? "—"}</p>
-                          <p className="strong">{item.score.toFixed(2)}</p>
-                          <div className="row-actions">
-                            {preferredLink ? (
-                              <span className="row-link">Abrir fonte</span>
-                            ) : (
-                              <span className="muted small">Fonte indisponível</span>
-                            )}
-                          </div>
-                        </>
-                      );
-
-                      return preferredLink ? (
-                        <a
-                          key={item.index}
-                          className="table-row clickable-row"
-                          href={preferredLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          title="Abrir fonte oficial em nova aba"
-                        >
-                          {content}
-                        </a>
-                      ) : (
-                        <div
-                          key={item.index}
-                          className="table-row"
-                          role="group"
-                          aria-label="Projeto sem link disponível"
-                        >
-                          {content}
-                        </div>
-                      );
-                    })}
+                    {[1, 2, 3, 4].map((row) => (
+                      <div key={row} className="table-row">
+                        <span className="skeleton-line w-70" />
+                        <span className="skeleton-line w-80" />
+                        <span className="skeleton-line w-30" />
+                        <span className="skeleton-line w-40" />
+                        <span className="skeleton-line w-30" />
+                      </div>
+                    ))}
                   </div>
+                )}
 
-                  <div className="pagination">
-                    <button
-                      type="button"
-                      className="page-btn ghost"
-                      onClick={() => setPage((current) => Math.max(1, current - 1))}
-                      disabled={page === 1}
-                    >
-                      Anterior
-                    </button>
-                    <div className="page-list">
-                      {Array.from({ length: totalPages }).map((_, index) => {
-                        const pageNumber = index + 1;
-                        return (
-                          <button
-                            key={pageNumber}
-                            type="button"
-                            className={`page-btn ${pageNumber === page ? "active" : ""}`}
-                            onClick={() => setPage(pageNumber)}
-                            aria-current={pageNumber === page ? "page" : undefined}
+                {!isLoading && hasResults && (
+                  <>
+                    <div className="table-card">
+                      <div className="table-head">
+                        <span>Município</span>
+                        <span>Tema e ementa</span>
+                        <span>Ano</span>
+                        <span>Relevância</span>
+                        <span>Fonte</span>
+                      </div>
+                      {paginatedResults.map((item) => {
+                        const preferredLink = item.link_publico ?? item.sapl_url ?? null;
+                        const content = (
+                          <>
+                            <div>
+                              <p className="strong">
+                                {item.municipio ? item.municipio : "Município não informado"}
+                                {item.uf && <span className="pill-uf"> · {item.uf}</span>}
+                              </p>
+                              <p className="muted small">Índice #{item.index}</p>
+                              {item.tipo_label && <p className="muted small">Tipo: {item.tipo_label}</p>}
+                            </div>
+                            <div>
+                              <p>{item.acao ?? "Ação não informada"}</p>
+                              <p className="muted small">{item.ementa ?? "Ementa não informada"}</p>
+                            </div>
+                            <p>{item.data_apresentacao ?? "—"}</p>
+                            <p className="strong">{item.score.toFixed(2)}</p>
+                            <div className="row-actions">
+                              {preferredLink ? (
+                                <span className="row-link">Abrir fonte</span>
+                              ) : (
+                                <span className="muted small">Fonte indisponível</span>
+                              )}
+                            </div>
+                          </>
+                        );
+
+                        return preferredLink ? (
+                          <a
+                            key={item.index}
+                            className="table-row clickable-row"
+                            href={preferredLink}
+                            target="_blank"
+                            rel="noreferrer"
+                            title="Abrir fonte oficial em nova aba"
                           >
-                            {pageNumber}
-                          </button>
+                            {content}
+                          </a>
+                        ) : (
+                          <div
+                            key={item.index}
+                            className="table-row"
+                            role="group"
+                            aria-label="Projeto sem link disponível"
+                          >
+                            {content}
+                          </div>
                         );
                       })}
                     </div>
-                    <button
-                      type="button"
-                      className="page-btn ghost"
-                      onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
-                      disabled={page === totalPages}
-                    >
-                      Próxima
-                    </button>
-                  </div>
-                </>
-              )}
 
-              {!isLoading && !hasResults && hasSearched && (
-                <div className="message muted">
-                  Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}. Ajuste o
-                  texto ou revise os filtros.
-                </div>
-              )}
+                    <div className="pagination">
+                      <button
+                        type="button"
+                        className="page-btn ghost"
+                        onClick={() => setPage((current) => Math.max(1, current - 1))}
+                        disabled={page === 1}
+                      >
+                        Anterior
+                      </button>
+                      <div className="page-list">
+                        {Array.from({ length: totalPages }).map((_, index) => {
+                          const pageNumber = index + 1;
+                          return (
+                            <button
+                              key={pageNumber}
+                              type="button"
+                              className={`page-btn ${pageNumber === page ? "active" : ""}`}
+                              onClick={() => setPage(pageNumber)}
+                              aria-current={pageNumber === page ? "page" : undefined}
+                            >
+                              {pageNumber}
+                            </button>
+                          );
+                        })}
+                      </div>
+                      <button
+                        type="button"
+                        className="page-btn ghost"
+                        onClick={() => setPage((current) => Math.min(totalPages, current + 1))}
+                        disabled={page === totalPages}
+                      >
+                        Próxima
+                      </button>
+                    </div>
+                  </>
+                )}
+
+                {!isLoading && !hasResults && (
+                  <div className="message muted">
+                    Nenhum projeto encontrado {hasActiveFilters ? "com os filtros aplicados" : "para esta busca"}. Ajuste
+                    o texto ou revise os filtros.
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {shouldShowBackToTop && (
           <button
@@ -537,6 +596,18 @@ function ProjectsContent() {
           </div>
         </section>
       </main>
+
+      {isLoading && (
+        <div className="page-overlay" role="alert" aria-live="assertive">
+          <div className="overlay-card">
+            <div className="spinner" aria-hidden="true" />
+            <p className="overlay-title">Buscando projetos priorizados…</p>
+            <p className="muted small">
+              Analisando semelhança semântica e carregando resultados. Ajuste filtros enquanto processamos.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
