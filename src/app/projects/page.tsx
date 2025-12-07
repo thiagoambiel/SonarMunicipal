@@ -558,26 +558,6 @@ function ProjectsContent() {
             <div className="results-grid">
               <aside className="filters-panel">
                 <div className="filter-card">
-                  <p className="filter-title">Ordenar resultados</p>
-                  <p className="muted small">Reorganize a lista por município, estado ou ano.</p>
-                  <div className="filter-select">
-                    <select
-                      id="projects-sort-select"
-                      value={sortBy}
-                      onChange={(event) => {
-                        const selectedSort = event.target.value;
-                        setSortBy(isSortOption(selectedSort) ? selectedSort : "relevance");
-                      }}
-                    >
-                      {sortOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </div>
-                <div className="filter-card">
                   <p className="filter-title">UF</p>
                   <p className="muted small">Foque nos projetos do estado desejado.</p>
                   <div className="filter-select">
@@ -620,11 +600,34 @@ function ProjectsContent() {
                     </p>
                   )}
                 </div>
+
+                <div className="filter-card">
+                  <p className="filter-title">Ordenar resultados</p>
+                  <p className="muted small">Reorganize a lista por município, estado ou ano.</p>
+                  <div className="filter-select">
+                    <select
+                      id="projects-sort-select"
+                      value={sortBy}
+                      onChange={(event) => {
+                        const selectedSort = event.target.value;
+                        setSortBy(isSortOption(selectedSort) ? selectedSort : "relevance");
+                      }}
+                    >
+                      {sortOptions.map((option) => (
+                        <option key={option.value} value={option.value}>
+                          {option.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
                 <div className="filter-card light">
                   <p className="muted small">
                     Resultados ficam no navegador. Troque filtros e navegue pelas páginas sem refazer a busca.
                   </p>
                 </div>
+
               </aside>
 
               <div className="policies-panel">

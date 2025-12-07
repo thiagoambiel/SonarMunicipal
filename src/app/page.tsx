@@ -104,6 +104,18 @@ type DropdownOption = {
   badges?: DropdownBadge[];
 };
 
+type PolicySortOption = "effect-desc" | "effect-asc" | "quality-desc" | "quality-asc";
+
+const policySortOptions: Array<{ value: PolicySortOption; label: string }> = [
+  { value: "quality-desc", label: "Qualidade (maior primeiro)" },
+  { value: "effect-desc", label: "Efeito médio (maior primeiro)" },
+  { value: "effect-asc", label: "Efeito médio (menor primeiro)" },
+  { value: "quality-asc", label: "Qualidade (menor primeiro)" },
+];
+
+const isPolicySortOption = (value: string | null | undefined): value is PolicySortOption =>
+  policySortOptions.some((option) => option.value === value);
+
 const SearchIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <path
@@ -263,6 +275,7 @@ function HomeContent() {
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [data, setData] = useState<PolicyExplorerResponse | null>(null);
+  const [sortPoliciesBy, setSortPoliciesBy] = useState<PolicySortOption>("quality-desc");
   const [selectedIndicator, setSelectedIndicator] = useState<string>(NO_INDICATOR_KEY);
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -279,13 +292,14 @@ function HomeContent() {
   };
 
   const syncUrlState = useCallback(
-    (state: { query?: string; indicator?: string | null; window?: number | null }) => {
+    (state: { query?: string; indicator?: string | null; window?: number | null; sort?: PolicySortOption }) => {
       const params = new URLSearchParams();
       const normalizedQuery = state.query?.trim();
       if (normalizedQuery) params.set("q", normalizedQuery);
       const indicatorValue = state.indicator && state.indicator !== NO_INDICATOR_KEY ? state.indicator : null;
       if (indicatorValue) params.set("indicator", indicatorValue);
       if (Number.isFinite(state.window ?? null)) params.set("window", String(state.window));
+      if (state.sort && state.sort !== "quality-desc") params.set("sort", state.sort);
       const search = params.toString();
       router.replace(search ? `/?${search}` : "/", { scroll: false });
     },
@@ -321,7 +335,39 @@ function HomeContent() {
     return found ?? activeBundle.windows[0] ?? null;
   }, [activeBundle, selectedWindow]);
 
-  const activePolicies = activeWindowResult?.policies ?? [];
+  const activePolicies = useMemo(() => {
+    const policies = activeWindowResult?.policies ?? [];
+    const compareNumber = (
+      valueA: number | null | undefined,
+      valueB: number | null | undefined,
+      direction: "asc" | "desc",
+    ) => {
+      const hasA = valueA != null;
+      const hasB = valueB != null;
+      if (!hasA && !hasB) return 0;
+      if (!hasA) return 1;
+      if (!hasB) return -1;
+      const diff = valueA - valueB;
+      return direction === "asc" ? diff : -diff;
+    };
+
+    const sorted = [...policies].sort((a, b) => {
+      switch (sortPoliciesBy) {
+        case "effect-asc":
+          return compareNumber(a.effect_mean, b.effect_mean, "asc");
+        case "effect-desc":
+          return compareNumber(a.effect_mean, b.effect_mean, "desc");
+        case "quality-asc":
+          return compareNumber(a.quality_score, b.quality_score, "asc");
+        case "quality-desc":
+          return compareNumber(a.quality_score, b.quality_score, "desc");
+        default:
+          return 0;
+      }
+    });
+
+    return sorted;
+  }, [activeWindowResult?.policies, sortPoliciesBy]);
   const usedIndicator = Boolean(activeBundle?.indicator);
   const indicatorAlias = activeBundle?.indicator_alias ?? "Sem indicador";
   const indicatorPositiveIsGood = activeBundle?.positive_is_good ?? true;
@@ -366,7 +412,7 @@ function HomeContent() {
 
     try {
       if (!options?.skipUrlUpdate) {
-        syncUrlState({ query: normalized, indicator: selectedIndicator, window: selectedWindow });
+        syncUrlState({ query: normalized, indicator: selectedIndicator, window: selectedWindow, sort: sortPoliciesBy });
       }
 
       const response = await fetch(apiUrl("/api/policy-explorer"), {
@@ -407,7 +453,7 @@ function HomeContent() {
       setLoading(false);
       abortControllerRef.current = null;
     }
-  }, [applyPayload, selectedIndicator, selectedWindow, syncUrlState]);
+  }, [applyPayload, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -425,9 +471,9 @@ function HomeContent() {
     const target = bundle?.best_quality_effect_windows?.[0] ?? bundle?.effect_windows?.[0] ?? selectedWindow;
     if (target != null) {
       setSelectedWindow(target);
-      syncUrlState({ query, indicator: key, window: target });
+      syncUrlState({ query, indicator: key, window: target, sort: sortPoliciesBy });
     } else {
-      syncUrlState({ query, indicator: key, window: selectedWindow });
+      syncUrlState({ query, indicator: key, window: selectedWindow, sort: sortPoliciesBy });
     }
   };
 
@@ -457,6 +503,7 @@ function HomeContent() {
     if (!data || filtersFromUrlApplied) return;
     const indicatorParam = searchParams.get("indicator");
     const windowParam = searchParams.get("window");
+    const sortParam = searchParams.get("sort");
 
     if (indicatorParam) {
       const exists = bundles.find((bundle) => toKey(bundle.indicator) === indicatorParam);
@@ -474,6 +521,10 @@ function HomeContent() {
       if (Number.isFinite(parsed) && targetBundle?.effect_windows?.includes(parsed)) {
         setSelectedWindow(parsed);
       }
+    }
+
+    if (sortParam && isPolicySortOption(sortParam)) {
+      setSortPoliciesBy(sortParam);
     }
 
     setFiltersFromUrlApplied(true);
@@ -523,8 +574,8 @@ function HomeContent() {
 
   useEffect(() => {
     if (!hasSearched) return;
-    syncUrlState({ query, indicator: selectedIndicator, window: selectedWindow });
-  }, [hasSearched, query, selectedIndicator, selectedWindow, syncUrlState]);
+    syncUrlState({ query, indicator: selectedIndicator, window: selectedWindow, sort: sortPoliciesBy });
+  }, [hasSearched, query, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
 
   useEffect(() => () => clearLoadingTimers(), []);
 
@@ -651,28 +702,52 @@ function HomeContent() {
                     value={selectedWindow ?? ""}
                     options={(activeBundle?.effect_windows ?? []).map((window) => {
                       const badges: DropdownBadge[] = [];
-                    if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
-                    if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
-                    return {
-                      value: window,
-                      label: buildWindowLabel(window),
-                      badges,
-                    };
-                  })}
-                  onChange={(newValue) => {
-                    const parsed = typeof newValue === "number" ? newValue : Number(newValue);
-                    const normalizedWindow = Number.isFinite(parsed) ? parsed : null;
-                    setSelectedWindow(normalizedWindow);
-                    syncUrlState({ query, indicator: selectedIndicator, window: normalizedWindow });
-                  }}
-                />
-              </div>
+                      if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
+                      if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
+                      return {
+                        value: window,
+                        label: buildWindowLabel(window),
+                        badges,
+                      };
+                    })}
+                    onChange={(newValue) => {
+                      const parsed = typeof newValue === "number" ? newValue : Number(newValue);
+                      const normalizedWindow = Number.isFinite(parsed) ? parsed : null;
+                      setSelectedWindow(normalizedWindow);
+                      syncUrlState({
+                        query,
+                        indicator: selectedIndicator,
+                        window: normalizedWindow,
+                        sort: sortPoliciesBy,
+                      });
+                    }}
+                  />
+                </div>
 
-                <div className="filter-card light">
+                <div className="filter-card">
+                  <p className="filter-title">Ordenar políticas</p>
+                  <p className="muted small">Reorganize por efeito médio ou qualidade.</p>
+                  <CustomDropdown
+                    id="policy-sort-select"
+                    ariaLabel="Selecionar ordenação das políticas"
+                    value={sortPoliciesBy}
+                    options={policySortOptions.map((option) => ({
+                      value: option.value,
+                      label: option.label,
+                    }))}
+                    onChange={(newValue) => {
+                      const nextValue = typeof newValue === "string" ? newValue : String(newValue);
+                      setSortPoliciesBy(isPolicySortOption(nextValue) ? nextValue : "quality-desc");
+                    }}
+                  />
+                </div>
+
+                                <div className="filter-card light">
                   <p className="muted small">
                     Todos os resultados já estão carregados no navegador. Troque os filtros e visualize sem esperar novas requisições.
                   </p>
                 </div>
+
               </aside>
 
               <div className="policies-panel">
