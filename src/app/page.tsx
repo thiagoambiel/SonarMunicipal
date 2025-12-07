@@ -726,8 +726,13 @@ function HomeContent() {
   useEffect(() => () => clearLoadingTimers(), []);
 
   const handleCancelSearch = () => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
+    try {
+      const controller = abortControllerRef.current;
+      if (controller && !controller.signal.aborted) {
+        controller.abort("user-cancelled");
+      }
+    } catch (abortError) {
+      console.warn("Erro ao cancelar busca", abortError);
     }
     clearLoadingTimers();
     setLoading(false);

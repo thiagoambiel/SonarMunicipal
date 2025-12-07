@@ -343,9 +343,9 @@ export default function ProjectDetailPage() {
       setSeriesError(null);
       try {
         const params = new URLSearchParams({
-          indicator_id: project.indicator_id,
-          city: project.municipio,
-          uf: project.uf,
+          indicator_id: project.indicator_id ?? "",
+          city: project.municipio ?? "",
+          uf: project.uf ?? "",
         });
         if (project.data_apresentacao) params.set("presentation_date", project.data_apresentacao);
         if (project.effect_window_months != null) params.set("effect_window_months", String(project.effect_window_months));
