@@ -1544,19 +1544,6 @@ p {
   letter-spacing: -0.01em;
 }
 
-.nav-logo {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  border: 2px solid var(--primary);
-  display: grid;
-  place-items: center;
-  font-weight: 700;
-  color: var(--primary);
-  background: rgba(11, 61, 145, 0.06);
-  box-shadow: inset 0 1px 0 #fff, 0 12px 26px rgba(11, 61, 145, 0.08);
-}
-
 .nav-title {
   font-size: 16px;
 }
@@ -1615,21 +1602,8 @@ p {
   gap: 6px;
 }
 
-.logo-ring {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(140deg, var(--primary), var(--primary-strong));
-  color: #fff;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  box-shadow: var(--shadow-lg);
-}
-
 .logo-name {
-  margin: 6px 0 0;
+  margin: 0;
   font-size: 18px;
   font-weight: 700;
   color: var(--primary-strong);

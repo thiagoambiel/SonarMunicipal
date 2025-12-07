@@ -6,6 +6,7 @@ import type { MouseEvent } from "react";
 import { startTransition, useEffect, useMemo, useState } from "react";
 
 import { ProjectDetail, getPreferredSourceLink } from "@/lib/projects";
+import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 const STORAGE_PREFIX = "project-detail-";
 
@@ -420,14 +421,13 @@ export default function ProjectDetailPage() {
       <div className="landing">
         <header className="minimal-nav">
           <div className="nav-brand">
-            <div className="nav-logo">CM</div>
             <span className="nav-title">CityManager</span>
           </div>
           <nav className="nav-links-minimal">
             <Link className="nav-link-minimal" href="/">
               Gerador de Políticas Públicas
             </Link>
-            <Link className="nav-link-minimal" href="/projects">
+            <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
               Projetos de Lei
             </Link>
             <Link className="nav-link-minimal" href="/methodology">
@@ -463,7 +463,6 @@ export default function ProjectDetailPage() {
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <div className="nav-logo">CM</div>
           <span className="nav-title">CityManager</span>
         </div>
         <nav className="nav-links-minimal">

@@ -4,6 +4,8 @@ import Link from "next/link";
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
+
 type SearchResult = {
   index: number;
   score: number;
@@ -753,12 +755,11 @@ function HomeContent() {
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <div className="nav-logo">CM</div>
           <span className="nav-title">CityManager</span>
         </div>
         <nav className="nav-links-minimal">
           <span className="nav-link-minimal active">Gerador de Políticas Públicas</span>
-          <Link className="nav-link-minimal" href="/projects">
+          <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
             Projetos de Lei
           </Link>
           <Link className="nav-link-minimal" href="/methodology">
@@ -770,7 +771,6 @@ function HomeContent() {
       <main className="landing-body">
         <section className="search-stage">
           <div className="logo-stack">
-            <div className="logo-ring">CM</div>
             <p className="logo-name">CityManager</p>
             <p className="logo-tagline">Políticas públicas com dados em uma única busca.</p>
           </div>
@@ -1221,7 +1221,7 @@ function HomeContent() {
             <Link className="secondary-btn" href="/methodology">
               Abrir metodologia
             </Link>
-            <Link className="ghost-btn" href="/projects">
+            <Link className="ghost-btn" href="/projects" onClick={clearProjectsSearchState}>
               Ver projetos de lei
             </Link>
           </div>

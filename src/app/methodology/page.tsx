@@ -2,19 +2,20 @@
 
 import Link from "next/link";
 
+import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
+
 export default function MethodologyPage() {
   return (
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <div className="nav-logo">CM</div>
           <span className="nav-title">CityManager</span>
         </div>
         <nav className="nav-links-minimal">
           <Link className="nav-link-minimal" href="/">
             Gerador de Políticas Públicas
           </Link>
-          <Link className="nav-link-minimal" href="/projects">
+          <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
             Projetos de Lei
           </Link>
           <span className="nav-link-minimal active">Metodologia</span>
@@ -34,7 +35,7 @@ export default function MethodologyPage() {
               <Link className="primary-btn" href="/">
                 Buscar políticas
               </Link>
-              <Link className="ghost-btn" href="/projects">
+              <Link className="ghost-btn" href="/projects" onClick={clearProjectsSearchState}>
                 Ver projetos de lei
               </Link>
             </div>
@@ -144,7 +145,7 @@ export default function MethodologyPage() {
             <Link className="primary-btn" href="/">
               Buscar políticas
             </Link>
-            <Link className="ghost-btn" href="/projects">
+            <Link className="ghost-btn" href="/projects" onClick={clearProjectsSearchState}>
               Ver projetos de lei
             </Link>
           </div>

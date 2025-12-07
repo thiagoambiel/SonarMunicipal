@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { buildProjectSlug } from "@/lib/projects";
+import { PROJECTS_SEARCH_STORAGE_KEY } from "@/lib/projectsSearchStorage";
 
 type SearchResult = {
   index: number;
@@ -47,7 +48,7 @@ const suggestionPrompts = [
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
 const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
-const STORAGE_KEY = "projects-search-state-v1";
+const STORAGE_KEY = PROJECTS_SEARCH_STORAGE_KEY;
 const PAGE_SIZE = 20;
 
 const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
@@ -739,7 +740,6 @@ function ProjectsContent() {
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <div className="nav-logo">CM</div>
           <span className="nav-title">CityManager</span>
         </div>
         <nav className="nav-links-minimal">
@@ -756,7 +756,6 @@ function ProjectsContent() {
       <main className="landing-body">
         <section className="search-stage">
           <div className="logo-stack">
-            <div className="logo-ring">CM</div>
             <p className="logo-name">Projetos de Lei</p>
             <p className="logo-tagline">Precedentes reais para inspirar novas políticas públicas.</p>
           </div>
