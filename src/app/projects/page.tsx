@@ -58,11 +58,43 @@ type StoredSearchState = {
   query: string;
   filterUf: string;
   filterYear: string;
+  filterMunicipio: string;
+  filterDateStart: string;
+  filterDateEnd: string;
   results: SearchResult[];
   hasSearched: boolean;
   page: number;
   sortBy: SortOption;
   timestamp: number;
+};
+
+const extractYear = (value?: string | null) => {
+  if (!value) return null;
+  const match = value.match(/(20\d{2})/);
+  return match ? match[1] : null;
+};
+
+const normalizeText = (value?: string | null) => (value ?? "").trim().toLocaleLowerCase("pt-BR");
+
+const parseDateValue = (value?: string | null) => {
+  if (!value) return null;
+  const trimmed = value.trim();
+  if (!trimmed) return null;
+  const iso = new Date(trimmed);
+  if (!Number.isNaN(iso.getTime())) return iso;
+  const match = trimmed.match(/(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
+  if (match) {
+    const [, day, month, year] = match;
+    const parsed = new Date(Number(year), Number(month) - 1, Number(day));
+    if (!Number.isNaN(parsed.getTime())) return parsed;
+  }
+  return null;
+};
+
+const formatDateLabel = (value?: string | null) => {
+  const parsed = parseDateValue(value);
+  if (!parsed) return null;
+  return parsed.toLocaleDateString("pt-BR");
 };
 
 const SearchIcon = () => (
@@ -88,9 +120,15 @@ function ProjectsContent() {
   const initialQuery = searchParams.get("q");
   const initialUf = searchParams.get("uf");
   const initialYear = searchParams.get("year");
+  const initialMunicipio = searchParams.get("municipio");
+  const initialDateStart = searchParams.get("from");
+  const initialDateEnd = searchParams.get("to");
   const initialSort = searchParams.get("sort");
   const [filterUf, setFilterUf] = useState<string>("all");
   const [filterYear, setFilterYear] = useState<string>("all");
+  const [filterMunicipio, setFilterMunicipio] = useState<string>("all");
+  const [filterDateStart, setFilterDateStart] = useState<string>("");
+  const [filterDateEnd, setFilterDateEnd] = useState<string>("");
   const [sortBy, setSortBy] = useState<SortOption>("relevance");
   const [hasRestoredState, setHasRestoredState] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -98,11 +136,28 @@ function ProjectsContent() {
   const [page, setPage] = useState(1);
   const resultsRef = useRef<HTMLElement | null>(null);
   const initialPageParam = searchParams.get("page");
-  const prevFiltersRef = useRef<{ uf: string; year: string; sort: SortOption }>({
+  const prevFiltersRef = useRef<{
+    uf: string;
+    year: string;
+    municipio: string;
+    dateStart: string;
+    dateEnd: string;
+    sort: SortOption;
+  }>({
     uf: "all",
     year: "all",
+    municipio: "all",
+    dateStart: "",
+    dateEnd: "",
     sort: "relevance",
   });
+  const municipalityDropdownRef = useRef<HTMLDivElement | null>(null);
+  const dateRangePopoverRef = useRef<HTMLDivElement | null>(null);
+  const [isMunicipioOpen, setIsMunicipioOpen] = useState(false);
+  const [municipioSearch, setMunicipioSearch] = useState("");
+  const [isDateRangeOpen, setIsDateRangeOpen] = useState(false);
+  const [draftDateStart, setDraftDateStart] = useState("");
+  const [draftDateEnd, setDraftDateEnd] = useState("");
 
   const isLoading = status === "loading";
 
@@ -150,12 +205,6 @@ function ProjectsContent() {
     }
   };
 
-  const extractYear = (value?: string | null) => {
-    if (!value) return null;
-    const match = value.match(/(20\d{2})/);
-    return match ? match[1] : null;
-  };
-
   const isSortOption = (value: string | null | undefined): value is SortOption =>
     sortOptions.some((option) => option.value === value);
 
@@ -176,14 +225,59 @@ function ProjectsContent() {
     return Array.from(years).sort((a, b) => Number(b) - Number(a));
   }, [results]);
 
+  const availableMunicipios = useMemo(() => {
+    const municipios = new Set<string>();
+    results.forEach((item) => {
+      if (item.municipio) {
+        const normalized = item.municipio.trim();
+        if (normalized) municipios.add(normalized);
+      }
+    });
+    return Array.from(municipios).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [results]);
+
+  const filteredMunicipioOptions = useMemo(() => {
+    if (!municipioSearch.trim()) return availableMunicipios;
+    const query = normalizeText(municipioSearch);
+    return availableMunicipios.filter((name) => normalizeText(name).includes(query));
+  }, [availableMunicipios, municipioSearch]);
+
+  const rangeStartDate = useMemo(() => parseDateValue(filterDateStart), [filterDateStart]);
+  const rangeEndDate = useMemo(() => {
+    const parsed = parseDateValue(filterDateEnd);
+    if (!parsed) return null;
+    const endOfDay = new Date(parsed);
+    endOfDay.setHours(23, 59, 59, 999);
+    return endOfDay;
+  }, [filterDateEnd]);
+
+  const dateRangeLabel = useMemo(() => {
+    const startLabel = formatDateLabel(filterDateStart);
+    const endLabel = formatDateLabel(filterDateEnd);
+    if (startLabel && endLabel) return `${startLabel} até ${endLabel}`;
+    if (startLabel) return `A partir de ${startLabel}`;
+    if (endLabel) return `Até ${endLabel}`;
+    return null;
+  }, [filterDateEnd, filterDateStart]);
+
   const filteredResults = useMemo(
     () =>
       results.filter((item) => {
         const matchesUf = filterUf === "all" || item.uf === filterUf;
         const matchesYear = filterYear === "all" || extractYear(item.data_apresentacao) === filterYear;
-        return matchesUf && matchesYear;
+        const matchesMunicipio =
+          filterMunicipio === "all" || normalizeText(item.municipio) === normalizeText(filterMunicipio);
+        const itemDate = parseDateValue(item.data_apresentacao);
+        const matchesDateRange = (() => {
+          if (!rangeStartDate && !rangeEndDate) return true;
+          if (!itemDate) return false;
+          if (rangeStartDate && itemDate < rangeStartDate) return false;
+          if (rangeEndDate && itemDate > rangeEndDate) return false;
+          return true;
+        })();
+        return matchesUf && matchesYear && matchesMunicipio && matchesDateRange;
       }),
-    [results, filterUf, filterYear],
+    [results, filterUf, filterYear, filterMunicipio, rangeEndDate, rangeStartDate],
   );
 
   const sortedResults = useMemo(() => {
@@ -274,7 +368,13 @@ function ProjectsContent() {
     [page, sortedResults],
   );
 
-  const hasActiveFilters = filterUf !== "all" || filterYear !== "all" || sortBy !== "relevance";
+  const hasDateRangeFilter = Boolean(filterDateStart || filterDateEnd);
+  const hasActiveFilters =
+    filterUf !== "all" ||
+    filterYear !== "all" ||
+    filterMunicipio !== "all" ||
+    hasDateRangeFilter ||
+    sortBy !== "relevance";
   const hasYearOptions = availableYears.length > 0;
   const hasResults = sortedResults.length > 0;
   const shouldShowBackToTop = showBackToTop && hasResults;
@@ -302,13 +402,63 @@ function ProjectsContent() {
     node.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [hasSearched, isLoading]);
 
+  useEffect(() => {
+    if (!isDateRangeOpen) return;
+    setDraftDateStart(filterDateStart);
+    setDraftDateEnd(filterDateEnd);
+  }, [filterDateEnd, filterDateStart, isDateRangeOpen]);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as Node;
+      if (isMunicipioOpen && municipalityDropdownRef.current && !municipalityDropdownRef.current.contains(target)) {
+        setIsMunicipioOpen(false);
+      }
+      if (isDateRangeOpen && dateRangePopoverRef.current && !dateRangePopoverRef.current.contains(target)) {
+        setIsDateRangeOpen(false);
+      }
+    };
+
+    const handleEscape = (event: globalThis.KeyboardEvent) => {
+      if (event.key === "Escape") {
+        if (isMunicipioOpen) setIsMunicipioOpen(false);
+        if (isDateRangeOpen) setIsDateRangeOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isDateRangeOpen, isMunicipioOpen]);
+
+  useEffect(() => {
+    if (!isMunicipioOpen) {
+      setMunicipioSearch("");
+    }
+  }, [isMunicipioOpen]);
+
   const syncUrlState = useCallback(
-    (state: { query?: string; uf?: string; year?: string; sort?: SortOption; page?: number }) => {
+    (state: {
+      query?: string;
+      uf?: string;
+      year?: string;
+      municipio?: string;
+      from?: string;
+      to?: string;
+      sort?: SortOption;
+      page?: number;
+    }) => {
       const params = new URLSearchParams();
       const normalizedQuery = state.query?.trim();
       if (normalizedQuery) params.set("q", normalizedQuery);
       if (state.uf && state.uf !== "all") params.set("uf", state.uf);
       if (state.year && state.year !== "all") params.set("year", state.year);
+      if (state.municipio && state.municipio !== "all") params.set("municipio", state.municipio);
+      if (state.from) params.set("from", state.from);
+      if (state.to) params.set("to", state.to);
       if (state.sort && state.sort !== "relevance") params.set("sort", state.sort);
       if (state.page && state.page > 1) params.set("page", String(state.page));
       const search = params.toString();
@@ -324,6 +474,9 @@ function ProjectsContent() {
           query,
           filterUf,
           filterYear,
+          filterMunicipio,
+          filterDateStart,
+          filterDateEnd,
           results,
           hasSearched,
           page,
@@ -336,20 +489,41 @@ function ProjectsContent() {
         console.error("Erro ao salvar estado da busca", storageError);
       }
     },
-    [filterUf, filterYear, hasSearched, page, query, results, sortBy],
+    [filterDateEnd, filterDateStart, filterMunicipio, filterUf, filterYear, hasSearched, page, query, results, sortBy],
   );
 
   useEffect(() => {
     if (!hasRestoredState) {
-      prevFiltersRef.current = { uf: filterUf, year: filterYear, sort: sortBy };
+      prevFiltersRef.current = {
+        uf: filterUf,
+        year: filterYear,
+        municipio: filterMunicipio,
+        dateStart: filterDateStart,
+        dateEnd: filterDateEnd,
+        sort: sortBy,
+      };
       return;
     }
     const prev = prevFiltersRef.current;
-    if (prev.uf !== filterUf || prev.year !== filterYear || prev.sort !== sortBy) {
+    if (
+      prev.uf !== filterUf ||
+      prev.year !== filterYear ||
+      prev.municipio !== filterMunicipio ||
+      prev.dateStart !== filterDateStart ||
+      prev.dateEnd !== filterDateEnd ||
+      prev.sort !== sortBy
+    ) {
       setPage(1);
     }
-    prevFiltersRef.current = { uf: filterUf, year: filterYear, sort: sortBy };
-  }, [filterUf, filterYear, hasRestoredState, sortBy]);
+    prevFiltersRef.current = {
+      uf: filterUf,
+      year: filterYear,
+      municipio: filterMunicipio,
+      dateStart: filterDateStart,
+      dateEnd: filterDateEnd,
+      sort: sortBy,
+    };
+  }, [filterDateEnd, filterDateStart, filterMunicipio, filterUf, filterYear, hasRestoredState, sortBy]);
 
   useEffect(() => {
     if (page > totalPages) {
@@ -370,7 +544,16 @@ function ProjectsContent() {
     setHasSearched(true);
     setPage(1);
     setErrorMessage(null);
-    syncUrlState({ query: normalizedQuery, uf: filterUf, year: filterYear, sort: sortBy, page: 1 });
+    syncUrlState({
+      query: normalizedQuery,
+      uf: filterUf,
+      year: filterYear,
+      municipio: filterMunicipio,
+      from: filterDateStart,
+      to: filterDateEnd,
+      sort: sortBy,
+      page: 1,
+    });
 
     try {
       const response = await fetch(apiUrl("/api/search"), {
@@ -399,11 +582,43 @@ function ProjectsContent() {
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
     }
-  }, [filterUf, filterYear, query, saveStateToStorage, sortBy, syncUrlState]);
+  }, [filterDateEnd, filterDateStart, filterMunicipio, filterUf, filterYear, query, saveStateToStorage, sortBy, syncUrlState]);
 
   const handleSuggestionClick = (text: string) => {
     setQuery(text);
     void handleSearch(undefined, text);
+  };
+
+  const handleMunicipioSelect = (value: string) => {
+    setFilterMunicipio(value);
+    setMunicipioSearch("");
+    setIsMunicipioOpen(false);
+  };
+
+  const applyDateRange = () => {
+    setFilterDateStart(draftDateStart);
+    setFilterDateEnd(draftDateEnd);
+    setIsDateRangeOpen(false);
+  };
+
+  const clearDateRange = () => {
+    setDraftDateStart("");
+    setDraftDateEnd("");
+    setFilterDateStart("");
+    setFilterDateEnd("");
+    setIsDateRangeOpen(false);
+  };
+
+  const resetFiltersAndSort = () => {
+    setFilterUf("all");
+    setFilterYear("all");
+    setFilterMunicipio("all");
+    setFilterDateStart("");
+    setFilterDateEnd("");
+    setSortBy("relevance");
+    setMunicipioSearch("");
+    setDraftDateStart("");
+    setDraftDateEnd("");
   };
 
   useEffect(() => {
@@ -411,6 +626,9 @@ function ProjectsContent() {
 
     let nextUf = initialUf ?? "all";
     let nextYear = initialYear ?? "all";
+    let nextMunicipio = initialMunicipio ?? "all";
+    let nextDateStart = initialDateStart ?? "";
+    let nextDateEnd = initialDateEnd ?? "";
     let nextSort: SortOption = isSortOption(initialSort) ? initialSort : "relevance";
     let nextResults: SearchResult[] = [];
     let nextHasSearched = false;
@@ -422,15 +640,18 @@ function ProjectsContent() {
 
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
-      if (raw) {
-        const saved = JSON.parse(raw) as Partial<StoredSearchState>;
-        if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
-        if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
-        if (nextSort === "relevance" && saved.sortBy && isSortOption(saved.sortBy)) nextSort = saved.sortBy;
-        if (Array.isArray(saved.results)) nextResults = saved.results;
-        if (typeof saved.hasSearched === "boolean") nextHasSearched = saved.hasSearched;
-        if (typeof saved.page === "number" && !(initialPageParam && Number.isFinite(parsedPage))) {
-          nextPage = Math.max(1, Math.trunc(saved.page));
+        if (raw) {
+          const saved = JSON.parse(raw) as Partial<StoredSearchState>;
+          if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
+          if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
+          if (nextMunicipio === "all" && saved.filterMunicipio) nextMunicipio = saved.filterMunicipio;
+          if (!nextDateStart && saved.filterDateStart) nextDateStart = saved.filterDateStart;
+          if (!nextDateEnd && saved.filterDateEnd) nextDateEnd = saved.filterDateEnd;
+          if (nextSort === "relevance" && saved.sortBy && isSortOption(saved.sortBy)) nextSort = saved.sortBy;
+          if (Array.isArray(saved.results)) nextResults = saved.results;
+          if (typeof saved.hasSearched === "boolean") nextHasSearched = saved.hasSearched;
+          if (typeof saved.page === "number" && !(initialPageParam && Number.isFinite(parsedPage))) {
+            nextPage = Math.max(1, Math.trunc(saved.page));
         }
         if (typeof saved.query === "string") {
           setQuery(saved.query);
@@ -442,23 +663,77 @@ function ProjectsContent() {
 
     setFilterUf(nextUf);
     setFilterYear(nextYear);
+    setFilterMunicipio(nextMunicipio);
+    setFilterDateStart(nextDateStart);
+    setFilterDateEnd(nextDateEnd);
     setSortBy(nextSort);
     setResults(nextResults);
     setHasSearched(nextHasSearched && nextResults.length > 0);
     setPage(nextPage);
 
     setHasRestoredState(true);
-  }, [handleSearch, hasRestoredState, initialPageParam, initialQuery, initialSort, initialUf, initialYear]);
+  }, [
+    handleSearch,
+    hasRestoredState,
+    initialDateEnd,
+    initialDateStart,
+    initialMunicipio,
+    initialPageParam,
+    initialQuery,
+    initialSort,
+    initialUf,
+    initialYear,
+  ]);
 
   useEffect(() => {
     if (!hasRestoredState) return;
     saveStateToStorage({});
-  }, [filterUf, filterYear, hasRestoredState, query, results, hasSearched, page, saveStateToStorage, sortBy]);
+  }, [
+    filterDateEnd,
+    filterDateStart,
+    filterMunicipio,
+    filterUf,
+    filterYear,
+    hasRestoredState,
+    query,
+    results,
+    hasSearched,
+    page,
+    saveStateToStorage,
+    sortBy,
+  ]);
 
   useEffect(() => {
     if (!hasRestoredState || !hasSearched) return;
-    syncUrlState({ query, uf: filterUf, year: filterYear, sort: sortBy, page });
-  }, [filterUf, filterYear, hasRestoredState, hasSearched, page, query, sortBy, syncUrlState]);
+    syncUrlState({
+      query,
+      uf: filterUf,
+      year: filterYear,
+      municipio: filterMunicipio,
+      from: filterDateStart,
+      to: filterDateEnd,
+      sort: sortBy,
+      page,
+    });
+  }, [
+    filterDateEnd,
+    filterDateStart,
+    filterMunicipio,
+    filterUf,
+    filterYear,
+    hasRestoredState,
+    hasSearched,
+    page,
+    query,
+    sortBy,
+    syncUrlState,
+  ]);
+
+  useEffect(() => {
+    if (availableMunicipios.length === 0 && isMunicipioOpen) {
+      setIsMunicipioOpen(false);
+    }
+  }, [availableMunicipios.length, isMunicipioOpen]);
 
   return (
     <div className="landing">
@@ -539,15 +814,15 @@ function ProjectsContent() {
                 <div className="chips-inline">
                   {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
                   {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
+                  {filterMunicipio !== "all" && <span className="pill neutral">Município: {filterMunicipio}</span>}
+                  {hasDateRangeFilter && (
+                    <span className="pill neutral">{dateRangeLabel ?? "Intervalo selecionado"}</span>
+                  )}
                   {sortBy !== "relevance" && <span className="pill neutral">Ordem: {sortLabels[sortBy]}</span>}
                   <button
                     type="button"
                     className="ghost-link"
-                    onClick={() => {
-                      setFilterUf("all");
-                      setFilterYear("all");
-                      setSortBy("relevance");
-                    }}
+                    onClick={resetFiltersAndSort}
                   >
                     Limpar filtros e ordem
                   </button>
@@ -575,6 +850,101 @@ function ProjectsContent() {
                     </select>
                   </div>
                 </div>
+
+                <div className="filter-card">
+                  <p className="filter-title">Município</p>
+                  <p className="muted small">Mostramos todas as cidades retornadas em ordem alfabética.</p>
+                  <div
+                    className={`custom-dropdown ${availableMunicipios.length === 0 ? "disabled" : ""}`}
+                    ref={municipalityDropdownRef}
+                  >
+                    <button
+                      type="button"
+                      className="dropdown-trigger"
+                      onClick={() => availableMunicipios.length > 0 && setIsMunicipioOpen((prev) => !prev)}
+                      aria-haspopup="listbox"
+                      aria-expanded={isMunicipioOpen}
+                      disabled={availableMunicipios.length === 0}
+                    >
+                      <div className="dropdown-trigger-content">
+                        <span className="dropdown-value">
+                          {filterMunicipio === "all" ? "Todos os municípios" : filterMunicipio}
+                        </span>
+                      </div>
+                      <div className="dropdown-icons">
+                        <svg
+                          className={`chevron ${isMunicipioOpen ? "open" : ""}`}
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M6 9L12 15L18 9"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    {isMunicipioOpen && (
+                      <div className="dropdown-menu with-search" role="listbox">
+                        <div className="dropdown-search">
+                          <input
+                            type="search"
+                            placeholder="Digite para filtrar"
+                            value={municipioSearch}
+                            onChange={(event) => setMunicipioSearch(event.target.value)}
+                            autoFocus
+                          />
+                        </div>
+                        <div className="dropdown-options-list">
+                          <button
+                            type="button"
+                            className={`dropdown-option ${filterMunicipio === "all" ? "active" : ""}`}
+                            role="option"
+                            aria-selected={filterMunicipio === "all"}
+                            onClick={() => handleMunicipioSelect("all")}
+                          >
+                            <span className="option-line">
+                              <span className="option-label">Todos os municípios</span>
+                            </span>
+                          </button>
+                          {filteredMunicipioOptions.map((municipio) => {
+                            const isActive = municipio === filterMunicipio;
+                            return (
+                              <button
+                                key={municipio}
+                                type="button"
+                                className={`dropdown-option ${isActive ? "active" : ""}`}
+                                role="option"
+                                aria-selected={isActive}
+                                onClick={() => handleMunicipioSelect(municipio)}
+                              >
+                                <span className="option-line">
+                                  <span className="option-label">{municipio}</span>
+                                </span>
+                              </button>
+                            );
+                          })}
+                          {filteredMunicipioOptions.length === 0 && (
+                            <div className="dropdown-empty">Nenhum município combina com o texto digitado.</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {availableMunicipios.length === 0 && (
+                    <p className="muted small helper-text">
+                      Busque primeiro para liberar os municípios retornados pelos resultados.
+                    </p>
+                  )}
+                </div>
+
                 <div className="filter-card">
                   <p className="filter-title">Ano de apresentação</p>
                   <p className="muted small">Mantenha o contexto temporal da política.</p>
@@ -599,6 +969,75 @@ function ProjectsContent() {
                       Nenhum ano disponível nesta busca ainda. Vamos mostrar opções assim que os resultados carregarem.
                     </p>
                   )}
+                </div>
+
+                <div className="filter-card">
+                  <p className="filter-title">Intervalo de apresentação</p>
+                  <p className="muted small">Escolha um intervalo de datas no calendário.</p>
+                  <div className="date-range" ref={dateRangePopoverRef}>
+                    <button
+                      type="button"
+                      className="dropdown-trigger"
+                      onClick={() => setIsDateRangeOpen((prev) => !prev)}
+                      aria-haspopup="dialog"
+                      aria-expanded={isDateRangeOpen}
+                    >
+                      <div className="dropdown-trigger-content">
+                        <span className="dropdown-value">{dateRangeLabel ?? "Todas as datas"}</span>
+                      </div>
+                      <div className="dropdown-icons">
+                        <svg
+                          className={`chevron ${isDateRangeOpen ? "open" : ""}`}
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M6 9L12 15L18 9"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    {isDateRangeOpen && (
+                      <div className="date-popover" role="dialog" aria-label="Selecionar intervalo de datas">
+                        <div className="date-grid">
+                          <label className="date-field">
+                            <span>Início</span>
+                            <input
+                              type="date"
+                              value={draftDateStart}
+                              onChange={(event) => setDraftDateStart(event.target.value)}
+                              max={draftDateEnd || undefined}
+                            />
+                          </label>
+                          <label className="date-field">
+                            <span>Fim</span>
+                            <input
+                              type="date"
+                              value={draftDateEnd}
+                              onChange={(event) => setDraftDateEnd(event.target.value)}
+                              min={draftDateStart || undefined}
+                            />
+                          </label>
+                        </div>
+                        <div className="date-actions">
+                          <button type="button" className="ghost-btn compact" onClick={clearDateRange}>
+                            Limpar
+                          </button>
+                          <button type="button" className="primary-btn" onClick={applyDateRange}>
+                            Aplicar intervalo
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="filter-card">
