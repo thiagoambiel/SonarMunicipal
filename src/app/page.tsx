@@ -78,6 +78,8 @@ const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
 
 const toKey = (value: string | null) => (value == null ? NO_INDICATOR_KEY : value);
 
+const normalizeText = (value?: string | null) => (value ?? "").trim().toLocaleLowerCase("pt-BR");
+
 const formatEffectValue = (value?: number | null) => {
   if (value == null || Number.isNaN(value)) return "—";
   const fixed = value.toFixed(2);
@@ -277,6 +279,10 @@ function HomeContent() {
   const [hasSearched, setHasSearched] = useState(false);
   const [data, setData] = useState<PolicyExplorerResponse | null>(null);
   const [sortPoliciesBy, setSortPoliciesBy] = useState<PolicySortOption>("quality-desc");
+  const [filterUf, setFilterUf] = useState<string>("all");
+  const [filterMunicipio, setFilterMunicipio] = useState<string>("all");
+  const [isMunicipioOpen, setIsMunicipioOpen] = useState(false);
+  const [municipioSearch, setMunicipioSearch] = useState("");
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [selectedIndicator, setSelectedIndicator] = useState<string>(NO_INDICATOR_KEY);
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
@@ -285,6 +291,7 @@ function HomeContent() {
   const abortControllerRef = useRef<AbortController | null>(null);
   const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const verySlowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const municipalityDropdownRef = useRef<HTMLDivElement | null>(null);
 
   const clearLoadingTimers = () => {
     if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
@@ -294,7 +301,14 @@ function HomeContent() {
   };
 
   const syncUrlState = useCallback(
-    (state: { query?: string; indicator?: string | null; window?: number | null; sort?: PolicySortOption }) => {
+    (state: {
+      query?: string;
+      indicator?: string | null;
+      window?: number | null;
+      sort?: PolicySortOption;
+      uf?: string;
+      municipio?: string;
+    }) => {
       const params = new URLSearchParams();
       const normalizedQuery = state.query?.trim();
       if (normalizedQuery) params.set("q", normalizedQuery);
@@ -302,6 +316,8 @@ function HomeContent() {
       if (indicatorValue) params.set("indicator", indicatorValue);
       if (Number.isFinite(state.window ?? null)) params.set("window", String(state.window));
       if (state.sort && state.sort !== "quality-desc") params.set("sort", state.sort);
+      if (state.uf && state.uf !== "all") params.set("uf", state.uf);
+      if (state.municipio && state.municipio !== "all") params.set("municipio", state.municipio);
       const search = params.toString();
       router.replace(search ? `/?${search}` : "/", { scroll: false });
     },
@@ -337,8 +353,24 @@ function HomeContent() {
     return found ?? activeBundle.windows[0] ?? null;
   }, [activeBundle, selectedWindow]);
 
-  const activePolicies = useMemo(() => {
+  const geoMatch = useCallback(
+    (action: PolicyAction) => {
+      const matchesUf = filterUf === "all" || action.uf === filterUf;
+      const matchesMunicipio =
+        filterMunicipio === "all" || normalizeText(action.municipio) === normalizeText(filterMunicipio);
+      return matchesUf && matchesMunicipio;
+    },
+    [filterMunicipio, filterUf],
+  );
+
+  const filteredPolicies = useMemo(() => {
     const policies = activeWindowResult?.policies ?? [];
+    if (filterUf === "all" && filterMunicipio === "all") return policies;
+    return policies.filter((policy) => policy.actions.some((action) => geoMatch(action)));
+  }, [activeWindowResult?.policies, filterMunicipio, filterUf, geoMatch]);
+
+  const activePolicies = useMemo(() => {
+    const policies = filteredPolicies;
     const compareNumber = (
       valueA: number | null | undefined,
       valueB: number | null | undefined,
@@ -369,7 +401,7 @@ function HomeContent() {
     });
 
     return sorted;
-  }, [activeWindowResult?.policies, sortPoliciesBy]);
+  }, [filteredPolicies, sortPoliciesBy]);
 
   const hasResults = activePolicies.length > 0;
   const usedIndicator = Boolean(activeBundle?.indicator);
@@ -378,6 +410,33 @@ function HomeContent() {
   const bestQualityWindows = activeBundle?.best_quality_effect_windows ?? [];
   const bestEffectWindows = activeBundle?.best_effect_mean_windows ?? [];
   const effectWindowLabel = activeWindowResult?.effect_window_months ?? "—";
+  const availableUfs = useMemo(() => {
+    const ufs = new Set<string>();
+    (activeWindowResult?.policies ?? []).forEach((policy) => {
+      policy.actions.forEach((action) => {
+        if (action.uf) ufs.add(action.uf);
+      });
+    });
+    return Array.from(ufs).sort();
+  }, [activeWindowResult?.policies]);
+
+  const availableMunicipios = useMemo(() => {
+    const municipios = new Set<string>();
+    (activeWindowResult?.policies ?? []).forEach((policy) => {
+      policy.actions.forEach((action) => {
+        if (filterUf !== "all" && action.uf !== filterUf) return;
+        const name = (action.municipio ?? "").trim();
+        if (name) municipios.add(name);
+      });
+    });
+    return Array.from(municipios).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [activeWindowResult?.policies, filterUf]);
+
+  const filteredMunicipioOptions = useMemo(() => {
+    if (!municipioSearch.trim()) return availableMunicipios;
+    const queryText = normalizeText(municipioSearch);
+    return availableMunicipios.filter((name) => normalizeText(name).includes(queryText));
+  }, [availableMunicipios, municipioSearch]);
 
   useEffect(() => {
     if (!activeBundle) return;
@@ -416,7 +475,14 @@ function HomeContent() {
 
     try {
       if (!options?.skipUrlUpdate) {
-        syncUrlState({ query: normalized, indicator: selectedIndicator, window: selectedWindow, sort: sortPoliciesBy });
+        syncUrlState({
+          query: normalized,
+          indicator: selectedIndicator,
+          window: selectedWindow,
+          sort: sortPoliciesBy,
+          uf: filterUf,
+          municipio: filterMunicipio,
+        });
       }
 
       const response = await fetch(apiUrl("/api/policy-explorer"), {
@@ -457,7 +523,7 @@ function HomeContent() {
       setLoading(false);
       abortControllerRef.current = null;
     }
-  }, [applyPayload, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
+  }, [applyPayload, filterMunicipio, filterUf, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -475,11 +541,18 @@ function HomeContent() {
     const target = bundle?.best_quality_effect_windows?.[0] ?? bundle?.effect_windows?.[0] ?? selectedWindow;
     if (target != null) {
       setSelectedWindow(target);
-      syncUrlState({ query, indicator: key, window: target, sort: sortPoliciesBy });
+      syncUrlState({ query, indicator: key, window: target, sort: sortPoliciesBy, uf: filterUf, municipio: filterMunicipio });
     } else {
-      syncUrlState({ query, indicator: key, window: selectedWindow, sort: sortPoliciesBy });
+      syncUrlState({ query, indicator: key, window: selectedWindow, sort: sortPoliciesBy, uf: filterUf, municipio: filterMunicipio });
     }
   };
+
+  useEffect(() => {
+    const ufParam = searchParams.get("uf");
+    const municipioParam = searchParams.get("municipio");
+    if (ufParam) setFilterUf(ufParam);
+    if (municipioParam) setFilterMunicipio(municipioParam);
+  }, [searchParams]);
 
   useEffect(() => {
     const initialQuery = searchParams.get("q");
@@ -508,6 +581,8 @@ function HomeContent() {
     const indicatorParam = searchParams.get("indicator");
     const windowParam = searchParams.get("window");
     const sortParam = searchParams.get("sort");
+    const ufParam = searchParams.get("uf");
+    const municipioParam = searchParams.get("municipio");
 
     if (indicatorParam) {
       const exists = bundles.find((bundle) => toKey(bundle.indicator) === indicatorParam);
@@ -530,6 +605,9 @@ function HomeContent() {
     if (sortParam && isPolicySortOption(sortParam)) {
       setSortPoliciesBy(sortParam);
     }
+
+    if (ufParam) setFilterUf(ufParam);
+    if (municipioParam) setFilterMunicipio(municipioParam);
 
     setFiltersFromUrlApplied(true);
   }, [activeBundle, bundles, data, filtersFromUrlApplied, searchParams, selectedIndicator]);
@@ -588,6 +666,46 @@ function HomeContent() {
   }, []);
 
   useEffect(() => {
+    if (filterUf !== "all" && !availableUfs.includes(filterUf)) {
+      setFilterUf("all");
+    }
+  }, [availableUfs, filterUf]);
+
+  useEffect(() => {
+    if (filterMunicipio !== "all" && !availableMunicipios.includes(filterMunicipio)) {
+      setFilterMunicipio("all");
+    }
+  }, [availableMunicipios, filterMunicipio]);
+
+  useEffect(() => {
+    const handleClick = (event: MouseEvent) => {
+      if (!isMunicipioOpen) return;
+      if (municipalityDropdownRef.current && !municipalityDropdownRef.current.contains(event.target as Node)) {
+        setIsMunicipioOpen(false);
+      }
+    };
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsMunicipioOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isMunicipioOpen]);
+
+  useEffect(() => {
+    if (!isMunicipioOpen) {
+      setMunicipioSearch("");
+    }
+  }, [isMunicipioOpen]);
+
+  useEffect(() => {
     if (!loading && hasSearched && data && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -595,8 +713,15 @@ function HomeContent() {
 
   useEffect(() => {
     if (!hasSearched) return;
-    syncUrlState({ query, indicator: selectedIndicator, window: selectedWindow, sort: sortPoliciesBy });
-  }, [hasSearched, query, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
+    syncUrlState({
+      query,
+      indicator: selectedIndicator,
+      window: selectedWindow,
+      sort: sortPoliciesBy,
+      uf: filterUf,
+      municipio: filterMunicipio,
+    });
+  }, [filterMunicipio, filterUf, hasSearched, query, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
 
   useEffect(() => () => clearLoadingTimers(), []);
 
@@ -684,11 +809,150 @@ function HomeContent() {
                   {data?.total_projects ?? 0} projetos analisados • {activePolicies.length} políticas priorizadas
                 </p>
               </div>
-
+              {(filterUf !== "all" || filterMunicipio !== "all") && (
+                <div className="chips-inline">
+                  {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
+                  {filterMunicipio !== "all" && <span className="pill neutral">Município: {filterMunicipio}</span>}
+                  <button
+                    type="button"
+                    className="ghost-link"
+                    onClick={() => {
+                      setFilterUf("all");
+                      setFilterMunicipio("all");
+                    }}
+                  >
+                    Limpar filtros geográficos
+                  </button>
+                </div>
+              )}
             </div>
 
             <div className="results-grid">
               <aside className="filters-panel">
+                <div className="filter-card">
+                  <p className="filter-title">UF</p>
+                  <p className="muted small">Filtre políticas aplicadas em estados específicos.</p>
+                  <div className="filter-select">
+                    <select
+                      id="policy-uf-select"
+                      value={filterUf}
+                      onChange={(event) => setFilterUf(event.target.value)}
+                      disabled={availableUfs.length === 0}
+                      aria-disabled={availableUfs.length === 0}
+                    >
+                      <option value="all">Todas as UF</option>
+                      {availableUfs.map((uf) => (
+                        <option key={uf} value={uf}>
+                          {uf}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  {availableUfs.length === 0 && (
+                    <p className="muted small helper-text">Busque para liberar as UF retornadas nos resultados.</p>
+                  )}
+                </div>
+
+                <div className="filter-card">
+                  <p className="filter-title">Município</p>
+                  <p className="muted small">Mesmas opções da busca de projetos, com busca rápida no texto.</p>
+                  <div
+                    className={`custom-dropdown ${availableMunicipios.length === 0 ? "disabled" : ""}`}
+                    ref={municipalityDropdownRef}
+                  >
+                    <button
+                      type="button"
+                      className="dropdown-trigger"
+                      onClick={() => availableMunicipios.length > 0 && setIsMunicipioOpen((prev) => !prev)}
+                      aria-haspopup="listbox"
+                      aria-expanded={isMunicipioOpen}
+                      disabled={availableMunicipios.length === 0}
+                    >
+                      <div className="dropdown-trigger-content">
+                        <span className="dropdown-value">
+                          {filterMunicipio === "all" ? "Todos os municípios" : filterMunicipio}
+                        </span>
+                      </div>
+                      <div className="dropdown-icons">
+                        <svg
+                          className={`chevron ${isMunicipioOpen ? "open" : ""}`}
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M6 9L12 15L18 9"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    {isMunicipioOpen && (
+                      <div className="dropdown-menu with-search" role="listbox">
+                        <div className="dropdown-search">
+                          <input
+                            type="search"
+                            placeholder="Digite para filtrar"
+                            value={municipioSearch}
+                            onChange={(event) => setMunicipioSearch(event.target.value)}
+                            autoFocus
+                          />
+                        </div>
+                        <div className="dropdown-options-list">
+                          <button
+                            type="button"
+                            className={`dropdown-option ${filterMunicipio === "all" ? "active" : ""}`}
+                            role="option"
+                            aria-selected={filterMunicipio === "all"}
+                            onClick={() => {
+                              setFilterMunicipio("all");
+                              setIsMunicipioOpen(false);
+                            }}
+                          >
+                            <span className="option-line">
+                              <span className="option-label">Todos os municípios</span>
+                            </span>
+                          </button>
+                          {filteredMunicipioOptions.map((municipio) => {
+                            const isActive = municipio === filterMunicipio;
+                            return (
+                              <button
+                                key={municipio}
+                                type="button"
+                                className={`dropdown-option ${isActive ? "active" : ""}`}
+                                role="option"
+                                aria-selected={isActive}
+                                onClick={() => {
+                                  setFilterMunicipio(municipio);
+                                  setIsMunicipioOpen(false);
+                                }}
+                              >
+                                <span className="option-line">
+                                  <span className="option-label">{municipio}</span>
+                                </span>
+                              </button>
+                            );
+                          })}
+                          {filteredMunicipioOptions.length === 0 && (
+                            <div className="dropdown-empty">Nenhum município encontrado com o texto digitado.</div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  {availableMunicipios.length === 0 && (
+                    <p className="muted small helper-text">
+                      Primeiro execute a busca ou escolha a UF para mostrar os municípios disponíveis.
+                    </p>
+                  )}
+                </div>
+
                 <div className="filter-card">
                   <p className="filter-title">Indicador</p>
                   <p className="muted small">Escolha o indicador que deve subir ou descer para medir impacto.</p>
@@ -795,6 +1059,10 @@ function HomeContent() {
                       const effectStd =
                         usedIndicator && policy.effect_std != null ? ` ± ${policy.effect_std.toFixed(2)}%` : null;
                       const qualityValue = policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
+                      const policyActions =
+                        filterUf === "all" && filterMunicipio === "all"
+                          ? policy.actions
+                          : policy.actions.filter((action) => geoMatch(action));
 
                       return (
                         <article
@@ -837,11 +1105,11 @@ function HomeContent() {
                           </div>
 
                           <p className="policy-count">
-                            Política aplicada em {policy.actions.length} município
-                            {policy.actions.length === 1 ? "" : "s"}:
+                            Política aplicada em {policyActions.length} município
+                            {policyActions.length === 1 ? "" : "s"}:
                           </p>
                           <ul className="policy-city-list">
-                            {policy.actions.map((action, actionIndex) => {
+                            {policyActions.map((action, actionIndex) => {
                               const effectLabel =
                                 usedIndicator && action.effect != null
                                   ? `Variação: ${formatEffectValue(action.effect)}`
