@@ -9,6 +9,7 @@ import { buildProjectSlug } from "@/lib/projects";
 
 type PolicyAction = {
   municipio: string;
+  uf?: string | null;
   acao: string;
   effect?: number | null;
   url?: string | null;
@@ -32,6 +33,7 @@ type StoredPolicy = {
   indicator_positive_is_good?: boolean;
   indicator_alias?: string;
   effect_window_months?: number;
+  indicator_id?: string | null;
 };
 
 const DEFAULT_EFFECT_WINDOW = 6;
@@ -130,6 +132,7 @@ export default function PolicyDetailPage() {
     const payload = {
       slug,
       municipio: action.municipio,
+      uf: action.uf ?? null,
       acao: action.acao,
       ementa: action.ementa ?? null,
       data_apresentacao: action.data_apresentacao ?? null,
@@ -137,6 +140,7 @@ export default function PolicyDetailPage() {
       effect: action.effect ?? null,
       effect_window_months: effectWindowMonths,
       indicator_alias: indicatorAlias,
+      indicator_id: data.indicator_id ?? null,
       indicator_positive_is_good: indicatorPositiveIsGood,
       indicator_before: action.indicator_before ?? null,
       indicator_after: action.indicator_after ?? null,

@@ -44,6 +44,13 @@ type IndicatorRow = {
   value: number;
 };
 
+export type IndicatorSeriesPoint = {
+  year: number;
+  period: number;
+  date: string;
+  value: number;
+};
+
 const defaultIndicatorSpecs = (): IndicatorSpec[] => {
   const minValueRaw = Number.parseFloat(process.env.CRIMINAL_INDICATOR_MIN_VALUE ?? "5");
   const minValue = Number.isFinite(minValueRaw) ? minValueRaw : 0;
@@ -112,7 +119,7 @@ const monthsPerPeriod = (spec: IndicatorSpec): number => {
   return rounded > 0 ? rounded : 1;
 };
 
-const encodePeriod = (dateStr: string, spec: IndicatorSpec): { year: number; period: number } | null => {
+export const encodePeriod = (dateStr: string, spec: IndicatorSpec): { year: number; period: number } | null => {
   const [yearRaw, monthRaw] = dateStr.split("-").slice(0, 2);
   const year = Number.parseInt(yearRaw, 10);
   const month = Number.parseInt(monthRaw, 10);
@@ -125,7 +132,7 @@ const encodePeriod = (dateStr: string, spec: IndicatorSpec): { year: number; per
   return { year, period };
 };
 
-const advancePeriod = (year: number, period: number, periodsAhead: number, spec: IndicatorSpec) => {
+export const advancePeriod = (year: number, period: number, periodsAhead: number, spec: IndicatorSpec) => {
   const periodsPerYear = spec.periods_per_year > 0 ? spec.periods_per_year : 1;
   const target = period - 1 + periodsAhead;
   return { year: year + Math.floor(target / periodsPerYear), period: (target % periodsPerYear) + 1 };
@@ -190,6 +197,30 @@ export const loadIndicatorRows = (spec: IndicatorSpec): IndicatorRow[] => {
 
   indicatorCache.set(spec.id, rows);
   return rows;
+};
+
+export const periodStartDate = (year: number, period: number, spec: IndicatorSpec): string => {
+  const months = monthsPerPeriod(spec);
+  const monthIndex = Math.max(0, (period - 1) * months);
+  const date = new Date(Date.UTC(year, Math.min(11, monthIndex), 1));
+  return date.toISOString().slice(0, 10);
+};
+
+export const buildIndicatorSeries = (spec: IndicatorSpec, municipio: string, uf: string): IndicatorSeriesPoint[] => {
+  const city = normalizeCity(municipio);
+  const state = normalizeCity(uf);
+  if (!city || !state) return [];
+
+  const rows = loadIndicatorRows(spec).filter((row) => row.city === city && row.uf === state);
+
+  return rows
+    .sort((a, b) => (a.year === b.year ? a.period - b.period : a.year - b.year))
+    .map((row) => ({
+      year: row.year,
+      period: row.period,
+      date: periodStartDate(row.year, row.period, spec),
+      value: row.value,
+    }));
 };
 
 export const computeIndicatorEffects = (

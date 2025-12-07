@@ -2,6 +2,7 @@ import { jaccardSimilarity, normalizeAndTokenize } from "./text";
 
 export type GroupedPolicyAction = {
   municipio: string;
+  uf?: string | null;
   acao: string;
   score: number;
   rawEffect?: number | null;
@@ -17,6 +18,7 @@ export type PolicyCandidate = {
 
 type GroupMember = {
   municipio: string;
+  uf?: string | null;
   phrase: string;
   score: number;
   similarity: number;
@@ -44,9 +46,10 @@ const byWinRate = (scores: number[]): number => {
 const bestMembersPerCity = (members: GroupMember[]): GroupMember[] => {
   const best = new Map<string, GroupMember>();
   for (const member of members) {
-    const current = best.get(member.municipio);
+    const key = `${member.municipio}||${member.uf ?? ""}`;
+    const current = best.get(key);
     if (!current || member.score < current.score) {
-      best.set(member.municipio, member);
+      best.set(key, member);
     }
   }
   return Array.from(best.values());
@@ -62,7 +65,16 @@ const groupBillsByStructure = (bills: GroupedPolicyAction[], threshold: number):
       groups.push({
         repTokens: tokens,
         repPhrase: bill.acao,
-        members: [{ municipio: bill.municipio, phrase: bill.acao, score: bill.score, similarity: 1, rawEffect: bill.rawEffect }],
+        members: [
+          {
+            municipio: bill.municipio,
+            uf: bill.uf ?? null,
+            phrase: bill.acao,
+            score: bill.score,
+            similarity: 1,
+            rawEffect: bill.rawEffect,
+          },
+        ],
       });
       continue;
     }
@@ -80,6 +92,7 @@ const groupBillsByStructure = (bills: GroupedPolicyAction[], threshold: number):
     if (bestIndex !== -1 && bestSim >= threshold) {
       groups[bestIndex].members.push({
         municipio: bill.municipio,
+        uf: bill.uf ?? null,
         phrase: bill.acao,
         score: bill.score,
         similarity: bestSim,
@@ -89,7 +102,16 @@ const groupBillsByStructure = (bills: GroupedPolicyAction[], threshold: number):
       groups.push({
         repTokens: tokens,
         repPhrase: bill.acao,
-        members: [{ municipio: bill.municipio, phrase: bill.acao, score: bill.score, similarity: 1, rawEffect: bill.rawEffect }],
+        members: [
+          {
+            municipio: bill.municipio,
+            uf: bill.uf ?? null,
+            phrase: bill.acao,
+            score: bill.score,
+            similarity: 1,
+            rawEffect: bill.rawEffect,
+          },
+        ],
       });
     }
   }
@@ -118,6 +140,7 @@ export const generatePoliciesFromBills = (
     const qualityScore = byWinRate(scores);
     const actions = bestPerCity.map((item) => ({
       municipio: item.municipio,
+      uf: item.uf ?? null,
       acao: item.phrase,
       score: item.score,
       rawEffect: item.rawEffect ?? null,

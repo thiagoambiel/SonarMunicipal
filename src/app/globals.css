@@ -2135,6 +2135,101 @@ p {
   color: var(--primary-strong);
 }
 
+.indicator-chart-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-20);
+  box-shadow: var(--shadow-sm);
+}
+
+.indicator-chart {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.chart-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+}
+
+.chart-node {
+  fill: var(--primary);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.chart-marker-line {
+  stroke: var(--accent);
+  stroke-dasharray: 6 4;
+  stroke-width: 1.5;
+  opacity: 0.75;
+}
+
+.chart-marker-line.reference {
+  stroke: var(--success);
+}
+
+.chart-marker {
+  stroke: #ffffff;
+  stroke-width: 2;
+  fill: var(--accent);
+}
+
+.chart-marker.reference {
+  fill: var(--success);
+}
+
+.chart-legend {
+  display: flex;
+  gap: var(--space-16);
+  flex-wrap: wrap;
+  align-items: center;
+  margin-top: var(--space-12);
+}
+
+.legend-item {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-10);
+}
+
+.legend-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  display: inline-block;
+  margin-top: var(--space-4);
+}
+
+.legend-dot.presentation {
+  background: var(--accent);
+}
+
+.legend-dot.reference {
+  background: var(--success);
+}
+
+.legend-title {
+  margin: 0;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.legend-subtitle {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.chart-empty {
+  color: var(--muted);
+  font-size: 14px;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.9);

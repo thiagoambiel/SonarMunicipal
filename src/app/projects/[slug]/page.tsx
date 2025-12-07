@@ -8,6 +8,27 @@ import { ProjectDetail, getPreferredSourceLink } from "@/lib/projects";
 
 const STORAGE_PREFIX = "project-detail-";
 
+type IndicatorSeriesPoint = {
+  date: string;
+  value: number;
+  year?: number;
+  period?: number;
+};
+
+type IndicatorSeriesResponse = {
+  series?: IndicatorSeriesPoint[];
+  presentation_point?: { input_date?: string | null; period_date?: string | null; value: number | null } | null;
+  reference_point?: { period_date?: string | null; value: number | null; target_year?: number; target_period?: number } | null;
+  effect_window_months?: number | null;
+};
+
+type ChartMarker = {
+  date: string;
+  value: number | null;
+  label: string;
+  kind: "presentation" | "reference";
+};
+
 const formatEffectValue = (value?: number | null) => {
   if (value == null || Number.isNaN(value)) return "Sem estimativa";
   if (value === 0) return "Sem variação estimada";
@@ -39,10 +60,101 @@ const getEffectTone = (project: ProjectDetail) => {
   return isGood ? "effect-good" : "effect-bad";
 };
 
+const formatDateLabel = (value?: string | null) => {
+  if (!value) return "Data não informada";
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) return value;
+  return parsed.toLocaleDateString("pt-BR");
+};
+
+const parseTimestamp = (value?: string | null): number | null => {
+  if (!value) return null;
+  const ts = Date.parse(value);
+  return Number.isFinite(ts) ? ts : null;
+};
+
+const IndicatorChart = ({ points, markers }: { points: IndicatorSeriesPoint[]; markers: ChartMarker[] }) => {
+  const parsedPoints = points
+    .map((item) => ({ ...item, ts: parseTimestamp(item.date) }))
+    .filter((item) => item.ts != null && Number.isFinite(item.value))
+    .sort((a, b) => (a.ts as number) - (b.ts as number));
+
+  const parsedMarkers = markers
+    .map((item) => ({ ...item, ts: parseTimestamp(item.date) }))
+    .filter((item) => item.ts != null);
+
+  if (!parsedPoints.length) {
+    return <div className="chart-empty">Sem histórico do indicador para exibir.</div>;
+  }
+
+  const allTimestamps = [...parsedPoints.map((p) => p.ts as number), ...parsedMarkers.map((m) => m.ts as number)];
+  const allValues = [
+    ...parsedPoints.map((p) => p.value),
+    ...parsedMarkers.map((m) => (m.value != null && Number.isFinite(m.value) ? m.value : null)).filter(
+      (value): value is number => value != null,
+    ),
+  ];
+
+  const minTs = Math.min(...allTimestamps);
+  const maxTs = Math.max(...allTimestamps);
+  const timeRange = Math.max(1, maxTs - minTs);
+
+  const minValueRaw = allValues.length ? Math.min(...allValues) : 0;
+  const maxValueRaw = allValues.length ? Math.max(...allValues) : 1;
+  const buffer =
+    minValueRaw === maxValueRaw ? Math.max(1, Math.abs(minValueRaw) * 0.1) : (maxValueRaw - minValueRaw) * 0.1;
+  const minValue = minValueRaw - buffer;
+  const maxValue = maxValueRaw + buffer;
+  const valueRange = Math.max(1, maxValue - minValue);
+
+  const width = 760;
+  const height = 280;
+  const paddingX = 42;
+  const paddingY = 28;
+  const innerWidth = width - paddingX * 2;
+  const innerHeight = height - paddingY * 2;
+
+  const scaleX = (ts: number) => paddingX + ((ts - minTs) / timeRange) * innerWidth;
+  const scaleY = (value: number) => paddingY + innerHeight - ((value - minValue) / valueRange) * innerHeight;
+
+  const pathD = parsedPoints
+    .map((point, index) => {
+      const x = scaleX(point.ts as number);
+      const y = scaleY(point.value);
+      return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+    })
+    .join(" ");
+
+  return (
+    <svg className="indicator-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Histórico do indicador">
+      <path className="chart-line" d={pathD} />
+      {parsedPoints.map((point, idx) => {
+        const x = scaleX(point.ts as number);
+        const y = scaleY(point.value);
+        return <circle key={`${point.date}-${idx}`} className="chart-node" cx={x} cy={y} r={4} />;
+      })}
+      {parsedMarkers.map((marker, idx) => {
+        const x = scaleX(marker.ts as number);
+        const y = marker.value != null && Number.isFinite(marker.value) ? scaleY(marker.value) : paddingY + innerHeight;
+        return (
+          <g key={`${marker.date}-${marker.kind}-${idx}`}>
+            <line className={`chart-marker-line ${marker.kind}`} x1={x} y1={paddingY} x2={x} y2={height - paddingY} />
+            <circle className={`chart-marker ${marker.kind}`} cx={x} cy={y} r={6} />
+          </g>
+        );
+      })}
+    </svg>
+  );
+};
+
 export default function ProjectDetailPage() {
   const params = useParams<{ slug: string }>();
   const router = useRouter();
   const [project, setProject] = useState<ProjectDetail | null>(null);
+  const [indicatorSeries, setIndicatorSeries] = useState<IndicatorSeriesPoint[]>([]);
+  const [seriesMarkers, setSeriesMarkers] = useState<ChartMarker[]>([]);
+  const [seriesStatus, setSeriesStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [seriesError, setSeriesError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!params?.slug) return;
@@ -63,6 +175,93 @@ export default function ProjectDetailPage() {
     if (project.link_publico && project.link_publico !== primaryLink) return project.link_publico;
     return null;
   }, [primaryLink, project]);
+
+  useEffect(() => {
+    if (!project || !project.indicator_id || !project.municipio || !project.uf) {
+      setIndicatorSeries([]);
+      setSeriesMarkers([]);
+      setSeriesStatus("idle");
+      setSeriesError(null);
+      return;
+    }
+
+    const controller = new AbortController();
+    const fetchSeries = async () => {
+      setSeriesStatus("loading");
+      setSeriesError(null);
+      try {
+        const params = new URLSearchParams({
+          indicator_id: project.indicator_id,
+          city: project.municipio,
+          uf: project.uf,
+        });
+        if (project.data_apresentacao) params.set("presentation_date", project.data_apresentacao);
+        if (project.effect_window_months != null) params.set("effect_window_months", String(project.effect_window_months));
+
+        const response = await fetch(`/api/indicator-series?${params.toString()}`, { signal: controller.signal });
+        if (!response.ok) {
+          let detail = response.statusText;
+          try {
+            const payload = (await response.json()) as { detail?: string };
+            detail = payload.detail ?? detail;
+          } catch {
+            // ignore parse errors
+          }
+          throw new Error(detail);
+        }
+
+        const payload = (await response.json()) as IndicatorSeriesResponse;
+        const parsedSeries = (payload.series ?? [])
+          .map((item) => ({ ...item, value: Number(item.value) }))
+          .filter((item) => item.date && Number.isFinite(item.value))
+          .sort((a, b) => {
+            const aTs = parseTimestamp(a.date) ?? 0;
+            const bTs = parseTimestamp(b.date) ?? 0;
+            return aTs - bTs;
+          });
+
+        const markers: ChartMarker[] = [];
+        const presentationDate =
+          payload.presentation_point?.input_date ??
+          payload.presentation_point?.period_date ??
+          project.data_apresentacao ??
+          null;
+        if (presentationDate) {
+          markers.push({
+            date: presentationDate,
+            value: payload.presentation_point?.value ?? project.indicator_before ?? null,
+            label: "Apresentação do projeto",
+            kind: "presentation",
+          });
+        }
+
+        const windowMonths = payload.effect_window_months ?? project.effect_window_months ?? null;
+        const referenceDate = payload.reference_point?.period_date ?? null;
+        if (referenceDate) {
+          markers.push({
+            date: referenceDate,
+            value: payload.reference_point?.value ?? project.indicator_after ?? null,
+            label: windowMonths ? `Referência (${windowMonths} meses)` : "Referência para cálculo do efeito",
+            kind: "reference",
+          });
+        }
+
+        setIndicatorSeries(parsedSeries);
+        setSeriesMarkers(markers);
+        setSeriesStatus("ready");
+      } catch (error) {
+        if (controller.signal.aborted) return;
+        console.error("Erro ao carregar série do indicador", error);
+        setIndicatorSeries([]);
+        setSeriesMarkers([]);
+        setSeriesStatus("error");
+        setSeriesError((error as Error)?.message ?? "Falha ao carregar série do indicador");
+      }
+    };
+
+    void fetchSeries();
+    return () => controller.abort();
+  }, [project]);
 
   if (!project) {
     return (
@@ -214,6 +413,51 @@ export default function ProjectDetailPage() {
                 )}
               </div>
             </div>
+          </div>
+        </section>
+
+        <section className="policy-section">
+          <div className="section-header">
+            <div>
+              <p className="eyebrow">Histórico do indicador</p>
+              <h2>Variação no município</h2>
+              <p className="muted">Linha do indicador com marcações de apresentação e janela usada no efeito.</p>
+            </div>
+            {seriesStatus === "loading" && <span className="pill neutral">Carregando série…</span>}
+            {seriesStatus === "error" && <span className="pill danger">Falha ao carregar</span>}
+          </div>
+          <div className="indicator-chart-card">
+            {!project.indicator_id ? (
+              <p className="muted small">Nenhum indicador associado para gerar o gráfico neste projeto.</p>
+            ) : seriesStatus === "loading" ? (
+              <p className="muted small">Carregando série do indicador…</p>
+            ) : seriesStatus === "error" ? (
+              <p className="muted small">
+                Não foi possível carregar a série do indicador para este município.
+                {seriesError ? ` ${seriesError}` : ""}
+              </p>
+            ) : indicatorSeries.length ? (
+              <>
+                <IndicatorChart points={indicatorSeries} markers={seriesMarkers} />
+                {seriesMarkers.length > 0 && (
+                  <div className="chart-legend">
+                    {seriesMarkers.map((marker, idx) => (
+                      <div key={`${marker.kind}-${marker.date}-${idx}`} className="legend-item">
+                        <span className={`legend-dot ${marker.kind}`} aria-hidden="true" />
+                        <div>
+                          <p className="legend-title">{marker.label}</p>
+                          <p className="legend-subtitle">
+                            {formatDateLabel(marker.date)} · Valor: {formatIndicatorValue(marker.value)}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <p className="muted small">Sem dados do indicador para este município.</p>
+            )}
           </div>
         </section>
 

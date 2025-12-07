@@ -15,6 +15,7 @@ type SearchResult = {
 
 type PolicyAction = {
   municipio: string;
+  uf?: string | null;
   acao: string;
   effect?: number | null;
   url?: string | null;
@@ -552,6 +553,7 @@ function HomeContent() {
           used_indicator: usedIndicator,
           indicator_positive_is_good: indicatorPositiveIsGood,
           indicator_alias: indicatorAlias,
+          indicator_id: activeBundle?.indicator ?? null,
           effect_window_months: activeWindowResult?.effect_window_months,
         }),
       );

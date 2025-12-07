@@ -4,6 +4,7 @@ import { SearchHit } from "./semantic-search";
 
 export type PolicyAction = {
   municipio: string;
+  uf?: string | null;
   acao: string;
   effect?: number | null;
   url?: string | null;
@@ -145,6 +146,9 @@ export const buildPolicies = (options: PolicyBuildOptions): PolicyBuildResult =>
   const groupingTuples: GroupedPolicyAction[] = [];
   const actionMeta = new Map<string, ActionMeta>();
 
+  const buildActionKey = (city: string, uf: string | null | undefined, description: string) =>
+    `${city}||${uf ?? ""}|||${description}`;
+
   for (const bill of bills) {
     const description =
       normalizeString(bill.acao) ??
@@ -166,15 +170,17 @@ export const buildPolicies = (options: PolicyBuildOptions): PolicyBuildResult =>
         : 0;
 
     const municipioName = bill.municipio ?? "Município não informado";
+    const uf = bill.uf ?? null;
 
     groupingTuples.push({
       municipio: municipioName,
+      uf,
       acao: description,
       score: normalizedScore,
       rawEffect,
     });
 
-    const key = `${municipioName}|||${description}`;
+    const key = buildActionKey(municipioName, uf, description);
     const current: ActionMeta = actionMeta.get(key) ?? {};
     const updated = pickBestEffect(
       current,
@@ -196,12 +202,12 @@ export const buildPolicies = (options: PolicyBuildOptions): PolicyBuildResult =>
     effect_std: useIndicator ? policy.effectStd : null,
     quality_score: useIndicator ? policy.qualityScore : null,
     actions: policy.actions.map((action) => {
-      const meta = actionMeta.get(`${action.municipio}|||${action.acao}`);
-      const effect = useIndicator
-        ? meta?.effect ?? action.rawEffect ?? null
-        : null;
+      const metaKey = buildActionKey(action.municipio, action.uf ?? null, action.acao);
+      const meta = actionMeta.get(metaKey);
+      const effect = useIndicator ? meta?.effect ?? action.rawEffect ?? null : null;
       return {
         municipio: action.municipio,
+        uf: action.uf ?? null,
         acao: action.acao,
         effect: effect == null ? null : effect,
         url: meta?.url ?? null,

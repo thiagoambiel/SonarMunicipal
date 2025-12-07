@@ -10,6 +10,7 @@ export type ProjectDetail = {
   link_publico?: string | null;
   sapl_url?: string | null;
   tipo_label?: string | null;
+  indicator_id?: string | null;
   effect?: number | null;
   effect_window_months?: number | null;
   indicator_alias?: string | null;
