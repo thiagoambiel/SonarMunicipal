@@ -84,6 +84,7 @@ export default function PolicyDetailPage() {
   const indicatorPositiveIsGood = data.indicator_positive_is_good ?? true;
   const indicatorAlias = data.indicator_alias ?? "";
   const effectWindowMonths = data.effect_window_months ?? DEFAULT_EFFECT_WINDOW;
+  const projectsLink = `/projects?q=${encodeURIComponent(policy.policy)}`;
 
   const formatEffectValue = (value?: number | null) => {
     if (value == null) return "—";
@@ -93,7 +94,7 @@ export default function PolicyDetailPage() {
   };
 
   const effectNarrative = (value?: number | null) => {
-    if (value == null) return "Não calculado";
+    if (value == null) return "Sem dados suficientes";
     if (value === 0) return "Sem variação estimada";
     const magnitude = Math.abs(value).toFixed(2);
     const target = indicatorAlias || "indicador selecionado";
@@ -152,7 +153,7 @@ export default function PolicyDetailPage() {
               <button className="secondary-btn" type="button" onClick={() => router.back()}>
                 Voltar à lista
               </button>
-              <Link className="ghost-btn" href="/projects">
+              <Link className="ghost-btn" href={projectsLink}>
                 Ver projetos de lei
               </Link>
             </div>

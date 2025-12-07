@@ -1,7 +1,7 @@
 "use client";
 
 import type { FormEvent } from "react";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
@@ -12,10 +12,15 @@ type SearchResult = {
   uf?: string;
   acao?: string;
   data_apresentacao?: string;
+  ementa?: string;
+  link_publico?: string | null;
+  sapl_url?: string | null;
+  tipo_label?: string | null;
 };
 
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/, "");
 const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
+const STORAGE_KEY = "projects-search-state-v1";
 
 const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
   ? Number(process.env.NEXT_PUBLIC_MAX_TOP_K)
@@ -30,6 +35,8 @@ function ProjectsContent() {
   const initialQuery = searchParams.get("q");
   const [filterUf, setFilterUf] = useState<string>("all");
   const [filterYear, setFilterYear] = useState<string>("all");
+  const [hasRestoredState, setHasRestoredState] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   const searchButtonLabel = useMemo(() => (status === "loading" ? "Buscando…" : "Buscar"), [status]);
   const isLoading = status === "loading";
@@ -73,16 +80,22 @@ function ProjectsContent() {
   );
 
   const hasActiveFilters = filterUf !== "all" || filterYear !== "all";
+  const hasYearOptions = availableYears.length > 0;
+  const hasResults = sortedResults.length > 0;
+  const shouldShowBackToTop = showBackToTop && hasResults;
+
+  const handleBackToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   useEffect(() => {
-    if (initialQuery) {
-      setQuery(initialQuery);
-      void handleSearch(undefined, initialQuery);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialQuery]);
+    const handleScroll = () => setShowBackToTop(window.scrollY > 320);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  const handleSearch = async (event?: FormEvent<HTMLFormElement>, override?: string) => {
+  const handleSearch = useCallback(async (event?: FormEvent<HTMLFormElement>, override?: string) => {
     event?.preventDefault();
     const normalizedQuery = (override ?? query).trim();
 
@@ -120,7 +133,51 @@ function ProjectsContent() {
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
     }
-  };
+  }, [query]);
+
+  useEffect(() => {
+    if (initialQuery && !hasRestoredState) {
+      setQuery(initialQuery);
+      void handleSearch(undefined, initialQuery);
+      setHasRestoredState(true);
+      return;
+    }
+
+    if (hasRestoredState) return;
+
+    try {
+      const raw = sessionStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw) as { query?: string; filterUf?: string; filterYear?: string };
+        if (saved.query) {
+          setQuery(saved.query);
+          void handleSearch(undefined, saved.query);
+        }
+        if (saved.filterUf) setFilterUf(saved.filterUf);
+        if (saved.filterYear) setFilterYear(saved.filterYear);
+      }
+    } catch (storageError) {
+      console.error("Erro ao restaurar filtros anteriores", storageError);
+    } finally {
+      setHasRestoredState(true);
+    }
+  }, [handleSearch, hasRestoredState, initialQuery]);
+
+  useEffect(() => {
+    if (!hasRestoredState) return;
+    try {
+      sessionStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify({
+          query,
+          filterUf,
+          filterYear,
+        }),
+      );
+    } catch (storageError) {
+      console.error("Erro ao salvar filtros de projetos", storageError);
+    }
+  }, [filterUf, filterYear, hasRestoredState, query]);
 
   return (
     <div className="landing">
@@ -240,6 +297,8 @@ function ProjectsContent() {
                 <select
                   id="projects-year-select"
                   value={filterYear}
+                  disabled={!hasYearOptions}
+                  aria-disabled={!hasYearOptions}
                   onChange={(event) => setFilterYear(event.target.value)}
                 >
                   <option value="all">Todos os anos</option>
@@ -249,6 +308,11 @@ function ProjectsContent() {
                     </option>
                   ))}
                 </select>
+                {!hasYearOptions && (
+                  <p className="muted small helper-text">
+                    Nenhum ano disponível nesta busca ainda. Vamos mostrar opções assim que os resultados carregarem.
+                  </p>
+                )}
               </div>
             </div>
           </form>
@@ -284,6 +348,7 @@ function ProjectsContent() {
                 <span className="skeleton-line w-70" />
                 <span className="skeleton-line w-30" />
                 <span className="skeleton-line w-40" />
+                <span className="skeleton-line w-30" />
               </div>
               {[1, 2, 3, 4].map((row) => (
                 <div key={row} className="table-row">
@@ -291,33 +356,66 @@ function ProjectsContent() {
                   <span className="skeleton-line w-80" />
                   <span className="skeleton-line w-30" />
                   <span className="skeleton-line w-40" />
+                  <span className="skeleton-line w-30" />
                 </div>
               ))}
             </div>
           )}
 
-          {!isLoading && sortedResults.length > 0 && (
+          {!isLoading && hasResults && (
             <div className="table-card">
               <div className="table-head">
                 <span>Município</span>
-                <span>Tema</span>
+                <span>Tema e ementa</span>
                 <span>Ano</span>
                 <span>Relevância</span>
+                <span>Fonte</span>
               </div>
-              {sortedResults.map((item) => (
-                <div key={item.index} className="table-row">
-                  <div>
-                    <p className="strong">
-                      {item.municipio ? item.municipio : "Município não informado"}
-                      {item.uf && <span className="pill-uf"> · {item.uf}</span>}
-                    </p>
-                    <p className="muted small">Índice #{item.index}</p>
+              {sortedResults.map((item) => {
+                const preferredLink = item.link_publico ?? item.sapl_url ?? null;
+                const content = (
+                  <>
+                    <div>
+                      <p className="strong">
+                        {item.municipio ? item.municipio : "Município não informado"}
+                        {item.uf && <span className="pill-uf"> · {item.uf}</span>}
+                      </p>
+                      <p className="muted small">Índice #{item.index}</p>
+                      {item.tipo_label && <p className="muted small">Tipo: {item.tipo_label}</p>}
+                    </div>
+                    <div>
+                      <p>{item.acao ?? "Ação não informada"}</p>
+                      <p className="muted small">{item.ementa ?? "Ementa não informada"}</p>
+                    </div>
+                    <p>{item.data_apresentacao ?? "—"}</p>
+                    <p className="strong">{item.score.toFixed(2)}</p>
+                    <div className="row-actions">
+                      {preferredLink ? (
+                        <span className="row-link">Abrir fonte</span>
+                      ) : (
+                        <span className="muted small">Fonte indisponível</span>
+                      )}
+                    </div>
+                  </>
+                );
+
+                return preferredLink ? (
+                  <a
+                    key={item.index}
+                    className="table-row clickable-row"
+                    href={preferredLink}
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Abrir fonte oficial em nova aba"
+                  >
+                    {content}
+                  </a>
+                ) : (
+                  <div key={item.index} className="table-row" role="group" aria-label="Projeto sem link disponível">
+                    {content}
                   </div>
-                  <p>{item.acao ?? "Ação não informada"}</p>
-                  <p>{item.data_apresentacao ?? "—"}</p>
-                  <p className="strong">{item.score.toFixed(2)}</p>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
 
@@ -328,6 +426,17 @@ function ProjectsContent() {
             </div>
           )}
         </section>
+
+        {shouldShowBackToTop && (
+          <button
+            type="button"
+            className="back-to-top"
+            onClick={handleBackToTop}
+            aria-label="Voltar ao topo da página"
+          >
+            Voltar ao topo
+          </button>
+        )}
 
         <section className="trust-strip">
           <div>

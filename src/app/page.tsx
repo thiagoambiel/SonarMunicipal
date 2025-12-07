@@ -257,6 +257,7 @@ function HomeContent() {
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
+  const [loadingPhase, setLoadingPhase] = useState<"idle" | "loading" | "slow" | "very-slow">("idle");
   const [error, setError] = useState<string | null>(null);
   const [hasSearched, setHasSearched] = useState(false);
   const [data, setData] = useState<PolicyExplorerResponse | null>(null);
@@ -264,6 +265,16 @@ function HomeContent() {
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
   const [filtersFromUrlApplied, setFiltersFromUrlApplied] = useState(false);
+  const abortControllerRef = useRef<AbortController | null>(null);
+  const slowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const verySlowTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearLoadingTimers = () => {
+    if (slowTimerRef.current) clearTimeout(slowTimerRef.current);
+    if (verySlowTimerRef.current) clearTimeout(verySlowTimerRef.current);
+    slowTimerRef.current = null;
+    verySlowTimerRef.current = null;
+  };
 
   const syncUrlState = useCallback(
     (state: { query?: string; indicator?: string | null; window?: number | null }) => {
@@ -336,9 +347,20 @@ function HomeContent() {
       return;
     }
 
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+
+    clearLoadingTimers();
+    const controller = new AbortController();
+    abortControllerRef.current = controller;
     setLoading(true);
+    setLoadingPhase("loading");
     setError(null);
     setHasSearched(true);
+
+    slowTimerRef.current = setTimeout(() => setLoadingPhase("slow"), 8000);
+    verySlowTimerRef.current = setTimeout(() => setLoadingPhase("very-slow"), 15000);
 
     try {
       if (!options?.skipUrlUpdate) {
@@ -349,6 +371,7 @@ function HomeContent() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: normalized, top_k: MAX_RESULTS }),
+        signal: controller.signal,
       });
 
       if (!response.ok) {
@@ -371,11 +394,18 @@ function HomeContent() {
       }
     } catch (fetchError) {
       console.error(fetchError);
-      setError("Não foi possível gerar políticas agora. Tente novamente em instantes.");
+      if ((fetchError as Error)?.name === "AbortError") {
+        setError("Busca cancelada. Tente novamente.");
+      } else {
+        setError("Não foi possível gerar políticas agora. Tente novamente em instantes.");
+      }
     } finally {
+      clearLoadingTimers();
+      setLoadingPhase("idle");
       setLoading(false);
+      abortControllerRef.current = null;
     }
-  }, [applyPayload, router, selectedIndicator, selectedWindow, syncUrlState]);
+  }, [applyPayload, selectedIndicator, selectedWindow, syncUrlState]);
 
   const handleSearch = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -493,6 +523,26 @@ function HomeContent() {
     if (!hasSearched) return;
     syncUrlState({ query, indicator: selectedIndicator, window: selectedWindow });
   }, [hasSearched, query, selectedIndicator, selectedWindow, syncUrlState]);
+
+  useEffect(() => () => clearLoadingTimers(), []);
+
+  const handleCancelSearch = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort();
+    }
+    clearLoadingTimers();
+    setLoading(false);
+    setLoadingPhase("idle");
+  };
+
+  const loadingTitle =
+    loadingPhase === "very-slow" ? "Demorando mais que o esperado…" : "Gerando políticas priorizadas…";
+  const loadingDescription =
+    loadingPhase === "very-slow"
+      ? "Ainda estamos calculando. Isso pode levar alguns segundos extras. Você pode cancelar e tentar novamente."
+      : loadingPhase === "slow"
+        ? "Quase lá! Refinando políticas e aplicando indicador à sua pergunta."
+        : "Agrupando projetos similares, aplicando indicador e selecionando as melhores políticas para sua pergunta.";
 
   return (
     <div className="landing">
@@ -624,7 +674,13 @@ function HomeContent() {
               </aside>
 
               <div className="policies-panel">
-                {loading && <div className="message muted">Gerando políticas com base na sua pergunta…</div>}
+                {loading && (
+                  <div className="message muted">
+                    {loadingPhase === "very-slow"
+                      ? "Processando há mais tempo que o normal. Aguarde alguns segundos ou cancele para tentar de novo."
+                      : "Gerando políticas com base na sua pergunta…"}
+                  </div>
+                )}
 
                 {!loading && activePolicies.length === 0 && (
                   <div className="message muted">
@@ -667,13 +723,17 @@ function HomeContent() {
                                     {effectStd ? ` ${effectStd}` : ""}
                                   </>
                                 ) : (
-                                  "Não calculado"
+                                  <span title="Sem dados suficientes para estimar o efeito nesse indicador e janela.">
+                                    Sem dados suficientes
+                                  </span>
                                 )}
                               </span>
                             </div>
                             <div className="metric-badge soft">
                               <span className="badge-label">Qualidade</span>
-                              <span className="badge-value">{qualityValue}</span>
+                              <span className="badge-value">
+                                {policy.quality_score != null ? qualityValue : "Sem dados suficientes"}
+                              </span>
                             </div>
                           </div>
 
@@ -686,7 +746,7 @@ function HomeContent() {
                               const effectLabel =
                                 usedIndicator && action.effect != null
                                   ? `Variação: ${formatEffectValue(action.effect)}`
-                                  : "Sem indicador";
+                                  : "Sem indicador calculado";
                               const effectToneAction = getEffectTone(action.effect);
 
                               return (
@@ -771,10 +831,13 @@ function HomeContent() {
         <div className="page-overlay" role="alert" aria-live="assertive">
           <div className="overlay-card">
             <div className="spinner" aria-hidden="true" />
-            <p className="overlay-title">Gerando políticas priorizadas…</p>
-            <p className="muted small">
-              Agrupando projetos similares, aplicando indicador e selecionando as melhores políticas para sua pergunta.
-            </p>
+            <p className="overlay-title">{loadingTitle}</p>
+            <p className="muted small">{loadingDescription}</p>
+            <div className="overlay-actions">
+              <button className="ghost-btn" type="button" onClick={handleCancelSearch}>
+                Cancelar busca
+              </button>
+            </div>
           </div>
         </div>
       )}
