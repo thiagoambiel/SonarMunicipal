@@ -770,10 +770,6 @@ function HomeContent() {
 
       <main className="landing-body">
         <section className="search-stage">
-          <div className="logo-stack">
-            <p className="logo-name">CityManager</p>
-            <p className="logo-tagline">Políticas públicas com dados em uma única busca.</p>
-          </div>
 
           <form className="search-box" onSubmit={handleSearch}>
             <input
@@ -792,7 +788,6 @@ function HomeContent() {
           </form>
 
           <div className="suggestions-list" aria-live="polite">
-            <p className="muted">Sugestões de perguntas</p>
             <div className="suggestion-chips">
               {suggestionPrompts.map((text) => (
                 <button key={text} className="suggestion-chip" type="button" onClick={() => handleSuggestionClick(text)}>

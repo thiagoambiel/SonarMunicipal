@@ -755,10 +755,6 @@ function ProjectsContent() {
 
       <main className="landing-body">
         <section className="search-stage">
-          <div className="logo-stack">
-            <p className="logo-name">Projetos de Lei</p>
-            <p className="logo-tagline">Precedentes reais para inspirar novas políticas públicas.</p>
-          </div>
 
           <form className="search-box" onSubmit={handleSearch}>
             <input
@@ -777,7 +773,6 @@ function ProjectsContent() {
           </form>
 
           <div className="suggestions-list" aria-live="polite">
-            <p className="muted">Sugestões de buscas</p>
             <div className="suggestion-chips">
               {suggestionPrompts.map((text) => (
                 <button

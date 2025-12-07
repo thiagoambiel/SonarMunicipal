@@ -1545,7 +1545,9 @@ p {
 }
 
 .nav-title {
-  font-size: 16px;
+  font-size: 28px;
+  font-family: var(--font-caveat), var(--font-geist-sans), "Segoe UI", system-ui, -apple-system, sans-serif;
+  font-weight: 600;
 }
 
 .nav-links-minimal {
