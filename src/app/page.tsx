@@ -20,6 +20,8 @@ type PolicyAction = {
   url?: string | null;
   data_apresentacao?: string | null;
   ementa?: string | null;
+  indicator_before?: number | null;
+  indicator_after?: number | null;
 };
 
 type PolicySuggestion = {
@@ -825,6 +827,24 @@ function HomeContent() {
             </div>
           </section>
         )}
+
+        <section className="trust-strip">
+          <div>
+            <p className="eyebrow">Documentação</p>
+            <h3>Metodologia e limites</h3>
+            <p className="muted">
+              Consulte como calculamos similaridade, agrupamentos e impacto dos indicadores antes de replicar.
+            </p>
+          </div>
+          <div className="trust-actions">
+            <Link className="secondary-btn" href="/methodology">
+              Abrir metodologia
+            </Link>
+            <Link className="ghost-btn" href="/projects">
+              Ver projetos de lei
+            </Link>
+          </div>
+        </section>
       </main>
 
       {loading && (

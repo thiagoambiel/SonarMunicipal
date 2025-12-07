@@ -14,6 +14,8 @@ export type ProjectDetail = {
   effect_window_months?: number | null;
   indicator_alias?: string | null;
   indicator_positive_is_good?: boolean | null;
+  indicator_before?: number | null;
+  indicator_after?: number | null;
   source?: "policy" | "search";
 };
 

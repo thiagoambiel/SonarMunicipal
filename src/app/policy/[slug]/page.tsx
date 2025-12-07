@@ -14,6 +14,8 @@ type PolicyAction = {
   url?: string | null;
   data_apresentacao?: string | null;
   ementa?: string | null;
+  indicator_before?: number | null;
+  indicator_after?: number | null;
 };
 
 type PolicySuggestion = {
@@ -96,6 +98,11 @@ export default function PolicyDetailPage() {
     return `${signed}%`;
   };
 
+  const formatIndicatorValue = (value?: number | null) => {
+    if (value == null || Number.isNaN(value)) return "—";
+    return value.toFixed(2);
+  };
+
   const effectNarrative = (value?: number | null) => {
     if (value == null) return "Sem dados suficientes";
     if (value === 0) return "Sem variação estimada";
@@ -131,6 +138,8 @@ export default function PolicyDetailPage() {
       effect_window_months: effectWindowMonths,
       indicator_alias: indicatorAlias,
       indicator_positive_is_good: indicatorPositiveIsGood,
+      indicator_before: action.indicator_before ?? null,
+      indicator_after: action.indicator_after ?? null,
       source: "policy" as const,
     };
 
@@ -227,12 +236,14 @@ export default function PolicyDetailPage() {
             </div>
           </div>
 
-          <div className="table-card">
+          <div className="table-card policy-actions-table">
             <div className="table-head">
               <span>Município</span>
               <span>Ação</span>
-              <span>Apresentação</span>
-              <span>Efeito (% em {effectWindowMonths}m)</span>
+              <span>Data</span>
+              <span>Indicador antes</span>
+              <span>Indicador depois</span>
+              <span>Variação (% em {effectWindowMonths}m)</span>
             </div>
             {policy.actions.map((action, index) => (
               <div
@@ -292,8 +303,14 @@ export default function PolicyDetailPage() {
                   {action.ementa && <p className="muted small">{action.ementa}</p>}
                 </div>
                 <p>{action.acao}</p>
-                <p>{action.data_apresentacao ?? "—"}</p>
-                <p className={`strong ${getEffectTone(action.effect)}`}>
+                <p className="strong numeric-cell">{action.data_apresentacao ?? "—"}</p>
+                <p className="strong numeric-cell">
+                  {used_indicator ? formatIndicatorValue(action.indicator_before) : "—"}
+                </p>
+                <p className="strong numeric-cell">
+                  {used_indicator ? formatIndicatorValue(action.indicator_after) : "—"}
+                </p>
+                <p className={`strong ${getEffectTone(action.effect)} numeric-cell`}>
                   {used_indicator && action.effect != null ? `${formatEffectValue(action.effect)}` : "—"}
                 </p>
               </div>

@@ -1237,6 +1237,15 @@ p {
   padding: var(--space-12) var(--space-14);
 }
 
+.policy-actions-table .table-head,
+.policy-actions-table .table-row {
+  grid-template-columns: 1.1fr 1.4fr 0.8fr 0.9fr 0.9fr 0.8fr;
+}
+
+.policy-actions-table .numeric-cell {
+  text-align: center;
+}
+
 .table-head {
   background: var(--surface-alt);
   font-weight: 700;

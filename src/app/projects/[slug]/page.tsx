@@ -15,6 +15,11 @@ const formatEffectValue = (value?: number | null) => {
   return `${value > 0 ? "+" : ""}${fixed}%`;
 };
 
+const formatIndicatorValue = (value?: number | null) => {
+  if (value == null || Number.isNaN(value)) return "—";
+  return value.toFixed(2);
+};
+
 const formatEffectNarrative = (project: ProjectDetail) => {
   if (project.effect == null || Number.isNaN(project.effect)) return "Sem estimativa calculada";
   const window = project.effect_window_months ?? 6;
@@ -155,6 +160,12 @@ export default function ProjectDetailPage() {
                 {formatEffectValue(project.effect)}
               </p>
               <p className="stat-detail">{formatEffectNarrative(project)}</p>
+              {(project.indicator_before != null || project.indicator_after != null) && (
+                <p className="stat-detail">
+                  Antes: {formatIndicatorValue(project.indicator_before)} · Depois:{" "}
+                  {formatIndicatorValue(project.indicator_after)}
+                </p>
+              )}
             </div>
           </div>
         </section>

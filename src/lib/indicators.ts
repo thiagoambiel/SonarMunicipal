@@ -32,6 +32,8 @@ export type IndicatorEffect = {
   acao?: string | null;
   data_apresentacao?: string | null;
   effect: number;
+  start_value: number;
+  end_value: number;
 };
 
 type IndicatorRow = {
@@ -227,6 +229,8 @@ export const computeIndicatorEffects = (
         acao: bill.acao ?? bill.ementa ?? null,
         data_apresentacao: bill.data_apresentacao ?? null,
         effect: delta,
+        start_value: current,
+        end_value: future,
       });
     } catch {
       // ignore divisions by zero

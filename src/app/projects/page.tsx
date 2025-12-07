@@ -249,7 +249,7 @@ function ProjectsContent() {
   useEffect(() => {
     if (hasRestoredState) return;
 
-    let nextQuery = initialQuery ?? "";
+    const nextQuery = "";
     let nextUf = initialUf ?? "all";
     let nextYear = initialYear ?? "all";
 
@@ -257,7 +257,6 @@ function ProjectsContent() {
       const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
         const saved = JSON.parse(raw) as { query?: string; filterUf?: string; filterYear?: string };
-        if (!nextQuery && saved.query) nextQuery = saved.query;
         if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
         if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
       }
@@ -268,12 +267,6 @@ function ProjectsContent() {
     setQuery(nextQuery);
     setFilterUf(nextUf);
     setFilterYear(nextYear);
-
-    // Só executa busca automática se vierem parâmetros na URL
-    if (initialQuery && nextQuery) {
-      setHasSearched(true);
-      void handleSearch(undefined, nextQuery);
-    }
 
     setHasRestoredState(true);
   }, [handleSearch, hasRestoredState, initialQuery, initialUf, initialYear]);

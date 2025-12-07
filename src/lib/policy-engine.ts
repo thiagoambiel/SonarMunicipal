@@ -9,6 +9,8 @@ export type PolicyAction = {
   url?: string | null;
   data_apresentacao?: string | null;
   ementa?: string | null;
+  indicator_before?: number | null;
+  indicator_after?: number | null;
 };
 
 export type PolicySuggestion = {
@@ -25,6 +27,8 @@ type ActionMeta = {
   url?: string;
   data_apresentacao?: string;
   ementa?: string;
+  indicator_before?: number | null;
+  indicator_after?: number | null;
 };
 
 export type PolicyBuildOptions = {
@@ -72,10 +76,16 @@ const normalizeString = (value: unknown, fallback: string | null = null): string
   return fallback;
 };
 
-const pickBestEffect = (current: ActionMeta, score: number, rawEffect: number | null) => {
+const pickBestEffect = (
+  current: ActionMeta,
+  score: number,
+  rawEffect: number | null,
+  indicatorBefore: number | null,
+  indicatorAfter: number | null,
+) => {
   if (rawEffect == null) return current;
   if (current.score == null || score < current.score) {
-    return { ...current, score, effect: rawEffect };
+    return { ...current, score, effect: rawEffect, indicator_before: indicatorBefore, indicator_after: indicatorAfter };
   }
   return current;
 };
@@ -166,7 +176,13 @@ export const buildPolicies = (options: PolicyBuildOptions): PolicyBuildResult =>
 
     const key = `${municipioName}|||${description}`;
     const current: ActionMeta = actionMeta.get(key) ?? {};
-    const updated = pickBestEffect(current, normalizedScore, rawEffect);
+    const updated = pickBestEffect(
+      current,
+      normalizedScore,
+      rawEffect,
+      effectEntry?.start_value ?? null,
+      effectEntry?.end_value ?? null,
+    );
     if (bill.url) updated.url = bill.url;
     if (bill.data_apresentacao) updated.data_apresentacao = bill.data_apresentacao;
     if (bill.ementa) updated.ementa = bill.ementa;
@@ -191,6 +207,8 @@ export const buildPolicies = (options: PolicyBuildOptions): PolicyBuildResult =>
         url: meta?.url ?? null,
         data_apresentacao: meta?.data_apresentacao ?? null,
         ementa: meta?.ementa ?? null,
+        indicator_before: meta?.indicator_before ?? null,
+        indicator_after: meta?.indicator_after ?? null,
       };
     }),
   }));
