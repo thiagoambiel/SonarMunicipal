@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
+import type { MouseEvent } from "react";
 import { startTransition, useEffect, useMemo, useState } from "react";
 
 import { ProjectDetail, getPreferredSourceLink } from "@/lib/projects";
@@ -73,7 +74,26 @@ const parseTimestamp = (value?: string | null): number | null => {
   return Number.isFinite(ts) ? ts : null;
 };
 
-const IndicatorChart = ({ points, markers }: { points: IndicatorSeriesPoint[]; markers: ChartMarker[] }) => {
+const IndicatorChart = ({
+  points,
+  markers,
+  indicatorLabel,
+  locationLabel,
+}: {
+  points: IndicatorSeriesPoint[];
+  markers: ChartMarker[];
+  indicatorLabel: string;
+  locationLabel: string;
+}) => {
+  const [hover, setHover] = useState<{
+    svgX: number;
+    svgY: number;
+    pxX: number;
+    pxY: number;
+    value: number;
+    date: string;
+  } | null>(null);
+
   const parsedPoints = points
     .map((item) => ({ ...item, ts: parseTimestamp(item.date) }))
     .filter((item) => item.ts != null && Number.isFinite(item.value))
@@ -90,9 +110,9 @@ const IndicatorChart = ({ points, markers }: { points: IndicatorSeriesPoint[]; m
   const allTimestamps = [...parsedPoints.map((p) => p.ts as number), ...parsedMarkers.map((m) => m.ts as number)];
   const allValues = [
     ...parsedPoints.map((p) => p.value),
-    ...parsedMarkers.map((m) => (m.value != null && Number.isFinite(m.value) ? m.value : null)).filter(
-      (value): value is number => value != null,
-    ),
+    ...parsedMarkers
+      .map((m) => (m.value != null && Number.isFinite(m.value) ? m.value : null))
+      .filter((value): value is number => value != null),
   ];
 
   const minTs = Math.min(...allTimestamps);
@@ -107,10 +127,10 @@ const IndicatorChart = ({ points, markers }: { points: IndicatorSeriesPoint[]; m
   const maxValue = maxValueRaw + buffer;
   const valueRange = Math.max(1, maxValue - minValue);
 
-  const width = 760;
-  const height = 280;
-  const paddingX = 42;
-  const paddingY = 28;
+  const width = 780;
+  const height = 360;
+  const paddingX = 70;
+  const paddingY = 24;
   const innerWidth = width - paddingX * 2;
   const innerHeight = height - paddingY * 2;
 
@@ -125,25 +145,134 @@ const IndicatorChart = ({ points, markers }: { points: IndicatorSeriesPoint[]; m
     })
     .join(" ");
 
+  const valueTicks = [minValue, (minValue + maxValue) / 2, maxValue];
+  const dateTicks = [parsedPoints[0], parsedPoints[Math.floor(parsedPoints.length / 2)] ?? parsedPoints[0], parsedPoints.at(-1)]
+    .filter(Boolean)
+    .map((item) => item as (typeof parsedPoints)[number]);
+
+  const findNearestPoint = (targetX: number) => {
+    const tsTarget = minTs + ((targetX - paddingX) / innerWidth) * timeRange;
+    let nearest = parsedPoints[0];
+    let bestDiff = Math.abs((nearest.ts as number) - tsTarget);
+    for (let i = 1; i < parsedPoints.length; i += 1) {
+      const point = parsedPoints[i];
+      const diff = Math.abs((point.ts as number) - tsTarget);
+      if (diff < bestDiff) {
+        bestDiff = diff;
+        nearest = point;
+      }
+    }
+    return nearest;
+  };
+
+  const handleLeave = () => setHover(null);
+  const handleMove = (event: MouseEvent<SVGSVGElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const localX = event.clientX - rect.left;
+    const scaleXFactor = rect.width / width;
+    const scaleYFactor = rect.height / height;
+
+    const svgX = Math.min(width - paddingX, Math.max(paddingX, localX / scaleXFactor));
+    const nearest = findNearestPoint(svgX);
+    const svgY = scaleY(nearest.value);
+
+    setHover({
+      svgX,
+      svgY,
+      pxX: svgX * scaleXFactor,
+      pxY: svgY * scaleYFactor,
+      value: nearest.value,
+      date: nearest.date,
+    });
+  };
+
   return (
-    <svg className="indicator-chart" viewBox={`0 0 ${width} ${height}`} role="img" aria-label="Histórico do indicador">
-      <path className="chart-line" d={pathD} />
-      {parsedPoints.map((point, idx) => {
-        const x = scaleX(point.ts as number);
-        const y = scaleY(point.value);
-        return <circle key={`${point.date}-${idx}`} className="chart-node" cx={x} cy={y} r={4} />;
-      })}
-      {parsedMarkers.map((marker, idx) => {
-        const x = scaleX(marker.ts as number);
-        const y = marker.value != null && Number.isFinite(marker.value) ? scaleY(marker.value) : paddingY + innerHeight;
-        return (
-          <g key={`${marker.date}-${marker.kind}-${idx}`}>
-            <line className={`chart-marker-line ${marker.kind}`} x1={x} y1={paddingY} x2={x} y2={height - paddingY} />
-            <circle className={`chart-marker ${marker.kind}`} cx={x} cy={y} r={6} />
-          </g>
-        );
-      })}
-    </svg>
+    <div className="indicator-chart-wrapper" onMouseLeave={handleLeave}>
+      <div className="chart-heading">
+        <h3 className="chart-title">
+          {indicatorLabel} em {locationLabel}
+        </h3>
+      </div>
+      <svg
+        className="indicator-chart"
+        viewBox={`0 0 ${width} ${height}`}
+        role="img"
+        aria-label="Histórico do indicador"
+        onMouseMove={handleMove}
+      >
+        <line x1={paddingX} y1={paddingY} x2={paddingX} y2={height - paddingY} className="chart-axis" />
+        <line x1={paddingX} y1={height - paddingY} x2={width - paddingX} y2={height - paddingY} className="chart-axis" />
+
+        {dateTicks.map((item, idx) => {
+          const x = scaleX(item.ts as number);
+          return (
+            <g key={`dx-${idx}`}>
+              <line x1={x} y1={paddingY} x2={x} y2={height - paddingY} className="chart-grid" />
+              <text x={x} y={height - paddingY + 6} className="chart-tick" textAnchor="middle">
+                {formatDateLabel(item.date)}
+              </text>
+            </g>
+          );
+        })}
+
+        {valueTicks.map((value, idx) => {
+          const y = scaleY(value);
+          return (
+            <g key={`vy-${idx}`}>
+              <line x1={paddingX} y1={y} x2={width - paddingX} y2={y} className="chart-grid" />
+              <text x={paddingX - 12} y={y + 4} className="chart-tick" textAnchor="end">
+                {formatIndicatorValue(value)}
+              </text>
+            </g>
+          );
+        })}
+
+        <text x={width / 2} y={height - 10} className="chart-axis-label" textAnchor="middle">
+          Data
+        </text>
+        <text x={16} y={height / 2} className="chart-axis-label" textAnchor="middle" transform={`rotate(-90 16 ${height / 2})`}>
+          {indicatorLabel}
+        </text>
+
+        <path className="chart-line" d={pathD} />
+
+        {parsedPoints.map((point, idx) => {
+          const x = scaleX(point.ts as number);
+          const y = scaleY(point.value);
+          return (
+            <circle
+              key={`${point.date}-${idx}`}
+              className="chart-node"
+              cx={x}
+              cy={y}
+              r={5}
+            />
+          );
+        })}
+
+        {parsedMarkers.map((marker, idx) => {
+          const x = scaleX(marker.ts as number);
+          const y = marker.value != null && Number.isFinite(marker.value) ? scaleY(marker.value) : paddingY + innerHeight;
+          return (
+            <g key={`${marker.date}-${marker.kind}-${idx}`}>
+              <line className={`chart-marker-line ${marker.kind}`} x1={x} y1={paddingY} x2={x} y2={height - paddingY} />
+              <circle className={`chart-marker ${marker.kind}`} cx={x} cy={y} r={7} />
+            </g>
+          );
+        })}
+
+        {hover && (
+          <line className="chart-hover-line" x1={hover.svgX} y1={paddingY} x2={hover.svgX} y2={height - paddingY} />
+        )}
+      </svg>
+
+      {hover && (
+        <div className="chart-tooltip" style={{ left: hover.pxX, top: hover.pxY }}>
+          <p className="legend-title">{formatIndicatorValue(hover.value)}</p>
+          <p className="legend-subtitle">{formatDateLabel(hover.date)}</p>
+        </div>
+      )}
+    </div>
   );
 };
 
@@ -300,6 +429,9 @@ export default function ProjectDetailPage() {
   const location = project.municipio
     ? `${project.municipio}${project.uf ? ` · ${project.uf}` : ""}`
     : "Município não informado";
+  const locationTitle = project.municipio
+    ? `${project.municipio}${project.uf ? ` (${project.uf})` : ""}`
+    : "Município não informado";
   const score = project.score ?? null;
   const sourceLabel = project.source === "policy" ? "Sugestão de política pública" : "Resultado de busca";
   const effectToneClass = getEffectTone(project);
@@ -438,7 +570,12 @@ export default function ProjectDetailPage() {
               </p>
             ) : indicatorSeries.length ? (
               <>
-                <IndicatorChart points={indicatorSeries} markers={seriesMarkers} />
+                <IndicatorChart
+                  points={indicatorSeries}
+                  markers={seriesMarkers}
+                  indicatorLabel={project.indicator_alias || "Indicador"}
+                  locationLabel={locationTitle}
+                />
                 {seriesMarkers.length > 0 && (
                   <div className="chart-legend">
                     {seriesMarkers.map((marker, idx) => (
