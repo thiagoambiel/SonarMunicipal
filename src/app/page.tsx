@@ -276,6 +276,7 @@ function HomeContent() {
   const [hasSearched, setHasSearched] = useState(false);
   const [data, setData] = useState<PolicyExplorerResponse | null>(null);
   const [sortPoliciesBy, setSortPoliciesBy] = useState<PolicySortOption>("quality-desc");
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const [selectedIndicator, setSelectedIndicator] = useState<string>(NO_INDICATOR_KEY);
   const [selectedWindow, setSelectedWindow] = useState<number | null>(null);
   const resultsRef = useRef<HTMLDivElement | null>(null);
@@ -368,6 +369,8 @@ function HomeContent() {
 
     return sorted;
   }, [activeWindowResult?.policies, sortPoliciesBy]);
+
+  const hasResults = activePolicies.length > 0;
   const usedIndicator = Boolean(activeBundle?.indicator);
   const indicatorAlias = activeBundle?.indicator_alias ?? "Sem indicador";
   const indicatorPositiveIsGood = activeBundle?.positive_is_good ?? true;
@@ -566,6 +569,22 @@ function HomeContent() {
     return isGood ? "effect-good" : "effect-bad";
   };
 
+  const handleBackToTop = () => {
+    const target = resultsRef.current;
+    if (target) {
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 320);
+    handleScroll();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   useEffect(() => {
     if (!loading && hasSearched && data && resultsRef.current) {
       resultsRef.current.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -596,6 +615,7 @@ function HomeContent() {
       : loadingPhase === "slow"
         ? "Quase lá! Refinando políticas e aplicando indicador à sua pergunta."
         : "Agrupando projetos similares, aplicando indicador e selecionando as melhores políticas para sua pergunta.";
+  const shouldShowBackToTop = showBackToTop && hasResults;
 
   return (
     <div className="landing">
@@ -901,6 +921,17 @@ function HomeContent() {
               </div>
             </div>
           </section>
+        )}
+
+        {shouldShowBackToTop && (
+          <button
+            type="button"
+            className="back-to-top"
+            onClick={handleBackToTop}
+            aria-label="Voltar ao topo da página"
+          >
+            Voltar ao topo
+          </button>
         )}
 
         <section className="trust-strip">
