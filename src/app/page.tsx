@@ -83,6 +83,13 @@ const toKey = (value: string | null) => (value == null ? NO_INDICATOR_KEY : valu
 
 const normalizeText = (value?: string | null) => (value ?? "").trim().toLocaleLowerCase("pt-BR");
 
+const buildMunicipioKey = (municipio?: string | null, uf?: string | null) => `${(municipio ?? "").trim()}|${uf ?? ""}`;
+const buildMunicipioLabel = (municipio: string, uf?: string | null) => (uf ? `${municipio} - ${uf}` : municipio);
+const parseMunicipioKey = (key: string) => {
+  const [municipio, uf = ""] = key.split("|");
+  return { municipio, uf: uf || null };
+};
+
 const formatEffectValue = (value?: number | null) => {
   if (value == null || Number.isNaN(value)) return "—";
   const fixed = value.toFixed(2);
@@ -224,9 +231,11 @@ function HomeContent() {
   const geoMatch = useCallback(
     (action: PolicyAction) => {
       const matchesUf = filterUf === "all" || action.uf === filterUf;
-      const matchesMunicipio =
-        filterMunicipio === "all" || normalizeText(action.municipio) === normalizeText(filterMunicipio);
-      return matchesUf && matchesMunicipio;
+      if (filterMunicipio === "all") return matchesUf;
+      const { municipio: selectedMunicipio, uf: selectedMunicipioUf } = parseMunicipioKey(filterMunicipio);
+      const matchesMunicipio = normalizeText(action.municipio) === normalizeText(selectedMunicipio);
+      const matchesMunicipioUf = !selectedMunicipioUf || action.uf === selectedMunicipioUf;
+      return matchesUf && matchesMunicipio && matchesMunicipioUf;
     },
     [filterMunicipio, filterUf],
   );
@@ -289,21 +298,30 @@ function HomeContent() {
   }, [activeWindowResult?.policies]);
 
   const availableMunicipios = useMemo(() => {
-    const municipios = new Set<string>();
+    const municipios = new Map<string, { key: string; label: string; municipio: string; uf: string | null }>();
     (activeWindowResult?.policies ?? []).forEach((policy) => {
       policy.actions.forEach((action) => {
         if (filterUf !== "all" && action.uf !== filterUf) return;
         const name = (action.municipio ?? "").trim();
-        if (name) municipios.add(name);
+        if (!name) return;
+        const key = buildMunicipioKey(name, action.uf ?? null);
+        if (!municipios.has(key)) {
+          municipios.set(key, {
+            key,
+            label: buildMunicipioLabel(name, action.uf ?? null),
+            municipio: name,
+            uf: action.uf ?? null,
+          });
+        }
       });
     });
-    return Array.from(municipios).sort((a, b) => a.localeCompare(b, "pt-BR"));
+    return Array.from(municipios.values()).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
   }, [activeWindowResult?.policies, filterUf]);
 
   const filteredMunicipioOptions = useMemo(() => {
     if (!municipioSearch.trim()) return availableMunicipios;
     const queryText = normalizeText(municipioSearch);
-    return availableMunicipios.filter((name) => normalizeText(name).includes(queryText));
+    return availableMunicipios.filter((option) => normalizeText(option.label).includes(queryText));
   }, [availableMunicipios, municipioSearch]);
 
   useEffect(() => {
@@ -540,10 +558,15 @@ function HomeContent() {
   }, [availableUfs, filterUf]);
 
   useEffect(() => {
-    if (filterMunicipio !== "all" && !availableMunicipios.includes(filterMunicipio)) {
+    if (filterMunicipio !== "all" && !availableMunicipios.some((option) => option.key === filterMunicipio)) {
       setFilterMunicipio("all");
     }
   }, [availableMunicipios, filterMunicipio]);
+
+  const selectedMunicipioLabel =
+    filterMunicipio === "all"
+      ? "Todos os municípios"
+      : availableMunicipios.find((option) => option.key === filterMunicipio)?.label ?? "Todos os municípios";
 
   useEffect(() => {
     const handleClick = (event: MouseEvent) => {
@@ -680,7 +703,7 @@ function HomeContent() {
               {(filterUf !== "all" || filterMunicipio !== "all") && (
                 <div className="chips-inline">
                   {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
-                  {filterMunicipio !== "all" && <span className="pill neutral">Município: {filterMunicipio}</span>}
+                  {filterMunicipio !== "all" && <span className="pill neutral">Município: {selectedMunicipioLabel}</span>}
                   <button
                     type="button"
                     className="ghost-link"
@@ -733,7 +756,7 @@ function HomeContent() {
                     >
                       <div className="dropdown-trigger-content">
                         <span className="dropdown-value">
-                          {filterMunicipio === "all" ? "Todos os municípios" : filterMunicipio}
+                          {selectedMunicipioLabel}
                         </span>
                       </div>
                       <div className="dropdown-icons">
@@ -782,22 +805,22 @@ function HomeContent() {
                               <span className="option-label">Todos os municípios</span>
                             </span>
                           </button>
-                          {filteredMunicipioOptions.map((municipio) => {
-                            const isActive = municipio === filterMunicipio;
+                          {filteredMunicipioOptions.map((option) => {
+                            const isActive = option.key === filterMunicipio;
                             return (
                               <button
-                                key={municipio}
+                                key={option.key}
                                 type="button"
                                 className={`dropdown-option ${isActive ? "active" : ""}`}
                                 role="option"
                                 aria-selected={isActive}
                                 onClick={() => {
-                                  setFilterMunicipio(municipio);
+                                  setFilterMunicipio(option.key);
                                   setIsMunicipioOpen(false);
                                 }}
                               >
                                 <span className="option-line">
-                                  <span className="option-label">{municipio}</span>
+                                  <span className="option-label">{option.label}</span>
                                 </span>
                               </button>
                             );

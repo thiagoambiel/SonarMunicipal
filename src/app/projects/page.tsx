@@ -77,6 +77,12 @@ const extractYear = (value?: string | null) => {
 };
 
 const normalizeText = (value?: string | null) => (value ?? "").trim().toLocaleLowerCase("pt-BR");
+const buildMunicipioKey = (municipio?: string | null, uf?: string | null) => `${(municipio ?? "").trim()}|${uf ?? ""}`;
+const buildMunicipioLabel = (municipio: string, uf?: string | null) => (uf ? `${municipio} - ${uf}` : municipio);
+const parseMunicipioKey = (key: string) => {
+  const [municipio, uf = ""] = key.split("|");
+  return { municipio, uf: uf || null };
+};
 
 const parseDateValue = (value?: string | null) => {
   if (!value) return null;
@@ -229,20 +235,22 @@ function ProjectsContent() {
   }, [results]);
 
   const availableMunicipios = useMemo(() => {
-    const municipios = new Set<string>();
+    const municipios = new Map<string, { key: string; label: string; municipio: string; uf: string | null }>();
     results.forEach((item) => {
-      if (item.municipio) {
-        const normalized = item.municipio.trim();
-        if (normalized) municipios.add(normalized);
+      const name = item.municipio?.trim();
+      if (!name) return;
+      const key = buildMunicipioKey(name, item.uf ?? null);
+      if (!municipios.has(key)) {
+        municipios.set(key, { key, label: buildMunicipioLabel(name, item.uf ?? null), municipio: name, uf: item.uf ?? null });
       }
     });
-    return Array.from(municipios).sort((a, b) => a.localeCompare(b, "pt-BR"));
+    return Array.from(municipios.values()).sort((a, b) => a.label.localeCompare(b.label, "pt-BR"));
   }, [results]);
 
   const filteredMunicipioOptions = useMemo(() => {
     if (!municipioSearch.trim()) return availableMunicipios;
     const query = normalizeText(municipioSearch);
-    return availableMunicipios.filter((name) => normalizeText(name).includes(query));
+    return availableMunicipios.filter((option) => normalizeText(option.label).includes(query));
   }, [availableMunicipios, municipioSearch]);
 
   const rangeStartDate = useMemo(() => parseDateValue(filterDateStart), [filterDateStart]);
@@ -268,8 +276,13 @@ function ProjectsContent() {
       results.filter((item) => {
         const matchesUf = filterUf === "all" || item.uf === filterUf;
         const matchesYear = filterYear === "all" || extractYear(item.data_apresentacao) === filterYear;
-        const matchesMunicipio =
-          filterMunicipio === "all" || normalizeText(item.municipio) === normalizeText(filterMunicipio);
+        const matchesMunicipio = (() => {
+          if (filterMunicipio === "all") return true;
+          const { municipio, uf } = parseMunicipioKey(filterMunicipio);
+          const matchesName = normalizeText(item.municipio) === normalizeText(municipio);
+          const matchesUfWithMunicipio = !uf || item.uf === uf;
+          return matchesName && matchesUfWithMunicipio;
+        })();
         const itemDate = parseDateValue(item.data_apresentacao);
         const matchesDateRange = (() => {
           if (!rangeStartDate && !rangeEndDate) return true;
@@ -763,6 +776,11 @@ function ProjectsContent() {
     }
   }, [availableMunicipios.length, isMunicipioOpen]);
 
+  const selectedMunicipioLabel =
+    filterMunicipio === "all"
+      ? "Todos os municípios"
+      : availableMunicipios.find((option) => option.key === filterMunicipio)?.label ?? "Todos os municípios";
+
   return (
     <div className="landing">
       <header className="minimal-nav">
@@ -837,7 +855,7 @@ function ProjectsContent() {
                 <div className="chips-inline">
                   {filterUf !== "all" && <span className="pill neutral">UF: {filterUf}</span>}
                   {filterYear !== "all" && <span className="pill neutral">Ano: {filterYear}</span>}
-                  {filterMunicipio !== "all" && <span className="pill neutral">Município: {filterMunicipio}</span>}
+                  {filterMunicipio !== "all" && <span className="pill neutral">Município: {selectedMunicipioLabel}</span>}
                   {hasDateRangeFilter && (
                     <span className="pill neutral">{dateRangeLabel ?? "Intervalo selecionado"}</span>
                   )}
@@ -889,7 +907,7 @@ function ProjectsContent() {
                     >
                       <div className="dropdown-trigger-content">
                         <span className="dropdown-value">
-                          {filterMunicipio === "all" ? "Todos os municípios" : filterMunicipio}
+                          {selectedMunicipioLabel}
                         </span>
                       </div>
                       <div className="dropdown-icons">
@@ -935,19 +953,19 @@ function ProjectsContent() {
                               <span className="option-label">Todos os municípios</span>
                             </span>
                           </button>
-                          {filteredMunicipioOptions.map((municipio) => {
-                            const isActive = municipio === filterMunicipio;
+                          {filteredMunicipioOptions.map((option) => {
+                            const isActive = option.key === filterMunicipio;
                             return (
                               <button
-                                key={municipio}
+                                key={option.key}
                                 type="button"
                                 className={`dropdown-option ${isActive ? "active" : ""}`}
                                 role="option"
                                 aria-selected={isActive}
-                                onClick={() => handleMunicipioSelect(municipio)}
+                                onClick={() => handleMunicipioSelect(option.key)}
                               >
                                 <span className="option-line">
-                                  <span className="option-label">{municipio}</span>
+                                  <span className="option-label">{option.label}</span>
                                 </span>
                               </button>
                             );
