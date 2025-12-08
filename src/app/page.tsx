@@ -2,8 +2,10 @@
 
 import Link from "next/link";
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import type { KeyboardEvent, MouseEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import CustomDropdown, { type DropdownBadge } from "@/components/CustomDropdown";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 type SearchResult = {
@@ -96,19 +98,6 @@ const makeSlug = (text: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "") || "politica";
 
-type DropdownValue = string | number;
-
-type DropdownBadge = {
-  label: string;
-  tone: "quality" | "effect" | "info";
-};
-
-type DropdownOption = {
-  value: DropdownValue;
-  label: string;
-  badges?: DropdownBadge[];
-};
-
 type PolicySortOption = "effect-desc" | "effect-asc" | "quality-desc" | "quality-asc";
 
 const policySortOptions: Array<{ value: PolicySortOption; label: string }> = [
@@ -133,128 +122,6 @@ const SearchIcon = () => (
     <path d="M21 21L16.65 16.65" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
   </svg>
 );
-
-function CustomDropdown({ options, value, disabled, loading, onChange, id, ariaLabel }: {
-  options: DropdownOption[];
-  value: DropdownValue;
-  disabled?: boolean;
-  loading?: boolean;
-  onChange: (value: DropdownValue) => void;
-  id?: string;
-  ariaLabel?: string;
-}) {
-  const [open, setOpen] = useState(false);
-  const containerRef = useRef<HTMLDivElement | null>(null);
-  const selectedOption = useMemo(() => options.find((item) => item.value === value), [options, value]);
-  const selectedBadges = selectedOption?.badges ?? [];
-
-  useEffect(() => {
-    if (!open || disabled) return;
-    const handleClick = (event: MouseEvent) => {
-      if (!containerRef.current) return;
-      if (!containerRef.current.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClick);
-    return () => document.removeEventListener("mousedown", handleClick);
-  }, [disabled, open]);
-
-  useEffect(() => {
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-    document.addEventListener("keydown", handleEscape);
-    return () => document.removeEventListener("keydown", handleEscape);
-  }, []);
-
-  const handleSelection = (selectedValue: DropdownValue) => {
-    onChange(selectedValue);
-    setOpen(false);
-  };
-
-  const selectedLabel = selectedOption?.label ?? "";
-  const isDisabled = Boolean(disabled);
-  const isMenuOpen = !isDisabled && open;
-
-  return (
-    <div className={`custom-dropdown ${isDisabled ? "disabled" : ""}`} ref={containerRef}>
-      <button
-        type="button"
-        className={`dropdown-trigger ${loading ? "loading" : ""}`}
-        onClick={() => !isDisabled && setOpen((prev) => !prev)}
-        aria-haspopup="listbox"
-        aria-expanded={isMenuOpen}
-        disabled={isDisabled}
-        id={id}
-        aria-label={ariaLabel}
-      >
-        <div className="dropdown-trigger-content">
-          <span className="dropdown-value">{selectedLabel}</span>
-          {selectedBadges.length > 0 && (
-            <div className="option-badges">
-              {selectedBadges.map((badge) => (
-                <span key={badge.label} className={`option-badge ${badge.tone}`}>
-                  {badge.label}
-                </span>
-              ))}
-            </div>
-          )}
-        </div>
-        <div className="dropdown-icons">
-          {loading && <span className="dropdown-spinner" aria-hidden="true" />}
-          <svg
-            className={`chevron ${isMenuOpen ? "open" : ""}`}
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            aria-hidden="true"
-          >
-            <path
-              d="M6 9L12 15L18 9"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </div>
-      </button>
-      {isMenuOpen && (
-        <div className="dropdown-menu" role="listbox">
-          {options.map((option) => {
-            const isActive = option.value === value;
-            return (
-              <button
-                key={option.value}
-                type="button"
-                className={`dropdown-option ${isActive ? "active" : ""}`}
-                role="option"
-                aria-selected={isActive}
-                onClick={() => handleSelection(option.value)}
-              >
-                <div className="option-line">
-                  <span className="option-label">{option.label}</span>
-                  {option.badges && option.badges.length > 0 && (
-                    <div className="option-badges">
-                      {option.badges.map((badge) => (
-                        <span key={`${option.value}-${badge.label}`} className={`option-badge ${badge.tone}`}>
-                          {badge.label}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      )}
-    </div>
-  );
-}
 
 export default function Home() {
   return (
@@ -755,7 +622,9 @@ function HomeContent() {
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <span className="nav-title">CityManager</span>
+          <Link className="nav-title" href="/">
+            CityManager
+          </Link>
         </div>
         <nav className="nav-links-minimal">
           <span className="nav-link-minimal active">Gerador de Políticas Públicas</span>
@@ -832,22 +701,17 @@ function HomeContent() {
                 <div className="filter-card">
                   <p className="filter-title">UF</p>
                   <p className="muted small">Filtre políticas aplicadas em estados específicos.</p>
-                  <div className="filter-select">
-                    <select
-                      id="policy-uf-select"
-                      value={filterUf}
-                      onChange={(event) => setFilterUf(event.target.value)}
-                      disabled={availableUfs.length === 0}
-                      aria-disabled={availableUfs.length === 0}
-                    >
-                      <option value="all">Todas as UF</option>
-                      {availableUfs.map((uf) => (
-                        <option key={uf} value={uf}>
-                          {uf}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                  <CustomDropdown
+                    id="policy-uf-select"
+                    ariaLabel="Filtrar políticas por UF"
+                    value={filterUf}
+                    disabled={availableUfs.length === 0}
+                    options={[
+                      { value: "all", label: "Todas as UF" },
+                      ...availableUfs.map((uf) => ({ value: uf, label: uf })),
+                    ]}
+                    onChange={(newValue) => setFilterUf(String(newValue))}
+                  />
                   {availableUfs.length === 0 && (
                     <p className="muted small helper-text">Busque para liberar as UF retornadas nos resultados.</p>
                   )}

@@ -5,6 +5,7 @@ import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from "rea
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
+import CustomDropdown from "@/components/CustomDropdown";
 import { buildProjectSlug } from "@/lib/projects";
 import { PROJECTS_SEARCH_STORAGE_KEY } from "@/lib/projectsSearchStorage";
 
@@ -113,7 +114,8 @@ const SearchIcon = () => (
 
 function ProjectsContent() {
   const router = useRouter();
-  const [query, setQuery] = useState("");
+  const [queryInput, setQueryInput] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [results, setResults] = useState<SearchResult[]>([]);
   const [status, setStatus] = useState<"idle" | "loading" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -472,7 +474,7 @@ function ProjectsContent() {
     (state: Partial<StoredSearchState>) => {
       try {
         const payload: StoredSearchState = {
-          query,
+          query: submittedQuery,
           filterUf,
           filterYear,
           filterMunicipio,
@@ -490,7 +492,18 @@ function ProjectsContent() {
         console.error("Erro ao salvar estado da busca", storageError);
       }
     },
-    [filterDateEnd, filterDateStart, filterMunicipio, filterUf, filterYear, hasSearched, page, query, results, sortBy],
+    [
+      filterDateEnd,
+      filterDateStart,
+      filterMunicipio,
+      filterUf,
+      filterYear,
+      hasSearched,
+      page,
+      results,
+      sortBy,
+      submittedQuery,
+    ],
   );
 
   useEffect(() => {
@@ -534,7 +547,7 @@ function ProjectsContent() {
 
   const handleSearch = useCallback(async (event?: FormEvent<HTMLFormElement>, override?: string) => {
     event?.preventDefault();
-    const normalizedQuery = (override ?? query).trim();
+    const normalizedQuery = (override ?? queryInput).trim();
 
     if (!normalizedQuery) {
       setErrorMessage("Digite uma pergunta para buscar.");
@@ -543,6 +556,7 @@ function ProjectsContent() {
 
     setStatus("loading");
     setHasSearched(true);
+    setSubmittedQuery(normalizedQuery);
     setPage(1);
     setErrorMessage(null);
     syncUrlState({
@@ -583,10 +597,20 @@ function ProjectsContent() {
       setStatus("error");
       setErrorMessage("Não foi possível buscar agora. Tente novamente em instantes.");
     }
-  }, [filterDateEnd, filterDateStart, filterMunicipio, filterUf, filterYear, query, saveStateToStorage, sortBy, syncUrlState]);
+  }, [
+    filterDateEnd,
+    filterDateStart,
+    filterMunicipio,
+    filterUf,
+    filterYear,
+    queryInput,
+    saveStateToStorage,
+    sortBy,
+    syncUrlState,
+  ]);
 
   const handleSuggestionClick = (text: string) => {
-    setQuery(text);
+    setQueryInput(text);
     void handleSearch(undefined, text);
   };
 
@@ -634,6 +658,7 @@ function ProjectsContent() {
     let nextResults: SearchResult[] = [];
     let nextHasSearched = false;
     let nextPage = 1;
+    let nextSubmittedQuery = "";
     const parsedPage = Number.parseInt(initialPageParam ?? "", 10);
     if (Number.isFinite(parsedPage) && parsedPage > 0) {
       nextPage = parsedPage;
@@ -641,21 +666,22 @@ function ProjectsContent() {
 
     try {
       const raw = sessionStorage.getItem(STORAGE_KEY);
-        if (raw) {
-          const saved = JSON.parse(raw) as Partial<StoredSearchState>;
-          if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
-          if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
-          if (nextMunicipio === "all" && saved.filterMunicipio) nextMunicipio = saved.filterMunicipio;
-          if (!nextDateStart && saved.filterDateStart) nextDateStart = saved.filterDateStart;
-          if (!nextDateEnd && saved.filterDateEnd) nextDateEnd = saved.filterDateEnd;
-          if (nextSort === "relevance" && saved.sortBy && isSortOption(saved.sortBy)) nextSort = saved.sortBy;
-          if (Array.isArray(saved.results)) nextResults = saved.results;
-          if (typeof saved.hasSearched === "boolean") nextHasSearched = saved.hasSearched;
-          if (typeof saved.page === "number" && !(initialPageParam && Number.isFinite(parsedPage))) {
-            nextPage = Math.max(1, Math.trunc(saved.page));
+      if (raw) {
+        const saved = JSON.parse(raw) as Partial<StoredSearchState>;
+        if (nextUf === "all" && saved.filterUf) nextUf = saved.filterUf;
+        if (nextYear === "all" && saved.filterYear) nextYear = saved.filterYear;
+        if (nextMunicipio === "all" && saved.filterMunicipio) nextMunicipio = saved.filterMunicipio;
+        if (!nextDateStart && saved.filterDateStart) nextDateStart = saved.filterDateStart;
+        if (!nextDateEnd && saved.filterDateEnd) nextDateEnd = saved.filterDateEnd;
+        if (nextSort === "relevance" && saved.sortBy && isSortOption(saved.sortBy)) nextSort = saved.sortBy;
+        if (Array.isArray(saved.results)) nextResults = saved.results;
+        if (typeof saved.hasSearched === "boolean") nextHasSearched = saved.hasSearched;
+        if (typeof saved.page === "number" && !(initialPageParam && Number.isFinite(parsedPage))) {
+          nextPage = Math.max(1, Math.trunc(saved.page));
         }
         if (typeof saved.query === "string") {
-          setQuery(saved.query);
+          setQueryInput(saved.query);
+          nextSubmittedQuery = saved.query;
         }
       }
     } catch (storageError) {
@@ -669,6 +695,7 @@ function ProjectsContent() {
     setFilterDateEnd(nextDateEnd);
     setSortBy(nextSort);
     setResults(nextResults);
+    setSubmittedQuery(nextSubmittedQuery);
     setHasSearched(nextHasSearched && nextResults.length > 0);
     setPage(nextPage);
 
@@ -696,8 +723,8 @@ function ProjectsContent() {
     filterUf,
     filterYear,
     hasRestoredState,
-    query,
     results,
+    submittedQuery,
     hasSearched,
     page,
     saveStateToStorage,
@@ -707,7 +734,7 @@ function ProjectsContent() {
   useEffect(() => {
     if (!hasRestoredState || !hasSearched) return;
     syncUrlState({
-      query,
+      query: submittedQuery,
       uf: filterUf,
       year: filterYear,
       municipio: filterMunicipio,
@@ -725,7 +752,7 @@ function ProjectsContent() {
     hasRestoredState,
     hasSearched,
     page,
-    query,
+    submittedQuery,
     sortBy,
     syncUrlState,
   ]);
@@ -740,7 +767,9 @@ function ProjectsContent() {
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <span className="nav-title">CityManager</span>
+          <Link className="nav-title" href="/">
+            CityManager
+          </Link>
         </div>
         <nav className="nav-links-minimal">
           <Link className="nav-link-minimal" href="/">
@@ -762,8 +791,8 @@ function ProjectsContent() {
               type="search"
               name="query"
               placeholder="Ex.: Projetos de mobilidade ativa em capitais"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
+              value={queryInput}
+              onChange={(event) => setQueryInput(event.target.value)}
               aria-label="Pergunta para buscar projetos de lei"
               autoComplete="off"
             />
@@ -797,7 +826,7 @@ function ProjectsContent() {
             <div className="results-header">
               <div>
                 <p className="eyebrow">Resultados para</p>
-                <h2>{query || initialQuery || "Projetos de Lei"}</h2>
+                <h2>{submittedQuery || initialQuery || "Projetos de Lei"}</h2>
                 <p className="muted">
                   {hasResults
                     ? `Mostrando ${pageStart}-${pageEnd} de ${sortedResults.length} projetos`
@@ -830,18 +859,16 @@ function ProjectsContent() {
                   <p className="filter-title">UF</p>
                   <p className="muted small">Foque nos projetos do estado desejado.</p>
                   <div className="filter-select">
-                    <select
+                    <CustomDropdown
                       id="projects-uf-select"
+                      ariaLabel="Filtrar projetos por UF"
                       value={filterUf}
-                      onChange={(event) => setFilterUf(event.target.value)}
-                    >
-                      <option value="all">Todas as UF</option>
-                      {availableUfs.map((uf) => (
-                        <option key={uf} value={uf}>
-                          {uf}
-                        </option>
-                      ))}
-                    </select>
+                      options={[
+                        { value: "all", label: "Todas as UF" },
+                        ...availableUfs.map((uf) => ({ value: uf, label: uf })),
+                      ]}
+                      onChange={(newValue) => setFilterUf(String(newValue))}
+                    />
                   </div>
                 </div>
 
@@ -943,20 +970,17 @@ function ProjectsContent() {
                   <p className="filter-title">Ano de apresentação</p>
                   <p className="muted small">Mantenha o contexto temporal da política.</p>
                   <div className="filter-select">
-                    <select
+                    <CustomDropdown
                       id="projects-year-select"
+                      ariaLabel="Filtrar projetos por ano de apresentação"
                       value={filterYear}
                       disabled={!hasYearOptions}
-                      aria-disabled={!hasYearOptions}
-                      onChange={(event) => setFilterYear(event.target.value)}
-                    >
-                      <option value="all">Todos os anos</option>
-                      {availableYears.map((year) => (
-                        <option key={year} value={year}>
-                          {year}
-                        </option>
-                      ))}
-                    </select>
+                      options={[
+                        { value: "all", label: "Todos os anos" },
+                        ...availableYears.map((year) => ({ value: year, label: year })),
+                      ]}
+                      onChange={(newValue) => setFilterYear(String(newValue))}
+                    />
                   </div>
                   {!hasYearOptions && (
                     <p className="muted small helper-text">
@@ -1038,20 +1062,16 @@ function ProjectsContent() {
                   <p className="filter-title">Ordenar resultados</p>
                   <p className="muted small">Reorganize a lista por município, estado ou ano.</p>
                   <div className="filter-select">
-                    <select
+                    <CustomDropdown
                       id="projects-sort-select"
+                      ariaLabel="Selecionar ordenação dos resultados"
                       value={sortBy}
-                      onChange={(event) => {
-                        const selectedSort = event.target.value;
+                      options={sortOptions.map((option) => ({ value: option.value, label: option.label }))}
+                      onChange={(newValue) => {
+                        const selectedSort = typeof newValue === "string" ? newValue : String(newValue);
                         setSortBy(isSortOption(selectedSort) ? selectedSort : "relevance");
                       }}
-                    >
-                      {sortOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
-                          {option.label}
-                        </option>
-                      ))}
-                    </select>
+                    />
                   </div>
                 </div>
 

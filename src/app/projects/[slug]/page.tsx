@@ -421,7 +421,9 @@ export default function ProjectDetailPage() {
       <div className="landing">
         <header className="minimal-nav">
           <div className="nav-brand">
-            <span className="nav-title">CityManager</span>
+            <Link className="nav-title" href="/">
+              CityManager
+            </Link>
           </div>
           <nav className="nav-links-minimal">
             <Link className="nav-link-minimal" href="/">
@@ -463,7 +465,9 @@ export default function ProjectDetailPage() {
     <div className="landing">
       <header className="minimal-nav">
         <div className="nav-brand">
-          <span className="nav-title">CityManager</span>
+          <Link className="nav-title" href="/">
+            CityManager
+          </Link>
         </div>
         <nav className="nav-links-minimal">
           <Link className="nav-link-minimal" href="/">
