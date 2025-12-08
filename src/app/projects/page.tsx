@@ -78,7 +78,7 @@ const extractYear = (value?: string | null) => {
 
 const normalizeText = (value?: string | null) => (value ?? "").trim().toLocaleLowerCase("pt-BR");
 const buildMunicipioKey = (municipio?: string | null, uf?: string | null) => `${(municipio ?? "").trim()}|${uf ?? ""}`;
-const buildMunicipioLabel = (municipio: string, uf?: string | null) => (uf ? `${municipio} - ${uf}` : municipio);
+const buildMunicipioLabel = (municipio: string, uf?: string | null) => (uf ? `${municipio} · ${uf}` : municipio);
 const parseMunicipioKey = (key: string) => {
   const [municipio, uf = ""] = key.split("|");
   return { municipio, uf: uf || null };
