@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { KeyboardEvent, MouseEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import CustomDropdown, { type DropdownBadge } from "@/components/CustomDropdown";
