@@ -18,8 +18,8 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "CityManager - Busca semântica",
-  description: "Busque políticas públicas similares em linguagem natural.",
+  title: "CityManager",
+  description: "Busque por políticas públicas relevantes que podem ser aplicadas em seu município",
 };
 
 export default function RootLayout({
