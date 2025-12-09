@@ -5,8 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import type { KeyboardEvent } from "react";
 import { startTransition, useEffect, useState } from "react";
 
+import MinimalNav from "@/components/MinimalNav";
 import { buildProjectSlug } from "@/lib/projects";
-import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 type PolicyAction = {
   municipio: string;
@@ -61,24 +61,7 @@ export default function PolicyDetailPage() {
   if (!data) {
     return (
       <div className="landing">
-        <header className="minimal-nav">
-          <div className="nav-brand">
-            <Link className="nav-title" href="/">
-              CityManager
-            </Link>
-          </div>
-          <nav className="nav-links-minimal">
-            <Link className="nav-link-minimal active" href="/">
-              Gerador de Políticas Públicas
-            </Link>
-            <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
-              Projetos de Lei
-            </Link>
-            <Link className="nav-link-minimal" href="/methodology">
-              Metodologia
-            </Link>
-          </nav>
-        </header>
+        <MinimalNav />
         <main className="landing-body page-body">
           <div className="message muted">Nenhuma política carregada. Volte e selecione uma política.</div>
           <button className="secondary-btn" onClick={() => router.push("/")}>
@@ -167,24 +150,7 @@ export default function PolicyDetailPage() {
 
   return (
     <div className="landing">
-      <header className="minimal-nav">
-        <div className="nav-brand">
-          <Link className="nav-title" href="/">
-            CityManager
-          </Link>
-        </div>
-        <nav className="nav-links-minimal">
-          <Link className="nav-link-minimal active" href="/">
-            Gerador de Políticas Públicas
-          </Link>
-          <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
-            Projetos de Lei
-          </Link>
-          <Link className="nav-link-minimal" href="/methodology">
-            Metodologia
-          </Link>
-        </nav>
-      </header>
+      <MinimalNav />
 
       <main className="landing-body page-body">
         <section className="hero">

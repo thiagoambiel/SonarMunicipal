@@ -2,27 +2,13 @@
 
 import Link from "next/link";
 
+import MinimalNav from "@/components/MinimalNav";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 export default function MethodologyPage() {
   return (
     <div className="landing">
-      <header className="minimal-nav">
-        <div className="nav-brand">
-          <Link className="nav-title" href="/">
-            CityManager
-          </Link>
-        </div>
-        <nav className="nav-links-minimal">
-          <Link className="nav-link-minimal" href="/">
-            Gerador de Políticas Públicas
-          </Link>
-          <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
-            Projetos de Lei
-          </Link>
-          <span className="nav-link-minimal active">Metodologia</span>
-        </nav>
-      </header>
+      <MinimalNav />
 
       <main className="landing-body page-body">
         <section className="hero">

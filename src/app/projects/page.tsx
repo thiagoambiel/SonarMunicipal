@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import CustomDropdown from "@/components/CustomDropdown";
+import MinimalNav from "@/components/MinimalNav";
 import { buildProjectSlug } from "@/lib/projects";
 import { PROJECTS_SEARCH_STORAGE_KEY } from "@/lib/projectsSearchStorage";
 
@@ -783,22 +784,7 @@ function ProjectsContent() {
 
   return (
     <div className="landing">
-      <header className="minimal-nav">
-        <div className="nav-brand">
-          <Link className="nav-title" href="/">
-            CityManager
-          </Link>
-        </div>
-        <nav className="nav-links-minimal">
-          <Link className="nav-link-minimal" href="/">
-            Gerador de Políticas Públicas
-          </Link>
-          <span className="nav-link-minimal active">Projetos de Lei</span>
-          <Link className="nav-link-minimal" href="/methodology">
-            Metodologia
-          </Link>
-        </nav>
-      </header>
+      <MinimalNav />
 
       <main className="landing-body">
         <section className="search-stage">

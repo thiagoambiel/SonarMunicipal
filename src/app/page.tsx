@@ -5,6 +5,7 @@ import { FormEvent, Suspense, useCallback, useEffect, useMemo, useRef, useState 
 import { useRouter, useSearchParams } from "next/navigation";
 
 import CustomDropdown, { type DropdownBadge } from "@/components/CustomDropdown";
+import MinimalNav from "@/components/MinimalNav";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 type SearchResult = {
@@ -642,22 +643,7 @@ function HomeContent() {
 
   return (
     <div className="landing">
-      <header className="minimal-nav">
-        <div className="nav-brand">
-          <Link className="nav-title" href="/">
-            CityManager
-          </Link>
-        </div>
-        <nav className="nav-links-minimal">
-          <span className="nav-link-minimal active">Gerador de Políticas Públicas</span>
-          <Link className="nav-link-minimal" href="/projects" onClick={clearProjectsSearchState}>
-            Projetos de Lei
-          </Link>
-          <Link className="nav-link-minimal" href="/methodology">
-            Metodologia
-          </Link>
-        </nav>
-      </header>
+      <MinimalNav />
 
       <main className="landing-body">
         <section className="search-stage">
