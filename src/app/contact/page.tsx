@@ -43,8 +43,7 @@ export default function ContactPage() {
 
               <p className="contact-bio">
                 Sou pesquisador no ICMC-USP, trabalhando com automação de geração de políticas públicas usando métodos de
-                inteligência artificial para apoiar a formulação e avaliação em municípios. O CityManager aproxima dados,
-                pesquisa acadêmica e gestores de cidades.
+                inteligência artificial para apoiar gestores de municipios no processo de tomada de decisão.
               </p>
 
               <div className="contact-help">

@@ -1652,7 +1652,8 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: 55vh;
+  min-height: calc(100vh - 160px);
+  padding: var(--space-20) var(--space-16);
 }
 
 .contact-minimal {
@@ -1827,8 +1828,8 @@ p {
 }
 
 .contact-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -1895,7 +1896,7 @@ p {
   }
 
   .contact-actions {
-    justify-content: center;
+    grid-template-columns: 1fr;
   }
 
   .contact-help {
