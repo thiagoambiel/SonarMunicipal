@@ -42,7 +42,7 @@ export default function ContactPage() {
               <p className="eyebrow">Contato</p>
 
               <p className="contact-bio">
-                Sou pesquisador no ICMC-USP, trabalhando com automação de geração de políticas públicas usando métodos de
+                Atualmente faço pesquisa pelo ICMC-USP, com financiamento do projeto AI4PEP, trabalhando com automação de geração de políticas públicas usando métodos de
                 inteligência artificial para apoiar gestores de municipios no processo de tomada de decisão.
               </p>
 
@@ -82,6 +82,23 @@ export default function ContactPage() {
                   </Link>
                 </div>
                 <div className="contact-line">
+                  <span className="label">AI4PEP</span>
+                  <Link className="contact-inline-link" href="https://ai4pep.org/" target="_blank" rel="noreferrer">
+                    <span className="contact-icon" aria-hidden="true">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                        <path
+                          d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9Zm0 0c2 1.6 3.2 4.9 3.2 8.1 0 3.2-1.2 6.5-3.2 8.2m0-16.3c-2 1.6-3.2 4.9-3.2 8.1 0 3.2 1.2 6.5 3.2 8.2m-7.8-8.2h15.6M5 9h14M5 15h14"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </span>
+                    Site do AI4PEP
+                  </Link>
+                </div>
+                <div className="contact-line">
                   <span className="label">Google Scholar</span>
                   <Link className="contact-inline-link" href={scholarProfile} target="_blank" rel="noreferrer">
                     <span className="contact-icon" aria-hidden="true">
@@ -91,7 +108,7 @@ export default function ContactPage() {
                         <path d="M8.5 11.5H15.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                       </svg>
                     </span>
-                    Perfil
+                    Thiago Ambiel
                   </Link>
                 </div>
                 <div className="contact-line">
@@ -116,21 +133,6 @@ export default function ContactPage() {
               <p className="contact-response">Geralmente respondo em até 2 dias úteis.</p>
 
               <div className="contact-actions">
-                <Link className="contact-cta" href={`mailto:${primaryEmail}?subject=${contactSubject}&body=${contactBody}`}>
-                  <span className="contact-icon" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M4 6.5 10.8 11c.73.5 1.67.5 2.4 0L20 6.5"
-                        stroke="currentColor"
-                        strokeWidth="1.7"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <rect x="4" y="5" width="16" height="14" rx="2.4" stroke="currentColor" strokeWidth="1.7" />
-                    </svg>
-                  </span>
-                  Falar sobre o CityManager
-                </Link>
                 <Link className="contact-link" href={scholarProfile} target="_blank" rel="noreferrer">
                   <span className="contact-icon" aria-hidden="true">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
@@ -168,6 +170,20 @@ export default function ContactPage() {
                     </svg>
                   </span>
                   Site do ICMC-USP
+                </Link>
+                <Link className="contact-link" href="https://ai4pep.org/" target="_blank" rel="noreferrer">
+                  <span className="contact-icon" aria-hidden="true">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                      <path
+                        d="M12 3c4.97 0 9 4.03 9 9s-4.03 9-9 9-9-4.03-9-9 4.03-9 9-9Zm0 0c2 1.6 3.2 4.9 3.2 8.1 0 3.2-1.2 6.5-3.2 8.2m0-16.3c-2 1.6-3.2 4.9-3.2 8.1 0 3.2 1.2 6.5 3.2 8.2m-7.8-8.2h15.6M5 9h14M5 15h14"
+                        stroke="currentColor"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </span>
+                  Site do AI4PEP
                 </Link>
               </div>
             </div>

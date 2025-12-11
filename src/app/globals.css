@@ -1778,7 +1778,8 @@ p {
 
 .contact-lines {
   display: grid;
-  gap: 8px;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .contact-line {
@@ -1883,6 +1884,10 @@ p {
 
   .contact-info {
     text-align: center;
+  }
+
+  .contact-lines {
+    grid-template-columns: 1fr;
   }
 
   .contact-line {
