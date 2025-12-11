@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
-type NavSection = "home" | "projects" | "methodology";
+type NavSection = "home" | "projects" | "methodology" | "contact";
 
 type NavItem = {
   key: NavSection;
@@ -19,12 +19,14 @@ const navItems: NavItem[] = [
   { key: "home", href: "/", label: "Gerador de Políticas Públicas" },
   { key: "projects", href: "/projects", label: "Projetos de Lei", onClick: clearProjectsSearchState },
   { key: "methodology", href: "/methodology", label: "Metodologia" },
+  { key: "contact", href: "/contact", label: "Contato" },
 ];
 
 const deriveSectionFromPath = (pathname: string | null): NavSection => {
   if (!pathname) return "home";
   if (pathname.startsWith("/projects")) return "projects";
   if (pathname.startsWith("/methodology")) return "methodology";
+  if (pathname.startsWith("/contact")) return "contact";
   return "home";
 };
 
