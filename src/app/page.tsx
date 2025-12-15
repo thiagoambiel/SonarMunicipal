@@ -176,6 +176,18 @@ function HomeContent() {
     verySlowTimerRef.current = null;
   };
 
+  const selectPreferredWindow = useCallback((bundle: IndicatorBundle | null | undefined) => {
+    if (!bundle) return null;
+    const intersection = (bundle.effect_windows ?? []).filter(
+      (window) =>
+        bundle.best_quality_effect_windows?.includes(window) && bundle.best_effect_mean_windows?.includes(window),
+    );
+    if (intersection.length > 0) return intersection[0];
+    if (bundle.best_quality_effect_windows?.length) return bundle.best_quality_effect_windows[0] ?? null;
+    if (bundle.best_effect_mean_windows?.length) return bundle.best_effect_mean_windows[0] ?? null;
+    return bundle.effect_windows?.[0] ?? null;
+  }, []);
+
   const syncUrlState = useCallback(
     (state: {
       query?: string;
@@ -203,15 +215,11 @@ function HomeContent() {
   const applyPayload = useCallback((payload: PolicyExplorerResponse) => {
     setData(payload);
     setSelectedIndicator(NO_INDICATOR_KEY);
-    const defaultWindow =
-      payload.baseline?.effect_windows?.[0] ??
-      payload.baseline?.windows?.[0]?.effect_window_months ??
-      payload.indicators?.[0]?.effect_windows?.[0] ??
-      null;
+    const defaultWindow = selectPreferredWindow(payload.baseline) ?? payload.baseline?.windows?.[0]?.effect_window_months ?? null;
     setSelectedWindow(defaultWindow ?? null);
     setHasSearched(true);
     setError(null);
-  }, []);
+  }, [selectPreferredWindow]);
 
   const bundles = useMemo(() => {
     if (!data) return [];
@@ -327,16 +335,12 @@ function HomeContent() {
 
   useEffect(() => {
     if (!activeBundle) return;
-    const preferred =
-      activeBundle.best_quality_effect_windows[0] ??
-      activeBundle.best_effect_mean_windows[0] ??
-      activeBundle.effect_windows[0] ??
-      null;
+    const preferred = selectPreferredWindow(activeBundle);
     if (preferred == null) return;
     if (selectedWindow == null || !activeBundle.effect_windows.includes(selectedWindow)) {
       setSelectedWindow(preferred);
     }
-  }, [activeBundle, selectedWindow]);
+  }, [activeBundle, selectPreferredWindow, selectedWindow]);
 
   const runSearch = useCallback(async (text: string, options?: { skipUrlUpdate?: boolean }) => {
     const normalized = text.trim();
@@ -425,7 +429,7 @@ function HomeContent() {
   const handleIndicatorChange = (key: string) => {
     setSelectedIndicator(key);
     const bundle = bundles.find((item) => toKey(item.indicator) === key);
-    const target = bundle?.best_quality_effect_windows?.[0] ?? bundle?.effect_windows?.[0] ?? selectedWindow;
+    const target = selectPreferredWindow(bundle) ?? selectedWindow;
     if (target != null) {
       setSelectedWindow(target);
       syncUrlState({ query, indicator: key, window: target, sort: sortPoliciesBy, uf: filterUf, municipio: filterMunicipio });
