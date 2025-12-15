@@ -508,6 +508,29 @@ function HomeContent() {
     return `${monthsLabel} · ${semestersLabel} · ${yearsLabel}`;
   };
 
+  const windowOptions = useMemo(() => {
+    if (!usedIndicator) {
+      return [
+        {
+          value: "__select_indicator__",
+          label: "Escolha um indicador para selecionar a janela",
+        },
+      ];
+    }
+    return (activeBundle?.effect_windows ?? []).map((window) => {
+      const badges: DropdownBadge[] = [];
+      if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
+      if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
+      return {
+        value: window,
+        label: buildWindowLabel(window),
+        badges,
+      };
+    });
+  }, [activeBundle?.effect_windows, bestEffectWindows, bestQualityWindows, usedIndicator]);
+
+  const windowSelectValue = usedIndicator ? selectedWindow ?? "" : "__select_indicator__";
+
   const handleViewDetails = (policy: PolicySuggestion) => {
     const slug = makeSlug(policy.policy);
     try {
@@ -857,17 +880,9 @@ function HomeContent() {
                   <CustomDropdown
                     id="window-select"
                     ariaLabel="Selecionar janela de efeito"
-                    value={selectedWindow ?? ""}
-                    options={(activeBundle?.effect_windows ?? []).map((window) => {
-                      const badges: DropdownBadge[] = [];
-                      if (bestQualityWindows.includes(window)) badges.push({ label: "Melhor qualidade", tone: "quality" });
-                      if (bestEffectWindows.includes(window)) badges.push({ label: "Melhor efeito", tone: "effect" });
-                      return {
-                        value: window,
-                        label: buildWindowLabel(window),
-                        badges,
-                      };
-                    })}
+                    disabled={!usedIndicator}
+                    value={windowSelectValue}
+                    options={windowOptions}
                     onChange={(newValue) => {
                       const parsed = typeof newValue === "number" ? newValue : Number(newValue);
                       const normalizedWindow = Number.isFinite(parsed) ? parsed : null;
