@@ -534,6 +534,21 @@ function HomeContent() {
   }, [activeBundle?.effect_windows, bestEffectWindows, bestQualityWindows, usedIndicator]);
 
   const windowSelectValue = usedIndicator ? selectedWindow ?? "" : "__select_indicator__";
+  const sortSelectValue = usedIndicator ? sortPoliciesBy : "__select_indicator__";
+  const sortOptions = useMemo(() => {
+    if (!usedIndicator) {
+      return [
+        {
+          value: "__select_indicator__",
+          label: "Escolha um indicador para ordenar as políticas",
+        },
+      ];
+    }
+    return policySortOptions.map((option) => ({
+      value: option.value,
+      label: option.label,
+    }));
+  }, [usedIndicator]);
 
   const handleViewDetails = (policy: PolicySuggestion) => {
     const slug = makeSlug(policy.policy);
@@ -907,12 +922,11 @@ function HomeContent() {
                   <CustomDropdown
                     id="policy-sort-select"
                     ariaLabel="Selecionar ordenação das políticas"
-                    value={sortPoliciesBy}
-                    options={policySortOptions.map((option) => ({
-                      value: option.value,
-                      label: option.label,
-                    }))}
+                    disabled={!usedIndicator}
+                    value={sortSelectValue}
+                    options={sortOptions}
                     onChange={(newValue) => {
+                      if (!usedIndicator) return;
                       const nextValue = typeof newValue === "string" ? newValue : String(newValue);
                       setSortPoliciesBy(isPolicySortOption(nextValue) ? nextValue : "quality-desc");
                     }}
