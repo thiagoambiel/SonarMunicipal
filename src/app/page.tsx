@@ -869,7 +869,7 @@ function HomeContent() {
 
                 <div className="filter-card">
                   <p className="filter-title">Indicador</p>
-                  <p className="muted small">Escolha o indicador que deve subir ou descer para medir impacto.</p>
+                  <p className="muted small">Escolha o indicador que deve subir ou descer para estimar o impacto das políticas no mundo real.</p>
                   <CustomDropdown
                     id="indicator-select"
                     ariaLabel="Selecionar indicador"
@@ -995,8 +995,8 @@ function HomeContent() {
                                     {effectStd ? ` ${effectStd}` : ""}
                                   </>
                                 ) : (
-                                  <span title="Sem dados suficientes para estimar o efeito nesse indicador e janela.">
-                                    Sem dados suficientes
+                                  <span title={usedIndicator ? "Sem dados suficientes para estimar o efeito nesse indicador e janela." : "Selecione um indicador para estimar o efeito."}>
+                                    {usedIndicator ? "Sem dados suficientes" : "Selecione um indicador"}
                                   </span>
                                 )}
                               </span>
@@ -1004,7 +1004,7 @@ function HomeContent() {
                             <div className="metric-badge soft">
                               <span className="badge-label">Qualidade</span>
                               <span className="badge-value">
-                                {policy.quality_score != null ? qualityValue : "Sem dados suficientes"}
+                                {policy.quality_score != null ? qualityValue : usedIndicator ? "Sem dados suficientes" : "Selecione um indicador"}
                               </span>
                             </div>
                           </div>
