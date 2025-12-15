@@ -1443,6 +1443,12 @@ p {
   gap: var(--space-20);
 }
 
+@media (min-width: 1500px) {
+  .article-shell {
+    width: 80%;
+  }
+}
+
 .article-sidebar {
   position: sticky;
   top: 86px;
