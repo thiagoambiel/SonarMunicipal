@@ -2215,16 +2215,12 @@ p {
   text-align: left;
   padding: 10px 12px;
   background: #fff;
-  border: none;
-  border-bottom: 1px solid var(--border);
+  border: 1px solid transparent;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   cursor: pointer;
-}
-
-.dropdown-option:last-child {
-  border-bottom: none;
 }
 
 .dropdown-option:hover {
@@ -2233,6 +2229,7 @@ p {
 
 .dropdown-option.active {
   background: #eef3fb;
+  border-color: rgba(11, 61, 145, 0.2);
 }
 
 .option-line {
