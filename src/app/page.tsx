@@ -107,11 +107,11 @@ const makeSlug = (text: string) =>
 
 type PolicySortOption = "effect-desc" | "effect-asc" | "quality-desc" | "quality-asc";
 
-const policySortOptions: Array<{ value: PolicySortOption; label: string }> = [
-  { value: "quality-desc", label: "Qualidade (maior primeiro)" },
-  { value: "effect-desc", label: "Efeito médio (maior primeiro)" },
-  { value: "effect-asc", label: "Efeito médio (menor primeiro)" },
-  { value: "quality-asc", label: "Qualidade (menor primeiro)" },
+const policySortOptions: Array<{ value: PolicySortOption; label: string; badges?: DropdownBadge[] }> = [
+  { value: "quality-desc", label: "Qualidade", badges: [{ label: "Maior primeiro", tone: "info" }] },
+  { value: "quality-asc", label: "Qualidade", badges: [{ label: "Menor primeiro", tone: "info" }] },
+  { value: "effect-desc", label: "Efeito médio", badges: [{ label: "Maior primeiro", tone: "info" }] },
+  { value: "effect-asc", label: "Efeito médio", badges: [{ label: "Menor primeiro", tone: "info" }] },
 ];
 
 const isPolicySortOption = (value: string | null | undefined): value is PolicySortOption =>
@@ -547,6 +547,7 @@ function HomeContent() {
     return policySortOptions.map((option) => ({
       value: option.value,
       label: option.label,
+      badges: option.badges,
     }));
   }, [usedIndicator]);
 
