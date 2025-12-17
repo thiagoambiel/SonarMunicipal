@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import MinimalNav from "@/components/MinimalNav";
@@ -342,6 +343,7 @@ export default function MethodologyPage() {
     [activeExampleId],
   );
   const [activeSection, setActiveSection] = useState(navSections[0].id);
+  const activeSectionRef = useRef(navSections[0].id);
   const sidebarLinksRef = useRef<HTMLDivElement | null>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicatorStyle, setIndicatorStyle] = useState<{ height: number; top: number }>({ height: 0, top: 0 });
@@ -373,25 +375,54 @@ export default function MethodologyPage() {
   }, []);
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (scrollLockRef.current) return;
-        entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.target.id) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-10% 0px -75% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
-    );
+    let rafId: number | null = null;
+    const offset = 80;
 
-    navSections.forEach((item) => {
-      const element = document.getElementById(item.id);
-      if (element) observer.observe(element);
-    });
+    const updateActiveSection = () => {
+      rafId = null;
+      if (scrollLockRef.current) return;
 
-    return () => observer.disconnect();
+      let closestId = activeSectionRef.current;
+      let closestDistance = Number.POSITIVE_INFINITY;
+
+      navSections.forEach((section) => {
+        const element = document.getElementById(section.id);
+        if (!element) return;
+        const rect = element.getBoundingClientRect();
+        const visible = rect.bottom > 0 && rect.top < window.innerHeight;
+        if (!visible) return;
+        const distance = Math.abs(rect.top - offset);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestId = section.id;
+        }
+      });
+
+      if (closestId !== activeSectionRef.current) {
+        activeSectionRef.current = closestId;
+        setActiveSection(closestId);
+      }
+    };
+
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = window.requestAnimationFrame(updateActiveSection);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+    handleScroll();
+
+    return () => {
+      if (rafId !== null) window.cancelAnimationFrame(rafId);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
   }, []);
+
+  useEffect(() => {
+    activeSectionRef.current = activeSection;
+  }, [activeSection]);
 
   useEffect(() => {
     const link = linkRefs.current[activeSection];
