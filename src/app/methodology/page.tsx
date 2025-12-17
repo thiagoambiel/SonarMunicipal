@@ -103,7 +103,7 @@ const sources = [
     linkLabel: "Abrir dados abertos do MJSP",
   },
   {
-    label: "Censo Escolar (INEP)",
+    label: "Dados do Censo Escolar (INEP)",
     detail: "Séries municipais de matrículas em ensino regular por 100 mil habitantes, obtidas nos resultados oficiais do Censo Escolar. Usamos essas séries para medir a evolução da matrícula ao longo dos anos.",
     href: "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/censo-escolar/resultados",
     linkLabel: "Abrir resultados do Censo Escolar",
@@ -850,7 +850,14 @@ export default function MethodologyPage() {
               {sources.map((source) => (
                 <a key={source.label} className="source-card" href={source.href} target="_blank" rel="noreferrer">
                   <p className="strong">{source.label}</p>
-                  <p className="muted small">{source.detail}</p>
+                  {(Array.isArray(source.detail) ? source.detail : source.detail.split("."))
+                    .map((sentence) => sentence.trim())
+                    .filter(Boolean)
+                    .map((sentence, index) => (
+                      <p key={`${source.label}-detail-${index}`} className="muted small">
+                        {sentence.endsWith(".") ? sentence : `${sentence}.`}
+                      </p>
+                    ))}
                   <span className="chip-link">{source.linkLabel ?? "Abrir"}</span>
                 </a>
               ))}
