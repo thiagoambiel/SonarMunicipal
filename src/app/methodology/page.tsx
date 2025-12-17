@@ -218,18 +218,12 @@ const exampleTabs: ExampleTab[] = [
     query: reportExampleMetadata.question,
     indicator: `${reportExampleMetadata.indicatorAlias} (queda é bom)`,
     indicatorWindow: reportExampleMetadata.effectWindow,
-    indicatorNote: `Fonte: reports/response.json. ${reportExampleMetadata.totalCandidates} candidatos viraram ${reportExampleMetadata.totalPolicyGroups} agrupamentos; qualidade da janela ${reportExampleMetadata.windowQuality.toFixed(2)}.`,
+    indicatorNote: undefined,
     usedIndicator: true,
     positiveIsGood: reportExampleMetadata.positiveIsGood,
-    filters: [
-      "Fonte: reports/response.json",
-      `Indicador: ${reportExampleMetadata.indicatorCode}`,
-      `Janela: ${reportExampleMetadata.effectWindow} (efeitos a 24 meses)`,
-      `${reportExampleMetadata.totalCandidates} candidatos → ${reportExampleMetadata.totalPolicyGroups} agrupamentos`,
-    ],
-    highlight: "Combate às pichações tem efeito médio de -54.11% ± 24.20% em 24 meses, aplicado em 4 municípios.",
-    footer:
-      "Consulta real: “Como reduzir a violência urbana em bairros centrais?”. Indicador: Taxa de Homicídios por 100 mil Habitantes; janela de 24 meses.",
+    filters: [],
+    highlight: "",
+    footer: undefined,
     policies: reportExamplePolicies,
   },
   {
@@ -238,12 +232,12 @@ const exampleTabs: ExampleTab[] = [
     query: "Como reduzir violência em corredores de ônibus com iluminação?",
     indicator: "Taxa de homicídios por 100 mil hab. (queda é bom)",
     indicatorWindow: "12 meses",
-    indicatorNote: "Efeito calculado pelo algoritmo: variação percentual do indicador entre a data do projeto e 12 meses depois.",
+    indicatorNote: undefined,
     usedIndicator: true,
     positiveIsGood: false,
-    filters: ["UF: PA", "Município: Marabá", "Ordenação: Qualidade (maior primeiro)"],
-    highlight: "Grupo de iluminação e monitoramento com efeito médio de -23,2% em 12 meses.",
-    footer: "Série usada: 21,01 → 16,13 homicídios/100 mil (2022.1 → 2023.1). Qualidade calculada via win-rate do algoritmo.",
+    filters: [],
+    highlight: "",
+    footer: undefined,
     policies: [
       {
         policy: "Iluminação e monitoramento em pontos críticos de transporte",
@@ -282,12 +276,12 @@ const exampleTabs: ExampleTab[] = [
     query: "Como aumentar segurança em BRT e travessias com iluminação e monitoramento?",
     indicator: "Taxa de homicídios por 100 mil hab. (queda é bom)",
     indicatorWindow: "12 meses",
-    indicatorNote: "Efeito calculado pelo algoritmo com a série municipal (percentual entre 2022.1 e 2023.1).",
+    indicatorNote: undefined,
     usedIndicator: true,
     positiveIsGood: false,
-    filters: ["UF: SP", "Município: Campinas", "Ordenação: Efeito médio (menor primeiro)"],
-    highlight: "Iluminação e monitoramento agrupadas com efeito médio de -33,9% em 12 meses.",
-    footer: "Série usada: 5,71 → 3,78 homicídios/100 mil (2022.1 → 2023.1). Qualidade segue win-rate do agrupamento.",
+    filters: [],
+    highlight: "",
+    footer: undefined,
     policies: [
       {
         policy: "Iluminação e monitoramento em BRT e travessias",
@@ -530,10 +524,7 @@ export default function MethodologyPage() {
                 Troque a aba para ver buscas diferentes. À esquerda estão a pergunta, indicador e filtros; à direita, o
                 mesmo card de políticas públicas que você vê na geração real.
               </p>
-              <p className="muted small">
-                A primeira aba replica o arquivo reports/response.json (pergunta: {reportExampleMetadata.question}); as demais
-                mostram variações de uso e filtros.
-              </p>
+
             </div>
 
             <div className="example-tabs" role="tablist" aria-label="Cenários de exemplo">
@@ -551,34 +542,54 @@ export default function MethodologyPage() {
             </div>
 
 
-            <div className="example-grid" aria-label="Demonstração lado a lado">
+            <div className="example-grid refined" aria-label="Demonstração lado a lado">
               <div className="example-column">
-                <div className="example-card">
+                <div className="example-card example-summary-card">
                   <p className="eyebrow">Pergunta digitada</p>
-                  <div className="fake-input">{activeExample.query}</div>
-                </div>
-                <div className="example-card">
-                  <p className="eyebrow">Indicadores e filtros da busca</p>
-                  <div className="metric-badge soft">
-                    <span className="badge-label">Indicador selecionado</span>
-                    <span className="badge-value">{activeExample.indicator}</span>
-                  </div>
-                  <div className="metric-badge soft">
-                    <span className="badge-label">Janela avaliada</span>
-                    <span className="badge-value">{activeExample.indicatorWindow}</span>
-                  </div>
-                  <div className="metric-badge soft">
-                    <span className="badge-label">Direção interpretada</span>
-                    <span className="badge-value">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
+                  <p className="example-question">{activeExample.query}</p>
+
+                  <div className="example-meta-grid">
+                    <div className="example-meta indicator-meta is-full">
+                      <span className="meta-label">Indicador</span>
+                      <span className="meta-value">{activeExample.indicator}</span>
+                    </div>
+                    <div className="example-meta">
+                      <span className="meta-label">Janela</span>
+                      <span className="meta-value">{activeExample.indicatorWindow}</span>
+                    </div>
+                    <div className="example-meta">
+                      <span className="meta-label">Direção</span>
+                      <span className="meta-value">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
+                    </div>
                   </div>
 
+                  {activeExample.indicatorNote && <p className="muted small example-note">{activeExample.indicatorNote}</p>}
+
+                  {activeExample.highlight && (
+                    <div className="example-highlight">
+                      <span className="example-dot" aria-hidden="true" />
+                      <p>{activeExample.highlight}</p>
+                    </div>
+                  )}
+
+                  {activeExample.filters.length > 0 && (
+                    <div className="example-filters" aria-label="Filtros aplicados">
+                      {activeExample.filters.map((filter) => (
+                        <span key={filter} className="filter-chip clean">
+                          {filter}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  {activeExample.footer && <p className="muted small example-note">{activeExample.footer}</p>}
                 </div>
               </div>
 
               <div className="example-column">
 
 
-                <div className="policy-grid single-col">
+                <div className="policy-grid single-col example-policy-grid">
                   {activeExample.policies.map((policy, policyIndex) => {
                     const effectAvailable = activeExample.usedIndicator && policy.effect_mean != null;
                     const effectTone = getEffectToneForExample(policy.effect_mean, activeExample.positiveIsGood);
@@ -677,12 +688,6 @@ export default function MethodologyPage() {
                             );
                           })}
                         </ul>
-
-                        <div className="policy-card-footer">
-                          <button className="secondary-btn ghost" type="button" disabled>
-                            Ver detalhes (exemplo)
-                          </button>
-                        </div>
                       </article>
                     );
                   })}
