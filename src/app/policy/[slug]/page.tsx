@@ -90,6 +90,9 @@ export default function PolicyDetailPage() {
     return value.toFixed(2);
   };
 
+  const formatMunicipalityLabel = (municipio: string, uf?: string | null) =>
+    uf ? `${municipio} · ${uf}` : municipio;
+
   const effectNarrative = (value?: number | null) => {
     if (value == null) return "Sem dados suficientes";
     if (value === 0) return "Sem variação estimada";
@@ -230,7 +233,7 @@ export default function PolicyDetailPage() {
               >
                 <div>
                   <div className="city-block tight">
-                    <span className="strong">{action.municipio}</span>
+                    <span className="strong">{formatMunicipalityLabel(action.municipio, action.uf)}</span>
                     {action.url && (
                       <a
                         href={action.url}
