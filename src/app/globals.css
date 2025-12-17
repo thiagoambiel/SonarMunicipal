@@ -2190,6 +2190,9 @@ p {
 }
 
 .source-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
   border: 1px solid var(--border);
   border-radius: 14px;
   padding: var(--space-16);
@@ -2201,6 +2204,11 @@ p {
 .source-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.source-card .chip-link {
+  margin-top: auto;
+  align-self: flex-start;
 }
 
 .article-foot {

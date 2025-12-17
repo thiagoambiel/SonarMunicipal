@@ -35,31 +35,31 @@ const navSections = [
 const pipelineSteps = [
   {
     title: "Você faz a pergunta",
-    detail: "Use linguagem simples, como falaria com alguém da equipe. Ex.: “Como reduzir violência perto das escolas?”.",
+    detail: 'Use linguagem simples, como falaria com a equipe. Ex.: "Como reduzir a violência perto das escolas?".',
     tone: "warm",
   },
   {
     title: "Buscamos textos parecidos",
-    detail: "A pergunta vira pontos-chave e é comparada com 220 mil projetos via HuggingFace + Qdrant (busca semântica).",
+    detail: "A pergunta vira pontos-chave e é comparada com 220 mil projetos com modelo de linguagem e base vetorial (busca semântica).",
     tone: "info",
     links: [
-      { href: "https://huggingface.co/docs/api-inference/detailed_parameters#feature-extraction-task", label: "API HuggingFace" },
-      { href: "https://qdrant.tech/documentation/", label: "Qdrant docs" },
+      { href: "https://huggingface.co/docs/api-inference/detailed_parameters#feature-extraction-task", label: "Documentação da API HuggingFace" },
+      { href: "https://qdrant.tech/documentation/", label: "Documentação da Qdrant" },
     ],
   },
   {
     title: "Juntamos o que é parecido",
-    detail: "Agrupamos propostas irmãs para reduzir duplicidade e mostrar variações do mesmo caminho.",
+    detail: "Agrupamos propostas semelhantes para reduzir duplicidade e mostrar variações do mesmo tema.",
     tone: "neutral",
   },
   {
     title: "Olhamos indicador e tempo",
-    detail: "Quando você escolhe um indicador, calculamos o que mudou em 6, 12, 24 ou 36 meses e respeitamos se “subir” é bom ou ruim.",
+    detail: "Após escolher um indicador, calculamos a variação em 6, 12, 24 ou 36 meses e consideramos se subir é bom ou ruim.",
     tone: "accent",
   },
   {
     title: "Entregamos um pacote auditável",
-    detail: "Cada grupo traz qualidade, efeito médio, links, município/UF, datas e série do indicador para você validar.",
+    detail: "Cada grupo apresenta qualidade, efeito médio, links, município/UF, datas e série do indicador para conferência.",
     tone: "success",
   },
 ];
@@ -97,21 +97,29 @@ const checklist = [
 
 const sources = [
   {
-    label: "Busca semântica",
-    detail: "HuggingFace Inference API gera embeddings; Qdrant armazena e ordena por proximidade.",
+    label: "Dados de segurança pública (MJSP)",
+    detail: "Séries municipais de homicídios a cada 100 mil habitantes, extraídas dos dados abertos do Ministério da Justiça. Usamos essa base para calcular a taxa e acompanhar sua variação no tempo.",
+    href: "https://www.gov.br/mj/pt-br/acesso-a-informacao/dados-abertos",
+    linkLabel: "Abrir dados abertos do MJSP",
+  },
+  {
+    label: "Censo Escolar (INEP)",
+    detail: "Séries municipais de matrículas em ensino regular por 100 mil habitantes, obtidas nos resultados oficiais do Censo Escolar. Usamos essas séries para medir a evolução da matrícula ao longo dos anos.",
+    href: "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/censo-escolar/resultados",
+    linkLabel: "Abrir resultados do Censo Escolar",
+  },
+  {
+    label: "Modelo de linguagem (HuggingFace)",
+    detail: "Transforma os textos dos projetos em vetores numéricos para identificar temas parecidos por semelhança. É o primeiro passo da busca semântica que conecta sua pergunta às políticas mais próximas.",
     href: "https://huggingface.co/docs/api-inference",
+    linkLabel: "Abrir documentação do modelo",
   },
   {
-    label: "Base de PLs",
-    detail: "Ementas e textos integrais coletados em SAPL municipais (dados públicos).",
-    href: "https://dados.gov.br/",
+    label: "Agrupamento de propostas (Qdrant)",
+    detail: "Armazena e agrupa propostas similares, ordenando pela proximidade com a sua pergunta. Isso reduz duplicidade e destaca variações do mesmo tema para decisão mais rápida.",
+    href: "https://qdrant.tech/documentation/",
+    linkLabel: "Abrir documentação do Qdrant",
   },
-  {
-    label: "Indicadores oficiais",
-    detail: "Séries históricas por município (segurança, educação, saúde, economia).",
-    href: "https://sidra.ibge.gov.br/home/ipca15",
-  },
-  { label: "Motor de agrupamento", detail: "Qdrant + regras de similaridade para juntar propostas irmãs.", href: "https://qdrant.tech/documentation/" },
 ];
 
 // Dados reais extraídos de reports/response.json (consulta: "Como reduzir a violência urbana em bairros centrais?")
@@ -538,11 +546,11 @@ export default function MethodologyPage() {
               </div>
               <div className="pill-card">
                 <p className="stat-value">{formatNumber(TOTAL_MUNICIPALITIES)}</p>
-                <p className="muted small">Municípios com Dados Cadastrados</p>
+                <p className="muted small">Municípios com dados cadastrados</p>
               </div>
               <div className="pill-card">
-                <p className="stat-value">Nov/2025</p>
-                <p className="muted small">Última atualização dos dados da plataforma</p>
+                <p className="stat-value">12/11/2025</p>
+                <p className="muted small">Dados atualizados na plataforma</p>
               </div>
             </div>
           </section>
@@ -768,8 +776,8 @@ export default function MethodologyPage() {
           <section className="article-section" id="interpretacao">
             <div className="section-head">
               <p className="eyebrow">Como ler resultados</p>
-              <h2>Badges e alertas, sem sigla</h2>
-              <p className="muted">Use estes sinais como “legenda” antes de decidir copiar ou adaptar uma política.</p>
+              <h2>Selos e alertas em linguagem simples</h2>
+              <p className="muted">Use estes sinais como legenda antes de decidir copiar ou adaptar uma política.</p>
             </div>
             <div className="card-grid">
               {interpretation.map((card) => (
@@ -789,7 +797,7 @@ export default function MethodologyPage() {
             <div className="section-head">
               <p className="eyebrow">Antes de copiar</p>
               <h2>Checklist de auditoria</h2>
-              <p className="muted">Passe o olho nestes itens para evitar surpresas jurídicas, de custo ou de dados.</p>
+              <p className="muted">Verifique estes itens para evitar surpresas jurídicas, de custo ou de dados.</p>
             </div>
             <div className="audit-card">
               <ul className="checklist">
@@ -835,22 +843,28 @@ export default function MethodologyPage() {
               <p className="eyebrow">Fontes e referências</p>
               <h2>De onde vêm os dados e modelos</h2>
             </div>
+            <p className="muted small">
+              Você pode abrir as fontes abaixo; aqui explicamos em linguagem simples o papel de cada uma no projeto.
+            </p>
             <div className="source-grid">
               {sources.map((source) => (
                 <a key={source.label} className="source-card" href={source.href} target="_blank" rel="noreferrer">
                   <p className="strong">{source.label}</p>
                   <p className="muted small">{source.detail}</p>
-                  <span className="chip-link">Abrir ↗</span>
+                  <span className="chip-link">{source.linkLabel ?? "Abrir"}</span>
                 </a>
               ))}
             </div>
+            <p className="muted small">
+              Todos os dados citados são públicos e não usamos nenhuma informação pessoal nas buscas.
+            </p>
             <div className="sapl-subsection">
               <div className="section-head">
                 <p className="eyebrow">Infraestrutura de coleta</p>
-                <h3>SAPL usados no web-scraping</h3>
+                <h3>SAPL usados na coleta automatizada</h3>
                 <p className="muted small">
-                  Lista das casas legislativas com SAPL que alimentam o pipeline. Use a busca para filtrar por município e
-                  limite a quantidade exibida.
+                  Lista detalhada das casas legislativas com SAPL que alimentam o pipeline. Use a busca para filtrar por
+                  município e limite a quantidade exibida.
                 </p>
               </div>
 
