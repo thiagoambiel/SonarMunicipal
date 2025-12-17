@@ -64,51 +64,6 @@ const pipelineSteps = [
   },
 ];
 
-const scenarios = {
-  seguranca: {
-    title: "Segurança em áreas centrais",
-    question: "“Como reduzir violência em áreas comerciais sem grandes obras?”",
-    picks: [
-      "Pergunta: segurança no entorno de escolas e comércio",
-      "Indicador: homicídios por 100 mil hab. (queda é bom)",
-      "Janela: 12 e 24 meses para ver consistência",
-    ],
-    outputs: [
-      "Grupos típicos: iluminação de pontos críticos, câmeras comunitárias, patrulhamento escolar.",
-      "Mostramos variações: LED vs. troca gradual, convênios com comércio, monitoramento por bairro.",
-      "Quando há indicador, exibimos efeito médio (queda ou alta), antes/depois e links das leis.",
-    ],
-  },
-  educacao: {
-    title: "Alfabetização",
-    question: "“Como acelerar alfabetização até o 2º ano?”",
-    picks: [
-      "Pergunta: alfabetização na idade certa",
-      "Indicador: matrículas e frequência (subir é bom)",
-      "Janela: 18–24 meses para respeitar o ciclo escolar",
-    ],
-    outputs: [
-      "Grupos com tutoria focalizada, material estruturado e formação continuada.",
-      "Mostramos janelas diferentes (12, 24, 36 meses) para ver estabilidade do efeito.",
-      "Links para leis locais e séries públicas para você conferir valores.",
-    ],
-  },
-  saude: {
-    title: "Saúde mental",
-    question: "“Como reduzir filas em saúde mental?”",
-    picks: [
-      "Pergunta: atendimento em saúde mental",
-      "Indicador: tempo médio de espera (descer é bom)",
-      "Janela: 6–12 meses para serviços de curta maturação",
-    ],
-    outputs: [
-      "Grupos com teleatendimento, triagem multiprofissional e centros dia.",
-      "Você vê o antes/depois do indicador quando há dados suficientes.",
-      "Links para normas municipais, prestação de contas e bases públicas de saúde.",
-    ],
-  },
-};
-
 const interpretation = [
   {
     title: "Qualidade do grupo",
@@ -159,126 +114,220 @@ const sources = [
   { label: "Motor de agrupamento", detail: "Qdrant + regras de similaridade para juntar propostas irmãs.", href: "https://qdrant.tech/documentation/" },
 ];
 
-const apiExamples = [
+const reportExampleMetadata = {
+  question: "Como reduzir a violência urbana em bairros centrais?",
+  indicatorCode: "criminal_indicator",
+  indicatorAlias: "Taxa de Homicídios por 100 mil Habitantes",
+  effectWindow: "24 meses",
+  windowQuality: 0.83,
+  totalCandidates: 292,
+  totalPolicyGroups: 22,
+  positiveIsGood: false,
+};
+
+// Dados reais extraídos de reports/response.json (consulta: "Como reduzir a violência urbana em bairros centrais?")
+const reportExamplePolicies: ExamplePolicy[] = [
   {
-    title: "POST /api/search — busca por texto livre",
-    description: "Você envia a pergunta em português e recebe os projetos mais próximos já cadastrados.",
-    request: `{
-  "query": "Como melhorar a segurança noturna no entorno das escolas?",
-  "top_k": 3
-}`,
-    response: `{
-  "query": "Como melhorar a segurança noturna no entorno das escolas?",
-  "top_k": 3,
-  "returned": 3,
-  "results": [
-    {
-      "index": 18754,
-      "score": 0.83,
-      "municipio": "Natal",
-      "uf": "RN",
-      "acao": "Alterar gradativamente as lâmpadas de vapor metálico, de sódio e mercúrio utilizadas na rede de iluminação pública municipal por lâmpadas de LED.",
-      "data_apresentacao": "2022-02-21",
-      "ementa": "Dispõe sobre a substituição gradativa das lâmpadas ... por lâmpadas de Led.",
-      "link_publico": "https://sapl.natal.rn.leg.br/materia/18754/acompanhar-materia/",
-      "sapl_url": "https://sapl.natal.rn.leg.br",
-      "tipo_label": "PL Projeto de Lei "
-    },
-    {
-      "index": 18864,
-      "score": 0.79,
-      "municipio": "Natal",
-      "uf": "RN",
-      "acao": "Implementar serviço de manutenção da iluminação pública no município.",
-      "data_apresentacao": "2022-02-22",
-      "ementa": "Dispõe sobre a essencialidade do serviço de manutenção da iluminação pública no município de Natal.",
-      "link_publico": "https://sapl.natal.rn.leg.br/materia/18864/acompanhar-materia/",
-      "sapl_url": "https://sapl.natal.rn.leg.br",
-      "tipo_label": "PL Projeto de Lei "
-    },
-    {
-      "index": 18605,
-      "score": 0.76,
-      "municipio": "Natal",
-      "uf": "RN",
-      "acao": "Registrar e divulgar semestralmente os índices de violência contra a população LGBTQIA+ no município.",
-      "data_apresentacao": "2022-02-15",
-      "ementa": "Dispõe sobre o registro e a divulgação semestral dos índices de violência contra a população LGBTQIA+.",
-      "link_publico": "https://sapl.natal.rn.leg.br/materia/18605/acompanhar-materia/",
-      "sapl_url": "https://sapl.natal.rn.leg.br",
-      "tipo_label": "PL Projeto de Lei "
-    }
-  ]
-}`,
+    policy: "Criar programa de combate às pichações no município.",
+    effect_mean: -54.11075986418452,
+    effect_std: 24.203299065874848,
+    quality_score: 0.8,
+    actions: [
+      {
+        municipio: "Olinda",
+        uf: "PE",
+        label: "Olinda",
+        effect: -19.17808219178082,
+        url: "https://sapl.olinda.pe.leg.br/materia/59",
+      },
+      {
+        municipio: "Tijucas do Sul",
+        uf: "PR",
+        label: "Tijucas do Sul",
+        effect: -66.66666666666666,
+        url: "https://sapl.tijucasdosul.pr.leg.br/materia/622",
+      },
+      {
+        municipio: "Natal",
+        uf: "RN",
+        label: "Natal",
+        effect: -57.264957264957275,
+        url: "https://sapl.natal.rn.leg.br/materia/812",
+      },
+      {
+        municipio: "Esteio",
+        uf: "RS",
+        label: "Esteio",
+        effect: -73.33333333333334,
+        url: "https://sapl.esteio.rs.leg.br/materia/6416",
+      },
+    ],
+  },
+];
+
+const formatEffectValue = (value?: number | null) => {
+  if (value == null || Number.isNaN(value)) return "Sem dados suficientes";
+  const rounded = Number(value.toFixed(2));
+  const prefix = rounded > 0 ? "+" : "";
+  return `${prefix}${rounded}%`;
+};
+
+const getEffectToneForExample = (value: number | null | undefined, positiveIsGood: boolean) => {
+  if (value == null) return "effect-neutral";
+  if (value === 0) return "effect-neutral";
+  const isPositive = value > 0;
+  const isGood = positiveIsGood ? isPositive : !isPositive;
+  return isGood ? "effect-good" : "effect-bad";
+};
+
+type ExampleAction = {
+  municipio: string;
+  uf?: string | null;
+  label: string;
+  effect?: number | null;
+  url?: string;
+};
+
+type ExamplePolicy = {
+  policy: string;
+  effect_mean?: number | null;
+  effect_std?: number | null;
+  quality_score?: number | null;
+  actions: ExampleAction[];
+};
+
+type ExampleTab = {
+  id: string;
+  label: string;
+  query: string;
+  indicator: string;
+  indicatorWindow: string;
+  indicatorNote?: string;
+  usedIndicator: boolean;
+  positiveIsGood: boolean;
+  filters: string[];
+  highlight: string;
+  footer?: string;
+  policies: ExamplePolicy[];
+};
+
+const exampleTabs: ExampleTab[] = [
+  {
+    id: "relatorio-violencia",
+    label: "Violência urbana (real)",
+    query: reportExampleMetadata.question,
+    indicator: `${reportExampleMetadata.indicatorAlias} (queda é bom)`,
+    indicatorWindow: reportExampleMetadata.effectWindow,
+    indicatorNote: `Fonte: reports/response.json. ${reportExampleMetadata.totalCandidates} candidatos viraram ${reportExampleMetadata.totalPolicyGroups} agrupamentos; qualidade da janela ${reportExampleMetadata.windowQuality.toFixed(2)}.`,
+    usedIndicator: true,
+    positiveIsGood: reportExampleMetadata.positiveIsGood,
+    filters: [
+      "Fonte: reports/response.json",
+      `Indicador: ${reportExampleMetadata.indicatorCode}`,
+      `Janela: ${reportExampleMetadata.effectWindow} (efeitos a 24 meses)`,
+      `${reportExampleMetadata.totalCandidates} candidatos → ${reportExampleMetadata.totalPolicyGroups} agrupamentos`,
+    ],
+    highlight: "Combate às pichações tem efeito médio de -54.11% ± 24.20% em 24 meses, aplicado em 4 municípios.",
+    footer:
+      "Consulta real: “Como reduzir a violência urbana em bairros centrais?”. Indicador: Taxa de Homicídios por 100 mil Habitantes; janela de 24 meses.",
+    policies: reportExamplePolicies,
   },
   {
-    title: "POST /api/policies — agrupamento com indicador",
-    description: "Com os IDs retornados na busca, pedimos um agrupamento usando o indicador de homicídios (queda é bom).",
-    request: `{
-  "bill_indexes": [18754, 18864, 18605],
-  "use_indicator": true,
-  "indicator": "criminal_indicator",
-  "effect_window_months": 12
-}`,
-    response: `{
-  "indicator": "criminal_indicator",
-  "used_indicator": true,
-  "selected_effect_window": 12,
-  "total_candidates": 3,
-  "policies": [
-    {
-      "policy": "Iluminação e monitoramento em áreas escolares e corredores de ônibus",
-      "effect_mean": -30.1,
-      "effect_std": 4.5,
-      "quality_score": 0.78,
-      "actions": [
-        {
-          "municipio": "Natal",
-          "uf": "RN",
-          "acao": "Alterar gradativamente as lâmpadas ... por lâmpadas de LED.",
-          "effect": -30.1,
-          "url": "https://sapl.natal.rn.leg.br/materia/18754",
-          "data_apresentacao": "2022-02-21",
-          "ementa": "Dispõe sobre a substituição gradativa das lâmpadas ... por lâmpadas de Led.",
-          "indicator_before": 12.38,
-          "indicator_after": 8.65
-        },
-        {
-          "municipio": "Natal",
-          "uf": "RN",
-          "acao": "Implementar serviço de manutenção da iluminação pública no município.",
-          "effect": -30.1,
-          "url": "https://sapl.natal.rn.leg.br/materia/18864",
-          "data_apresentacao": "2022-02-22",
-          "ementa": "Dispõe sobre a essencialidade do serviço de manutenção da iluminação pública no município de Natal.",
-          "indicator_before": 12.38,
-          "indicator_after": 8.65
-        },
-        {
-          "municipio": "Natal",
-          "uf": "RN",
-          "acao": "Registrar e divulgar semestralmente os índices de violência contra a população LGBTQIA+ no município.",
-          "effect": -30.1,
-          "url": "https://sapl.natal.rn.leg.br/materia/18605",
-          "data_apresentacao": "2022-02-15",
-          "ementa": "Dispõe sobre o registro e a divulgação semestral dos índices de violência contra a população LGBTQIA+.",
-          "indicator_before": 12.38,
-          "indicator_after": 8.65
-        }
-      ]
-    }
-  ],
-  "best_quality_effect_window": 12,
-  "best_quality_effect_windows": [12, 24],
-  "best_effect_mean_window": 24,
-  "best_effect_mean_windows": [24, 12]
-}`,
+    id: "maraba",
+    label: "Iluminação (Marabá/PA)",
+    query: "Como reduzir violência em corredores de ônibus com iluminação?",
+    indicator: "Taxa de homicídios por 100 mil hab. (queda é bom)",
+    indicatorWindow: "12 meses",
+    indicatorNote: "Efeito calculado pelo algoritmo: variação percentual do indicador entre a data do projeto e 12 meses depois.",
+    usedIndicator: true,
+    positiveIsGood: false,
+    filters: ["UF: PA", "Município: Marabá", "Ordenação: Qualidade (maior primeiro)"],
+    highlight: "Grupo de iluminação e monitoramento com efeito médio de -23,2% em 12 meses.",
+    footer: "Série usada: 21,01 → 16,13 homicídios/100 mil (2022.1 → 2023.1). Qualidade calculada via win-rate do algoritmo.",
+    policies: [
+      {
+        policy: "Iluminação e monitoramento em pontos críticos de transporte",
+        effect_mean: -23.2,
+        effect_std: 2.8,
+        quality_score: 0.66,
+        actions: [
+          {
+            municipio: "Marabá",
+            uf: "PA",
+            effect: -23.2,
+            url: "https://sapl.maraba.pa.leg.br/materia/21563/acompanhar-materia/",
+            label: "Uso obrigatório de LED na rede pública • 2021-08-30",
+          },
+          {
+            municipio: "Marabá",
+            uf: "PA",
+            effect: -23.2,
+            url: "https://sapl.maraba.pa.leg.br/materia/15666/acompanhar-materia/",
+            label: "Iluminação em abrigos de ônibus • 2018-06-07",
+          },
+          {
+            municipio: "Marabá",
+            uf: "PA",
+            effect: -23.2,
+            url: "https://sapl.maraba.pa.leg.br/materia/22298/acompanhar-materia/",
+            label: "Câmeras em áreas de escolas • 2022-02-11",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    id: "campinas",
+    label: "Iluminação e BRT (Campinas/SP)",
+    query: "Como aumentar segurança em BRT e travessias com iluminação e monitoramento?",
+    indicator: "Taxa de homicídios por 100 mil hab. (queda é bom)",
+    indicatorWindow: "12 meses",
+    indicatorNote: "Efeito calculado pelo algoritmo com a série municipal (percentual entre 2022.1 e 2023.1).",
+    usedIndicator: true,
+    positiveIsGood: false,
+    filters: ["UF: SP", "Município: Campinas", "Ordenação: Efeito médio (menor primeiro)"],
+    highlight: "Iluminação e monitoramento agrupadas com efeito médio de -33,9% em 12 meses.",
+    footer: "Série usada: 5,71 → 3,78 homicídios/100 mil (2022.1 → 2023.1). Qualidade segue win-rate do agrupamento.",
+    policies: [
+      {
+        policy: "Iluminação e monitoramento em BRT e travessias",
+        effect_mean: -33.9,
+        effect_std: 1.9,
+        quality_score: 0.66,
+        actions: [
+          {
+            municipio: "Campinas",
+            uf: "SP",
+            effect: -33.9,
+            url: "https://sapl.campinas.sp.leg.br/materia/373755/acompanhar-materia/",
+            label: "LED na rede de iluminação pública • 2021-02-05",
+          },
+          {
+            municipio: "Campinas",
+            uf: "SP",
+            effect: -33.9,
+            url: "https://sapl.campinas.sp.leg.br/materia/371961/acompanhar-materia/",
+            label: "Câmeras nas estações do BRT • 2020-09-10",
+          },
+          {
+            municipio: "Campinas",
+            uf: "SP",
+            effect: -33.9,
+            url: "https://sapl.campinas.sp.leg.br/materia/371025/acompanhar-materia/",
+            label: "PPP de iluminação pública • 2020-07-07",
+          },
+        ],
+      },
+    ],
   },
 ];
 
 export default function MethodologyPage() {
-  const [activeScenario, setActiveScenario] = useState<keyof typeof scenarios>("seguranca");
-  const scenario = useMemo(() => scenarios[activeScenario], [activeScenario]);
+  const [activeExampleId, setActiveExampleId] = useState(exampleTabs[0].id);
+  const activeExample = useMemo(
+    () => exampleTabs.find((item) => item.id === activeExampleId) ?? exampleTabs[0],
+    [activeExampleId],
+  );
   const [activeSection, setActiveSection] = useState(navSections[0].id);
   const sidebarLinksRef = useRef<HTMLDivElement | null>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
@@ -422,26 +471,20 @@ export default function MethodologyPage() {
         </aside>
 
         <main className="article-content">
-          <section className="article-hero" id="introducao">
-            <div className="hero-badge">Metodologia explicada</div>
-            <h1>Metodologia sem jargão: do texto ao indicador</h1>
-            <p className="lede">
-              Aqui você vê, em linguagem direta, como transformamos uma pergunta em grupos de políticas com efeito
-              estimado usando dados públicos. Tudo fica auditável, com links para as leis e para as séries dos
-              indicadores.
-            </p>
+          <section className="-hero" id="introducao">
+
             <div className="hero-stats">
               <div className="pill-card">
                 <p className="stat-value">{formatNumber(TOTAL_PROJECTS)}</p>
-                <p className="muted small">projetos indexados</p>
+                <p className="muted small">Projetos de lei indexados</p>
               </div>
               <div className="pill-card">
                 <p className="stat-value">{formatNumber(TOTAL_MUNICIPALITIES)}</p>
-                <p className="muted small">municípios com dados</p>
+                <p className="muted small">Municípios com Dados Cadastrados</p>
               </div>
               <div className="pill-card">
                 <p className="stat-value">Nov/2025</p>
-                <p className="muted small">última atualização da base</p>
+                <p className="muted small">Última atualização dos dados da plataforma</p>
               </div>
             </div>
           </section>
@@ -484,77 +527,171 @@ export default function MethodologyPage() {
               <p className="eyebrow">Exemplo interativo</p>
               <h2>Veja o caminho completo</h2>
               <p className="muted">
-                Troque o tema e acompanhe o que você escolhe, o que o sistema entrega e como os dados aparecem. Logo
-                abaixo colocamos a resposta real da API para a mesma ideia.
+                Troque a aba para ver buscas diferentes. À esquerda estão a pergunta, indicador e filtros; à direita, o
+                mesmo card de políticas públicas que você vê na geração real.
+              </p>
+              <p className="muted small">
+                A primeira aba replica o arquivo reports/response.json (pergunta: {reportExampleMetadata.question}); as demais
+                mostram variações de uso e filtros.
               </p>
             </div>
-            <div className="scenario-switcher" role="group" aria-label="Escolha um cenário">
-              {Object.entries(scenarios).map(([key, value]) => (
+
+            <div className="example-tabs" role="tablist" aria-label="Cenários de exemplo">
+              {exampleTabs.map((tab) => (
                 <button
-                  key={key}
-                  className={`scenario-btn ${activeScenario === key ? "active" : ""}`}
-                  onClick={() => setActiveScenario(key as keyof typeof scenarios)}
+                  key={tab.id}
+                  role="tab"
+                  aria-selected={activeExampleId === tab.id}
+                  className={`example-tab ${activeExampleId === tab.id ? "active" : ""}`}
+                  onClick={() => setActiveExampleId(tab.id)}
                 >
-                  {value.title}
+                  {tab.label}
                 </button>
               ))}
             </div>
-            <div className="scenario-card">
-              <div className="scenario-header">
-                <p className="muted small">Pergunta</p>
-                <p className="strong">{scenario.question}</p>
-              </div>
-              <div className="scenario-grid">
-                <div className="scenario-block">
-                  <p className="eyebrow">Escolhas na plataforma</p>
-                  <ul className="muted small">
-                    {scenario.picks.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-                <div className="scenario-block">
-                  <p className="eyebrow">O que entregamos</p>
-                  <ul className="muted small">
-                    {scenario.outputs.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              </div>
-              <div className="scenario-foot">
-                <p className="muted small">
-                  Clique em outro tema para comparar as variações e as janelas de tempo usadas na resposta.
-                </p>
-              </div>
-            </div>
 
-            <div className="api-samples" aria-label="Exemplos reais da API">
-              <div className="section-head api-samples-head">
-                <p className="eyebrow">API em ação</p>
-                <p className="muted small">
-                  Respostas reais da plataforma (dados de Natal/RN, indicador de homicídios por 100 mil habitantes).
-                </p>
-              </div>
-              <div className="api-sample-grid">
-                {apiExamples.map((sample) => (
-                  <div key={sample.title} className="api-sample-card">
-                    <div className="api-sample-meta">
-                      <p className="strong">{sample.title}</p>
-                      <p className="muted small">{sample.description}</p>
-                    </div>
-                    <div className="api-sample-body">
-                      <p className="eyebrow">Requisição</p>
-                      <pre className="code-block" aria-label={`Exemplo de requisição ${sample.title}`}>
-                        <code>{sample.request}</code>
-                      </pre>
-                      <p className="eyebrow">Resposta</p>
-                      <pre className="code-block" aria-label={`Exemplo de resposta ${sample.title}`}>
-                        <code>{sample.response}</code>
-                      </pre>
-                    </div>
+
+            <div className="example-grid" aria-label="Demonstração lado a lado">
+              <div className="example-column">
+                <div className="example-card">
+                  <p className="eyebrow">Pergunta digitada</p>
+                  <div className="fake-input">{activeExample.query}</div>
+                </div>
+                <div className="example-card">
+                  <p className="eyebrow">Indicador e janela</p>
+                  <p className="strong">{activeExample.indicator}</p>
+                  <p className="muted small">Janela: {activeExample.indicatorWindow}</p>
+                  {activeExample.indicatorNote && <p className="muted small">{activeExample.indicatorNote}</p>}
+                  <div className="filter-pill-row">
+                    <span className="filter-pill">{activeExample.usedIndicator ? "Indicador aplicado" : "Sem indicador"}</span>
+                    <span className="filter-pill">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
                   </div>
-                ))}
+                </div>
+                <div className="example-card">
+                  <p className="eyebrow">Filtros e ordenação</p>
+                  <ul className="muted small">
+                    {activeExample.filters.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+
+              <div className="example-column">
+                <div className="example-card highlight-card">
+                  <p className="eyebrow">Resultado</p>
+                  <p className="muted small">{activeExample.highlight}</p>
+                </div>
+                <div className="policy-grid single-col">
+                  {activeExample.policies.map((policy, policyIndex) => {
+                    const effectAvailable = activeExample.usedIndicator && policy.effect_mean != null;
+                    const effectTone = getEffectToneForExample(policy.effect_mean, activeExample.positiveIsGood);
+                    const effectStd =
+                      activeExample.usedIndicator && policy.effect_std != null ? ` ± ${policy.effect_std.toFixed(2)}%` : null;
+                    const qualityValue = policy.quality_score != null ? policy.quality_score.toFixed(2) : "Não avaliado";
+
+                    return (
+                      <article key={`${policy.policy}-${policyIndex}`} className="policy-card" aria-label="Exemplo de card de política">
+                        <p className="policy-title">{policy.policy}</p>
+
+                        <div className="policy-badges">
+                          <div className="metric-badge">
+                            <span className="badge-label">Efeito médio (% em {activeExample.indicatorWindow})</span>
+                            <span className={`badge-value ${effectTone}`}>
+                              {effectAvailable ? (
+                                <>
+                                  {formatEffectValue(policy.effect_mean)}
+                                  {effectStd ? ` ${effectStd}` : ""}
+                                </>
+                              ) : (
+                                <span title={activeExample.usedIndicator ? "Sem dados suficientes para esta janela." : "Selecione um indicador para estimar o efeito."}>
+                                  {activeExample.usedIndicator ? "Sem dados suficientes" : "Selecione um indicador"}
+                                </span>
+                              )}
+                            </span>
+                          </div>
+                          <div className="metric-badge soft">
+                            <span className="badge-label">Qualidade</span>
+                            <span className="badge-value">
+                              {policy.quality_score != null
+                                ? qualityValue
+                                : activeExample.usedIndicator
+                                  ? "Sem dados suficientes"
+                                  : "Selecione um indicador"}
+                            </span>
+                          </div>
+                        </div>
+
+                        <p className="policy-count">
+                          Política aplicada em {policy.actions.length} município
+                          {policy.actions.length === 1 ? "" : "s"}:
+                        </p>
+                        <ul className="policy-city-list">
+                          {policy.actions.map((action, actionIndex) => {
+                            const effectLabel =
+                              activeExample.usedIndicator && action.effect != null
+                                ? `Variação: ${formatEffectValue(action.effect)}`
+                                : "Sem indicador calculado";
+                            const effectToneAction = getEffectToneForExample(action.effect, activeExample.positiveIsGood);
+
+                            return (
+                              <li
+                                key={`${policy.policy}-${action.municipio}-${action.label}-${actionIndex}`}
+                                className="policy-city-item"
+                              >
+                                <div className="city-name">
+                                  <span>{action.label}</span>
+                                  {action.url && (
+                                    <a className="city-link" href={action.url} target="_blank" rel="noreferrer" aria-label={`Abrir ementa original de ${action.municipio}`}>
+                                      <svg
+                                        width="14"
+                                        height="14"
+                                        viewBox="0 0 24 24"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        aria-hidden="true"
+                                      >
+                                        <path
+                                          d="M14 4H20V10"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                        <path
+                                          d="M10 14L20 4"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                        <path
+                                          d="M20 14V20H4V4H10"
+                                          stroke="currentColor"
+                                          strokeWidth="2"
+                                          strokeLinecap="round"
+                                          strokeLinejoin="round"
+                                        />
+                                      </svg>
+                                    </a>
+                                  )}
+                                </div>
+                                <span className={`city-effect ${effectToneAction}`}>{effectLabel}</span>
+                              </li>
+                            );
+                          })}
+                        </ul>
+
+                        <div className="policy-card-footer">
+                          <button className="secondary-btn ghost" type="button" disabled>
+                            Ver detalhes (exemplo)
+                          </button>
+                        </div>
+                      </article>
+                    );
+                  })}
+                </div>
+                {activeExample.footer && <p className="muted small example-footer">{activeExample.footer}</p>}
               </div>
             </div>
           </section>

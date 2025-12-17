@@ -1795,6 +1795,96 @@ p {
   padding-top: 10px;
 }
 
+.example-tabs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 8px;
+  margin-bottom: var(--space-10);
+}
+
+.example-tab {
+  border: 1px solid var(--border);
+  background: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.example-tab:hover {
+  border-color: #cdd6e3;
+  box-shadow: var(--shadow-sm);
+}
+
+.example-tab.active {
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #fff;
+  border-color: var(--primary-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.example-grid {
+  display: grid;
+  grid-template-columns: minmax(260px, 360px) 1fr;
+  gap: var(--space-16);
+  align-items: start;
+}
+
+.example-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+}
+
+.example-card {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: var(--space-14);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.highlight-card {
+  background: linear-gradient(135deg, #f7fbff 0%, #ffffff 70%);
+}
+
+.fake-input {
+  margin-top: 6px;
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface-alt);
+  font-weight: 700;
+}
+
+.filter-pill-row {
+  margin-top: 8px;
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: #f1f4fa;
+  border: 1px solid var(--border);
+  font-weight: 700;
+}
+
+.policy-grid.single-col {
+  grid-template-columns: 1fr;
+}
+
+.example-footer {
+  margin-top: 8px;
+}
+
 .api-samples {
   margin-top: var(--space-16);
   display: flex;
@@ -1830,6 +1920,41 @@ p {
 .api-sample-body {
   display: grid;
   gap: var(--space-8);
+}
+
+.policy-sample-card .policy-card {
+  cursor: default;
+}
+
+.policy-sample-card .policy-card-footer .secondary-btn.ghost {
+  background: #f5f7fb;
+  color: var(--muted);
+  border-color: var(--border);
+}
+
+.response-group {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: var(--space-12);
+  background: #f9fbff;
+}
+
+.response-group-head {
+  display: grid;
+  gap: 2px;
+  margin-bottom: var(--space-8);
+}
+
+.response-actions {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.response-actions .row-link {
+  font-weight: 700;
 }
 
 .code-block {
@@ -1983,6 +2108,10 @@ p {
   .nav {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .example-grid {
+    grid-template-columns: 1fr;
   }
 }
 
