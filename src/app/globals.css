@@ -1300,6 +1300,16 @@ p {
   min-width: 220px;
 }
 
+.sapl-control.sapl-search {
+  min-width: 320px;
+  flex: 1;
+}
+
+.sapl-control.sapl-uf {
+  min-width: 160px;
+  max-width: 200px;
+}
+
 .sapl-limit {
   max-width: 160px;
 }
@@ -1348,6 +1358,21 @@ p {
   justify-content: flex-end;
   gap: var(--space-10);
   margin-top: var(--space-12);
+}
+
+.sapl-pagination .sapl-page-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 200px;
+}
+
+.sapl-pagination .sapl-page-select .custom-dropdown {
+  min-width: 160px;
+}
+
+.sapl-page-total {
+  white-space: nowrap;
 }
 
 .sapl-url {
@@ -3049,6 +3074,11 @@ p {
   box-shadow: var(--shadow-lg);
   z-index: 20;
   overflow: hidden;
+}
+
+.dropdown-menu.scrollable {
+  max-height: 280px;
+  overflow-y: auto;
 }
 
 .dropdown-option {

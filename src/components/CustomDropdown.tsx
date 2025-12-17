@@ -23,6 +23,7 @@ type CustomDropdownProps = {
   onChange: (value: DropdownValue) => void;
   id?: string;
   ariaLabel?: string;
+  menuClassName?: string;
 };
 
 export function CustomDropdown({
@@ -33,6 +34,7 @@ export function CustomDropdown({
   onChange,
   id,
   ariaLabel,
+  menuClassName,
 }: CustomDropdownProps) {
   const [open, setOpen] = useState(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
@@ -114,7 +116,7 @@ export function CustomDropdown({
         </div>
       </button>
       {isMenuOpen && (
-        <div className="dropdown-menu" role="listbox">
+        <div className={`dropdown-menu ${menuClassName ?? ""}`} role="listbox">
           {options.map((option) => {
             const isActive = option.value === value;
             return (

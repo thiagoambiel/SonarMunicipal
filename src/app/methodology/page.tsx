@@ -5,6 +5,7 @@ import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import MinimalNav from "@/components/MinimalNav";
+import CustomDropdown from "@/components/CustomDropdown";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 const numberFormatter = new Intl.NumberFormat("pt-BR");
@@ -360,6 +361,7 @@ export default function MethodologyPage() {
   const [indicatorStyle, setIndicatorStyle] = useState<{ height: number; top: number }>({ height: 0, top: 0 });
   const [saplHosts, setSaplHosts] = useState<SaplHost[]>([]);
   const [saplSearch, setSaplSearch] = useState("");
+  const [saplUf, setSaplUf] = useState("todas");
   const [rowLimit, setRowLimit] = useState(10);
   const [saplError, setSaplError] = useState<string | null>(null);
   const [saplPage, setSaplPage] = useState(1);
@@ -453,11 +455,22 @@ export default function MethodologyPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, [activeSection]);
 
+  const ufOptions = useMemo(() => {
+    const options = new Set<string>();
+    saplHosts.forEach((host) => {
+      if (host.uf) options.add(host.uf);
+    });
+    return Array.from(options).sort((a, b) => a.localeCompare(b, "pt-BR"));
+  }, [saplHosts]);
+
   const filteredHosts = useMemo(() => {
     const term = saplSearch.trim().toLowerCase();
-    if (!term) return saplHosts;
-    return saplHosts.filter((host) => host.municipio.toLowerCase().includes(term));
-  }, [saplHosts, saplSearch]);
+    return saplHosts.filter((host) => {
+      const matchesTerm = !term || host.municipio.toLowerCase().includes(term);
+      const matchesUf = saplUf === "todas" || host.uf.toLowerCase() === saplUf.toLowerCase();
+      return matchesTerm && matchesUf;
+    });
+  }, [saplHosts, saplSearch, saplUf]);
 
   const pageCount = useMemo(() => {
     if (!rowLimit) return 1;
@@ -466,7 +479,7 @@ export default function MethodologyPage() {
 
   useEffect(() => {
     setSaplPage(1);
-  }, [saplSearch, rowLimit]);
+  }, [saplSearch, saplUf, rowLimit]);
 
   useEffect(() => {
     setSaplPage((prev) => Math.min(prev, pageCount));
@@ -887,7 +900,7 @@ export default function MethodologyPage() {
               </div>
 
               <div className="sapl-controls">
-                <label className="sapl-control">
+                <label className="sapl-control sapl-search">
                   <span className="muted small">Buscar por município</span>
                   <input
                     className="sapl-input"
@@ -899,20 +912,31 @@ export default function MethodologyPage() {
                   />
                 </label>
 
+                <label className="sapl-control sapl-uf">
+                  <span className="muted small">Filtrar por UF</span>
+                  <CustomDropdown
+                    ariaLabel="Filtrar SAPL por UF"
+                    value={saplUf}
+                    onChange={(value) => setSaplUf(String(value))}
+                    options={[
+                      { value: "todas", label: "Todas as UFs" },
+                      ...ufOptions.map((uf) => ({ value: uf, label: uf })),
+                    ]}
+                    menuClassName="scrollable"
+                  />
+                </label>
+
                 <label className="sapl-control sapl-limit">
                   <span className="muted small">Limite de linhas</span>
-                  <select
-                    className="sapl-input"
+                  <CustomDropdown
+                    ariaLabel="Definir limite de linhas da tabela"
                     value={rowLimit}
-                    onChange={(event) => setRowLimit(Number(event.target.value))}
-                    aria-label="Definir limite de linhas da tabela"
-                  >
-                    {[10, 25, 50, 100, 200].map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
+                    onChange={(value) => setRowLimit(Number(value))}
+                    options={[10, 25, 50, 100, 200].map((option) => ({
+                      value: option,
+                      label: `${option} linhas`,
+                    }))}
+                  />
                 </label>
 
                 <div className="sapl-count muted small">
@@ -968,9 +992,19 @@ export default function MethodologyPage() {
                     >
                       Anterior
                     </button>
-                    <span className="muted small">
-                      Página {currentPage} de {pageCount}
-                    </span>
+                    <div className="sapl-page-select">
+                      <CustomDropdown
+                        ariaLabel="Selecionar página da tabela de SAPL"
+                        value={currentPage}
+                        onChange={(value) => setSaplPage(Number(value))}
+                        menuClassName="scrollable"
+                        options={Array.from({ length: pageCount }, (_, index) => ({
+                          value: index + 1,
+                          label: `Página ${index + 1}`,
+                        }))}
+                      />
+                      <span className="muted small sapl-page-total">de {pageCount}</span>
+                    </div>
                     <button
                       className="page-btn"
                       type="button"
