@@ -1,4 +1,7 @@
 # Experimentos
+experiments/tools/sapl_scrapper/pls
+experiments/tools/sapl_finder/sapls
+
 experiments/tools/ementa2action/pl_actions.jsonl
 experiments/tools/indicators/security/MJSP/*.xlsx
 experiments/tools/indicators/security/MJSP.csv
