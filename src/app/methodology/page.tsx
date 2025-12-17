@@ -558,30 +558,26 @@ export default function MethodologyPage() {
                   <div className="fake-input">{activeExample.query}</div>
                 </div>
                 <div className="example-card">
-                  <p className="eyebrow">Indicador e janela</p>
-                  <p className="strong">{activeExample.indicator}</p>
-                  <p className="muted small">Janela: {activeExample.indicatorWindow}</p>
-                  {activeExample.indicatorNote && <p className="muted small">{activeExample.indicatorNote}</p>}
-                  <div className="filter-pill-row">
-                    <span className="filter-pill">{activeExample.usedIndicator ? "Indicador aplicado" : "Sem indicador"}</span>
-                    <span className="filter-pill">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
+                  <p className="eyebrow">Indicadores e filtros da busca</p>
+                  <div className="metric-badge soft">
+                    <span className="badge-label">Indicador selecionado</span>
+                    <span className="badge-value">{activeExample.indicator}</span>
                   </div>
-                </div>
-                <div className="example-card">
-                  <p className="eyebrow">Filtros e ordenação</p>
-                  <ul className="muted small">
-                    {activeExample.filters.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
+                  <div className="metric-badge soft">
+                    <span className="badge-label">Janela avaliada</span>
+                    <span className="badge-value">{activeExample.indicatorWindow}</span>
+                  </div>
+                  <div className="metric-badge soft">
+                    <span className="badge-label">Direção interpretada</span>
+                    <span className="badge-value">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
+                  </div>
+
                 </div>
               </div>
 
               <div className="example-column">
-                <div className="example-card highlight-card">
-                  <p className="eyebrow">Resultado</p>
-                  <p className="muted small">{activeExample.highlight}</p>
-                </div>
+
+
                 <div className="policy-grid single-col">
                   {activeExample.policies.map((policy, policyIndex) => {
                     const effectAvailable = activeExample.usedIndicator && policy.effect_mean != null;
@@ -691,7 +687,7 @@ export default function MethodologyPage() {
                     );
                   })}
                 </div>
-                {activeExample.footer && <p className="muted small example-footer">{activeExample.footer}</p>}
+
               </div>
             </div>
           </section>
