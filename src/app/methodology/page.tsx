@@ -858,7 +858,9 @@ export default function MethodologyPage() {
                         {sentence.endsWith(".") ? sentence : `${sentence}.`}
                       </p>
                     ))}
-                  <span className="chip-link">{source.linkLabel ?? "Abrir"}</span>
+                  <span className="chip-link">
+                    {source.linkLabel ?? "Abrir"} ↗
+                  </span>
                 </a>
               ))}
             </div>
