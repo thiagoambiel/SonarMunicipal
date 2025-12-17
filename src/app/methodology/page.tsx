@@ -68,31 +68,35 @@ const interpretation = [
   {
     title: "Qualidade do grupo",
     points: [
-      "Quantos precedentes parecidos compõem o grupo",
-      "Textos completos (ementa + justificativa) e mais de um município/ano",
-      "Indicador coerente com o tema e com série suficiente",
+      "Quantidade de precedentes semelhantes no grupo (mais casos aumentam a confiança).",
+      "Textos completos, com ementa e justificativa, em mais de um município ou ano.",
+      "Indicador que conversa com o tema e tem série com dados suficientes para o período.",
     ],
   },
   {
     title: "Efeito esperado",
     points: [
-      "Média do indicador na janela escolhida (ex.: 12 meses)",
-      "Direção já interpretada (subir é bom? descer é bom?)",
-      "Compare 12, 24 e 36 meses para checar estabilidade",
+      "Média do indicador no período escolhido (ex.: 12 meses) já calculada.",
+      "Indicamos se subir é bom ou ruim para facilitar a leitura.",
+      "Compare 12, 24 e 36 meses para ver se o efeito se mantém ou oscila.",
     ],
   },
   {
     title: "Quando ficar cético",
-    points: ["Poucos casos ou textos muito curtos", "Indicador com pouca cobertura na sua cidade", "Contexto jurídico ou orçamentário muito diferente"],
+    points: [
+      "Poucos casos ou textos muito curtos não dão base suficiente.",
+      "Indicador com pouca cobertura ou defasagem na sua cidade.",
+      "Contexto jurídico ou orçamentário muito diferente do seu município.",
+    ],
   },
 ];
 
 const checklist = [
-  "Confirme se há orçamento e competência municipal para fazer o mesmo.",
-  "Verifique município, UF e ano do precedente e se seu contexto é parecido.",
-  "Cheque se o indicador tem dados recentes para sua cidade na janela escolhida.",
-  "Abra o texto original e a série do indicador antes de replicar.",
-  "Liste adaptações locais (parcerias, custo, tempo) antes de executar.",
+  "Confirme se há orçamento, base legal e competência municipal para fazer o mesmo.",
+  "Verifique município, UF e ano do precedente e se o contexto é parecido com o seu.",
+  "Cheque se o indicador tem dados recentes e cobertura para sua cidade na janela escolhida.",
+  "Abra o texto original e a série do indicador para validar antes de replicar.",
+  "Liste adaptações locais (parcerias, custo, tempo) e riscos antes de executar.",
 ];
 
 const sources = [
@@ -122,7 +126,6 @@ const sources = [
   },
 ];
 
-// Dados reais extraídos de reports/response.json (consulta: "Como reduzir a violência urbana em bairros centrais?")
 const reportExamplePolicies: ExamplePolicy[] = [
   {
     policy: "Criar programa de combate às pichações no município.",
@@ -776,8 +779,11 @@ export default function MethodologyPage() {
           <section className="article-section" id="interpretacao">
             <div className="section-head">
               <p className="eyebrow">Como ler resultados</p>
-              <h2>Selos e alertas em linguagem simples</h2>
-              <p className="muted">Use estes sinais como legenda antes de decidir copiar ou adaptar uma política.</p>
+              <h2>Como interpretar selos e alertas</h2>
+              <p className="muted">
+                Veja o que cada selo quer dizer antes de decidir copiar ou adaptar uma política. Use esta legenda rápida
+                para entender o que está forte, o que merece cuidado e quando comparar janelas de tempo.
+              </p>
             </div>
             <div className="card-grid">
               {interpretation.map((card) => (
@@ -796,8 +802,11 @@ export default function MethodologyPage() {
           <section className="article-section" id="auditoria">
             <div className="section-head">
               <p className="eyebrow">Antes de copiar</p>
-              <h2>Checklist de auditoria</h2>
-              <p className="muted">Verifique estes itens para evitar surpresas jurídicas, de custo ou de dados.</p>
+              <h2>Checklist de auditoria rápida</h2>
+              <p className="muted">
+                Confira estes passos curtos para evitar surpresas jurídicas, de custo ou de dados. Eles ajudam a confirmar se
+                a política cabe na sua realidade antes de avançar.
+              </p>
             </div>
             <div className="audit-card">
               <ul className="checklist">
@@ -811,28 +820,28 @@ export default function MethodologyPage() {
           <section className="article-section" id="privacidade">
             <div className="section-head">
               <p className="eyebrow">Privacidade e limites</p>
-              <h2>Onde o modelo ajuda, onde ele para</h2>
+              <h2>Onde o modelo ajuda e onde ele para</h2>
             </div>
             <div className="card-grid">
               <div className="info-card">
                 <h3>Privacidade</h3>
                 <p className="muted small">
-                  Só usamos textos públicos e indicadores agregados por município. As perguntas feitas na busca não são
-                  armazenadas nem usadas para treinar modelos.
+                  Usamos apenas textos públicos de projetos de lei e indicadores agregados por município. Suas perguntas
+                  não são guardadas, compartilhadas ou usadas para treinar modelos.
                 </p>
               </div>
               <div className="info-card">
                 <h3>Limites</h3>
                 <p className="muted small">
-                  Cobertura e defasagem de indicadores variam por cidade. Contexto jurídico e orçamentário sempre
-                  precisa de validação humana local.
+                  Cobertura e defasagem dos indicadores variam por cidade. Resultados precisam de validação humana local
+                  sobre contexto jurídico, orçamento e capacidade de execução.
                 </p>
               </div>
               <div className="info-card">
                 <h3>Uso recomendado</h3>
                 <p className="muted small">
-                  Apoio à priorização e à argumentação. A decisão final, custos e adequação jurídica ficam com a equipe
-                  que vai executar.
+                  Serve para priorizar temas e sustentar argumentos. A decisão final, custos e adequação jurídica seguem
+                  com a equipe que implementa a política.
                 </p>
               </div>
             </div>
