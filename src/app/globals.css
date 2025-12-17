@@ -1291,6 +1291,7 @@ p {
   flex-wrap: wrap;
   gap: var(--space-10);
   align-items: flex-end;
+  margin-top: var(--space-10);
 }
 
 .sapl-control {
@@ -1323,8 +1324,16 @@ p {
   margin-left: auto;
 }
 
+.sapl-subsection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  margin-top: var(--space-12);
+}
+
 .sapl-table-card {
   overflow-x: auto;
+  margin-top: var(--space-10);
 }
 
 .sapl-table {
@@ -2170,14 +2179,14 @@ p {
 
 .source-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: var(--space-12);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-14);
 }
 
 .source-card {
   border: 1px solid var(--border);
   border-radius: 14px;
-  padding: var(--space-14);
+  padding: var(--space-16);
   background: #fff;
   box-shadow: var(--shadow-sm);
   transition: transform 0.15s ease, box-shadow 0.15s ease;

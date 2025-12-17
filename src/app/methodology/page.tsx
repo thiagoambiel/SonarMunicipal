@@ -469,9 +469,8 @@ export default function MethodologyPage() {
                 </a>
               ))}
             </nav>
-            <div className="sidebar-meta">
-              <p className="muted small">Dados atualizados em novembro de 2025.</p>
-            </div>
+
+
             <div className="sidebar-cta">
               <Link className="primary-btn" href="/">
                 Buscar políticas
