@@ -1970,6 +1970,9 @@ p {
   border-color: #e1e7f0;
   box-shadow: var(--shadow-md);
   gap: var(--space-12);
+  max-width: 420px;
+  margin: 0 auto;
+  width: 100%;
 }
 
 .example-policy-grid .policy-card:hover {
@@ -1989,6 +1992,12 @@ p {
 .example-policy-grid .metric-badge {
   background: linear-gradient(180deg, #f8fbff 0%, #f3f6fb 100%);
   border-color: #e1e7f0;
+}
+
+.example-policy-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-items: center;
 }
 
 .example-policy-grid .metric-badge.soft {

@@ -114,17 +114,6 @@ const sources = [
   { label: "Motor de agrupamento", detail: "Qdrant + regras de similaridade para juntar propostas irmãs.", href: "https://qdrant.tech/documentation/" },
 ];
 
-const reportExampleMetadata = {
-  question: "Como reduzir a violência urbana em bairros centrais?",
-  indicatorCode: "criminal_indicator",
-  indicatorAlias: "Taxa de Homicídios por 100 mil Habitantes",
-  effectWindow: "24 meses",
-  windowQuality: 0.83,
-  totalCandidates: 292,
-  totalPolicyGroups: 22,
-  positiveIsGood: false,
-};
-
 // Dados reais extraídos de reports/response.json (consulta: "Como reduzir a violência urbana em bairros centrais?")
 const reportExamplePolicies: ExamplePolicy[] = [
   {
@@ -214,57 +203,54 @@ type ExampleTab = {
 const exampleTabs: ExampleTab[] = [
   {
     id: "relatorio-violencia",
-    label: "Violência urbana (real)",
-    query: reportExampleMetadata.question,
-    indicator: `${reportExampleMetadata.indicatorAlias} (queda é bom)`,
-    indicatorWindow: reportExampleMetadata.effectWindow,
-    indicatorNote: undefined,
-    usedIndicator: true,
-    positiveIsGood: reportExampleMetadata.positiveIsGood,
-    filters: [],
-    highlight: "",
-    footer: undefined,
-    policies: reportExamplePolicies,
-  },
-  {
-    id: "maraba",
-    label: "Iluminação (Marabá/PA)",
-    query: "Como reduzir violência em corredores de ônibus com iluminação?",
-    indicator: "Taxa de homicídios por 100 mil hab. (queda é bom)",
-    indicatorWindow: "12 meses",
+    label: "Violência Urbana",
+    query: "Como reduzir a violência urbana em bairros centrais?",
+    indicator: "Taxa de Homicídios por 100 mil Habitantes",
+    indicatorWindow: "24 meses",
     indicatorNote: undefined,
     usedIndicator: true,
     positiveIsGood: false,
     filters: [],
     highlight: "",
     footer: undefined,
+    policies: reportExamplePolicies,
+  },
+  {
+    id: "evasao-escolar",
+    label: "Evasão Escolar",
+    query: "Como diminuir evasão escolar no ensino médio?",
+    indicator: "Taxa de Matrículas em Ensino Regular por 100 mil Habitantes",
+    indicatorWindow: "12 meses (2 semestres)",
+    indicatorNote: undefined,
+    usedIndicator: true,
+    positiveIsGood: true,
+    filters: [],
+    highlight: "",
+    footer: undefined,
     policies: [
       {
-        policy: "Iluminação e monitoramento em pontos críticos de transporte",
-        effect_mean: -23.2,
-        effect_std: 2.8,
-        quality_score: 0.66,
+        policy: "Informar pais ou responsáveis sobre a ausência do(a) aluno(a) na escola.",
+        effect_mean: 2.91,
+        effect_std: 3.04,
+        quality_score: 0.75,
         actions: [
           {
-            municipio: "Marabá",
-            uf: "PA",
-            effect: -23.2,
-            url: "https://sapl.maraba.pa.leg.br/materia/21563/acompanhar-materia/",
-            label: "Uso obrigatório de LED na rede pública • 2021-08-30",
+            municipio: "Goianá",
+            uf: "MG",
+            effect: 2.25,
+            label: "Goianá",
           },
           {
-            municipio: "Marabá",
-            uf: "PA",
-            effect: -23.2,
-            url: "https://sapl.maraba.pa.leg.br/materia/15666/acompanhar-materia/",
-            label: "Iluminação em abrigos de ônibus • 2018-06-07",
+            municipio: "Tijucas",
+            uf: "SC",
+            effect: 6.23,
+            label: "Tijucas",
           },
           {
-            municipio: "Marabá",
-            uf: "PA",
-            effect: -23.2,
-            url: "https://sapl.maraba.pa.leg.br/materia/22298/acompanhar-materia/",
-            label: "Câmeras em áreas de escolas • 2022-02-11",
+            municipio: "São Mateus",
+            uf: "ES",
+            effect: 0.26,
+            label: "São Mateus",
           },
         ],
       },
@@ -272,43 +258,64 @@ const exampleTabs: ExampleTab[] = [
   },
   {
     id: "campinas",
-    label: "Iluminação e BRT (Campinas/SP)",
-    query: "Como aumentar segurança em BRT e travessias com iluminação e monitoramento?",
-    indicator: "Taxa de homicídios por 100 mil hab. (queda é bom)",
-    indicatorWindow: "12 meses",
+    label: "Saneamento Básico",
+    query: "Como ampliar o acesso a saneamento básico rapidamente?",
+    indicator: "Sem indicador selecionado",
+    indicatorWindow: "Escolha um indicador para selecionar a janela",
     indicatorNote: undefined,
-    usedIndicator: true,
-    positiveIsGood: false,
+    usedIndicator: false,
+    positiveIsGood: true,
     filters: [],
     highlight: "",
     footer: undefined,
     policies: [
       {
-        policy: "Iluminação e monitoramento em BRT e travessias",
-        effect_mean: -33.9,
-        effect_std: 1.9,
-        quality_score: 0.66,
+        policy: "Criar plano municipal de saneamento básico.",
+        effect_mean: null,
+        effect_std: null,
+        quality_score: null,
         actions: [
           {
-            municipio: "Campinas",
-            uf: "SP",
-            effect: -33.9,
-            url: "https://sapl.campinas.sp.leg.br/materia/373755/acompanhar-materia/",
-            label: "LED na rede de iluminação pública • 2021-02-05",
+            municipio: "Congonhal",
+            uf: "MG",
+            effect: null,
+            label: "Congonhal",
           },
           {
-            municipio: "Campinas",
-            uf: "SP",
-            effect: -33.9,
-            url: "https://sapl.campinas.sp.leg.br/materia/371961/acompanhar-materia/",
-            label: "Câmeras nas estações do BRT • 2020-09-10",
+            municipio: "Canela",
+            uf: "RS",
+            effect: null,
+            label: "Canela",
           },
           {
-            municipio: "Campinas",
-            uf: "SP",
-            effect: -33.9,
-            url: "https://sapl.campinas.sp.leg.br/materia/371025/acompanhar-materia/",
-            label: "PPP de iluminação pública • 2020-07-07",
+            municipio: "Corbélia",
+            uf: "PR",
+            effect: null,
+            label: "Corbélia",
+          },
+          {
+            municipio: "Sarandi",
+            uf: "RS",
+            effect: null,
+            label: "Sarandi",
+          },
+          {
+            municipio: "Major Vieira",
+            uf: "SC",
+            effect: null,
+            label: "Major Vieira",
+          },
+          {
+            municipio: "São Luiz Gonzaga",
+            uf: "RS",
+            effect: null,
+            label: "São Luiz Gonzaga",
+          },
+          {
+            municipio: "Arroio Trinta",
+            uf: "SC",
+            effect: null,
+            label: "Arroio Trinta",
           },
         ],
       },
@@ -553,14 +560,18 @@ export default function MethodologyPage() {
                       <span className="meta-label">Indicador</span>
                       <span className="meta-value">{activeExample.indicator}</span>
                     </div>
-                    <div className="example-meta">
-                      <span className="meta-label">Janela</span>
-                      <span className="meta-value">{activeExample.indicatorWindow}</span>
-                    </div>
-                    <div className="example-meta">
-                      <span className="meta-label">Direção</span>
-                      <span className="meta-value">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
-                    </div>
+                    {activeExample.usedIndicator && (
+                      <div className="example-meta">
+                        <span className="meta-label">Janela</span>
+                        <span className="meta-value">{activeExample.indicatorWindow}</span>
+                      </div>
+                    )}
+                    {activeExample.usedIndicator && (
+                      <div className="example-meta">
+                        <span className="meta-label">Direção</span>
+                        <span className="meta-value">{activeExample.positiveIsGood ? "Subir é bom" : "Descer é bom"}</span>
+                      </div>
+                    )}
                   </div>
 
                   {activeExample.indicatorNote && <p className="muted small example-note">{activeExample.indicatorNote}</p>}
@@ -603,7 +614,7 @@ export default function MethodologyPage() {
 
                         <div className="policy-badges">
                           <div className="metric-badge">
-                            <span className="badge-label">Efeito médio (% em {activeExample.indicatorWindow})</span>
+                            <span className="badge-label">Efeito médio</span>
                             <span className={`badge-value ${effectTone}`}>
                               {effectAvailable ? (
                                 <>
