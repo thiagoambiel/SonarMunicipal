@@ -29,7 +29,6 @@ const navSections = [
   { id: "auditoria", label: "Auditoria rápida" },
   { id: "privacidade", label: "Privacidade e limites" },
   { id: "fontes", label: "Fontes e referências" },
-  { id: "sapl", label: "SAPL usados" },
 ];
 
 const pipelineSteps = [
@@ -167,6 +166,19 @@ const getEffectToneForExample = (value: number | null | undefined, positiveIsGoo
   const isPositive = value > 0;
   const isGood = positiveIsGood ? isPositive : !isPositive;
   return isGood ? "effect-good" : "effect-bad";
+};
+
+const getSaplBaseUrl = (url: string) => {
+  try {
+    const parsed = new URL(url);
+    return parsed.origin;
+  } catch {
+    const match = url.match(/^(https?:\/\/)?([^/]+)/i);
+    if (match) {
+      return `${match[1] ?? ""}${match[2]}`;
+    }
+    return url;
+  }
 };
 
 type ExampleAction = {
@@ -335,7 +347,7 @@ export default function MethodologyPage() {
   const [indicatorStyle, setIndicatorStyle] = useState<{ height: number; top: number }>({ height: 0, top: 0 });
   const [saplHosts, setSaplHosts] = useState<SaplHost[]>([]);
   const [saplSearch, setSaplSearch] = useState("");
-  const [rowLimit, setRowLimit] = useState(25);
+  const [rowLimit, setRowLimit] = useState(10);
   const [saplError, setSaplError] = useState<string | null>(null);
   const [saplPage, setSaplPage] = useState(1);
 
@@ -787,118 +799,113 @@ export default function MethodologyPage() {
                 </a>
               ))}
             </div>
-          </section>
-
-          <section className="article-section" id="sapl">
-            <div className="section-head">
-              <p className="eyebrow">Infraestrutura de coleta</p>
-              <h2>SAPL usados no web-scraping</h2>
-              <p className="muted">
-                Lista das casas legislativas com SAPL que alimentam o pipeline. Use a busca para filtrar por município e
-                limite a quantidade exibida.
-              </p>
-            </div>
-
-            <div className="sapl-controls">
-              <label className="sapl-control">
-                <span className="muted small">Buscar por município</span>
-                <input
-                  className="sapl-input"
-                  type="search"
-                  placeholder="Ex.: Recife, Manaus, Curitiba"
-                  value={saplSearch}
-                  onChange={(event) => setSaplSearch(event.target.value)}
-                  aria-label="Buscar SAPL por município"
-                />
-              </label>
-
-              <label className="sapl-control sapl-limit">
-                <span className="muted small">Limite de linhas</span>
-                <select
-                  className="sapl-input"
-                  value={rowLimit}
-                  onChange={(event) => setRowLimit(Number(event.target.value))}
-                  aria-label="Definir limite de linhas da tabela"
-                >
-                  {[10, 25, 50, 100, 200].map((option) => (
-                    <option key={option} value={option}>
-                      {option}
-                    </option>
-                  ))}
-                </select>
-              </label>
-
-              <div className="sapl-count muted small">
-                {saplError
-                  ? saplError
-                  : `Mostrando ${displayedHosts.length} de ${filteredHosts.length} (total: ${saplHosts.length})`}
+            <div className="sapl-subsection">
+              <div className="section-head">
+                <p className="eyebrow">Infraestrutura de coleta</p>
+                <h3>SAPL usados no web-scraping</h3>
+                <p className="muted small">
+                  Lista das casas legislativas com SAPL que alimentam o pipeline. Use a busca para filtrar por município e
+                  limite a quantidade exibida.
+                </p>
               </div>
-            </div>
 
-            {saplHosts.length === 0 && !saplError ? (
-              <p className="muted small">Carregando lista de SAPL...</p>
-            ) : (
-              <>
-                <div className="table-card sapl-table-card" role="table" aria-label="Tabela de SAPL utilizados">
-                  <div className="table-head sapl-table" role="row">
-                    <span role="columnheader">Município</span>
-                    <span role="columnheader">SAPL</span>
-                    <span role="columnheader">UF</span>
-                    <span role="columnheader">HTTP</span>
-                  </div>
-                  {displayedHosts.map((host) => {
-                    const rowKey = `${host.ibge_id}-${host.sapl_url}`;
-                    return (
-                      <div key={rowKey} className="table-row sapl-table" role="row">
-                        <span className="strong" role="cell">
-                          {host.municipio}
-                        </span>
-                        <span role="cell">
-                          <a className="row-link" href={host.sapl_url} target="_blank" rel="noreferrer">
-                            Abrir SAPL
-                          </a>
-                          <p className="muted small sapl-url">{host.sapl_url}</p>
-                        </span>
-                        <span role="cell">{host.uf}</span>
-                        <span className="muted" role="cell">
-                          {host.http_status ?? "—"}
+              <div className="sapl-controls">
+                <label className="sapl-control">
+                  <span className="muted small">Buscar por município</span>
+                  <input
+                    className="sapl-input"
+                    type="search"
+                    placeholder="Ex.: Recife, Manaus, Curitiba"
+                    value={saplSearch}
+                    onChange={(event) => setSaplSearch(event.target.value)}
+                    aria-label="Buscar SAPL por município"
+                  />
+                </label>
+
+                <label className="sapl-control sapl-limit">
+                  <span className="muted small">Limite de linhas</span>
+                  <select
+                    className="sapl-input"
+                    value={rowLimit}
+                    onChange={(event) => setRowLimit(Number(event.target.value))}
+                    aria-label="Definir limite de linhas da tabela"
+                  >
+                    {[10, 25, 50, 100, 200].map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <div className="sapl-count muted small">
+                  {saplError
+                    ? saplError
+                    : `Mostrando ${displayedHosts.length} de ${filteredHosts.length} (total: ${saplHosts.length})`}
+                </div>
+              </div>
+
+              {saplHosts.length === 0 && !saplError ? (
+                <p className="muted small">Carregando lista de SAPL...</p>
+              ) : (
+                <>
+                  <div className="table-card sapl-table-card" role="table" aria-label="Tabela de SAPL utilizados">
+                    <div className="table-head sapl-table" role="row">
+                      <span role="columnheader">Município</span>
+                      <span role="columnheader">UF</span>
+                      <span role="columnheader">SAPL</span>
+                    </div>
+                    {displayedHosts.map((host) => {
+                      const rowKey = `${host.ibge_id}-${host.sapl_url}`;
+                      return (
+                        <div key={rowKey} className="table-row sapl-table" role="row">
+                          <span className="strong" role="cell">
+                            {host.municipio}
+                          </span>
+                          <span role="cell">{host.uf}</span>
+                          <span role="cell">
+                            <a className="row-link" href={host.sapl_url} target="_blank" rel="noreferrer">
+                              Abrir SAPL
+                            </a>
+                            <p className="muted small sapl-url">{getSaplBaseUrl(host.sapl_url)}</p>
+                          </span>
+                        </div>
+                      );
+                    })}
+
+                    {displayedHosts.length === 0 && !saplError && (
+                      <div className="table-row sapl-table" role="row">
+                        <span className="muted small" role="cell">
+                          Nenhum SAPL encontrado com esse município.
                         </span>
                       </div>
-                    );
-                  })}
+                    )}
+                  </div>
 
-                  {displayedHosts.length === 0 && !saplError && (
-                    <div className="table-row sapl-table" role="row">
-                      <span className="muted small" role="cell">
-                        Nenhum SAPL encontrado com esse município.
-                      </span>
-                    </div>
-                  )}
-                </div>
-
-                <div className="sapl-pagination">
-                  <button
-                    className="page-btn"
-                    type="button"
-                    disabled={currentPage <= 1}
-                    onClick={() => setSaplPage((prev) => Math.max(1, prev - 1))}
-                  >
-                    Anterior
-                  </button>
-                  <span className="muted small">
-                    Página {currentPage} de {pageCount}
-                  </span>
-                  <button
-                    className="page-btn"
-                    type="button"
-                    disabled={currentPage >= pageCount || filteredHosts.length === 0}
-                    onClick={() => setSaplPage((prev) => Math.min(pageCount, prev + 1))}
-                  >
-                    Próxima
-                  </button>
-                </div>
-              </>
-            )}
+                  <div className="sapl-pagination">
+                    <button
+                      className="page-btn"
+                      type="button"
+                      disabled={currentPage <= 1}
+                      onClick={() => setSaplPage((prev) => Math.max(1, prev - 1))}
+                    >
+                      Anterior
+                    </button>
+                    <span className="muted small">
+                      Página {currentPage} de {pageCount}
+                    </span>
+                    <button
+                      className="page-btn"
+                      type="button"
+                      disabled={currentPage >= pageCount || filteredHosts.length === 0}
+                      onClick={() => setSaplPage((prev) => Math.min(pageCount, prev + 1))}
+                    >
+                      Próxima
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           </section>
 
           <section className="article-foot">
