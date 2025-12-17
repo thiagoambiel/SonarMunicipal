@@ -350,6 +350,7 @@ export default function MethodologyPage() {
   const [rowLimit, setRowLimit] = useState(10);
   const [saplError, setSaplError] = useState<string | null>(null);
   const [saplPage, setSaplPage] = useState(1);
+  const scrollLockRef = useRef(false);
 
   useEffect(() => {
     const loadSaplHosts = async () => {
@@ -374,14 +375,14 @@ export default function MethodologyPage() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target?.id) {
-          setActiveSection(visible[0].target.id);
-        }
+        if (scrollLockRef.current) return;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting && entry.target.id) {
+            setActiveSection(entry.target.id);
+          }
+        });
       },
-      { rootMargin: "-45% 0px -45% 0px", threshold: [0.15, 0.4, 0.75] },
+      { rootMargin: "-10% 0px -75% 0px", threshold: [0, 0.25, 0.5, 0.75, 1] },
     );
 
     navSections.forEach((item) => {
@@ -436,6 +437,20 @@ export default function MethodologyPage() {
     return filteredHosts.slice(start, start + rowLimit);
   }, [filteredHosts, rowLimit, currentPage]);
 
+  const handleSidebarClick = (event: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
+    event.preventDefault();
+    const target = document.getElementById(sectionId);
+    if (!target) return;
+    const offset = 80;
+    const top = target.getBoundingClientRect().top + window.scrollY - offset;
+    scrollLockRef.current = true;
+    setActiveSection(sectionId);
+    window.scrollTo({ top, behavior: "smooth" });
+    window.setTimeout(() => {
+      scrollLockRef.current = false;
+    }, 500);
+  };
+
   return (
     <div className="article-layout">
       <MinimalNav />
@@ -463,7 +478,7 @@ export default function MethodologyPage() {
                   className={`sidebar-link ${activeSection === item.id ? "active" : ""}`}
                   href={`#${item.id}`}
                   aria-current={activeSection === item.id ? "true" : undefined}
-                  onClick={() => setActiveSection(item.id)}
+                  onClick={(event) => handleSidebarClick(event, item.id)}
                 >
                   {item.label}
                 </a>

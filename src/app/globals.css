@@ -1584,12 +1584,18 @@ p {
 .sidebar-cta {
   display: grid;
   gap: 8px;
+  margin-top: var(--space-10);
 }
 
 .article-content {
   display: flex;
   flex-direction: column;
   gap: var(--space-20);
+}
+
+.article-section,
+.-hero {
+  scroll-margin-top: 80px;
 }
 
 .article-hero {
