@@ -1728,6 +1728,8 @@ p {
   counter-reset: data-step;
   display: grid;
   gap: var(--space-10);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
 }
 
 .data-step {
@@ -1805,6 +1807,16 @@ p {
   margin-bottom: 4px;
 }
 
+.quality-math {
+  display: inline-block;
+  padding: 10px 12px;
+  margin-top: 6px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: #f6f9ff;
+  box-shadow: var(--shadow-sm);
+}
+
 .data-step-head,
 .data-chip-row {
   flex-wrap: wrap;
@@ -1818,6 +1830,10 @@ p {
   .data-step-number {
     width: 34px;
     height: 34px;
+  }
+
+  .data-flow {
+    grid-template-columns: 1fr;
   }
 }
 

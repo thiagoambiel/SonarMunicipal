@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Script from "next/script";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -198,6 +199,10 @@ type ExampleTab = {
   policies: ExamplePolicy[];
 };
 
+type KatexInstance = {
+  render: (expression: string, element: HTMLElement, options?: { throwOnError?: boolean }) => void;
+};
+
 const exampleTabs: ExampleTab[] = [
   {
     id: "relatorio-violencia",
@@ -338,6 +343,8 @@ export default function MethodologyPage() {
   const [rowLimit, setRowLimit] = useState(10);
   const [saplError, setSaplError] = useState<string | null>(null);
   const [saplPage, setSaplPage] = useState(1);
+  const [katexReady, setKatexReady] = useState(false);
+  const qualityFormulaRef = useRef<HTMLSpanElement | null>(null);
   const scrollLockRef = useRef(false);
 
   useEffect(() => {
@@ -458,6 +465,27 @@ export default function MethodologyPage() {
     setSaplPage((prev) => Math.min(prev, pageCount));
   }, [pageCount]);
 
+  useEffect(() => {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css";
+    document.head.appendChild(link);
+    return () => {
+      document.head.removeChild(link);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!katexReady || !qualityFormulaRef.current) return;
+    const katex = (window as typeof window & { katex?: KatexInstance }).katex;
+    if (!katex?.render) return;
+    katex.render(
+      "\\text{Qualidade} = (\\text{municípios com efeito positivo}) \\times \\frac{n}{n+1}",
+      qualityFormulaRef.current,
+      { throwOnError: false },
+    );
+  }, [katexReady]);
+
   const currentPage = Math.min(Math.max(1, saplPage), pageCount);
 
   const displayedHosts = useMemo(() => {
@@ -481,6 +509,11 @@ export default function MethodologyPage() {
 
   return (
     <div className="article-layout">
+      <Script
+        src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
+        strategy="afterInteractive"
+        onLoad={() => setKatexReady(true)}
+      />
       <MinimalNav />
 
       <div className="article-shell">
@@ -975,10 +1008,14 @@ export default function MethodologyPage() {
                     </p>
                   </div>
                 </div>
-                <p>
-                  <strong>(nº de municípios com efeito positivo) × n/(n+1)</strong>, onde <strong>n</strong> é o nº de
-                  municípios que aplicaram a política.
-                </p>
+                <p>Fórmula (renderizada em LaTeX) com o mesmo texto mostrado acima:</p>
+                <span
+                  ref={qualityFormulaRef}
+                  className="quality-math"
+                  aria-label="(nº de municípios com efeito positivo) vezes n dividido por n mais 1"
+                >
+                  (nº de municípios com efeito positivo) × n/(n+1)
+                </span>
                 <div className="data-chip-row">
                   <span className="data-chip">Mais casos = mais confiança</span>
                   <span className="data-chip">Transparência no cálculo</span>
