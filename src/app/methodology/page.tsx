@@ -100,33 +100,6 @@ const checklist = [
   "Liste adaptações locais (parcerias, custo, tempo) e riscos antes de executar.",
 ];
 
-const sources = [
-  {
-    label: "Dados de segurança pública (MJSP)",
-    detail: "Séries municipais de homicídios a cada 100 mil habitantes, extraídas dos dados abertos do Ministério da Justiça. Usamos essa base para calcular a taxa e acompanhar sua variação no tempo.",
-    href: "https://www.gov.br/mj/pt-br/acesso-a-informacao/dados-abertos",
-    linkLabel: "Abrir dados abertos do MJSP",
-  },
-  {
-    label: "Dados do Censo Escolar (INEP)",
-    detail: "Séries municipais de matrículas em ensino regular por 100 mil habitantes, obtidas nos resultados oficiais do Censo Escolar. Usamos essas séries para medir a evolução da matrícula ao longo dos anos.",
-    href: "https://www.gov.br/inep/pt-br/areas-de-atuacao/pesquisas-estatisticas-e-indicadores/censo-escolar/resultados",
-    linkLabel: "Abrir resultados do Censo Escolar",
-  },
-  {
-    label: "Modelo de linguagem (HuggingFace)",
-    detail: "Transforma os textos dos projetos em vetores numéricos para identificar temas parecidos por semelhança. É o primeiro passo da busca semântica que conecta sua pergunta às políticas mais próximas.",
-    href: "https://huggingface.co/docs/api-inference",
-    linkLabel: "Abrir documentação do modelo",
-  },
-  {
-    label: "Agrupamento de propostas (Qdrant)",
-    detail: "Armazena e agrupa propostas similares, ordenando pela proximidade com a sua pergunta. Isso reduz duplicidade e destaca variações do mesmo tema para decisão mais rápida.",
-    href: "https://qdrant.tech/documentation/",
-    linkLabel: "Abrir documentação do Qdrant",
-  },
-];
-
 const reportExamplePolicies: ExamplePolicy[] = [
   {
     policy: "Criar programa de combate às pichações no município.",
@@ -863,31 +836,175 @@ export default function MethodologyPage() {
           <section className="article-section" id="fontes">
             <div className="section-head">
               <p className="eyebrow">Fontes e referências</p>
-              <h2>De onde vêm os dados e modelos</h2>
+              <h2>De onde vêm os dados</h2>
+              <p className="muted small">
+                Caminho passo a passo de como coletamos projetos de lei, transformamos em ações pesquisáveis em linguagem
+                natural e medimos o impacto com indicadores do mundo real até chegar no ranking de Qualidade.
+              </p>
             </div>
+
+            <ol className="data-flow">
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Mapeamento das fontes (SAPL)</h3>
+                    <p>
+                      Localizamos os SAPLs (Sistema de Apoio ao Processo Legislativo) ativos nas câmaras municipais do
+                      Brasil para saber onde buscar os Projetos de Lei (PLs).
+                    </p>
+                  </div>
+                </div>
+                <div className="data-chip-row">
+                  <span className="data-chip">Fontes 100% públicas</span>
+                  <span className="data-chip">Sem dados pessoais</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Extração de Projetos de Lei (PLs)</h3>
+                    <p>Para cada SAPL encontrado, extraímos todos os PLs e guardamos pelo menos:</p>
+                  </div>
+                </div>
+                <ul>
+                  <li>
+                    <strong>ementa original</strong>
+                  </li>
+                  <li>
+                    <strong>data de apresentação</strong>
+                  </li>
+                </ul>
+                <div className="data-chip-row">
+                  <span className="data-chip">{formatNumber(TOTAL_PROJECTS)} PLs</span>
+                  <span className="data-chip">{formatNumber(TOTAL_MUNICIPALITIES)} municípios</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Transformação de ementas em ações (IA)</h3>
+                    <p>
+                      Ementas são formais; o sistema precisa de ações práticas para comparar o que cada PL propõe e
+                      sugerir próximos passos.
+                    </p>
+                  </div>
+                </div>
+                <ul>
+                  <li>Ementa: “Dispõe sobre instituir o Programa Municipal de Enfrentamento ao Feminicídio.”</li>
+                  <li>Ação sugerida: “Criar programa municipal de enfrentamento ao feminicídio.”</li>
+                </ul>
+                <p>
+                  Usamos o PTT5 (Unicamp) com ajuste fino QLoRA-4bit e aplicamos o modelo para enriquecer a base,
+                  gerando ações para todas as ementas.
+                </p>
+                <div className="data-chip-row">
+                  <span className="data-chip">Modelo PTT5 + QLoRA-4bit</span>
+                  <span className="data-chip">Ações geradas para todo o acervo</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Busca semântica (embeddings + Qdrant)</h3>
+                    <p>
+                      Cada ação vira um vetor numérico (embedding) com o modelo multilíngue E5, e esses vetores ficam
+                      armazenados no Qdrant.
+                    </p>
+                  </div>
+                </div>
+                <p>
+                  Quando o usuário pesquisa em linguagem natural, a pergunta também vira embedding. O Qdrant compara e
+                  devolve os candidatos mais semelhantes.
+                </p>
+                <div className="data-chip-row">
+                  <span className="data-chip">Embeddings E5</span>
+                  <span className="data-chip">Banco vetorial Qdrant</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Evidência com indicadores do mundo real</h3>
+                    <p>Não dependemos só do texto parecido: usamos indicadores municipais ao longo do tempo para estimar o efeito.</p>
+                  </div>
+                </div>
+                <p>Construímos dois indicadores, um para qualidade da educação e outro para segurança, comparando:</p>
+                <ul>
+                  <li>valor do indicador na data de apresentação;</li>
+                  <li>valor meses/anos depois, em janelas de tempo definidas.</li>
+                </ul>
+                <div className="data-chip-row">
+                  <span className="data-chip">Educação</span>
+                  <span className="data-chip">Segurança</span>
+                  <span className="data-chip">Janelas temporais configuráveis</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Agrupamento de políticas (Similaridade de Jaccard)</h3>
+                    <p>
+                      Ações com muitas palavras em comum são agrupadas como a mesma política pública usando similaridade
+                      de Jaccard.
+                    </p>
+                  </div>
+                </div>
+                <p>
+                  Isso permite avaliar o efeito da “mesma política” em municípios diferentes e calcular estatísticas
+                  como média e variância.
+                </p>
+                <div className="data-chip-row">
+                  <span className="data-chip">Reduz duplicidade</span>
+                  <span className="data-chip">Compara cidades</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Ranking por “Qualidade”</h3>
+                    <p>
+                      “Qualidade” considera quantos municípios tiveram efeito positivo e ganha confiança quando a
+                      política aparece em mais lugares.
+                    </p>
+                  </div>
+                </div>
+                <p>
+                  <strong>(nº de municípios com efeito positivo) × n/(n+1)</strong>, onde <strong>n</strong> é o nº de
+                  municípios que aplicaram a política.
+                </p>
+                <div className="data-chip-row">
+                  <span className="data-chip">Mais casos = mais confiança</span>
+                  <span className="data-chip">Transparência no cálculo</span>
+                </div>
+              </li>
+              <li className="data-step">
+                <div className="data-step-head">
+                  <span className="data-step-number" aria-hidden="true" />
+                  <div>
+                    <h3>Observação importante sobre sinal do efeito</h3>
+                    <p>
+                      “Efeito positivo” depende do objetivo do indicador: se a meta é reduzir criminalidade, uma
+                      diferença negativa pode ser um bom resultado.
+                    </p>
+                  </div>
+                </div>
+                <div className="data-chip-row">
+                  <span className="data-chip">Leitura alinhada ao objetivo</span>
+                  <span className="data-chip">Evita interpretações erradas</span>
+                </div>
+              </li>
+            </ol>
+
             <p className="muted small">
-              Você pode abrir as fontes abaixo; aqui explicamos em linguagem simples o papel de cada uma no projeto.
-            </p>
-            <div className="source-grid">
-              {sources.map((source) => (
-                <a key={source.label} className="source-card" href={source.href} target="_blank" rel="noreferrer">
-                  <p className="strong">{source.label}</p>
-                  {(Array.isArray(source.detail) ? source.detail : source.detail.split("."))
-                    .map((sentence) => sentence.trim())
-                    .filter(Boolean)
-                    .map((sentence, index) => (
-                      <p key={`${source.label}-detail-${index}`} className="muted small">
-                        {sentence.endsWith(".") ? sentence : `${sentence}.`}
-                      </p>
-                    ))}
-                  <span className="chip-link">
-                    {source.linkLabel ?? "Abrir"} ↗
-                  </span>
-                </a>
-              ))}
-            </div>
-            <p className="muted small">
-              Todos os dados citados são públicos e não usamos nenhuma informação pessoal nas buscas.
+              A tabela abaixo mostra os SAPL mapeados no primeiro passo. Use a busca para localizar seu município e
+              verificar a fonte original dos PLs.
             </p>
             <div className="sapl-subsection">
               <div className="section-head">
@@ -1016,6 +1133,47 @@ export default function MethodologyPage() {
                   </div>
                 </>
               )}
+            </div>
+
+            <div className="info-card glossary-card">
+              <h3>Glossário</h3>
+              <ul className="muted small">
+                <li>
+                  <strong>SAPL</strong>: Sistema de Apoio ao Processo Legislativo usado pelas câmaras municipais para
+                  publicar PLs.
+                </li>
+                <li>
+                  <strong>PL</strong>: Projeto de Lei municipal; usamos a ementa e a data de apresentação para contextualizar cada ação.
+                </li>
+                <li>
+                  <strong>Embeddings</strong>: Vetores numéricos que representam o significado de um texto para medir semelhança.
+                </li>
+                <li>
+                  <strong>Busca semântica</strong>: Busca que compara significados via embeddings, não apenas palavras idênticas.
+                </li>
+                <li>
+                  <strong>Qdrant</strong>: Banco vetorial que armazena embeddings e devolve os candidatos mais semelhantes.
+                </li>
+              </ul>
+            </div>
+
+            <div className="info-card references-card">
+              <h3>Referências técnicas</h3>
+              <pre className="muted small">
+{`@article{ptt5_2020,
+title={PTT5: Pretraining and validating the T5 model on Brazilian Portuguese data},
+author={Carmo, Diedre and Piau, Marcos and Campiotti, Israel and Nogueira, Rodrigo and Lotufo, Roberto},
+journal={arXiv preprint arXiv:2008.09144},
+year={2020}
+}
+
+@article{wang2024multilingual,
+title={Multilingual E5 Text Embeddings: A Technical Report},
+author={Wang, Liang and Yang, Nan and Huang, Xiaolong and Yang, Linjun and Majumder, Rangan and Wei, Furu},
+journal={arXiv preprint arXiv:2402.05672},
+year={2024}
+}`}
+              </pre>
             </div>
           </section>
 
