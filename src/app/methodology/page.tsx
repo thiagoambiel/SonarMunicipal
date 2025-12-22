@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Script from "next/script";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
@@ -199,10 +198,6 @@ type ExampleTab = {
   policies: ExamplePolicy[];
 };
 
-type KatexInstance = {
-  render: (expression: string, element: HTMLElement, options?: { throwOnError?: boolean }) => void;
-};
-
 const exampleTabs: ExampleTab[] = [
   {
     id: "relatorio-violencia",
@@ -343,8 +338,7 @@ export default function MethodologyPage() {
   const [rowLimit, setRowLimit] = useState(10);
   const [saplError, setSaplError] = useState<string | null>(null);
   const [saplPage, setSaplPage] = useState(1);
-  const [katexReady, setKatexReady] = useState(false);
-  const qualityFormulaRef = useRef<HTMLSpanElement | null>(null);
+  const [saplLoading, setSaplLoading] = useState(true);
   const scrollLockRef = useRef(false);
 
   useEffect(() => {
@@ -361,6 +355,8 @@ export default function MethodologyPage() {
       } catch (error) {
         console.error("Falha ao carregar SAPL hosts", error);
         setSaplError("Não foi possível carregar a lista de SAPL.");
+      } finally {
+        setSaplLoading(false);
       }
     };
 
@@ -465,27 +461,6 @@ export default function MethodologyPage() {
     setSaplPage((prev) => Math.min(prev, pageCount));
   }, [pageCount]);
 
-  useEffect(() => {
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.href = "https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css";
-    document.head.appendChild(link);
-    return () => {
-      document.head.removeChild(link);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!katexReady || !qualityFormulaRef.current) return;
-    const katex = (window as typeof window & { katex?: KatexInstance }).katex;
-    if (!katex?.render) return;
-    katex.render(
-      "\\text{Qualidade} = (\\text{municípios com efeito positivo}) \\times \\frac{n}{n+1}",
-      qualityFormulaRef.current,
-      { throwOnError: false },
-    );
-  }, [katexReady]);
-
   const currentPage = Math.min(Math.max(1, saplPage), pageCount);
 
   const displayedHosts = useMemo(() => {
@@ -509,11 +484,6 @@ export default function MethodologyPage() {
 
   return (
     <div className="article-layout">
-      <Script
-        src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"
-        strategy="afterInteractive"
-        onLoad={() => setKatexReady(true)}
-      />
       <MinimalNav />
 
       <div className="article-shell">
@@ -870,187 +840,18 @@ export default function MethodologyPage() {
             <div className="section-head">
               <p className="eyebrow">Fontes e referências</p>
               <h2>De onde vêm os dados</h2>
-              <p className="muted small">
-                Caminho passo a passo de como coletamos projetos de lei, transformamos em ações pesquisáveis em linguagem
-                natural e medimos o impacto com indicadores do mundo real até chegar no ranking de Qualidade.
-              </p>
             </div>
 
-            <ol className="data-flow">
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Mapeamento das fontes (SAPL)</h3>
-                    <p>
-                      Localizamos os SAPLs (Sistema de Apoio ao Processo Legislativo) ativos nas câmaras municipais do
-                      Brasil para saber onde buscar os Projetos de Lei (PLs).
-                    </p>
-                  </div>
+            <div className="sapl-subsection" id="sapl-mapa">
+              <div className="sapl-header">
+                <div>
+                  <p className="eyebrow">SAPL auditável</p>
+                  <h3>Mapa dos SAPL utilizados</h3>
+                  <p className="muted small">
+                    Filtre por município ou UF e acesse o endereço oficial. Mantemos a mesma hierarquia visual dos cards para uma leitura leve.
+                  </p>
                 </div>
-                <div className="data-chip-row">
-                  <span className="data-chip">Fontes 100% públicas</span>
-                  <span className="data-chip">Sem dados pessoais</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Extração de Projetos de Lei (PLs)</h3>
-                    <p>Para cada SAPL encontrado, extraímos todos os PLs e guardamos pelo menos:</p>
-                  </div>
-                </div>
-                <ul>
-                  <li>
-                    <strong>ementa original</strong>
-                  </li>
-                  <li>
-                    <strong>data de apresentação</strong>
-                  </li>
-                </ul>
-                <div className="data-chip-row">
-                  <span className="data-chip">{formatNumber(TOTAL_PROJECTS)} PLs</span>
-                  <span className="data-chip">{formatNumber(TOTAL_MUNICIPALITIES)} municípios</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Transformação de ementas em ações (IA)</h3>
-                    <p>
-                      Ementas são formais; o sistema precisa de ações práticas para comparar o que cada PL propõe e
-                      sugerir próximos passos.
-                    </p>
-                  </div>
-                </div>
-                <ul>
-                  <li>Ementa: “Dispõe sobre instituir o Programa Municipal de Enfrentamento ao Feminicídio.”</li>
-                  <li>Ação sugerida: “Criar programa municipal de enfrentamento ao feminicídio.”</li>
-                </ul>
-                <p>
-                  Usamos o PTT5 (Unicamp) com ajuste fino QLoRA-4bit e aplicamos o modelo para enriquecer a base,
-                  gerando ações para todas as ementas.
-                </p>
-                <div className="data-chip-row">
-                  <span className="data-chip">Modelo PTT5 + QLoRA-4bit</span>
-                  <span className="data-chip">Ações geradas para todo o acervo</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Busca semântica (embeddings + Qdrant)</h3>
-                    <p>
-                      Cada ação vira um vetor numérico (embedding) com o modelo multilíngue E5, e esses vetores ficam
-                      armazenados no Qdrant.
-                    </p>
-                  </div>
-                </div>
-                <p>
-                  Quando o usuário pesquisa em linguagem natural, a pergunta também vira embedding. O Qdrant compara e
-                  devolve os candidatos mais semelhantes.
-                </p>
-                <div className="data-chip-row">
-                  <span className="data-chip">Embeddings E5</span>
-                  <span className="data-chip">Banco vetorial Qdrant</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Evidência com indicadores do mundo real</h3>
-                    <p>Não dependemos só do texto parecido: usamos indicadores municipais ao longo do tempo para estimar o efeito.</p>
-                  </div>
-                </div>
-                <p>Construímos dois indicadores, um para qualidade da educação e outro para segurança, comparando:</p>
-                <ul>
-                  <li>valor do indicador na data de apresentação;</li>
-                  <li>valor meses/anos depois, em janelas de tempo definidas.</li>
-                </ul>
-                <div className="data-chip-row">
-                  <span className="data-chip">Educação</span>
-                  <span className="data-chip">Segurança</span>
-                  <span className="data-chip">Janelas temporais configuráveis</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Agrupamento de políticas (Similaridade de Jaccard)</h3>
-                    <p>
-                      Ações com muitas palavras em comum são agrupadas como a mesma política pública usando similaridade
-                      de Jaccard.
-                    </p>
-                  </div>
-                </div>
-                <p>
-                  Isso permite avaliar o efeito da “mesma política” em municípios diferentes e calcular estatísticas
-                  como média e variância.
-                </p>
-                <div className="data-chip-row">
-                  <span className="data-chip">Reduz duplicidade</span>
-                  <span className="data-chip">Compara cidades</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Ranking por “Qualidade”</h3>
-                    <p>
-                      “Qualidade” considera quantos municípios tiveram efeito positivo e ganha confiança quando a
-                      política aparece em mais lugares.
-                    </p>
-                  </div>
-                </div>
-                <p>Fórmula (renderizada em LaTeX) com o mesmo texto mostrado acima:</p>
-                <span
-                  ref={qualityFormulaRef}
-                  className="quality-math"
-                  aria-label="(nº de municípios com efeito positivo) vezes n dividido por n mais 1"
-                >
-                  (nº de municípios com efeito positivo) × n/(n+1)
-                </span>
-                <div className="data-chip-row">
-                  <span className="data-chip">Mais casos = mais confiança</span>
-                  <span className="data-chip">Transparência no cálculo</span>
-                </div>
-              </li>
-              <li className="data-step">
-                <div className="data-step-head">
-                  <span className="data-step-number" aria-hidden="true" />
-                  <div>
-                    <h3>Observação importante sobre sinal do efeito</h3>
-                    <p>
-                      “Efeito positivo” depende do objetivo do indicador: se a meta é reduzir criminalidade, uma
-                      diferença negativa pode ser um bom resultado.
-                    </p>
-                  </div>
-                </div>
-                <div className="data-chip-row">
-                  <span className="data-chip">Leitura alinhada ao objetivo</span>
-                  <span className="data-chip">Evita interpretações erradas</span>
-                </div>
-              </li>
-            </ol>
 
-            <p className="muted small">
-              A tabela abaixo mostra os SAPL mapeados no primeiro passo. Use a busca para localizar seu município e
-              verificar a fonte original dos PLs.
-            </p>
-            <div className="sapl-subsection">
-              <div className="section-head">
-                <p className="eyebrow">Infraestrutura de coleta</p>
-                <h3>SAPL usados na coleta automatizada</h3>
-                <p className="muted small">
-                  Lista detalhada das casas legislativas com SAPL que alimentam o pipeline. Use a busca para filtrar por
-                  município e limite a quantidade exibida.
-                </p>
               </div>
 
               <div className="sapl-controls">
@@ -1100,8 +901,23 @@ export default function MethodologyPage() {
                 </div>
               </div>
 
-              {saplHosts.length === 0 && !saplError ? (
-                <p className="muted small">Carregando lista de SAPL...</p>
+              {saplError ? (
+                <p className="muted small sapl-error">{saplError}</p>
+              ) : saplLoading ? (
+                <div className="table-card sapl-table-card skeleton-table" role="presentation">
+                  <div className="table-head sapl-table" role="row">
+                    <span />
+                    <span />
+                    <span />
+                  </div>
+                  {Array.from({ length: 5 }).map((_, index) => (
+                    <div key={index} className="table-row sapl-table" role="row">
+                      <span className="skeleton-line" />
+                      <span className="skeleton-line" />
+                      <span className="skeleton-line" />
+                    </div>
+                  ))}
+                </div>
               ) : (
                 <>
                   <div className="table-card sapl-table-card" role="table" aria-label="Tabela de SAPL utilizados">
@@ -1172,46 +988,6 @@ export default function MethodologyPage() {
               )}
             </div>
 
-            <div className="info-card glossary-card">
-              <h3>Glossário</h3>
-              <ul className="muted small">
-                <li>
-                  <strong>SAPL</strong>: Sistema de Apoio ao Processo Legislativo usado pelas câmaras municipais para
-                  publicar PLs.
-                </li>
-                <li>
-                  <strong>PL</strong>: Projeto de Lei municipal; usamos a ementa e a data de apresentação para contextualizar cada ação.
-                </li>
-                <li>
-                  <strong>Embeddings</strong>: Vetores numéricos que representam o significado de um texto para medir semelhança.
-                </li>
-                <li>
-                  <strong>Busca semântica</strong>: Busca que compara significados via embeddings, não apenas palavras idênticas.
-                </li>
-                <li>
-                  <strong>Qdrant</strong>: Banco vetorial que armazena embeddings e devolve os candidatos mais semelhantes.
-                </li>
-              </ul>
-            </div>
-
-            <div className="info-card references-card">
-              <h3>Referências técnicas</h3>
-              <pre className="muted small">
-{`@article{ptt5_2020,
-title={PTT5: Pretraining and validating the T5 model on Brazilian Portuguese data},
-author={Carmo, Diedre and Piau, Marcos and Campiotti, Israel and Nogueira, Rodrigo and Lotufo, Roberto},
-journal={arXiv preprint arXiv:2008.09144},
-year={2020}
-}
-
-@article{wang2024multilingual,
-title={Multilingual E5 Text Embeddings: A Technical Report},
-author={Wang, Liang and Yang, Nan and Huang, Xiaolong and Yang, Linjun and Majumder, Rangan and Wei, Furu},
-journal={arXiv preprint arXiv:2402.05672},
-year={2024}
-}`}
-              </pre>
-            </div>
           </section>
 
           <section className="article-foot">
