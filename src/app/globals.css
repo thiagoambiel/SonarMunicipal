@@ -1945,7 +1945,7 @@ p {
 }
 
 .circuit-card {
-  --card-scale: 1;
+  --card-padding: var(--space-14);
   max-width: 560px;
   width: min(560px, 100%);
   margin: 0 auto;
@@ -1953,9 +1953,9 @@ p {
   border-radius: 16px;
   background: linear-gradient(180deg, #0f3d91 0%, #0b2f72 100%);
   box-shadow: 0 14px 38px rgba(7, 25, 68, 0.28);
-  padding: var(--space-14);
-  transform: translateX(var(--card-offset, 0px)) translateY(var(--card-lift, 0px)) scale(var(--card-scale, 1));
-  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+  padding: var(--card-padding);
+  transform: translateX(var(--card-offset, 0px)) translateY(var(--card-lift, 0px));
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, padding 0.2s ease;
   will-change: transform;
 }
 
@@ -2021,7 +2021,7 @@ p {
 }
 
 .circuit-card.is-active {
-  --card-scale: 1.05;
+  --card-padding: calc(var(--space-14) + 8px);
 }
 
 .circuit-path {
