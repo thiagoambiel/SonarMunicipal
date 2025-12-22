@@ -15,6 +15,10 @@
   --danger: #c62828;
   --info: #0f68b8;
   --border: #dbe2ee;
+  --circuit: #5f8bff;
+  --circuitGlow: #a7c5ff;
+  --circuitDim: rgba(74, 124, 255, 0.35);
+  --circuitHalo: rgba(167, 197, 255, 0.45);
   --shadow-sm: 0 10px 26px rgba(6, 28, 61, 0.08);
   --shadow-md: 0 18px 40px rgba(8, 22, 48, 0.12);
   --shadow-lg: 0 24px 60px rgba(5, 24, 55, 0.14);
@@ -1913,6 +1917,234 @@ p {
   background: #f7f9fe;
   font-weight: 700;
   color: var(--primary-strong);
+}
+
+.circuit-wrap {
+  position: relative;
+  padding: clamp(14px, 3vw, 22px);
+  border-radius: 18px;
+  border: 1px solid #dfe6f2;
+  background: radial-gradient(120% 120% at 14% 10%, #f6f8ff 0%, #eef2fb 32%, #f9fbff 70%),
+    linear-gradient(180deg, #ffffff 0%, #f7f9fe 100%);
+  box-shadow: var(--shadow-md);
+  overflow: visible;
+}
+
+.circuit-wrap::after {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 14px;
+  background: radial-gradient(120% 80% at 80% 12%, rgba(95, 139, 255, 0.1), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.circuit-svg {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.circuit-cards {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(32px, 6vw, 56px);
+}
+
+.circuit-card {
+  max-width: 560px;
+  width: min(560px, 100%);
+  margin: 0 auto;
+  border: 1px solid #dfe6f2;
+  border-radius: 16px;
+  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+  box-shadow: 0 14px 38px rgba(11, 61, 145, 0.08);
+  padding: var(--space-14);
+  transform: translateX(var(--card-offset, 0px)) translateY(var(--card-lift, 0px));
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  will-change: transform;
+}
+
+.circuit-card:hover {
+  --card-lift: -4px;
+  border-color: var(--circuitGlow);
+  box-shadow: var(--shadow-md);
+}
+
+.circuit-card.highlight {
+  background: linear-gradient(180deg, #fff8e9 0%, #fffdf7 100%);
+  border-color: #f2d083;
+  box-shadow: 0 18px 44px rgba(214, 153, 41, 0.16);
+}
+
+.circuit-card.is-active {
+  border-color: var(--circuitGlow);
+  box-shadow: var(--shadow-lg);
+}
+
+.circuit-card.is-past {
+  opacity: 0.95;
+}
+
+.circuit-card-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.circuit-step {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), #0f68b8);
+  color: #fff;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 26px rgba(11, 61, 145, 0.2);
+}
+
+.circuit-titles h3 {
+  margin: 2px 0 0;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+}
+
+.circuit-card.highlight h3 {
+  font-size: 19px;
+}
+
+.circuit-card-body {
+  display: grid;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.circuit-card .eyebrow {
+  color: var(--muted);
+}
+
+.circuit-card-body p {
+  margin: 0;
+  line-height: 1.55;
+}
+
+.circuit-path {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: opacity 0.25s ease, filter 0.25s ease, stroke 0.25s ease;
+}
+
+.circuit-path.shadow {
+  stroke: rgba(11, 61, 145, 0.14);
+  opacity: 0.4;
+  filter: blur(10px);
+}
+
+.circuit-path.base {
+  stroke: url(#circuitGlow);
+  opacity: 0.9;
+}
+
+.circuit-path.flow {
+  stroke: var(--circuitGlow);
+  opacity: 0.3;
+  animation: circuitFlow 14s linear infinite;
+}
+
+.circuit-path-group.past .base {
+  opacity: 1;
+}
+
+.circuit-path-group.hovered .base,
+.circuit-path-group.next .base {
+  filter: drop-shadow(0 0 10px var(--circuitHalo));
+}
+
+.circuit-path-group.next .base {
+  animation: circuitFlash 0.7s ease;
+}
+
+.circuit-path-group.hovered .flow {
+  opacity: 0.7;
+  animation-duration: 9s;
+}
+
+.circuit-node {
+  fill: #fff;
+  stroke: var(--circuit);
+  stroke-width: 2;
+  transition: transform 0.2s ease, filter 0.2s ease, stroke 0.2s ease;
+}
+
+.circuit-node.active {
+  transform: scale(1.08);
+  stroke: var(--circuitGlow);
+  filter: drop-shadow(0 0 10px var(--circuitHalo));
+}
+
+.circuit-pulse {
+  fill: var(--circuitGlow);
+  filter: drop-shadow(0 0 12px var(--circuitHalo));
+}
+
+[data-reduced-motion="true"] .circuit-path.flow {
+  animation: none;
+  opacity: 0.2;
+}
+
+[data-reduced-motion="true"] .circuit-path-group.next .base {
+  animation: none;
+}
+
+[data-reduced-motion="true"] .circuit-pulse {
+  display: none;
+}
+
+@keyframes circuitFlow {
+  to {
+    stroke-dashoffset: -200;
+  }
+}
+
+@keyframes circuitFlash {
+  0% {
+    filter: drop-shadow(0 0 0 var(--circuitHalo));
+  }
+  50% {
+    filter: drop-shadow(0 0 16px var(--circuitHalo));
+  }
+  100% {
+    filter: drop-shadow(0 0 0 var(--circuitHalo));
+  }
+}
+
+@media (max-width: 720px) {
+  .circuit-wrap {
+    padding: var(--space-10);
+  }
+
+  .circuit-cards {
+    gap: 28px;
+  }
+
+  .circuit-step {
+    width: 36px;
+    height: 36px;
+  }
+
+  .circuit-card {
+    padding: var(--space-12);
+  }
+
+  .circuit-titles h3 {
+    font-size: 17px;
+  }
 }
 
 .scenario-switcher {

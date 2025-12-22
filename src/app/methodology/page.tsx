@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import MinimalNav from "@/components/MinimalNav";
 import CustomDropdown from "@/components/CustomDropdown";
+import CircuitTimeline from "@/components/CircuitTimeline";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 const numberFormatter = new Intl.NumberFormat("pt-BR");
@@ -62,6 +63,91 @@ const pipelineSteps = [
     title: "Entregamos um pacote auditável",
     detail: "Cada grupo apresenta qualidade, efeito médio, links, município/UF, datas e série do indicador para conferência.",
     tone: "success",
+  },
+];
+
+const circuitCards = [
+  {
+    id: 1,
+    title: "Mapeamento dos SAPLs",
+    body: "Identificamos os sistemas SAPL (Sistema de Apoio ao Processo Legislativo) usados por câmaras municipais e localizamos as bases disponíveis publicamente.",
+  },
+  {
+    id: 2,
+    title: "Extração de Projetos de Lei",
+    body: "Para cada SAPL encontrado, extraímos todos os Projetos de Lei (PLs) e salvamos o essencial: a ementa original e a data de apresentação.",
+  },
+  {
+    id: 3,
+    variant: "highlight",
+    title: "Base construída",
+    body: "Ao final da coleta, reunimos 220.065 projetos de lei, de 322 municípios diferentes.",
+  },
+  {
+    id: 4,
+    title: "Da ementa para a ação",
+    body: "Ementas são formais. Para facilitar a busca e comparação, transformamos cada ementa em uma sugestão prática de ação, em linguagem direta.",
+  },
+  {
+    id: 5,
+    title: "Exemplo de transformação",
+    body: 'Ementa: “Dispõe sobre instituir o Programa Municipal de Enfrentamento ao Feminicídio.”\nAção sugerida: “Criar programa municipal de enfrentamento ao feminicídio.”',
+  },
+  {
+    id: 6,
+    title: "Modelo treinado para padronizar ações",
+    body: "Treinamos um modelo de IA baseado no PTT5 (Unicamp) para realizar essa conversão (ementa → ação), usando ajuste fino QLoRA-4bit.",
+  },
+  {
+    id: 7,
+    title: "Enriquecimento do banco",
+    body: "Após o treinamento, aplicamos o modelo em escala para converter as ementas coletadas em ações padronizadas dentro do banco de dados.",
+  },
+  {
+    id: 8,
+    title: "Busca em linguagem natural",
+    body: "Para permitir buscas por significado, transformamos os textos das ações em embeddings: vetores que representam o sentido do texto.",
+  },
+  {
+    id: 9,
+    title: "Infraestrutura de busca",
+    body: "Armazenamos os embeddings no Qdrant. Quando o usuário faz uma pergunta, ela também vira embedding e o sistema retorna os candidatos mais semelhantes.",
+  },
+  {
+    id: 10,
+    title: "Evidência com dados do mundo real",
+    body: "Para não depender apenas do texto, enriquecemos os resultados com indicadores reais que refletem a evolução dos municípios ao longo do tempo.",
+  },
+  {
+    id: 11,
+    title: "Indicadores usados na análise",
+    body: "Construímos dois indicadores para acompanhar educação e segurança ao longo do tempo, permitindo comparar a situação do município antes e depois da apresentação de um projeto.",
+  },
+  {
+    id: 12,
+    title: "Cálculo de efeito por janelas de tempo",
+    body: "Avaliamos cada projeto comparando o indicador na data de apresentação com o valor meses ou anos depois, em diferentes janelas de tempo.",
+  },
+  {
+    id: 13,
+    title: "Agrupamento por política pública",
+    body: "Para comparar municípios diferentes, agrupamos projetos semelhantes usando Similaridade de Jaccard. Textos muito parecidos são tratados como a mesma política pública.",
+  },
+  {
+    id: 14,
+    title: "Comparação entre municípios",
+    body: "Com os grupos formados, avaliamos como a mesma política se comporta em diferentes cidades e calculamos estatísticas como média e variância do efeito.",
+  },
+  {
+    id: 15,
+    variant: "highlight",
+    title: "Ranking por “Qualidade”",
+    body: "Ordenamos as políticas por uma métrica de Qualidade:\n( nº de municípios com efeito positivo ) × n/(n+1), onde n é o nº de municípios com a política.",
+  },
+  {
+    id: 16,
+    title: "Como interpretar “efeito positivo”",
+    body: "Efeito positivo depende do objetivo do indicador. Se a meta é reduzir criminalidade, uma queda no indicador é considerada um bom resultado.",
   },
 ];
 
@@ -840,7 +926,13 @@ export default function MethodologyPage() {
             <div className="section-head">
               <p className="eyebrow">Fontes e referências</p>
               <h2>De onde vêm os dados</h2>
+              <p className="muted">
+                Linha do tempo em circuito mostrando a origem e o caminho dos dados até chegarem na busca e nos indicadores.
+                Cada etapa acende quando entra na tela e os fios acompanham a leitura.
+              </p>
             </div>
+
+            <CircuitTimeline cards={circuitCards} />
 
             <div className="sapl-subsection" id="sapl-mapa">
               <div className="sapl-header">
