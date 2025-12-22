@@ -93,7 +93,7 @@ type PulseEvent = {
 };
 
 const DESKTOP_OFFSETS = [-220, -140, -60, 0, 60, 140, 220];
-const MOBILE_OFFSETS = [-24, 0, 24];
+const MOBILE_OFFSETS = [0];
 const LCG = (seed: number) => () => {
   seed = (seed * 9301 + 49297) % 233280;
   return seed / 233280;
