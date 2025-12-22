@@ -2085,6 +2085,15 @@ p {
   color: #bcd6ff;
 }
 
+.formula-legend {
+  margin: 8px 0 0;
+  padding-left: 16px;
+  color: #d6e4ff;
+  font-size: 13px;
+  line-height: 1.4;
+  list-style: disc;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
