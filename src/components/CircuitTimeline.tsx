@@ -295,8 +295,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                   className="circuit-path flow"
                   d={connector.path}
                   strokeWidth={strokeWidth}
-                  pathLength={520}
-                  strokeDasharray="220 520"
+                  pathLength={1280}
+                  strokeDasharray="500 780"
                   strokeDashoffset="0"
                   stroke="url(#circuitFlowGradient)"
                   style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
