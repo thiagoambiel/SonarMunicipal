@@ -177,14 +177,14 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
       if (rafId !== null) return;
       rafId = window.requestAnimationFrame(() => {
         rafId = null;
-        const viewportCenter = window.innerHeight / 2;
+        const targetLine = window.innerHeight * 0.25;
         let closestIndex = 0;
         let closestDistance = Number.POSITIVE_INFINITY;
         cardRefs.current.forEach((card, index) => {
           if (!card) return;
           const rect = card.getBoundingClientRect();
           const center = rect.top + rect.height / 2;
-          const distance = Math.abs(center - viewportCenter);
+          const distance = Math.abs(center - targetLine);
           if (distance < closestDistance) {
             closestDistance = distance;
             closestIndex = index;
