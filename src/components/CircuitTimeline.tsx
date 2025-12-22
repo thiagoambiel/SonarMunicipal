@@ -106,6 +106,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
   const [anchors, setAnchors] = useState<Array<Anchor | null>>([]);
   const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
   const [activeIndex, setActiveIndex] = useState(0);
+  const [hoverActiveIndex, setHoverActiveIndex] = useState<number | null>(null);
   const [pulseEvents, setPulseEvents] = useState<PulseEvent[]>([]);
   const prefersReducedMotion = usePrefersReducedMotion();
   const [isCompact, setIsCompact] = useState<boolean>(() =>
@@ -239,7 +240,11 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
     return () => window.clearInterval(cleanup);
   }, [prefersReducedMotion]);
 
-  const handleHover = () => undefined;
+  const displayActiveIndex = hoverActiveIndex ?? activeIndex;
+
+  const handleHover = (index: number | null) => {
+    setHoverActiveIndex(index);
+  };
 
   return (
     <div className="circuit-wrap" ref={containerRef} data-reduced-motion={prefersReducedMotion ? "true" : "false"}>
@@ -275,8 +280,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
           </filter>
         </defs>
         {connectors.map((connector, index) => {
-      const isPast = index < activeIndex - 1;
-      const isNext = connector.toIndex === activeIndex;
+      const isPast = index < displayActiveIndex - 1;
+      const isNext = connector.toIndex === displayActiveIndex;
       const strokeWidth = isCompact ? 1.2 : 1.6;
       const flowDelay = `${index * 0.6}s`;
 
@@ -325,8 +330,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
 
       <div className="circuit-cards">
         {cards.map((card, index) => {
-          const isActive = index === activeIndex;
-          const isPast = index < activeIndex;
+          const isActive = index === displayActiveIndex;
+          const isPast = index < displayActiveIndex;
           const isHighlighted = card.variant === "highlight";
           const bodyLines = card.body.split("\n");
           return (
@@ -339,8 +344,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                 isPast ? " is-past" : ""
               }`}
               style={{ ["--card-offset" as keyof CSSProperties]: `${offsets[index]}px` }}
-              onMouseEnter={handleHover}
-              onMouseLeave={handleHover}
+              onMouseEnter={() => handleHover(index)}
+              onMouseLeave={() => handleHover(null)}
             >
               <div className="circuit-card-head">
                 <span className="circuit-step">{card.id}</span>
