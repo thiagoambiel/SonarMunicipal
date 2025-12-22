@@ -2052,14 +2052,14 @@ p {
 }
 
 .circuit-path.base {
-  stroke: var(--circuitNeutral);
-  opacity: 0.75;
+  stroke: rgba(30, 44, 82, 0.04);
+  opacity: 0.22;
 }
 
 .circuit-path.flow {
   stroke: url(#circuitFlowGradient);
-  opacity: 0.55;
-  animation: circuitFlow 10s linear infinite;
+  opacity: 1;
+  animation: circuitFlow 1s linear infinite;
   animation-delay: var(--flow-delay, 0s);
 }
 

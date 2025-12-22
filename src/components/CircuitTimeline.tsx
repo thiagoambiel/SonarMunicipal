@@ -270,12 +270,13 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             <stop offset="0%" stopColor="var(--circuitDim)" stopOpacity="0.6" />
             <stop offset="100%" stopColor="var(--circuit)" stopOpacity="0.8" />
           </linearGradient>
-          <linearGradient id="circuitFlowGradient" x1="0%" y1="0%" x2="120%" y2="0%" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#7dc8ff" stopOpacity="0.0" />
-            <stop offset="30%" stopColor="#6e9dff" stopOpacity="0.55" />
-            <stop offset="60%" stopColor="#8b6bff" stopOpacity="0.65" />
-            <stop offset="100%" stopColor="#ff9ad6" stopOpacity="0" />
-            <animate attributeName="gradientTransform" dur="6s" repeatCount="indefinite" values="translate(0 0);translate(140 0);translate(0 0)" />
+          <linearGradient id="circuitFlowGradient" x1="0%" y1="0%" x2="180%" y2="0%" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.8" />
+            <stop offset="25%" stopColor="#6b4bff" stopOpacity="0.9" />
+            <stop offset="50%" stopColor="#ff9a3c" stopOpacity="0.95" />
+            <stop offset="75%" stopColor="#ff3b30" stopOpacity="0.9" />
+            <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.85" />
+            <animate attributeName="gradientTransform" dur="5.5s" repeatCount="indefinite" values="translate(0 0);translate(200 0);translate(0 0)" />
           </linearGradient>
           <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" result="blur" />
@@ -307,9 +308,9 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                 <path
                   className="circuit-path flow"
                   d={connector.path}
-                  strokeWidth={strokeWidth - 0.2}
-                  pathLength={100}
-                  strokeDasharray="16 24"
+                  strokeWidth={strokeWidth}
+                  pathLength={320}
+                  strokeDasharray="260 12"
                   strokeDashoffset="0"
                   style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
                   stroke="url(#circuitFlowGradient)"
