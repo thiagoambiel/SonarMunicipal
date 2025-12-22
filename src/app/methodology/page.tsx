@@ -3,10 +3,29 @@
 import Link from "next/link";
 import type React from "react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import {
+  ArrowLeftRight,
+  BrainCircuit,
+  ClipboardList,
+  Clock,
+  Database,
+  FileDown,
+  Group,
+  Layers,
+  LineChart,
+  MapPinned,
+  Network,
+  Scale,
+  Search,
+  Sparkles,
+  TrendingUp,
+  Trophy,
+  Wand2,
+} from "lucide-react";
 
 import MinimalNav from "@/components/MinimalNav";
 import CustomDropdown from "@/components/CustomDropdown";
-import CircuitTimeline, { type CircuitCard } from "@/components/CircuitTimeline";
+import CircuitTimeline, { type CircuitCard, type CircuitChapter } from "@/components/CircuitTimeline";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 const numberFormatter = new Intl.NumberFormat("pt-BR");
@@ -66,89 +85,164 @@ const pipelineSteps = [
   },
 ];
 
-const circuitCards: CircuitCard[] = [
+const circuitChapters: CircuitChapter[] = [
   {
     id: 1,
-    title: "Mapeamento dos SAPLs",
-    body: "Identificamos os sistemas SAPL (Sistema de Apoio ao Processo Legislativo) usados por câmaras municipais e localizamos as bases disponíveis publicamente.",
+    title: "1. Coleta",
+    subtitle: "Encontramos e consolidamos fontes oficiais.",
+    startStep: 1,
+    endStep: 3,
+    icon: Database,
   },
   {
     id: 2,
+    title: "2. Padronização",
+    subtitle: "Do texto jurídico para ações comparáveis.",
+    startStep: 4,
+    endStep: 7,
+    icon: Wand2,
+  },
+  {
+    id: 3,
+    title: "3. Busca",
+    subtitle: "Encontrar por significado, não por palavra-chave.",
+    startStep: 8,
+    endStep: 9,
+    icon: Search,
+  },
+  {
+    id: 4,
+    title: "4. Evidência",
+    subtitle: "Indicadores e tempo para medir efeitos.",
+    startStep: 10,
+    endStep: 12,
+    icon: LineChart,
+  },
+  {
+    id: 5,
+    title: "5. Ranking",
+    subtitle: "Agrupar, comparar e priorizar com critérios claros.",
+    startStep: 13,
+    endStep: 16,
+    icon: Trophy,
+  },
+];
+
+const circuitCards: CircuitCard[] = [
+  {
+    id: 1,
+    chapterId: 1,
+    title: "Mapeamento dos SAPLs",
+    body: "Identificamos os sistemas SAPL (Sistema de Apoio ao Processo Legislativo) usados por câmaras municipais e localizamos as bases disponíveis publicamente.",
+    icon: MapPinned,
+  },
+  {
+    id: 2,
+    chapterId: 1,
     title: "Extração de Projetos de Lei",
     body: "Para cada SAPL encontrado, extraímos todos os Projetos de Lei (PLs) e salvamos o essencial: a ementa original e a data de apresentação.",
+    icon: FileDown,
   },
   {
     id: 3,
     variant: "highlight",
+    chapterId: 1,
     title: "Base construída",
     body: "Ao final da coleta, reunimos 220.065 projetos de lei, de 322 municípios diferentes.",
+    icon: Database,
   },
   {
     id: 4,
+    chapterId: 2,
     title: "Da ementa para a ação",
     body: "Ementas são formais. Para facilitar a busca e comparação, transformamos cada ementa em uma sugestão prática de ação, em linguagem direta.",
+    icon: ArrowLeftRight,
   },
   {
     id: 5,
+    chapterId: 2,
     title: "Exemplo de transformação",
     body: 'Ementa: “Dispõe sobre instituir o Programa Municipal de Enfrentamento ao Feminicídio.”\nAção sugerida: “Criar programa municipal de enfrentamento ao feminicídio.”',
+    icon: Sparkles,
   },
   {
     id: 6,
+    chapterId: 2,
     title: "Modelo treinado para padronizar ações",
     body: "Treinamos um modelo de IA baseado no PTT5 (Unicamp) para realizar essa conversão (ementa → ação), usando ajuste fino QLoRA-4bit.",
+    icon: BrainCircuit,
   },
   {
     id: 7,
+    chapterId: 2,
     title: "Enriquecimento do banco",
     body: "Após o treinamento, aplicamos o modelo em escala para converter as ementas coletadas em ações padronizadas dentro do banco de dados.",
+    icon: Layers,
   },
   {
     id: 8,
+    chapterId: 3,
     title: "Busca em linguagem natural",
     body: "Para permitir buscas por significado, transformamos os textos das ações em embeddings com o modelo Multilingual E5: vetores que representam o sentido do texto.",
+    icon: Network,
   },
   {
     id: 9,
+    chapterId: 3,
     title: "Infraestrutura de busca",
     body: "Armazenamos os embeddings no Qdrant. Quando o usuário faz uma pergunta, ela também vira embedding e o sistema retorna os candidatos mais semelhantes.",
+    icon: Search,
   },
   {
     id: 10,
+    chapterId: 4,
     title: "Evidência com dados do mundo real",
     body: "Para não depender apenas do texto, enriquecemos os resultados com indicadores reais que refletem a evolução dos municípios ao longo do tempo.",
+    icon: LineChart,
   },
   {
     id: 11,
+    chapterId: 4,
     title: "Indicadores usados na análise",
     body: "Construímos dois indicadores para acompanhar educação e segurança ao longo do tempo, permitindo comparar a situação do município antes e depois da apresentação de um projeto.",
+    icon: ClipboardList,
   },
   {
     id: 12,
+    chapterId: 4,
     title: "Cálculo de efeito por janelas de tempo",
     body: "Avaliamos cada projeto comparando o indicador na data de apresentação com o valor meses ou anos depois, em diferentes janelas de tempo.",
+    icon: Clock,
   },
   {
     id: 13,
+    chapterId: 5,
     title: "Agrupamento por política pública",
     body: "Para comparar municípios diferentes, agrupamos projetos semelhantes usando Similaridade de Jaccard. Textos muito parecidos são tratados como a mesma política pública.",
+    icon: Group,
   },
   {
     id: 14,
+    chapterId: 5,
     title: "Comparação entre municípios",
     body: "Com os grupos formados, avaliamos como a mesma política se comporta em diferentes cidades e calculamos estatísticas como média e variância do efeito.",
+    icon: Scale,
   },
   {
     id: 15,
     variant: "highlight",
+    chapterId: 5,
     title: "Ranking por Qualidade",
     body: "Ordenamos as políticas utilizando uma métrica chamada \"Qualidade\" que favorece as políticas que obtiveram sucesso em vários municípios diferentes:",
     formula: "Qualidade = n_positivos × n/(n+1)\nLegenda: n_positivos = nº de municípios com efeito positivo; n = nº total de municípios com a política.",
+    icon: Trophy,
   },
   {
     id: 16,
+    chapterId: 5,
     title: "Como interpretar “efeito positivo”",
     body: "Efeito positivo depende do objetivo do indicador. Se a meta é reduzir criminalidade, uma queda no indicador é considerada um bom resultado.",
+    icon: TrendingUp,
   },
 ];
 
@@ -933,7 +1027,7 @@ export default function MethodologyPage() {
               </p>
             </div>
 
-            <CircuitTimeline cards={circuitCards} />
+            <CircuitTimeline cards={circuitCards} chapters={circuitChapters} />
 
             <div className="sapl-subsection" id="sapl-mapa">
               <div className="sapl-header">

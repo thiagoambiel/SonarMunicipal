@@ -1,13 +1,25 @@
 "use client";
 
 import React, { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import type { LucideIcon } from "lucide-react";
 
 export type CircuitCard = {
   id: number;
   title: string;
   body: string;
+  icon: LucideIcon;
+  chapterId: number;
   variant?: "default" | "highlight";
   formula?: string;
+};
+
+export type CircuitChapter = {
+  id: number;
+  title: string;
+  subtitle: string;
+  startStep: number;
+  endStep: number;
+  icon: LucideIcon;
 };
 
 const linkifyLine = (line: string) => {
@@ -151,9 +163,37 @@ const usePrefersReducedMotion = () => {
 
 type CircuitTimelineProps = {
   cards: CircuitCard[];
+  chapters: CircuitChapter[];
 };
 
-export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
+type ChapterSeparatorProps = {
+  chapter: CircuitChapter;
+  isCompact: boolean;
+};
+
+const ChapterSeparator = ({ chapter, isCompact }: ChapterSeparatorProps) => {
+  const Icon = chapter.icon;
+  return (
+    <div className={`chapter-separator${isCompact ? " compact" : ""}`}>
+      <div className="chapter-rail" aria-hidden="true">
+        <div className="chapter-node">
+          <Icon size={16} aria-hidden="true" />
+        </div>
+        {!isCompact && <span className="chapter-line" />}
+      </div>
+      <div className="chapter-copy">
+        <p className="chapter-label">Capítulo {chapter.id}</p>
+        <div className="chapter-heading">
+          <h3>{chapter.title}</h3>
+          <p className="chapter-subtitle">{chapter.subtitle}</p>
+        </div>
+        <p className="chapter-range">Etapas {chapter.startStep}–{chapter.endStep}</p>
+      </div>
+    </div>
+  );
+};
+
+export default function CircuitTimeline({ cards, chapters }: CircuitTimelineProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [anchors, setAnchors] = useState<Array<Anchor | null>>([]);
@@ -167,6 +207,34 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
   );
 
   const offsets = useMemo(() => computeOffsets(cards.length, isCompact), [cards.length, isCompact]);
+
+  const chapterLookup = useMemo(() => {
+    const map = new Map<number, CircuitChapter>();
+    chapters.forEach((chapter) => map.set(chapter.id, chapter));
+    return map;
+  }, [chapters]);
+
+  const timelineItems = useMemo(
+    () => {
+      const items: Array<
+        | { type: "chapter"; chapter: CircuitChapter }
+        | { type: "card"; card: CircuitCard; index: number }
+      > = [];
+      const seen = new Set<number>();
+
+      cards.forEach((card, index) => {
+        const chapter = chapterLookup.get(card.chapterId);
+        if (chapter && !seen.has(chapter.id)) {
+          items.push({ type: "chapter", chapter });
+          seen.add(chapter.id);
+        }
+        items.push({ type: "card", card, index });
+      });
+
+      return items;
+    },
+    [cards, chapterLookup],
+  );
 
   const connectors = useMemo<Connector[]>(() => {
     const segments: Connector[] = [];
@@ -382,7 +450,19 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
       </svg>
 
       <div className="circuit-cards">
-        {cards.map((card, index) => {
+        {timelineItems.map((item) => {
+          if (item.type === "chapter") {
+            return (
+              <ChapterSeparator
+                key={`chapter-${item.chapter.id}`}
+                chapter={item.chapter}
+                isCompact={isCompact}
+              />
+            );
+          }
+
+          const { card, index } = item;
+          const Icon = card.icon;
           const isActive = index === displayActiveIndex;
           const isPast = index < displayActiveIndex;
           const isHighlighted = card.variant === "highlight";
@@ -399,12 +479,15 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
               style={{ ["--card-offset" as keyof CSSProperties]: `${offsets[index]}px` }}
               onMouseEnter={() => handleHover(index)}
               onMouseLeave={() => handleHover(null)}
-              >
+            >
               <div className="circuit-card-head">
                 <span className="circuit-step">{card.id}</span>
                 <div className="circuit-titles">
                   <p className="eyebrow">Etapa {card.id}</p>
-                  <h3>{card.title}</h3>
+                  <h3 className="circuit-card-title">
+                    <Icon className="circuit-card-icon" size={22} aria-hidden="true" />
+                    <span>{card.title}</span>
+                  </h3>
                 </div>
               </div>
               <div className="circuit-card-body">
