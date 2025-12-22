@@ -59,16 +59,20 @@ const computeOffsets = (count: number, compact: boolean) => {
 };
 
 const buildCurve = (start: Point, end: Point) => {
-  const verticalGap = Math.max(40, end.y - start.y);
-  const mid = verticalGap / 2;
+  const verticalGap = Math.max(60, end.y - start.y);
+  const midY = start.y + verticalGap * 0.6;
   const deltaX = end.x - start.x;
-  const curve = clamp(Math.abs(deltaX) * 0.7 + 60, 60, 240);
-  const controlX = deltaX === 0 ? curve : Math.sign(deltaX) * curve;
+  const radius = clamp(Math.abs(deltaX) * 0.2 + 22, 18, 82);
 
-  const c1: Point = { x: start.x + controlX, y: start.y + mid * 0.6 };
-  const c2: Point = { x: end.x - controlX, y: end.y - mid * 0.6 };
+  const p1: Point = { x: start.x, y: midY };
+  const p2: Point = { x: end.x, y: midY };
 
-  return `M ${start.x} ${start.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${end.x} ${end.y}`;
+  return [
+    `M ${start.x} ${start.y}`,
+    `C ${start.x} ${start.y + radius}, ${p1.x} ${p1.y - radius}, ${p1.x} ${p1.y}`,
+    `C ${p1.x} ${p1.y + radius}, ${p2.x} ${p2.y - radius}, ${p2.x} ${p2.y}`,
+    `C ${p2.x} ${p2.y + radius}, ${end.x} ${end.y - radius}, ${end.x} ${end.y}`,
+  ].join(" ");
 };
 
 const usePrefersReducedMotion = () => {
@@ -199,24 +203,24 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
   }, [cards.length]);
 
   useEffect(() => {
-    if (prefersReducedMotion) return;
+    if (prefersReducedMotion || connectors.length === 0) return;
     let cancelled = false;
     let timeoutId: number;
-    const loop = () => {
-      const delay = 2500 + Math.random() * 2500;
+    let current = 0;
+    const tick = () => {
       timeoutId = window.setTimeout(() => {
         setPulseEvents((events) => {
           const now = performance.now();
           const pruned = events.filter((event) => now - event.createdAt < 1600);
-          if (pruned.length >= 3 || connectors.length === 0) return pruned;
-          const connector = connectors[Math.floor(Math.random() * connectors.length)];
+          const connector = connectors[current];
+          current = (current + 1) % connectors.length;
           if (!connector) return pruned;
           return [...pruned, { id: `${connector.id}-${now}`, connectorId: connector.id, createdAt: now }];
         });
-        if (!cancelled) loop();
-      }, delay);
+        if (!cancelled) tick();
+      }, 1400);
     };
-    loop();
+    tick();
 
     return () => {
       cancelled = true;
@@ -262,6 +266,13 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             <stop offset="0%" stopColor="var(--circuitDim)" stopOpacity="0.6" />
             <stop offset="100%" stopColor="var(--circuit)" stopOpacity="0.8" />
           </linearGradient>
+          <linearGradient id="circuitFlowGradient" x1="0%" y1="0%" x2="120%" y2="0%" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stopColor="#7dc8ff" stopOpacity="0.0" />
+            <stop offset="30%" stopColor="#6e9dff" stopOpacity="0.55" />
+            <stop offset="60%" stopColor="#8b6bff" stopOpacity="0.65" />
+            <stop offset="100%" stopColor="#ff9ad6" stopOpacity="0" />
+            <animate attributeName="gradientTransform" dur="6s" repeatCount="indefinite" values="translate(0 0);translate(140 0);translate(0 0)" />
+          </linearGradient>
           <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" result="blur" />
             <feMerge>
@@ -271,11 +282,12 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
           </filter>
         </defs>
         {connectors.map((connector, index) => {
-          const isPast = index < activeIndex - 1;
-          const isNext = connector.toIndex === activeIndex;
-          const isHovered =
-            hoveredIndex != null && (hoveredIndex === connector.fromIndex || hoveredIndex === connector.toIndex);
-          const strokeWidth = isCompact ? 1.5 : 2;
+      const isPast = index < activeIndex - 1;
+      const isNext = connector.toIndex === activeIndex;
+      const isHovered =
+        hoveredIndex != null && (hoveredIndex === connector.fromIndex || hoveredIndex === connector.toIndex);
+      const strokeWidth = isCompact ? 1.2 : 1.6;
+      const flowDelay = `${index * 0.35}s`;
 
           return (
             <g
@@ -284,6 +296,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                 isNext ? " next" : ""
               }`}
             >
+              <path className="circuit-path trench" d={connector.path} strokeWidth={strokeWidth + 3.2} />
               <path className="circuit-path shadow" d={connector.path} strokeWidth={strokeWidth + 0.6} />
               <path className="circuit-path base" d={connector.path} strokeWidth={strokeWidth} />
               {!prefersReducedMotion && (
@@ -294,6 +307,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                   pathLength={100}
                   strokeDasharray="16 24"
                   strokeDashoffset="0"
+                  style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
+                  stroke="url(#circuitFlowGradient)"
                 />
               )}
               <circle

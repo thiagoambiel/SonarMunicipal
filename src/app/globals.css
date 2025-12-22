@@ -19,6 +19,7 @@
   --circuitGlow: #a7c5ff;
   --circuitDim: rgba(74, 124, 255, 0.35);
   --circuitHalo: rgba(167, 197, 255, 0.45);
+  --circuitNeutral: #c2c9da;
   --shadow-sm: 0 10px 26px rgba(6, 28, 61, 0.08);
   --shadow-md: 0 18px 40px rgba(8, 22, 48, 0.12);
   --shadow-lg: 0 24px 60px rgba(5, 24, 55, 0.14);
@@ -1965,12 +1966,11 @@ p {
   box-shadow: 0 14px 38px rgba(11, 61, 145, 0.08);
   padding: var(--space-14);
   transform: translateX(var(--card-offset, 0px)) translateY(var(--card-lift, 0px));
-  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
   will-change: transform;
 }
 
 .circuit-card:hover {
-  --card-lift: -4px;
   border-color: var(--circuitGlow);
   box-shadow: var(--shadow-md);
 }
@@ -2040,21 +2040,27 @@ p {
   transition: opacity 0.25s ease, filter 0.25s ease, stroke 0.25s ease;
 }
 
+.circuit-path.trench {
+  stroke: rgba(12, 18, 38, 0.18);
+  filter: drop-shadow(0 10px 20px rgba(10, 16, 38, 0.22));
+}
+
 .circuit-path.shadow {
-  stroke: rgba(11, 61, 145, 0.14);
-  opacity: 0.4;
+  stroke: rgba(40, 63, 116, 0.18);
+  opacity: 0.35;
   filter: blur(10px);
 }
 
 .circuit-path.base {
-  stroke: url(#circuitGlow);
-  opacity: 0.9;
+  stroke: var(--circuitNeutral);
+  opacity: 0.75;
 }
 
 .circuit-path.flow {
-  stroke: var(--circuitGlow);
-  opacity: 0.3;
-  animation: circuitFlow 14s linear infinite;
+  stroke: url(#circuitFlowGradient);
+  opacity: 0.55;
+  animation: circuitFlow 10s linear infinite;
+  animation-delay: var(--flow-delay, 0s);
 }
 
 .circuit-path-group.past .base {
@@ -2108,7 +2114,7 @@ p {
 
 @keyframes circuitFlow {
   to {
-    stroke-dashoffset: -200;
+    stroke-dashoffset: -320;
   }
 }
 
