@@ -2034,6 +2034,58 @@ p {
   margin-top: 2px;
 }
 
+@media (max-width: 720px) {
+  .chapter-separator.compact {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f3f6fb 100%);
+    border: 1px solid #dfe6f5;
+    box-shadow: 0 12px 28px rgba(8, 22, 48, 0.08);
+  }
+
+  .chapter-separator.compact .chapter-rail {
+    width: auto;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .chapter-separator.compact .chapter-node {
+    width: 28px;
+    height: 28px;
+    box-shadow: 0 6px 16px rgba(11, 61, 145, 0.18);
+  }
+
+  .chapter-separator.compact .chapter-copy {
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    color: #0f172a;
+  }
+
+  .chapter-separator.compact .chapter-label {
+    color: #5f79a6;
+    letter-spacing: 0.06em;
+  }
+
+  .chapter-separator.compact .chapter-heading h3 {
+    color: #0b2f72;
+    font-size: 17px;
+  }
+
+  .chapter-separator.compact .chapter-subtitle {
+    color: #3a4a66;
+  }
+
+  .chapter-separator.compact .chapter-range {
+    margin-top: 4px;
+    color: #5b6375;
+  }
+}
+
 .circuit-wrap {
   position: relative;
   padding: clamp(14px, 3vw, 22px);
