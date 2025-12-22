@@ -1931,10 +1931,10 @@ p {
   width: min(620px, 100%);
   margin: 2px auto 6px;
   display: grid;
-  grid-template-columns: minmax(140px, 180px) 1fr;
+  grid-template-columns: auto 1fr;
   align-items: center;
   gap: 12px;
-  padding: 4px 0 4px 10px;
+  padding: 8px 12px;
   position: relative;
   overflow: visible;
 }
@@ -1945,7 +1945,7 @@ p {
   gap: 12px;
   width: 100%;
   position: relative;
-  left: -8px;
+  justify-content: center;
 }
 
 .chapter-node {
@@ -1965,8 +1965,6 @@ p {
   height: 1px;
   background: linear-gradient(90deg, rgba(11, 61, 145, 0.35), rgba(11, 61, 145, 0.04));
   border-radius: 999px;
-  position: relative;
-  left: -4px;
 }
 
 .chapter-copy {
@@ -2043,7 +2041,7 @@ p {
     grid-template-columns: auto 1fr;
     align-items: center;
     gap: 10px;
-    padding: 4px 0 4px 8px;
+    padding: 8px 10px;
     border-radius: 16px;
     background: transparent;
     border: none;
