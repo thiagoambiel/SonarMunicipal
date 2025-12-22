@@ -2021,8 +2021,6 @@ p {
 }
 
 .circuit-card.is-active {
-  border-color: #a4c5ff;
-  box-shadow: 0 20px 50px rgba(41, 163, 233, 0.329), 0 0 24px rgba(90, 93, 255, 0.28);
   --card-scale: 1.05;
 }
 
