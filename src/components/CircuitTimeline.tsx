@@ -202,9 +202,14 @@ export default function CircuitTimeline({ cards, chapters }: CircuitTimelineProp
   const [hoverActiveIndex, setHoverActiveIndex] = useState<number | null>(null);
   const [pulseEvents, setPulseEvents] = useState<PulseEvent[]>([]);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const [isCompact, setIsCompact] = useState<boolean>(() =>
-    typeof window !== "undefined" ? window.innerWidth < 780 : false,
-  );
+  const [isCompact, setIsCompact] = useState<boolean>(false);
+
+  useEffect(() => {
+    const updateCompact = () => setIsCompact(window.innerWidth < 780);
+    updateCompact();
+    window.addEventListener("resize", updateCompact, { passive: true });
+    return () => window.removeEventListener("resize", updateCompact);
+  }, []);
 
   const offsets = useMemo(() => computeOffsets(cards.length, isCompact), [cards.length, isCompact]);
 
