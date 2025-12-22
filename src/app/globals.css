@@ -2081,18 +2081,6 @@ p {
   animation-duration: 9s;
 }
 
-.circuit-node {
-  fill: #fff;
-  stroke: var(--circuit);
-  stroke-width: 2;
-  transition: transform 0.2s ease, filter 0.2s ease, stroke 0.2s ease;
-}
-
-.circuit-node.active {
-  transform: scale(1.08);
-  stroke: var(--circuitGlow);
-  filter: drop-shadow(0 0 10px var(--circuitHalo));
-}
 
 .circuit-pulse {
   fill: var(--circuitGlow);

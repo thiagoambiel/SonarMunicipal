@@ -60,18 +60,22 @@ const computeOffsets = (count: number, compact: boolean) => {
 
 const buildCurve = (start: Point, end: Point) => {
   const verticalGap = Math.max(60, end.y - start.y);
-  const midY = start.y + verticalGap * 0.6;
+  const midY = start.y + verticalGap * 0.55;
   const deltaX = end.x - start.x;
-  const radius = clamp(Math.abs(deltaX) * 0.2 + 22, 18, 82);
+  const bend = clamp(Math.abs(deltaX) * 0.18 + 18, 16, 68);
+  const radius = Math.min(bend, Math.abs(deltaX) / 2);
+  const sign = deltaX >= 0 ? 1 : -1;
 
-  const p1: Point = { x: start.x, y: midY };
-  const p2: Point = { x: end.x, y: midY };
+  const preBendY = midY - radius;
+  const postBendY = midY + radius;
 
   return [
     `M ${start.x} ${start.y}`,
-    `C ${start.x} ${start.y + radius}, ${p1.x} ${p1.y - radius}, ${p1.x} ${p1.y}`,
-    `C ${p1.x} ${p1.y + radius}, ${p2.x} ${p2.y - radius}, ${p2.x} ${p2.y}`,
-    `C ${p2.x} ${p2.y + radius}, ${end.x} ${end.y - radius}, ${end.x} ${end.y}`,
+    `L ${start.x} ${preBendY}`,
+    `Q ${start.x} ${midY}, ${start.x + radius * sign} ${midY}`,
+    `L ${end.x - radius * sign} ${midY}`,
+    `Q ${end.x} ${midY}, ${end.x} ${postBendY}`,
+    `L ${end.x} ${end.y}`,
   ].join(" ");
 };
 
@@ -311,18 +315,6 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                   stroke="url(#circuitFlowGradient)"
                 />
               )}
-              <circle
-                className={`circuit-node ${isHovered || isPast || isNext ? "active" : ""}`}
-                cx={connector.start.x}
-                cy={connector.start.y}
-                r={isCompact ? 4 : 5}
-              />
-              <circle
-                className={`circuit-node ${isHovered || isPast || isNext ? "active" : ""}`}
-                cx={connector.end.x}
-                cy={connector.end.y}
-                r={isCompact ? 4 : 5}
-              />
               {!prefersReducedMotion &&
                 pulseEvents
                   .filter((event) => event.connectorId === connector.id)
