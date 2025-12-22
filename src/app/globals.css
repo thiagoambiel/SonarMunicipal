@@ -1542,6 +1542,7 @@ p {
   display: flex;
   flex-direction: column;
   overflow-x: hidden;
+  overflow-y: visible;
 }
 
 .article-shell {
@@ -1551,6 +1552,8 @@ p {
   display: grid;
   grid-template-columns: 280px 1fr;
   gap: var(--space-20);
+  align-items: flex-start;
+  overflow: visible;
 }
 
 @media (min-width: 1500px) {
@@ -1560,13 +1563,13 @@ p {
 }
 
 .article-sidebar {
-  position: sticky;
-  top: 86px;
+  position: relative;
   height: fit-content;
   align-self: flex-start;
 }
 
 .sidebar-card {
+  position: relative;
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 18px;
@@ -1575,6 +1578,11 @@ p {
   display: flex;
   flex-direction: column;
   gap: var(--space-12);
+}
+
+.sidebar-fixed {
+  position: fixed;
+  z-index: 10;
 }
 
 .sidebar-links {
@@ -3081,8 +3089,7 @@ p {
   }
 
   .article-sidebar {
-    position: relative;
-    top: 0;
+    display: none;
   }
 
   .hero {

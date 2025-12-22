@@ -511,8 +511,12 @@ export default function MethodologyPage() {
   const [activeSection, setActiveSection] = useState(navSections[0].id);
   const activeSectionRef = useRef(navSections[0].id);
   const sidebarLinksRef = useRef<HTMLDivElement | null>(null);
+  const sidebarRef = useRef<HTMLDivElement | null>(null);
+  const sidebarWrapperRef = useRef<HTMLDivElement | null>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicatorStyle, setIndicatorStyle] = useState<{ height: number; top: number }>({ height: 0, top: 0 });
+  const [sidebarOffset, setSidebarOffset] = useState(86);
+  const [sidebarStyle, setSidebarStyle] = useState<React.CSSProperties>({});
   const [saplHosts, setSaplHosts] = useState<SaplHost[]>([]);
   const [saplSearch, setSaplSearch] = useState("");
   const [saplUf, setSaplUf] = useState("todas");
@@ -612,6 +616,46 @@ export default function MethodologyPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, [activeSection]);
 
+  useEffect(() => {
+    const updateSidebarOffset = () => {
+      const isMobile = window.matchMedia("(max-width: 960px)").matches;
+      if (isMobile) {
+        setSidebarOffset(0);
+        sidebarWrapperRef.current && (sidebarWrapperRef.current.style.minHeight = "");
+        setSidebarStyle({});
+        return;
+      }
+
+      const sidebarElement = sidebarRef.current;
+      const wrapperElement = sidebarWrapperRef.current;
+      if (!sidebarElement || !wrapperElement) return;
+
+      const sidebarRect = sidebarElement.getBoundingClientRect();
+      const wrapperRect = wrapperElement.getBoundingClientRect();
+      const centeredOffset = (window.innerHeight - sidebarRect.height) / 2;
+      const safeOffset = Number.isFinite(centeredOffset) ? Math.max(24, centeredOffset) : 86;
+
+      // Reserve space in the layout so the fixed card doesn't collapse the grid column
+      wrapperElement.style.minHeight = `${sidebarRect.height}px`;
+
+      setSidebarOffset(safeOffset);
+      setSidebarStyle({
+        position: "fixed",
+        top: safeOffset,
+        left: wrapperRect.left + window.scrollX,
+        width: wrapperRect.width,
+      });
+    };
+
+    updateSidebarOffset();
+    window.addEventListener("resize", updateSidebarOffset);
+    window.addEventListener("scroll", updateSidebarOffset, { passive: true });
+    return () => {
+      window.removeEventListener("resize", updateSidebarOffset);
+      window.removeEventListener("scroll", updateSidebarOffset);
+    };
+  }, []);
+
   const ufOptions = useMemo(() => {
     const options = new Set<string>();
     saplHosts.forEach((host) => {
@@ -669,7 +713,12 @@ export default function MethodologyPage() {
 
       <div className="article-shell">
         <aside className="article-sidebar" aria-label="Navegação da metodologia">
-          <div className="sidebar-card">
+          <div ref={sidebarWrapperRef} />
+          <div
+            className="sidebar-card sidebar-fixed"
+            ref={sidebarRef}
+            style={sidebarStyle}
+          >
             <p className="eyebrow">Sumário</p>
             <nav className="sidebar-links" ref={sidebarLinksRef}>
               <span
