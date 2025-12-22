@@ -142,7 +142,8 @@ const circuitCards: CircuitCard[] = [
     id: 15,
     variant: "highlight",
     title: "Ranking por “Qualidade”",
-    body: "Ordenamos as políticas por uma métrica de Qualidade:\n( nº de municípios com efeito positivo ) × n/(n+1), onde n é o nº de municípios com a política.",
+    body: "Ordenamos as políticas por uma métrica de Qualidade. Fórmula abaixo:",
+    formula: "Qualidade = n_positivos × n/(n+1)",
   },
   {
     id: 16,

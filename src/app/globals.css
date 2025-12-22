@@ -2020,6 +2020,71 @@ p {
   color: #f6f8ff;
 }
 
+.formula-block {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(164, 197, 255, 0.25);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.formula-label {
+  color: #d6e4ff;
+  font-weight: 700;
+}
+
+.formula-body {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.formula-term {
+  font-variant-numeric: lining-nums;
+}
+
+.fraction {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 46px;
+}
+
+.numerator,
+.denominator {
+  line-height: 1.2;
+}
+
+.divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.8);
+  display: block;
+}
+
+.formula-dot {
+  color: #bcd6ff;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .circuit-card.is-active {
   --card-padding: calc(var(--space-14) + 8px);
 }

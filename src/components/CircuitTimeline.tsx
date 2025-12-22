@@ -7,6 +7,7 @@ export type CircuitCard = {
   title: string;
   body: string;
   variant?: "default" | "highlight";
+  formula?: string;
 };
 
 type Point = { x: number; y: number };
@@ -346,7 +347,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
               style={{ ["--card-offset" as keyof CSSProperties]: `${offsets[index]}px` }}
               onMouseEnter={() => handleHover(index)}
               onMouseLeave={() => handleHover(null)}
-            >
+              >
               <div className="circuit-card-head">
                 <span className="circuit-step">{card.id}</span>
                 <div className="circuit-titles">
@@ -360,6 +361,21 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                     {line}
                   </p>
                 ))}
+                {card.formula && (
+                  <div className="formula-block" aria-label="Fórmula de qualidade">
+                    <span className="formula-label">Qualidade =</span>
+                    <div className="formula-body">
+                      <span className="formula-term">n<sub>positivos</sub></span>
+                      <span className="formula-dot">×</span>
+                      <span className="fraction" aria-hidden="true">
+                        <span className="numerator">n</span>
+                        <span className="divider" />
+                        <span className="denominator">n + 1</span>
+                      </span>
+                      <span className="sr-only">{card.formula}</span>
+                    </div>
+                  </div>
+                )}
               </div>
             </article>
           );
