@@ -2041,26 +2041,22 @@ p {
 }
 
 .circuit-path.trench {
-  stroke: rgba(12, 18, 38, 0.18);
-  filter: drop-shadow(0 10px 20px rgba(10, 16, 38, 0.22));
+  stroke: rgba(12, 18, 38, 0.08);
 }
 
 .circuit-path.shadow {
-  stroke: rgba(40, 63, 116, 0.18);
-  opacity: 0.35;
-  filter: blur(10px);
+  stroke: rgba(40, 63, 116, 0.12);
+  opacity: 0.28;
 }
 
 .circuit-path.base {
-  stroke: rgba(30, 44, 82, 0.04);
-  opacity: 0.22;
+  stroke: rgba(30, 44, 82, 0.08);
+  opacity: 0.3;
 }
 
 .circuit-path.flow {
   stroke: url(#circuitFlowGradient);
   opacity: 1;
-  animation: circuitFlow 1s linear infinite;
-  animation-delay: var(--flow-delay, 0s);
 }
 
 .circuit-path-group.past .base {
@@ -2098,12 +2094,6 @@ p {
 
 [data-reduced-motion="true"] .circuit-pulse {
   display: none;
-}
-
-@keyframes circuitFlow {
-  to {
-    stroke-dashoffset: -320;
-  }
 }
 
 @keyframes circuitFlash {

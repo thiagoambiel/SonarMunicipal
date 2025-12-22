@@ -270,13 +270,29 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             <stop offset="0%" stopColor="var(--circuitDim)" stopOpacity="0.6" />
             <stop offset="100%" stopColor="var(--circuit)" stopOpacity="0.8" />
           </linearGradient>
-          <linearGradient id="circuitFlowGradient" x1="0%" y1="0%" x2="180%" y2="0%" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.8" />
-            <stop offset="25%" stopColor="#6b4bff" stopOpacity="0.9" />
-            <stop offset="50%" stopColor="#ff9a3c" stopOpacity="0.95" />
-            <stop offset="75%" stopColor="#ff3b30" stopOpacity="0.9" />
-            <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.85" />
-            <animate attributeName="gradientTransform" dur="5.5s" repeatCount="indefinite" values="translate(0 0);translate(200 0);translate(0 0)" />
+          <linearGradient
+            id="circuitFlowGradient"
+            x1="0%"
+            y1="0%"
+            x2="220%"
+            y2="0%"
+            gradientUnits="userSpaceOnUse"
+            spreadMethod="reflect"
+          >
+            <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.9" />
+            <stop offset="20%" stopColor="#6b4bff" stopOpacity="0.95" />
+            <stop offset="40%" stopColor="#ffe500" stopOpacity="1" />
+            <stop offset="50%" stopColor="#fff066" stopOpacity="1" />
+            <stop offset="60%" stopColor="#ffb347" stopOpacity="0.98" />
+            <stop offset="78%" stopColor="#ff5c47" stopOpacity="0.92" />
+            <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.9" />
+            <animateTransform
+              attributeName="gradientTransform"
+              type="translate"
+              dur="4s"
+              repeatCount="indefinite"
+              values="0 0; 420 0; 0 0"
+            />
           </linearGradient>
           <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" result="blur" />
@@ -309,11 +325,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                   className="circuit-path flow"
                   d={connector.path}
                   strokeWidth={strokeWidth}
-                  pathLength={320}
-                  strokeDasharray="260 12"
-                  strokeDashoffset="0"
-                  style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
                   stroke="url(#circuitFlowGradient)"
+                  style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
                 />
               )}
               {!prefersReducedMotion &&
