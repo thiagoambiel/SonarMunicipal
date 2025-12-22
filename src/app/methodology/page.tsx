@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 
 import MinimalNav from "@/components/MinimalNav";
 import CustomDropdown from "@/components/CustomDropdown";
-import CircuitTimeline from "@/components/CircuitTimeline";
+import CircuitTimeline, { type CircuitCard } from "@/components/CircuitTimeline";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
 const numberFormatter = new Intl.NumberFormat("pt-BR");
@@ -66,7 +66,7 @@ const pipelineSteps = [
   },
 ];
 
-const circuitCards = [
+const circuitCards: CircuitCard[] = [
   {
     id: 1,
     title: "Mapeamento dos SAPLs",

@@ -2,7 +2,7 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 
-type CircuitCard = {
+export type CircuitCard = {
   id: number;
   title: string;
   body: string;
@@ -338,7 +338,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             <article
               key={card.id}
               ref={(element) => {
-                cardRefs.current[index] = element;
+                cardRefs.current[index] = element as HTMLDivElement | null;
               }}
               className={`circuit-card${isHighlighted ? " highlight" : ""}${isActive ? " is-active" : ""}${
                 isPast ? " is-past" : ""
