@@ -261,11 +261,10 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
           </linearGradient>
           <linearGradient id="circuitFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.95" />
-            <stop offset="18%" stopColor="#5a5dff" stopOpacity="0.95" />
-            <stop offset="36%" stopColor="#0aa8ff" stopOpacity="0.95" />
-            <stop offset="52%" stopColor="#ffe500" stopOpacity="0.9" />
-            <stop offset="62%" stopColor="#ff9a3c" stopOpacity="0.9" />
-            <stop offset="74%" stopColor="#ff3b30" stopOpacity="0.85" />
+            <stop offset="20%" stopColor="#5a5dff" stopOpacity="0.95" />
+            <stop offset="40%" stopColor="#0aa8ff" stopOpacity="0.95" />
+            <stop offset="60%" stopColor="#5f4dff" stopOpacity="0.95" />
+            <stop offset="80%" stopColor="#1f8dff" stopOpacity="0.95" />
             <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.95" />
           </linearGradient>
           <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">

@@ -1948,10 +1948,10 @@ p {
   max-width: 560px;
   width: min(560px, 100%);
   margin: 0 auto;
-  border: 1px solid #dfe6f2;
+  border: 1px solid #0b3d91;
   border-radius: 16px;
-  background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
-  box-shadow: 0 14px 38px rgba(11, 61, 145, 0.08);
+  background: linear-gradient(180deg, #0f3d91 0%, #0b2f72 100%);
+  box-shadow: 0 14px 38px rgba(7, 25, 68, 0.28);
   padding: var(--space-14);
   transform: translateX(var(--card-offset, 0px)) translateY(var(--card-lift, 0px));
   transition: box-shadow 0.2s ease, border-color 0.2s ease, background 0.2s ease;
@@ -1959,14 +1959,14 @@ p {
 }
 
 .circuit-card:hover {
-  border-color: var(--circuitGlow);
-  box-shadow: var(--shadow-md);
+  border-color: #a4c5ff;
+  box-shadow: 0 18px 50px rgba(6, 20, 52, 0.34);
 }
 
 .circuit-card.highlight {
-  background: linear-gradient(180deg, #fff8e9 0%, #fffdf7 100%);
-  border-color: #f2d083;
-  box-shadow: 0 18px 44px rgba(214, 153, 41, 0.16);
+  background: linear-gradient(180deg, #1048ad 0%, #0c397f 100%);
+  border-color: #d7e7ff;
+  box-shadow: 0 18px 44px rgba(10, 46, 122, 0.32);
 }
 
 .circuit-card.is-active {
@@ -1988,22 +1988,24 @@ p {
   width: 42px;
   height: 42px;
   border-radius: 12px;
-  background: linear-gradient(135deg, var(--primary), #0f68b8);
-  color: #fff;
+  background: #f5f7fb;
+  color: #0b2f72;
   font-weight: 800;
   display: grid;
   place-items: center;
-  box-shadow: 0 10px 26px rgba(11, 61, 145, 0.2);
+  box-shadow: 0 10px 26px rgba(6, 14, 42, 0.2);
 }
 
 .circuit-titles h3 {
   margin: 2px 0 0;
   font-size: 18px;
   letter-spacing: -0.01em;
+  color: #ffffff;
 }
 
 .circuit-card.highlight h3 {
   font-size: 19px;
+  color: #ffffff;
 }
 
 .circuit-card-body {
@@ -2013,12 +2015,17 @@ p {
 }
 
 .circuit-card .eyebrow {
-  color: var(--muted);
+  color: #d6e4ff;
 }
 
 .circuit-card-body p {
   margin: 0;
   line-height: 1.55;
+  color: #f6f8ff;
+}
+
+.circuit-card.is-active {
+  border-color: #a4c5ff;
 }
 
 .circuit-path {
@@ -2045,7 +2052,7 @@ p {
 .circuit-path.flow {
   stroke: url(#circuitFlowGradient);
   opacity: 1;
-  animation: circuitFlow 6s linear infinite;
+  animation: circuitFlow 4s linear infinite;
   animation-delay: var(--flow-delay, 0s);
   stroke-dashoffset: 0;
 }
