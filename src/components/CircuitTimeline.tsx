@@ -10,6 +10,58 @@ export type CircuitCard = {
   formula?: string;
 };
 
+const linkifyLine = (line: string) => {
+  const modelLinks: Record<string, string> = {
+    PTT5: "https://github.com/unicamp-dl/PTT5",
+    "Multilingual E5": "https://huggingface.co/intfloat/multilingual-e5-base",
+  };
+
+  const parts = line.split(/(https?:\/\/\S+|\bPTT5\b|\bMultilingual E5\b)/g);
+  return parts.map((part, idx) => {
+    if (/^https?:\/\//.test(part)) {
+      return (
+        <a key={`${part}-${idx}`} className="inline-link" href={part} target="_blank" rel="noreferrer">
+          {part}
+          <svg
+            className="link-icon"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path d="M14 4H20V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M10 14L20 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M20 14V20H4V4H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
+      );
+    }
+    if (modelLinks[part]) {
+      return (
+        <a key={`${part}-${idx}`} className="inline-link" href={modelLinks[part]} target="_blank" rel="noreferrer">
+          {part}
+          <svg
+            className="link-icon"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <path d="M14 4H20V10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M10 14L20 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M20 14V20H4V4H10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </a>
+      );
+    }
+    return <span key={`${part}-${idx}`}>{part}</span>;
+  });
+};
+
 type Point = { x: number; y: number };
 type Anchor = { top: Point; bottom: Point };
 
@@ -358,7 +410,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
               <div className="circuit-card-body">
                 {bodyLines.map((line, lineIndex) => (
                   <p key={`${card.id}-${lineIndex}`} className="muted small">
-                    {line}
+                    {linkifyLine(line)}
                   </p>
                 ))}
                 {card.formula && (

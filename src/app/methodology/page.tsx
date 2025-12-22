@@ -106,7 +106,7 @@ const circuitCards: CircuitCard[] = [
   {
     id: 8,
     title: "Busca em linguagem natural",
-    body: "Para permitir buscas por significado, transformamos os textos das ações em embeddings: vetores que representam o sentido do texto.",
+    body: "Para permitir buscas por significado, transformamos os textos das ações em embeddings com o modelo Multilingual E5: vetores que representam o sentido do texto.",
   },
   {
     id: 9,
