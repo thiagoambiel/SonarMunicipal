@@ -279,13 +279,13 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             gradientUnits="userSpaceOnUse"
             spreadMethod="reflect"
           >
-            <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.9" />
-            <stop offset="20%" stopColor="#6b4bff" stopOpacity="0.95" />
-            <stop offset="40%" stopColor="#ffe500" stopOpacity="1" />
-            <stop offset="50%" stopColor="#fff066" stopOpacity="1" />
-            <stop offset="60%" stopColor="#ffb347" stopOpacity="0.98" />
-            <stop offset="78%" stopColor="#ff5c47" stopOpacity="0.92" />
-            <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.95" />
+            <stop offset="18%" stopColor="#5a5dff" stopOpacity="0.95" />
+            <stop offset="36%" stopColor="#0aa8ff" stopOpacity="0.95" />
+            <stop offset="52%" stopColor="#ffe500" stopOpacity="0.9" />
+            <stop offset="62%" stopColor="#ff9a3c" stopOpacity="0.9" />
+            <stop offset="74%" stopColor="#ff3b30" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.95" />
             <animateTransform
               attributeName="gradientTransform"
               type="translate"
@@ -308,7 +308,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
       const isHovered =
         hoveredIndex != null && (hoveredIndex === connector.fromIndex || hoveredIndex === connector.toIndex);
       const strokeWidth = isCompact ? 1.2 : 1.6;
-      const flowDelay = `${index * 0.35}s`;
+      const flowDelay = `${index * 0.6}s`;
 
           return (
             <g
@@ -325,6 +325,9 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                   className="circuit-path flow"
                   d={connector.path}
                   strokeWidth={strokeWidth}
+                  pathLength={360}
+                  strokeDasharray="140 260"
+                  strokeDashoffset="0"
                   stroke="url(#circuitFlowGradient)"
                   style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
                 />

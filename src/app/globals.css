@@ -2057,6 +2057,8 @@ p {
 .circuit-path.flow {
   stroke: url(#circuitFlowGradient);
   opacity: 1;
+  animation: circuitFlow 6s linear infinite;
+  animation-delay: var(--flow-delay, 0s);
 }
 
 .circuit-path-group.past .base {
@@ -2094,6 +2096,12 @@ p {
 
 [data-reduced-motion="true"] .circuit-pulse {
   display: none;
+}
+
+@keyframes circuitFlow {
+  to {
+    stroke-dashoffset: -420;
+  }
 }
 
 @keyframes circuitFlash {
