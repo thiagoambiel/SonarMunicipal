@@ -427,12 +427,15 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                       <span className="sr-only">{card.formula}</span>
                     </div>
                     <ul className="formula-legend list-dotted">
+
                       <li>
-                        <strong>n<sub>positivos</sub></strong>: Número de Municípios com Efeito Positivo
+                        <strong>n</strong>: Número de municípios que aplicaram a política pública
                       </li>
+
                       <li>
-                        <strong>n</strong>: Número de Municípios que Aplicaram a Política Pública
+                        <strong>n<sub>positivos</sub></strong>: Número de municípios que tiveram efeito positivo
                       </li>
+
                     </ul>
                   </div>
                 )}
