@@ -2026,6 +2026,7 @@ p {
 
 .circuit-card.is-active {
   border-color: #a4c5ff;
+  box-shadow: 0 20px 50px rgba(41, 163, 233, 0.329);
 }
 
 .circuit-path {
