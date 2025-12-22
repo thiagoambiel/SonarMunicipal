@@ -1924,21 +1924,9 @@ p {
   position: relative;
   padding: clamp(14px, 3vw, 22px);
   border-radius: 18px;
-  border: 1px solid #dfe6f2;
-  background: radial-gradient(120% 120% at 14% 10%, #f6f8ff 0%, #eef2fb 32%, #f9fbff 70%),
-    linear-gradient(180deg, #ffffff 0%, #f7f9fe 100%);
-  box-shadow: var(--shadow-md);
+  border: none;
+  background: transparent;
   overflow: visible;
-}
-
-.circuit-wrap::after {
-  content: "";
-  position: absolute;
-  inset: 8px;
-  border-radius: 14px;
-  background: radial-gradient(120% 80% at 80% 12%, rgba(95, 139, 255, 0.1), transparent 60%);
-  pointer-events: none;
-  z-index: 0;
 }
 
 .circuit-svg {
@@ -2100,7 +2088,7 @@ p {
 
 @keyframes circuitFlow {
   to {
-    stroke-dashoffset: -420;
+    stroke-dashoffset: -520;
   }
 }
 

@@ -105,7 +105,6 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [anchors, setAnchors] = useState<Array<Anchor | null>>([]);
   const [containerSize, setContainerSize] = useState<{ width: number; height: number }>({ width: 0, height: 0 });
-  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [activeIndex, setActiveIndex] = useState(0);
   const [pulseEvents, setPulseEvents] = useState<PulseEvent[]>([]);
   const prefersReducedMotion = usePrefersReducedMotion();
@@ -241,17 +240,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
     return () => window.clearInterval(cleanup);
   }, [prefersReducedMotion]);
 
-  const handleHover = (index: number, entering: boolean) => {
-    setHoveredIndex(entering ? index : null);
-    if (!entering || prefersReducedMotion) return;
-    const connector = connectors.find((item) => item.fromIndex === index) ?? connectors.find((item) => item.toIndex === index);
-    if (!connector) return;
-    setPulseEvents((events) => {
-      const now = performance.now();
-      const pruned = events.filter((event) => now - event.createdAt < 1600);
-      return [...pruned, { id: `${connector.id}-hover-${now}`, connectorId: connector.id, createdAt: now }];
-    });
-  };
+  const handleHover = () => undefined;
 
   return (
     <div className="circuit-wrap" ref={containerRef} data-reduced-motion={prefersReducedMotion ? "true" : "false"}>
@@ -270,15 +259,7 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             <stop offset="0%" stopColor="var(--circuitDim)" stopOpacity="0.6" />
             <stop offset="100%" stopColor="var(--circuit)" stopOpacity="0.8" />
           </linearGradient>
-          <linearGradient
-            id="circuitFlowGradient"
-            x1="0%"
-            y1="0%"
-            x2="220%"
-            y2="0%"
-            gradientUnits="userSpaceOnUse"
-            spreadMethod="reflect"
-          >
+          <linearGradient id="circuitFlowGradient" x1="0%" y1="0%" x2="100%" y2="0%" gradientUnits="userSpaceOnUse">
             <stop offset="0%" stopColor="#0aa8ff" stopOpacity="0.95" />
             <stop offset="18%" stopColor="#5a5dff" stopOpacity="0.95" />
             <stop offset="36%" stopColor="#0aa8ff" stopOpacity="0.95" />
@@ -286,13 +267,6 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
             <stop offset="62%" stopColor="#ff9a3c" stopOpacity="0.9" />
             <stop offset="74%" stopColor="#ff3b30" stopOpacity="0.85" />
             <stop offset="100%" stopColor="#0aa8ff" stopOpacity="0.95" />
-            <animateTransform
-              attributeName="gradientTransform"
-              type="translate"
-              dur="4s"
-              repeatCount="indefinite"
-              values="0 0; 420 0; 0 0"
-            />
           </linearGradient>
           <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="4" result="blur" />
@@ -305,18 +279,14 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
         {connectors.map((connector, index) => {
       const isPast = index < activeIndex - 1;
       const isNext = connector.toIndex === activeIndex;
-      const isHovered =
-        hoveredIndex != null && (hoveredIndex === connector.fromIndex || hoveredIndex === connector.toIndex);
       const strokeWidth = isCompact ? 1.2 : 1.6;
       const flowDelay = `${index * 0.6}s`;
 
-          return (
-            <g
-              key={connector.id}
-              className={`circuit-path-group${isHovered ? " hovered" : ""}${isPast ? " past" : ""}${
-                isNext ? " next" : ""
-              }`}
-            >
+      return (
+        <g
+          key={connector.id}
+          className={`circuit-path-group${isPast ? " past" : ""}${isNext ? " next" : ""}`}
+        >
               <path className="circuit-path trench" d={connector.path} strokeWidth={strokeWidth + 3.2} />
               <path className="circuit-path shadow" d={connector.path} strokeWidth={strokeWidth + 0.6} />
               <path className="circuit-path base" d={connector.path} strokeWidth={strokeWidth} />
@@ -325,8 +295,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                   className="circuit-path flow"
                   d={connector.path}
                   strokeWidth={strokeWidth}
-                  pathLength={360}
-                  strokeDasharray="140 260"
+                  pathLength={520}
+                  strokeDasharray="220 520"
                   strokeDashoffset="0"
                   stroke="url(#circuitFlowGradient)"
                   style={{ ["--flow-delay" as keyof CSSProperties]: flowDelay }}
@@ -371,19 +341,8 @@ export default function CircuitTimeline({ cards }: CircuitTimelineProps) {
                 isPast ? " is-past" : ""
               }`}
               style={{ ["--card-offset" as keyof CSSProperties]: `${offsets[index]}px` }}
-              onMouseEnter={() => {
-                handleHover(index, true);
-                window.requestAnimationFrame(updateAnchors);
-              }}
-              onMouseLeave={() => {
-                handleHover(index, false);
-                window.requestAnimationFrame(updateAnchors);
-              }}
-              onTransitionEnd={(event) => {
-                if (event.propertyName === "transform") {
-                  updateAnchors();
-                }
-              }}
+              onMouseEnter={handleHover}
+              onMouseLeave={handleHover}
             >
               <div className="circuit-card-head">
                 <span className="circuit-step">{card.id}</span>
