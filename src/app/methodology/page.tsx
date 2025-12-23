@@ -634,8 +634,8 @@ export default function MethodologyPage() {
 
       if (heroStatsOffsetRef.current == null) {
         const heroStatsRect = heroStatsRef.current?.getBoundingClientRect();
-        const measuredTop = heroStatsRect?.top;
-        heroStatsOffsetRef.current = Number.isFinite(measuredTop) ? Math.max(24, Number(measuredTop)) : 86;
+        const measuredTop = heroStatsRect ? heroStatsRect.top + window.scrollY : null;
+        heroStatsOffsetRef.current = Number.isFinite(measuredTop ?? null) ? Math.max(24, Number(measuredTop)) : 86;
       }
 
       const topOffset = heroStatsOffsetRef.current ?? 86;
