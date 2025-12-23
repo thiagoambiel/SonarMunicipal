@@ -1080,8 +1080,8 @@ export default function MethodologyPage() {
               <p className="eyebrow">Fontes e referências</p>
               <h2>De onde vêm os dados</h2>
               <p className="muted">
-                Linha do tempo em circuito mostrando a origem e o caminho dos dados até chegarem na busca e nos indicadores.
-                Cada etapa acende quando entra na tela e os fios acompanham a leitura.
+                Cada recomendação nasce de evidências rastreáveis. 
+                Esta linha do tempo descreve as fontes usadas, as etapas de padronização e como os indicadores entram na análise para você poder conferir e questionar.
               </p>
             </div>
 
