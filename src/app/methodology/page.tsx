@@ -1188,14 +1188,20 @@ export default function MethodologyPage() {
 
                 <label className="sapl-control sapl-filter-projects">
                   <span className="muted small">Filtrar PLs</span>
-                  <div className="sapl-checkbox">
+                  <div className="sapl-toggle">
                     <input
                       id="sapl-only-projects"
+                      className="sapl-toggle-input"
                       type="checkbox"
                       checked={showOnlyWithProjects}
                       onChange={(event) => setShowOnlyWithProjects(event.target.checked)}
                     />
-                    <span className="muted small">Mostrar apenas SAPLs com PLs extraídos</span>
+                    <label className="sapl-toggle-visual" htmlFor="sapl-only-projects" aria-hidden="true">
+                      <span className="sapl-toggle-thumb" />
+                    </label>
+                    <label className="sapl-toggle-label muted small" htmlFor="sapl-only-projects">
+                      Mostrar apenas SAPLs com PLs extraídos
+                    </label>
                   </div>
                 </label>
 

@@ -1321,13 +1321,63 @@ p {
 }
 
 .sapl-filter-projects {
-  min-width: 240px;
+  min-width: 260px;
 }
 
-.sapl-checkbox {
-  display: flex;
+.sapl-toggle {
+  display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+}
+
+.sapl-toggle-input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.sapl-toggle-visual {
+  width: 46px;
+  height: 26px;
+  background: linear-gradient(135deg, #e8edf3, #d9e2ec);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.sapl-toggle-thumb {
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.14);
+  transition: transform 0.22s ease, background 0.2s ease;
+}
+
+.sapl-toggle-input:focus-visible + .sapl-toggle-visual {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+.sapl-toggle-input:checked + .sapl-toggle-visual {
+  background: linear-gradient(135deg, #0f68b8, #1a8cf0);
+  border-color: transparent;
+  box-shadow: 0 10px 25px rgba(15, 104, 184, 0.25);
+}
+
+.sapl-toggle-input:checked + .sapl-toggle-visual .sapl-toggle-thumb {
+  transform: translateX(20px);
+  background: #f4f8fb;
+}
+
+.sapl-toggle-label {
+  cursor: pointer;
+  user-select: none;
 }
 
 .sapl-limit {
