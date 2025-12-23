@@ -513,9 +513,10 @@ export default function MethodologyPage() {
   const sidebarLinksRef = useRef<HTMLDivElement | null>(null);
   const sidebarRef = useRef<HTMLDivElement | null>(null);
   const sidebarWrapperRef = useRef<HTMLDivElement | null>(null);
+  const heroStatsRef = useRef<HTMLDivElement | null>(null);
+  const heroStatsOffsetRef = useRef<number | null>(null);
   const linkRefs = useRef<Record<string, HTMLAnchorElement | null>>({});
   const [indicatorStyle, setIndicatorStyle] = useState<{ height: number; top: number }>({ height: 0, top: 0 });
-  const [sidebarOffset, setSidebarOffset] = useState(86);
   const [sidebarStyle, setSidebarStyle] = useState<React.CSSProperties>({});
   const [saplHosts, setSaplHosts] = useState<SaplHost[]>([]);
   const [saplSearch, setSaplSearch] = useState("");
@@ -620,7 +621,7 @@ export default function MethodologyPage() {
     const updateSidebarOffset = () => {
       const isMobile = window.matchMedia("(max-width: 960px)").matches;
       if (isMobile) {
-        setSidebarOffset(0);
+        heroStatsOffsetRef.current = null;
         sidebarWrapperRef.current && (sidebarWrapperRef.current.style.minHeight = "");
         setSidebarStyle({});
         return;
@@ -630,18 +631,22 @@ export default function MethodologyPage() {
       const wrapperElement = sidebarWrapperRef.current;
       if (!sidebarElement || !wrapperElement) return;
 
+      if (heroStatsOffsetRef.current == null) {
+        const heroStatsRect = heroStatsRef.current?.getBoundingClientRect();
+        const measuredTop = heroStatsRect?.top;
+        heroStatsOffsetRef.current = Number.isFinite(measuredTop) ? Math.max(24, Number(measuredTop)) : 86;
+      }
+
+      const topOffset = heroStatsOffsetRef.current ?? 86;
       const sidebarRect = sidebarElement.getBoundingClientRect();
       const wrapperRect = wrapperElement.getBoundingClientRect();
-      const centeredOffset = (window.innerHeight - sidebarRect.height) / 2;
-      const safeOffset = Number.isFinite(centeredOffset) ? Math.max(24, centeredOffset) : 86;
 
       // Reserve space in the layout so the fixed card doesn't collapse the grid column
       wrapperElement.style.minHeight = `${sidebarRect.height}px`;
 
-      setSidebarOffset(safeOffset);
       setSidebarStyle({
         position: "fixed",
-        top: safeOffset,
+        top: topOffset,
         left: wrapperRect.left + window.scrollX,
         width: wrapperRect.width,
       });
@@ -649,11 +654,13 @@ export default function MethodologyPage() {
 
     updateSidebarOffset();
     window.requestAnimationFrame(updateSidebarOffset);
-    window.addEventListener("resize", updateSidebarOffset);
-    window.addEventListener("scroll", updateSidebarOffset, { passive: true });
+    const handleResize = () => {
+      heroStatsOffsetRef.current = null;
+      updateSidebarOffset();
+    };
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener("resize", updateSidebarOffset);
-      window.removeEventListener("scroll", updateSidebarOffset);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -762,7 +769,7 @@ export default function MethodologyPage() {
         <main className="article-content">
           <section className="-hero" id="introducao">
 
-            <div className="hero-stats">
+            <div className="hero-stats" ref={heroStatsRef}>
               <div className="pill-card">
                 <p className="stat-value">{formatNumber(TOTAL_PROJECTS)}</p>
                 <p className="muted small">Projetos de lei indexados</p>
