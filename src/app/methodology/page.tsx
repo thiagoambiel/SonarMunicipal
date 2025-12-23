@@ -349,6 +349,12 @@ const getSaplBaseUrl = (url: string) => {
   }
 };
 
+const normalizeSaplBaseUrl = (url: string) => {
+  const base = getSaplBaseUrl(url).trim();
+  if (!base) return "";
+  return base.replace(/\/+$/, "").toLowerCase();
+};
+
 type ExampleAction = {
   municipio: string;
   uf?: string | null;
@@ -520,6 +526,7 @@ export default function MethodologyPage() {
   const [indicatorStyle, setIndicatorStyle] = useState<{ height: number; top: number }>({ height: 0, top: 0 });
   const [sidebarStyle, setSidebarStyle] = useState<React.CSSProperties>({});
   const [saplHosts, setSaplHosts] = useState<SaplHost[]>([]);
+  const [saplProjectCounts, setSaplProjectCounts] = useState<Record<string, number>>({});
   const [saplSearch, setSaplSearch] = useState("");
   const [saplUf, setSaplUf] = useState("todas");
   const [rowLimit, setRowLimit] = useState(10);
@@ -531,7 +538,18 @@ export default function MethodologyPage() {
   useEffect(() => {
     const loadSaplHosts = async () => {
       try {
-        const response = await fetch("/sapl_hosts.jsonl");
+        const [response, countsResponse] = await Promise.all([
+          fetch("/sapl_hosts.jsonl"),
+          fetch("/sapl_pl_counts.json").catch((error) => {
+            console.error("Falha ao carregar contagem de PL por SAPL", error);
+            return null;
+          }),
+        ]);
+
+        if (!response.ok) {
+          throw new Error(`Resposta inesperada (${response.status}) ao carregar a lista de SAPL.`);
+        }
+
         const text = await response.text();
         const lines = text.split("\n").map((line) => line.trim()).filter(Boolean);
         const parsed = lines
@@ -539,6 +557,23 @@ export default function MethodologyPage() {
           .filter((item) => item.sapl_url);
         parsed.sort((a, b) => a.municipio.localeCompare(b.municipio, "pt-BR"));
         setSaplHosts(parsed);
+
+        if (countsResponse && countsResponse.ok) {
+          const countsData = (await countsResponse.json()) as Record<string, number>;
+          const normalizedCounts: Record<string, number> = {};
+          Object.entries(countsData).forEach(([url, count]) => {
+            const normalizedUrl = normalizeSaplBaseUrl(url);
+            if (!normalizedUrl) return;
+            const parsedCount = typeof count === "number" ? count : Number(count);
+            normalizedCounts[normalizedUrl] = Number.isFinite(parsedCount) ? parsedCount : 0;
+          });
+          setSaplProjectCounts(normalizedCounts);
+        } else if (countsResponse && !countsResponse.ok) {
+          console.error(
+            "Falha ao carregar contagem de PL por SAPL",
+            countsResponse.statusText || countsResponse.status,
+          );
+        }
       } catch (error) {
         console.error("Falha ao carregar SAPL hosts", error);
         setSaplError("Não foi possível carregar a lista de SAPL.");
@@ -1154,9 +1189,11 @@ export default function MethodologyPage() {
                     <span />
                     <span />
                     <span />
+                    <span />
                   </div>
                   {Array.from({ length: 5 }).map((_, index) => (
                     <div key={index} className="table-row sapl-table" role="row">
+                      <span className="skeleton-line" />
                       <span className="skeleton-line" />
                       <span className="skeleton-line" />
                       <span className="skeleton-line" />
@@ -1169,21 +1206,26 @@ export default function MethodologyPage() {
                     <div className="table-head sapl-table" role="row">
                       <span role="columnheader">Município</span>
                       <span role="columnheader">UF</span>
+                      <span role="columnheader">PLs extraídos</span>
                       <span role="columnheader">SAPL</span>
                     </div>
                     {displayedHosts.map((host) => {
                       const rowKey = `${host.ibge_id}-${host.sapl_url}`;
+                      const normalizedBaseUrl = normalizeSaplBaseUrl(host.sapl_url);
+                      const projectCount = normalizedBaseUrl ? saplProjectCounts[normalizedBaseUrl] ?? 0 : 0;
+                      const saplBaseUrl = getSaplBaseUrl(host.sapl_url);
                       return (
                         <div key={rowKey} className="table-row sapl-table" role="row">
                           <span className="strong" role="cell">
                             {host.municipio}
                           </span>
                           <span role="cell">{host.uf}</span>
+                          <span role="cell">{formatNumber(projectCount)}</span>
                           <span role="cell">
                             <a className="row-link" href={host.sapl_url} target="_blank" rel="noreferrer">
                               Abrir SAPL
                             </a>
-                            <p className="muted small sapl-url">{getSaplBaseUrl(host.sapl_url)}</p>
+                            <p className="muted small sapl-url">{saplBaseUrl}</p>
                           </span>
                         </div>
                       );

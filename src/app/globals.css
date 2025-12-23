@@ -1357,8 +1357,8 @@ p {
 }
 
 .sapl-table {
-  grid-template-columns: 0.9fr 0.5fr 2fr;
-  min-width: 720px;
+  grid-template-columns: 1.1fr 0.35fr 0.7fr 1.6fr;
+  min-width: 900px;
 }
 
 .sapl-pagination {
