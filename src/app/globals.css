@@ -1550,7 +1550,7 @@ p {
   margin: 0 auto;
   padding: 0 18px 60px;
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 320px 1fr;
   gap: var(--space-20);
   align-items: flex-start;
   overflow: visible;
@@ -1566,6 +1566,7 @@ p {
   position: relative;
   height: fit-content;
   align-self: flex-start;
+  width: 100%;
 }
 
 .sidebar-card {

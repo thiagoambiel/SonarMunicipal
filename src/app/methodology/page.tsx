@@ -648,6 +648,7 @@ export default function MethodologyPage() {
     };
 
     updateSidebarOffset();
+    window.requestAnimationFrame(updateSidebarOffset);
     window.addEventListener("resize", updateSidebarOffset);
     window.addEventListener("scroll", updateSidebarOffset, { passive: true });
     return () => {
@@ -713,7 +714,7 @@ export default function MethodologyPage() {
 
       <div className="article-shell">
         <aside className="article-sidebar" aria-label="Navegação da metodologia">
-          <div ref={sidebarWrapperRef} />
+          <div ref={sidebarWrapperRef} style={{ width: "100%" }} />
           <div
             className="sidebar-card sidebar-fixed"
             ref={sidebarRef}
