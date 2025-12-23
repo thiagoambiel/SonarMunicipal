@@ -505,7 +505,11 @@ export default function CircuitTimeline({ cards, chapters }: CircuitTimelineProp
                   <div className="formula-block" aria-label="Fórmula de qualidade">
                     <span className="formula-label">Qualidade =</span>
                     <div className="formula-body">
-                      <span className="formula-term">n<sub>positivos</sub></span>
+                      <span className="fraction" aria-hidden="true">
+                        <span className="numerator">n<sub>positivos</sub></span>
+                        <span className="divider" />
+                        <span className="denominator">n</span>
+                      </span>
                       <span className="formula-dot">×</span>
                       <span className="fraction" aria-hidden="true">
                         <span className="numerator">n</span>

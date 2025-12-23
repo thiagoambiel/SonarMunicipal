@@ -234,7 +234,8 @@ const circuitCards: CircuitCard[] = [
     chapterId: 5,
     title: "Ranking por Qualidade",
     body: "Ordenamos as políticas utilizando uma métrica chamada \"Qualidade\" que favorece as políticas que obtiveram sucesso em vários municípios diferentes:",
-    formula: "Qualidade = n_positivos × n/(n+1)\nLegenda: n_positivos = nº de municípios com efeito positivo; n = nº total de municípios com a política.",
+    formula:
+      "Qualidade = (n_positivos / n) × (n / (n+1))\nLegenda: n_positivos = nº de municípios com efeito positivo; n = nº total de municípios com a política.",
     icon: Trophy,
   },
   {
