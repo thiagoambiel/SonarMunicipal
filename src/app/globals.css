@@ -1320,6 +1320,16 @@ p {
   max-width: 200px;
 }
 
+.sapl-filter-projects {
+  min-width: 240px;
+}
+
+.sapl-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .sapl-limit {
   max-width: 160px;
 }

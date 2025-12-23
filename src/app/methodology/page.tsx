@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type React from "react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ArrowLeftRight,
   BrainCircuit,
@@ -530,10 +530,19 @@ export default function MethodologyPage() {
   const [saplSearch, setSaplSearch] = useState("");
   const [saplUf, setSaplUf] = useState("todas");
   const [rowLimit, setRowLimit] = useState(10);
+  const [showOnlyWithProjects, setShowOnlyWithProjects] = useState(false);
   const [saplError, setSaplError] = useState<string | null>(null);
   const [saplPage, setSaplPage] = useState(1);
   const [saplLoading, setSaplLoading] = useState(true);
   const scrollLockRef = useRef(false);
+
+  const getSaplProjectCount = useCallback(
+    (host: SaplHost) => {
+      const normalizedBaseUrl = normalizeSaplBaseUrl(host.sapl_url);
+      return normalizedBaseUrl ? saplProjectCounts[normalizedBaseUrl] ?? 0 : 0;
+    },
+    [saplProjectCounts],
+  );
 
   useEffect(() => {
     const loadSaplHosts = async () => {
@@ -713,9 +722,12 @@ export default function MethodologyPage() {
     return saplHosts.filter((host) => {
       const matchesTerm = !term || host.municipio.toLowerCase().includes(term);
       const matchesUf = saplUf === "todas" || host.uf.toLowerCase() === saplUf.toLowerCase();
-      return matchesTerm && matchesUf;
+      const projectCount = getSaplProjectCount(host);
+      const hasProjects = projectCount > 0;
+      const matchesProjectsFilter = !showOnlyWithProjects || hasProjects;
+      return matchesTerm && matchesUf && matchesProjectsFilter;
     });
-  }, [saplHosts, saplSearch, saplUf]);
+  }, [saplHosts, saplSearch, saplUf, showOnlyWithProjects, getSaplProjectCount]);
 
   const pageCount = useMemo(() => {
     if (!rowLimit) return 1;
@@ -724,7 +736,7 @@ export default function MethodologyPage() {
 
   useEffect(() => {
     setSaplPage(1);
-  }, [saplSearch, saplUf, rowLimit]);
+  }, [saplSearch, saplUf, rowLimit, showOnlyWithProjects]);
 
   useEffect(() => {
     setSaplPage((prev) => Math.min(prev, pageCount));
@@ -1174,6 +1186,19 @@ export default function MethodologyPage() {
                   />
                 </label>
 
+                <label className="sapl-control sapl-filter-projects">
+                  <span className="muted small">Filtrar PLs</span>
+                  <div className="sapl-checkbox">
+                    <input
+                      id="sapl-only-projects"
+                      type="checkbox"
+                      checked={showOnlyWithProjects}
+                      onChange={(event) => setShowOnlyWithProjects(event.target.checked)}
+                    />
+                    <span className="muted small">Mostrar apenas SAPLs com PLs extraídos</span>
+                  </div>
+                </label>
+
                 <div className="sapl-count muted small">
                   {saplError
                     ? saplError
@@ -1211,8 +1236,7 @@ export default function MethodologyPage() {
                     </div>
                     {displayedHosts.map((host) => {
                       const rowKey = `${host.ibge_id}-${host.sapl_url}`;
-                      const normalizedBaseUrl = normalizeSaplBaseUrl(host.sapl_url);
-                      const projectCount = normalizedBaseUrl ? saplProjectCounts[normalizedBaseUrl] ?? 0 : 0;
+                      const projectCount = getSaplProjectCount(host);
                       const saplBaseUrl = getSaplBaseUrl(host.sapl_url);
                       return (
                         <div key={rowKey} className="table-row sapl-table" role="row">
