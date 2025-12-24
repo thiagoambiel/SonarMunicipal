@@ -1,4 +1,4 @@
-# CityManager
+# Sonar Municipal
 
 Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, transformar ementas em ações operacionais e gerar recomendações de políticas públicas com busca semântica e análise de indicadores.
 
@@ -13,7 +13,7 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
 ## O que já está implementado
 - **Descoberta de SAPL** (`tools/sapl_finder`): busca instâncias ativas combinando IBGE e crt.sh, validando endpoints de forma incremental.
 - **Raspagem de PLs** (`tools/sapl_scrapper`): coleta tipos de PL, pagina matérias, opcionalmente puxa última tramitação e salva em CSV/JSON/JSONL com deduplicação.
-- **Geração de ações** (`notebooks/citymanager-ptt5-v2-text2action-*`): usa o modelo `thiagoambiel/ptt5v2-pl-text2action` para converter ementa → ação imperativa.
+- **Geração de ações** (`notebooks/sonar-municipal-ptt5-v2-text2action-*`): usa o modelo `thiagoambiel/ptt5v2-pl-text2action` para converter ementa → ação imperativa.
 - **Módulo core** (`core/`): funções para carregar o dataset, extrair embeddings, fazer busca semântica, cruzar PLs com indicadores e agrupar políticas.
 - **API FastAPI** (`api/`): expõe busca, cálculo de efeitos de indicadores e geração de políticas.
 - **Guias** (`DATASET.MD`): passo a passo para reconstruir o dataset.
@@ -78,9 +78,9 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
      `python -m tools.sapl_finder --strategy all --concurrency 200 --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json`
   2. Raspar PLs  
      `python -m tools.sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json`
-  3. Gerar ações (ementa → ação) com o notebook `notebooks/citymanager-ptt5-v2-text2action-inference-on-pls.py`, produzindo `pl_actions.jsonl`.
-  4. Montar `dataset.npy` com o notebook `notebooks/CityManager_Build_the_Base_Action_Recommendation_Dataset.py` (une PL + ação, normaliza e gera embeddings).
-  5. (Opcional) Rodar análises/correlação com indicadores (`notebooks/CityManager_Correlation_Between_Policies_and_Indicators.py`).
+  3. Gerar ações (ementa → ação) com o notebook `notebooks/sonar-municipal-ptt5-v2-text2action-inference-on-pls.py`, produzindo `pl_actions.jsonl`.
+  4. Montar `dataset.npy` com o notebook `notebooks/SonarMunicipal_Build_the_Base_Action_Recommendation_Dataset.py` (une PL + ação, normaliza e gera embeddings).
+  5. (Opcional) Rodar análises/correlação com indicadores (`notebooks/SonarMunicipal_Correlation_Between_Policies_and_Indicators.py`).
 
 ## Uso do módulo `core`
 - Principais funções (`from core import ...`):

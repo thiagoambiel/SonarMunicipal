@@ -17,7 +17,7 @@ from .schemas import (
 from .services import compute_effects_for_indexes, generate_policies_from_indexes, run_semantic_search
 
 app = FastAPI(
-    title="CityManager API",
+    title="Sonar Municipal API",
     version="0.1.0",
     description="API para busca semântica de PLs e geração de políticas públicas.",
 )

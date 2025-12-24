@@ -18,7 +18,7 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "CityManager",
+  title: "Sonar Municipal",
   description: "Busque por políticas públicas relevantes que podem ser aplicadas em seu município",
 };
 

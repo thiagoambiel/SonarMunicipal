@@ -1,6 +1,6 @@
 {
-  "name": "CityManager",
-  "short_name": "CityManager",
+  "name": "Sonar Municipal",
+  "short_name": "Sonar",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

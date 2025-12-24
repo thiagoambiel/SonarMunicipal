@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
 
@@ -16,7 +17,7 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { key: "home", href: "/", label: "Gerador de Políticas Públicas" },
+  { key: "home", href: "/", label: "Sugestão de Políticas Públicas" },
   { key: "projects", href: "/projects", label: "Projetos de Lei", onClick: clearProjectsSearchState },
   { key: "methodology", href: "/methodology", label: "Metodologia" },
   { key: "contact", href: "/contact", label: "Contato" },
@@ -47,7 +48,14 @@ export default function MinimalNav({ active }: { active?: NavSection }) {
     <header className="minimal-nav">
       <div className="nav-brand">
         <Link className="nav-title" href="/">
-          CityManager
+          <Image
+            src="/logo.png"
+            alt="Sonar Municipal"
+            width={160}
+            height={60}
+            className="nav-logo"
+            priority
+          />
         </Link>
       </div>
 

@@ -50,7 +50,7 @@ Saídas:
 ## 3) Gerar ações (ementa -> ação)
 Use o modelo `thiagoambiel/ptt5v2-pl-text2action` (Hugging Face) para converter ementas em ações imperativas.
 
-Referência: notebook `notebooks/citymanager-ptt5-v2-text2action-inference-on-pls.py`.
+Referência: notebook `notebooks/sonar-municipal-ptt5-v2-text2action-inference-on-pls.py`.
 
 Passos resumidos:
 1. Baixe/prepare `pl.jsonl` da etapa anterior.
@@ -61,7 +61,7 @@ Saída esperada:
 - `pl_actions.jsonl`: mapeia cada ementa para uma ação sintetizada.
 
 ## 4) Montar o dataset final (embeddings + metadados)
-Use o notebook `notebooks/CityManager_Build_the_Base_Action_Recommendation_Dataset.py` como referência:
+Use o notebook `notebooks/SonarMunicipal_Build_the_Base_Action_Recommendation_Dataset.py` como referência:
 - Carrega `pl.jsonl` (metadados) e `pl_actions.jsonl` (ações geradas).
 - Normaliza e deduplica ementas.
 - Anexa a ação correspondente.
@@ -79,8 +79,8 @@ print(semantic_search("Como reduzir criminalidade?", dataset, model, emb, top_k=
 ```
 
 ## 5) Análises e qualidade das políticas (opcionais)
-- `notebooks/CityManager_Action_Recommendation_Dataset_Analysis.py`: exploração básica e busca semântica.
-- `notebooks/CityManager_Correlation_Between_Policies_and_Indicators.py`: cruza PLs com indicadores (ex.: homicídios) e gera políticas agregadas com testes estatísticos.
+- `notebooks/SonarMunicipal_Action_Recommendation_Dataset_Analysis.py`: exploração básica e busca semântica.
+- `notebooks/SonarMunicipal_Correlation_Between_Policies_and_Indicators.py`: cruza PLs com indicadores (ex.: homicídios) e gera políticas agregadas com testes estatísticos.
 
 ## Dependências principais
 - `httpx`, `asyncio`, `tqdm`, `pandas`, `numpy`, `sentence-transformers`, `torch`, `transformers`, `scipy` (para testes estatísticos).

@@ -1,4 +1,4 @@
-# CityManager — Next.js + Qdrant + HuggingFace
+# Sonar Municipal — Next.js + Qdrant + HuggingFace
 
 Aplicação Next.js (App Router) com backend em rotas `/api` que gera embeddings via HuggingFace Inference API e busca semântica no Qdrant. O backend FastAPI antigo foi movido para `experiments/backend` (junto dos notebooks de referência).
 

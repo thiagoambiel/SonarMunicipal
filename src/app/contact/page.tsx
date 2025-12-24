@@ -9,12 +9,12 @@ const secondaryEmail = "thiago.ambiel1@gmail.com";
 const scholarProfile = "https://scholar.google.com.br/citations?hl=pt-BR&user=Bhxkr94AAAAJ";
 const githubProfile = "https://github.com/thiagoambiel";
 const icmcSite = "https://www.icmc.usp.br/";
-const contactSubject = encodeURIComponent("Contato sobre o CityManager");
+const contactSubject = encodeURIComponent("Contato sobre o Sonar Municipal");
 const contactBody = encodeURIComponent("Olá Thiago, tudo bem?\n\nGostaria de falar sobre: ");
 
 export const metadata: Metadata = {
-  title: "Contato - CityManager",
-  description: "Fale com Thiago Ambiel, desenvolvedor do CityManager e pesquisador no ICMC-USP.",
+  title: "Contato - Sonar Municipal",
+  description: "Fale com Thiago Ambiel, desenvolvedor do Sonar Municipal e pesquisador no ICMC-USP.",
 };
 
 export default function ContactPage() {
@@ -29,14 +29,14 @@ export default function ContactPage() {
               <div className="contact-avatar">
                 <Image
                   src="/author.png"
-                  alt="Foto de Thiago Ambiel, criador do CityManager"
+                  alt="Foto de Thiago Ambiel, criador do Sonar Municipal"
                   width={360}
                   height={360}
                   priority
                 />
               </div>
               <h1 className="contact-name">Thiago Ambiel</h1>
-              <p className="contact-tag">Criador do CityManager</p>
+              <p className="contact-tag">Criador do Sonar Municipal</p>
             </div>
             <div className="contact-info">
               <p className="eyebrow">Contato</p>

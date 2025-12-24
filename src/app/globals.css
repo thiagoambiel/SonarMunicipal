@@ -3333,6 +3333,12 @@ p {
   outline-offset: 3px;
 }
 
+.nav-logo {
+  display: block;
+  height: 80px;
+  width: auto;
+}
+
 .nav-links-minimal {
   display: flex;
   align-items: center;
