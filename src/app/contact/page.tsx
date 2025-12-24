@@ -13,7 +13,7 @@ const contactSubject = encodeURIComponent("Contato sobre o Sonar Municipal");
 const contactBody = encodeURIComponent("Olá Thiago, tudo bem?\n\nGostaria de falar sobre: ");
 
 export const metadata: Metadata = {
-  title: "Sonar Municipal - Contato",
+  title: "Contato",
   description: "Fale com Thiago Ambiel, desenvolvedor do Sonar Municipal e pesquisador no ICMC-USP.",
 };
 

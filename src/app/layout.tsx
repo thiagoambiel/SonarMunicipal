@@ -18,7 +18,10 @@ const caveat = Caveat({
 });
 
 export const metadata: Metadata = {
-  title: "Sonar Municipal",
+  title: {
+    default: "Sonar Municipal - Sugestão de Políticas Públicas",
+    template: "Sonar Municipal - %s",
+  },
   description: "Busque por políticas públicas relevantes que podem ser aplicadas em seu município",
 };
 
