@@ -119,8 +119,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(responsePayload);
   } catch (error) {
     console.error("Erro ao gerar pacote de políticas:", error);
+    const errorDetail =
+      error instanceof Error
+        ? `${error.name}: ${error.message}`
+        : `Erro desconhecido: ${JSON.stringify(error)}`;
     return NextResponse.json(
-      { detail: "Falha ao gerar políticas. Verifique o Qdrant, embeddings e dados de indicador." },
+      {
+        detail:
+          "Falha ao gerar políticas. Verifique o Qdrant, embeddings e dados de indicador. " +
+          `Detalhe: ${errorDetail}`,
+      },
       { status: 500 },
     );
   }
