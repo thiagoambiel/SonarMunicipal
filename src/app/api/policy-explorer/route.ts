@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import path from "path";
+import { readFile } from "fs/promises";
 
 import { listIndicatorSpecs } from "@/lib/indicators";
 import {
@@ -11,6 +13,10 @@ import {
 import { searchProjects } from "@/lib/semantic-search";
 import type { PolicySuggestion } from "@/lib/policy-engine";
 import type { SearchHit } from "@/lib/semantic-search";
+import {
+  getPolicyExplorerExampleFile,
+  normalizePolicyExplorerQuery,
+} from "@/lib/policy-explorer-examples";
 
 const MAX_TOP_K = (() => {
   const raw = Number.parseInt(process.env.SEARCH_MAX_RESULTS ?? "", 10);
@@ -75,13 +81,8 @@ const CACHE_ENABLED = CACHE_MAX_ITEMS > 0;
 
 const policyExplorerCache = new Map<string, PolicyExplorerCacheEntry>();
 
-const normalizeQuestion = (value: string) =>
-  value
-    .trim()
-    .toLocaleLowerCase("pt-BR")
-    .replace(/\s+/g, " ");
-
-const buildCacheKey = (question: string, limit: number) => `${normalizeQuestion(question)}::${limit}`;
+const buildCacheKey = (question: string, limit: number) =>
+  `${normalizePolicyExplorerQuery(question)}::${limit}`;
 
 const pruneCache = () => {
   if (!CACHE_ENABLED || policyExplorerCache.size <= CACHE_MAX_ITEMS) return;
@@ -128,6 +129,25 @@ const setCacheInFlight = (key: string, promise: Promise<PolicyExplorerPayload>) 
     inFlight: promise,
     expiresAt: CACHE_TTL_MS > 0 ? Date.now() + CACHE_TTL_MS : Number.POSITIVE_INFINITY,
   });
+};
+
+const EXAMPLE_CACHE_DIR = path.join(process.cwd(), "public", "policy-explorer-examples");
+const exampleReadFailures = new Set<string>();
+
+const readExamplePayload = async (question: string, limit: number): Promise<PolicyExplorerPayload | null> => {
+  const fileName = getPolicyExplorerExampleFile(question, limit);
+  if (!fileName) return null;
+  const filePath = path.join(EXAMPLE_CACHE_DIR, fileName);
+  try {
+    const raw = await readFile(filePath, "utf8");
+    return JSON.parse(raw) as PolicyExplorerPayload;
+  } catch (error) {
+    if (!exampleReadFailures.has(filePath)) {
+      console.warn("Falha ao carregar resposta pré-processada:", filePath, error);
+      exampleReadFailures.add(filePath);
+    }
+    return null;
+  }
 };
 
 const withCacheFlag = (payload: PolicyExplorerPayload, cached: boolean): PolicyExplorerResponse => ({
@@ -178,6 +198,18 @@ export async function POST(request: NextRequest) {
         response.headers.set("x-policy-explorer-cache", "hit");
         return response;
       }
+    }
+
+    const examplePayload = await readExamplePayload(trimmedQuestion, limit);
+    if (examplePayload) {
+      const normalizedPayload =
+        examplePayload.question === trimmedQuestion
+          ? examplePayload
+          : { ...examplePayload, question: trimmedQuestion };
+      setCacheValue(cacheKey, normalizedPayload);
+      const response = NextResponse.json(withCacheFlag(normalizedPayload, true));
+      response.headers.set("x-policy-explorer-cache", "static");
+      return response;
     }
 
     const computePayload = async (): Promise<PolicyExplorerPayload> => {

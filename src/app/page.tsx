@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import CustomDropdown, { type DropdownBadge } from "@/components/CustomDropdown";
 import MinimalNav from "@/components/MinimalNav";
 import { clearProjectsSearchState } from "@/lib/projectsSearchStorage";
+import { POLICY_EXPLORER_EXAMPLE_QUERIES } from "@/lib/policy-explorer-examples";
 
 type SearchResult = {
   index: number;
@@ -57,6 +58,7 @@ type IndicatorBundle = {
 type PolicyExplorerResponse = {
   question: string;
   total_projects: number;
+  cached_results?: boolean;
   projects: SearchResult[];
   baseline: IndicatorBundle;
   indicators: IndicatorBundle[];
@@ -66,13 +68,7 @@ const API_BASE_URL = (process.env.NEXT_PUBLIC_API_BASE_URL ?? "").replace(/\/$/,
 const apiUrl = (path: string) => `${API_BASE_URL}${path}`;
 const CACHE_PREFIX = "policy-explorer-cache-";
 
-const suggestionPrompts = [
-  "Como reduzir a violência urbana em bairros centrais?",
-  "Políticas para aumentar a arrecadação sem subir impostos",
-  "Como diminuir evasão escolar no ensino médio?",
-  "Ideias para melhorar mobilidade e trânsito em horário de pico",
-  "Como ampliar o acesso a saneamento básico rapidamente?",
-];
+const suggestionPrompts = POLICY_EXPLORER_EXAMPLE_QUERIES;
 
 const NO_INDICATOR_KEY = "__none__";
 const MAX_RESULTS = Number.isFinite(Number(process.env.NEXT_PUBLIC_MAX_TOP_K))
