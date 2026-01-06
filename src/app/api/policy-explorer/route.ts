@@ -50,9 +50,7 @@ type PolicyExplorerPayload = {
 };
 
 type PolicyExplorerResponse = PolicyExplorerPayload & {
-  cache: {
-    hit: boolean;
-  };
+  cached_results: boolean;
 };
 
 type PolicyExplorerCacheEntry = {
@@ -132,6 +130,15 @@ const setCacheInFlight = (key: string, promise: Promise<PolicyExplorerPayload>) 
   });
 };
 
+const withCacheFlag = (payload: PolicyExplorerPayload, cached: boolean): PolicyExplorerResponse => ({
+  question: payload.question,
+  total_projects: payload.total_projects,
+  cached_results: cached,
+  projects: payload.projects,
+  baseline: payload.baseline,
+  indicators: payload.indicators,
+});
+
 export async function POST(request: NextRequest) {
   let question = "";
   let topK: number | undefined;
@@ -163,10 +170,10 @@ export async function POST(request: NextRequest) {
       const cached = getCachedPayload(cacheKey);
       if (cached) {
         const payload = await cached;
-        const responsePayload: PolicyExplorerResponse = {
-          ...(payload.question === trimmedQuestion ? payload : { ...payload, question: trimmedQuestion }),
-          cache: { hit: true },
-        };
+        const responsePayload = withCacheFlag(
+          payload.question === trimmedQuestion ? payload : { ...payload, question: trimmedQuestion },
+          true,
+        );
         const response = NextResponse.json(responsePayload);
         response.headers.set("x-policy-explorer-cache", "hit");
         return response;
@@ -247,7 +254,7 @@ export async function POST(request: NextRequest) {
 
     if (!CACHE_ENABLED) {
       const payload = await computePayload();
-      return NextResponse.json({ ...payload, cache: { hit: false } } satisfies PolicyExplorerResponse);
+      return NextResponse.json(withCacheFlag(payload, false));
     }
 
     const inFlight = computePayload()
@@ -262,7 +269,7 @@ export async function POST(request: NextRequest) {
 
     setCacheInFlight(cacheKey, inFlight);
     const payload = await inFlight;
-    const response = NextResponse.json({ ...payload, cache: { hit: false } } satisfies PolicyExplorerResponse);
+    const response = NextResponse.json(withCacheFlag(payload, false));
     response.headers.set("x-policy-explorer-cache", "miss");
     return response;
   } catch (error) {
