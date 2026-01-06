@@ -144,6 +144,7 @@ function HomeContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [query, setQuery] = useState("");
+  const [submittedQuery, setSubmittedQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingPhase, setLoadingPhase] = useState<"idle" | "loading" | "slow" | "very-slow">("idle");
   const [error, setError] = useState<string | null>(null);
@@ -209,6 +210,7 @@ function HomeContent() {
 
   const applyPayload = useCallback((payload: PolicyExplorerResponse) => {
     setData(payload);
+    setSubmittedQuery(payload.question);
     setSelectedIndicator(NO_INDICATOR_KEY);
     const defaultWindow = selectPreferredWindow(payload.baseline) ?? payload.baseline?.windows?.[0]?.effect_window_months ?? null;
     setSelectedWindow(defaultWindow ?? null);
@@ -355,6 +357,7 @@ function HomeContent() {
     setLoadingPhase("loading");
     setError(null);
     setHasSearched(true);
+    setSubmittedQuery(normalized);
 
     slowTimerRef.current = setTimeout(() => setLoadingPhase("slow"), 8000);
     verySlowTimerRef.current = setTimeout(() => setLoadingPhase("very-slow"), 15000);
@@ -427,9 +430,23 @@ function HomeContent() {
     const target = selectPreferredWindow(bundle) ?? selectedWindow;
     if (target != null) {
       setSelectedWindow(target);
-      syncUrlState({ query, indicator: key, window: target, sort: sortPoliciesBy, uf: filterUf, municipio: filterMunicipio });
+      syncUrlState({
+        query: submittedQuery,
+        indicator: key,
+        window: target,
+        sort: sortPoliciesBy,
+        uf: filterUf,
+        municipio: filterMunicipio,
+      });
     } else {
-      syncUrlState({ query, indicator: key, window: selectedWindow, sort: sortPoliciesBy, uf: filterUf, municipio: filterMunicipio });
+      syncUrlState({
+        query: submittedQuery,
+        indicator: key,
+        window: selectedWindow,
+        sort: sortPoliciesBy,
+        uf: filterUf,
+        municipio: filterMunicipio,
+      });
     }
   };
 
@@ -644,14 +661,14 @@ function HomeContent() {
   useEffect(() => {
     if (!hasSearched) return;
     syncUrlState({
-      query,
+      query: submittedQuery,
       indicator: selectedIndicator,
       window: selectedWindow,
       sort: sortPoliciesBy,
       uf: filterUf,
       municipio: filterMunicipio,
     });
-  }, [filterMunicipio, filterUf, hasSearched, query, selectedIndicator, selectedWindow, sortPoliciesBy, syncUrlState]);
+  }, [filterMunicipio, filterUf, hasSearched, selectedIndicator, selectedWindow, sortPoliciesBy, submittedQuery, syncUrlState]);
 
   useEffect(() => () => clearLoadingTimers(), []);
 
@@ -719,7 +736,7 @@ function HomeContent() {
             <div className="results-header">
               <div>
                 <p className="eyebrow">Resultados para</p>
-                <h2>{query || data?.question}</h2>
+                <h2>{submittedQuery || data?.question}</h2>
                 <p className="muted">
                   {data?.total_projects ?? 0} projetos analisados • {activePolicies.length} políticas priorizadas
                 </p>
@@ -903,7 +920,7 @@ function HomeContent() {
                       const normalizedWindow = Number.isFinite(parsed) ? parsed : null;
                       setSelectedWindow(normalizedWindow);
                       syncUrlState({
-                        query,
+                        query: submittedQuery,
                         indicator: selectedIndicator,
                         window: normalizedWindow,
                         sort: sortPoliciesBy,
