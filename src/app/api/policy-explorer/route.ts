@@ -49,6 +49,12 @@ type PolicyExplorerPayload = {
   indicators: IndicatorBundle[];
 };
 
+type PolicyExplorerResponse = PolicyExplorerPayload & {
+  cache: {
+    hit: boolean;
+  };
+};
+
 type PolicyExplorerCacheEntry = {
   value?: PolicyExplorerPayload;
   inFlight?: Promise<PolicyExplorerPayload>;
@@ -157,8 +163,10 @@ export async function POST(request: NextRequest) {
       const cached = getCachedPayload(cacheKey);
       if (cached) {
         const payload = await cached;
-        const responsePayload =
-          payload.question === trimmedQuestion ? payload : { ...payload, question: trimmedQuestion };
+        const responsePayload: PolicyExplorerResponse = {
+          ...(payload.question === trimmedQuestion ? payload : { ...payload, question: trimmedQuestion }),
+          cache: { hit: true },
+        };
         const response = NextResponse.json(responsePayload);
         response.headers.set("x-policy-explorer-cache", "hit");
         return response;
@@ -239,7 +247,7 @@ export async function POST(request: NextRequest) {
 
     if (!CACHE_ENABLED) {
       const payload = await computePayload();
-      return NextResponse.json(payload);
+      return NextResponse.json({ ...payload, cache: { hit: false } } satisfies PolicyExplorerResponse);
     }
 
     const inFlight = computePayload()
@@ -254,7 +262,7 @@ export async function POST(request: NextRequest) {
 
     setCacheInFlight(cacheKey, inFlight);
     const payload = await inFlight;
-    const response = NextResponse.json(payload);
+    const response = NextResponse.json({ ...payload, cache: { hit: false } } satisfies PolicyExplorerResponse);
     response.headers.set("x-policy-explorer-cache", "miss");
     return response;
   } catch (error) {
