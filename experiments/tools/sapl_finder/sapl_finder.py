@@ -247,10 +247,6 @@ async def validate_host(client: httpx.AsyncClient, host: str, timeout: int) -> O
                 m = re.search(r"<title>([^<]+)</title>", html or "", flags=re.I)
                 if m:
                     title = m.group(1).strip()
-                logging.getLogger(__name__).info(
-                    "SAPL confirmado",
-                    extra={"host": host, "url": url, "status": status, "marker": marker},
-                )
                 return (url, status, marker, title)
     logging.getLogger(__name__).debug("Host nao confirmou SAPL", extra={"host": host})
     return None
@@ -322,11 +318,11 @@ async def discover_by_ibge(
     data = await fetch_json(client, IBGE_MUN_ENDPOINT, timeout)
     if not data:
         logging.getLogger(__name__).error("Falha ao baixar municipios do IBGE")
-        return [], {"total_candidates": 0, "tested_candidates": 0}
+        return [], {"total_candidates": 0, "tested_candidates": 0, "sapl_found": 0}
 
     valid_items = [item for item in data if item.get("nome") and get_sigla_uf(item)]
     total_candidates = len(valid_items) * 2
-    stats = {"total_candidates": total_candidates, "tested_candidates": 0}
+    stats = {"total_candidates": total_candidates, "tested_candidates": 0, "sapl_found": 0}
 
     logging.getLogger(__name__).info("Total de municipios carregados: %s", len(data))
     sem = asyncio.Semaphore(concurrency)
@@ -358,6 +354,14 @@ async def discover_by_ibge(
             }
             async with lock:
                 results.append(row)
+                stats["sapl_found"] += 1
+                logging.getLogger(__name__).info(
+                    "SAPL confirmado. Encontrados %s. Candidatos testados: %s/%s.",
+                    stats["sapl_found"],
+                    stats["tested_candidates"],
+                    stats["total_candidates"],
+                    extra={"host": f"sapl.{slug}.{sigla.lower()}.leg.br", "url": url, "status": status, "marker": marker},
+                )
 
         async with sem:
             async with lock:
@@ -377,6 +381,14 @@ async def discover_by_ibge(
             }
             async with lock:
                 results.append(row)
+                stats["sapl_found"] += 1
+                logging.getLogger(__name__).info(
+                    "SAPL confirmado. Encontrados %s. Candidatos testados: %s/%s.",
+                    stats["sapl_found"],
+                    stats["tested_candidates"],
+                    stats["total_candidates"],
+                    extra={"host": f"{slug}.{sigla.lower()}.leg.br", "url": url, "status": status, "marker": marker},
+                )
 
     await asyncio.gather(*(worker(item) for item in valid_items))
     return results, stats
