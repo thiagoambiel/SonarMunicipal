@@ -1,93 +1,92 @@
-# sapl_finder
+# SAPL Finder (IBGE)
 
-Descobre instâncias SAPL públicas no Brasil e produz arquivos incrementais (CSV/JSON/JSONL) com endpoints validados. Serve como etapa 1 do pipeline: a saída alimenta o `sapl_scrapper`.
+Script em Python para descobrir instancias SAPL publicas no Brasil usando apenas dados do IBGE.
+O fluxo busca todos os municipios, gera possiveis hosts e valida endpoints tipicos do SAPL.
 
-- Entrada: nenhuma (consulta IBGE e/ou crt.sh).
-- Saída:
-  - `sapl_hosts.csv` — tabela resumida dos endpoints SAPL validados.
-  - `sapl_hosts.json` — JSON agregado final.
-  - `sapl_hosts.jsonl` — achados incrementais (um por linha), ideal para streaming/processamento.
-  - `sapl_hosts_candidates.jsonl` — candidatos brutos do crt.sh (quando usado).
+## Requisitos
+
+- Python 3.10+
+- Dependencia: `httpx`
+
+Instalacao rapida:
+
+```bash
+pip install httpx
+```
 
 ## Como usar
 
 Ajuda:
 
 ```bash
-python -m sapl_finder --help
+python sapl_finder.py --help
 ```
 
 Exemplos:
 
 ```bash
-# Estratégia completa (IBGE + crt.sh), com logs em JSON e arquivo rotativo
-python -m sapl_finder \
-  --strategy all \
-  --concurrency 100 \
-  --timeout 20 \
-  --out-csv sapl_hosts.csv \
-  --out-json sapl_hosts.json \
-  --log-level INFO \
-  --log-file logs/sapl_finder.log \
-  --log-json
+# Execucao padrao
+python sapl_finder.py
 
-# Apenas IBGE
-python -m sapl_finder --strategy ibge --out-csv sapl.csv --out-json sapl_hosts.json
+# Ajustar concorrencia e timeout
+python sapl_finder.py --concurrency 60 --timeout 30
 
-# Apenas crt.sh (gera JSONL de candidatos)
-python -m sapl_finder --strategy crtsh --out-json sapl_hosts.json
+# Definir arquivos de saida
+python sapl_finder.py --out-csv saida/sapl_hosts.csv --out-json saida/sapl_hosts.json
+
+# Gerar JSONL adicional
+python sapl_finder.py --out-jsonl saida/sapl_hosts.jsonl
 ```
 
-## Arquitetura e fluxo
+## Saidas
 
-1. Estratégias (configuráveis por `--strategy`):
-   - IBGE: baixa municípios do endpoint oficial e deriva hosts por heurística (`sapl.{slug}.{uf}.leg.br` e `{slug}.{uf}.leg.br`). Tenta caminhos padrão do SAPL e varre links do portal.
-   - crt.sh: consulta o repositório de certificados (CT logs) por nomes que iniciam com `sapl.`. Resultado é normalizado e validado como endpoint SAPL.
-2. Validação de endpoint:
-   - Caminhos testados (ver `sapl_finder/config.py:CHECK_PATHS`): `/materia/pesquisar-materia`, `/sapl/materia/pesquisar-materia`.
-   - Heurística textual (`sapl_finder/config.py:SAPL_MARKERS`) e `<title>` contendo "SAPL".
-   - Caso o host base responda mas não os caminhos, varre links do HTML por pistas (`LINK_HINTS`) e re-testa.
-3. Escrita incremental:
-   - Cada achado dispara `ProgressWriter.on_found`, que escreve imediatamente no CSV e JSONL (flush), com deduplicação por `sapl_url`.
-   - Ao final, gera `sapl_hosts.json` agregado via `finalize_json`.
-4. Logging estruturado:
-   - `sapl_finder/logging_config.py` define `JsonFormatter`, rotação de arquivo e extras (ex.: `sapl_url`, `municipio`, `uf`, `strategy`, `count`).
+Os arquivos gerados compartilham os mesmos campos:
 
-## Paralelização e rede
+- `ibge_id`: identificador do municipio no IBGE
+- `municipio`: nome do municipio
+- `uf`: sigla da UF
+- `source`: origem do resultado (`ibge-heuristic` ou `base-host-endpoint`)
+- `sapl_url`: URL do endpoint validado
+- `http_status`: status HTTP retornado no teste
+- `marker`: marcador que confirmou o SAPL
+- `title`: titulo da pagina HTML
 
-- Cliente HTTP: `httpx.AsyncClient` com `Limits(max_keepalive_connections=0, max_connections=CONCURRENCY)` e `Timeout(T)`.
-  - `max_keepalive_connections=0`: evita manter conexões persistentes, útil ao acessar milhares de hosts distintos.
-- IBGE:
-  - Usa `asyncio.Semaphore(concurrency)` para limitar tarefas simultâneas por município.
-  - `asyncio.gather(...)` dispara workers que executam `validate_host` com o semáforo.
-- crt.sh:
-  - Particiona consultas por primeiro caractere após `sapl.` (a..z), reduzindo 429/503.
-  - Cada partição tenta: JSON direto, NDJSON por linha, e fallback com regex no HTML.
-  - Implementa retries com backoff exponencial (até 5 tentativas) ao detectar falhas ou 429/503.
-  - Validação dos hosts retornados executa em paralelo com semáforo e `gather`.
-- Validação de host:
-  - `try_get` usa `follow_redirects=True` e `User-Agent` definido em `config.USER_AGENT`.
+Arquivos:
 
-## Saída (campos)
+- `sapl_hosts.csv`: tabela resumida
+- `sapl_hosts.json`: JSON agregado
+- `sapl_hosts.jsonl`: JSON por linha (opcional)
 
-`CSV/JSON/JSONL` compartilhando as chaves:
-- `ibge_id`, `municipio`, `uf`
-- `source` (estratégia: `ibge-heuristic`, `base-host-endpoint`, `portal-link-scan`, `crtsh`)
-- `sapl_url` (URL do endpoint validado)
-- `http_status`, `marker`, `title`
+## Como o algoritmo funciona
 
-## Boas práticas de execução
+1. **Carrega municipios do IBGE**
+   - O script consulta `https://servicodados.ibge.gov.br/api/v1/localidades/municipios`.
+   - Para cada municipio, extrai nome e UF.
 
-- Conexões: 50–150 costumam ser estáveis; em redes conservadoras, use 20–50.
-- Timeout: mantenha `--timeout 20` a `40` conforme latência da rede.
-- Reprodutibilidade: a escrita é incremental + deduplicação; reexecutar não duplica saídas.
-- Iteração rápida: experimente `--strategy ibge` antes de `--strategy all`; `crtsh` pode ser mais pesado.
-- Logs: use `--log-json` para facilitar parsing e dashboards; aumente para `DEBUG` ao depurar.
+2. **Gera hosts candidatos**
+   - Para cada municipio, monta dois hosts:
+     - `sapl.{slug}.{uf}.leg.br`
+     - `{slug}.{uf}.leg.br`
+   - O `slug` e obtido do nome do municipio sem acentos, espacos ou simbolos.
 
-## Arquivos relevantes
+3. **Valida endpoints do SAPL**
+   - Para cada host, testa caminhos tipicos:
+     - `/materia/pesquisar-materia`
+     - `/sapl/materia/pesquisar-materia`
+   - A resposta deve conter marcadores conhecidos do SAPL ou um `<title>` com a palavra `SAPL`.
 
-- `sapl_finder/cli.py`
-- `sapl_finder/scraper.py`
-- `sapl_finder/output.py`
-- `sapl_finder/logging_config.py`
+4. **Deduplica e grava resultados**
+   - Resultados sao deduplicados por `sapl_url`.
+   - O script grava CSV e JSON agregados. O JSONL e opcional.
 
+## Observacoes de desempenho
+
+- `--concurrency` controla o numero de requisicoes simultaneas.
+- `--timeout` controla o tempo maximo de espera por resposta.
+- Em redes mais lentas, prefira `--concurrency 30` a `60` e `--timeout 30`.
+
+## Estrutura do projeto
+
+- `sapl_finder.py`: script principal
+- `output.py`: rotinas de escrita de saidas
+- `sapls/`: exemplos de dados (nao usados pelo script)
