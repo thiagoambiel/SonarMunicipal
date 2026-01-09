@@ -7,8 +7,8 @@ from typing import Any, Dict, Iterable
 
 import httpx
 
-from output import JsonlWriter
-from scraper import base_from_sapl_url, collect_pls_for_base
+from utils.output import JsonlWriter
+from utils.scraper import base_from_sapl_url, collect_pls_for_base
 
 
 logger = logging.getLogger("sapl_scrapper")
@@ -50,7 +50,6 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--concurrency", type=int, default=20, help="Numero de bases processadas em paralelo")
     parser.add_argument("--timeout", type=int, default=30, help="Timeout das requisicoes em segundos")
     parser.add_argument("--page-size", type=int, default=100, help="page_size usado na API do SAPL")
-    parser.add_argument("--no-tramitacao", action="store_true", help="Nao consultar ultima tramitacao")
     parser.add_argument("--log-level", default="INFO", help="Nivel de log (DEBUG, INFO, WARNING, ERROR)")
     return parser
 
@@ -99,7 +98,6 @@ async def scrape_base(
     item: Dict[str, Any],
     writer: JsonlWriter,
     page_size: int,
-    with_tramitacao: bool,
 ) -> None:
     """Raspa uma unica base SAPL a partir de um item do sapl_finder.
 
@@ -130,6 +128,9 @@ async def scrape_base(
     base = base_from_sapl_url(sapl_url)
     municipio = item.get("municipio", "") or ""
     uf = item.get("uf", "") or ""
+    ibge_id = item.get("ibge_id")
+    if ibge_id is None:
+        ibge_id = item.get("ibde_id")
     logger.info("Alvo carregado: %s (%s/%s)", base, municipio, uf)
 
     async with sem:
@@ -138,8 +139,8 @@ async def scrape_base(
             base,
             municipio=municipio,
             uf=uf,
+            ibge_id=ibge_id,
             page_size=page_size,
-            with_tramitacao=with_tramitacao,
         ):
             writer.write(row)
 
@@ -150,7 +151,6 @@ async def run_scraper(
     concurrency: int,
     timeout: int,
     page_size: int,
-    with_tramitacao: bool,
 ) -> None:
     """Executa o fluxo completo de raspagem.
 
@@ -193,7 +193,6 @@ async def run_scraper(
                         item,
                         writer,
                         page_size=page_size,
-                        with_tramitacao=with_tramitacao,
                     )
                 )
                 for item in load_inputs(in_jsonl)
@@ -204,6 +203,7 @@ async def run_scraper(
         logger.info("Extracao concluida. Registros: %s | JSONL: %s", writer.count, out_jsonl)
     finally:
         writer.close()
+        writer.dedupe_file()
 
 
 def main() -> None:
@@ -233,7 +233,6 @@ def main() -> None:
                 concurrency=args.concurrency,
                 timeout=args.timeout,
                 page_size=args.page_size,
-                with_tramitacao=(not args.no_tramitacao),
             )
         )
     except KeyboardInterrupt:

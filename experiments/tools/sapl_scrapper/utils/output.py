@@ -24,6 +24,7 @@ class JsonlWriter:
         self._seen: set[str] = set()
         self._count: int = 0
         self._logger = logging.getLogger("sapl_scrapper.progress")
+        self._out_jsonl = out_jsonl
 
         out_dir = os.path.dirname(out_jsonl)
         if out_dir:
@@ -52,13 +53,12 @@ class JsonlWriter:
         Returns
         -------
         str or None
-            Chave formada por base e id, ou None se incompleta.
+            Chave canonica dos campos de saida.
         """
-        base = row.get("sapl_base") or ""
-        mid = row.get("materia_id")
-        if not base or mid is None:
+        try:
+            return json.dumps(row, ensure_ascii=False, sort_keys=True)
+        except Exception:
             return None
-        return f"{base}|{mid}"
 
     def write(self, row: Dict[str, Any]) -> bool:
         """Grava um registro no JSONL, se ainda nao existir.
@@ -84,12 +84,10 @@ class JsonlWriter:
 
         try:
             self._logger.info(
-                "PL salvo (%s): %s/%s %s-%s",
+                "PL salvo (%s): %s/%s",
                 self._count,
                 (row.get("municipio") or "").strip(),
                 row.get("uf", ""),
-                row.get("numero", ""),
-                row.get("ano", ""),
             )
         except Exception:
             pass
@@ -106,3 +104,45 @@ class JsonlWriter:
         """
         if self._fp:
             self._fp.close()
+
+    def dedupe_file(self) -> int:
+        """Remove itens duplicados do JSONL final.
+
+        Returns
+        -------
+        int
+            Total de registros unicos mantidos.
+        """
+        src_path = self._out_jsonl
+        tmp_path = f"{src_path}.dedup"
+        seen: set[str] = set()
+        kept = 0
+
+        try:
+            with open(src_path, "r", encoding="utf-8") as src, open(tmp_path, "w", encoding="utf-8") as dst:
+                for line in src:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        obj = json.loads(line)
+                        key = json.dumps(obj, ensure_ascii=False, sort_keys=True)
+                    except Exception:
+                        obj = None
+                        key = line
+                    if key in seen:
+                        continue
+                    seen.add(key)
+                    if isinstance(obj, dict):
+                        dst.write(json.dumps(obj, ensure_ascii=False) + "\n")
+                    else:
+                        dst.write(line + "\n")
+                    kept += 1
+            os.replace(tmp_path, src_path)
+        finally:
+            if os.path.exists(tmp_path):
+                try:
+                    os.remove(tmp_path)
+                except Exception:
+                    pass
+        return kept

@@ -369,6 +369,15 @@ async def discover_by_ibge(
             async with lock:
                 stats["tested"] += 1
             result = await validate_host(client, host, timeout)
+        status = result[1] if result else 0
+        logging.getLogger(__name__).info(
+            "Progresso: %s encontrados | %s/%s testados | status=%s",
+            stats["found"],
+            stats["tested"],
+            stats["total"],
+            status,
+            extra={"host": host},
+        )
         if not result:
             return
         url, status, marker, title = result

@@ -37,8 +37,6 @@ python sapl_scrapper.py \
   --timeout 30 \
   --page-size 100
 
-# Execucao mais leve (sem ultima tramitacao)
-python sapl_scrapper.py --in-jsonl sapl_hosts.jsonl --no-tramitacao
 ```
 
 ## Argumentos principais
@@ -48,7 +46,6 @@ python sapl_scrapper.py --in-jsonl sapl_hosts.jsonl --no-tramitacao
 - `--concurrency`: numero de bases SAPL processadas em paralelo.
 - `--timeout`: timeout das requisicoes (segundos).
 - `--page-size`: `page_size` usado na API.
-- `--no-tramitacao`: desativa a consulta de ultima tramitacao.
 
 ## Estrutura da entrada
 

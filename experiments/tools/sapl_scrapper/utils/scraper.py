@@ -1,7 +1,7 @@
 import logging
 import re
 import unicodedata
-from typing import Any, AsyncIterator, Dict, List, Optional, Tuple
+from typing import Any, AsyncIterator, Dict, List, Optional
 from urllib.parse import urljoin
 
 import httpx
@@ -257,34 +257,6 @@ async def pager(client: httpx.AsyncClient, url: str, params: Dict[str, Any]) -> 
         return
 
 
-async def fetch_last_status(client: httpx.AsyncClient, base: str, materia_id: Any) -> Dict[str, Any]:
-    """Busca a ultima tramitacao de uma materia.
-
-    Parameters
-    ----------
-    client : httpx.AsyncClient
-        Cliente HTTP configurado.
-    base : str
-        Base do SAPL.
-    materia_id : Any
-        Identificador da materia.
-
-    Returns
-    -------
-    dict
-        JSON retornado pelo endpoint ou dicionario vazio em falhas.
-    """
-    url = f"{base.rstrip('/')}/api/materia/materialegislativa/{materia_id}/ultima_tramitacao/"
-    try:
-        resp = await client.get(url)
-        if resp.status_code != 200:
-            return {}
-        data = resp.json()
-        return data if isinstance(data, dict) else {}
-    except Exception:
-        return {}
-
-
 def build_public_link(base: str, materia_id: Any) -> str:
     """Monta o link publico de acompanhamento da materia.
 
@@ -303,41 +275,13 @@ def build_public_link(base: str, materia_id: Any) -> str:
     return f"{base.rstrip('/')}/materia/{materia_id}/acompanhar-materia/"
 
 
-def extract_last_status_fields(tram: Dict[str, Any]) -> Tuple[str, str]:
-    """Extrai campos amigaveis da ultima tramitacao.
-
-    Parameters
-    ----------
-    tram : dict
-        JSON da ultima tramitacao.
-
-    Returns
-    -------
-    tuple of str
-        Data e status extraidos (strings possivelmente vazias).
-    """
-    data = ""
-    status = ""
-    for key in ("data_tramitacao", "data", "data_registro"):
-        value = tram.get(key)
-        if isinstance(value, str) and value:
-            data = value
-            break
-    for key in ("status", "texto", "descricao"):
-        value = tram.get(key)
-        if isinstance(value, str) and value:
-            status = value
-            break
-    return data, status
-
-
 async def collect_pls_for_base(
     client: httpx.AsyncClient,
     base: str,
     municipio: str,
     uf: str,
+    ibge_id: Optional[Any] = None,
     page_size: int = 100,
-    with_tramitacao: bool = True,
 ) -> AsyncIterator[Dict[str, Any]]:
     """Coleta todos os PLs de uma instancia SAPL.
 
@@ -351,10 +295,10 @@ async def collect_pls_for_base(
         Nome do municipio (para contexto no output).
     uf : str
         UF do municipio (para contexto no output).
+    ibge_id : Any, optional
+        Identificador IBGE do municipio (para contexto no output).
     page_size : int, optional
         Tamanho da pagina na API do SAPL.
-    with_tramitacao : bool, optional
-        Se True, consulta o endpoint de ultima tramitacao por materia.
 
     Yields
     ------
@@ -383,29 +327,12 @@ async def collect_pls_for_base(
         async for materia in pager(client, materias_endpoint, params):
             mid = materia.get("id")
             row: Dict[str, Any] = {
-                "sapl_base": base,
-                "sapl_url": base,
                 "municipio": municipio,
                 "uf": uf,
-                "tipo_id": tipo_id,
-                "tipo_label": tipo_label,
-                "materia_id": mid,
-                "numero": materia.get("numero"),
-                "ano": materia.get("ano"),
+                "ibge_id": ibge_id,
                 "ementa": materia.get("ementa") or materia.get("observacao"),
                 "data_apresentacao": materia.get("data_apresentacao") or materia.get("data_recebimento"),
-                "em_tramitacao": materia.get("em_tramitacao"),
-                "situacao": materia.get("status") or materia.get("situacao"),
                 "link_publico": build_public_link(base, mid) if mid is not None else "",
             }
-
-            if with_tramitacao and mid is not None:
-                tram = await fetch_last_status(client, base, mid)
-                row["ultima_tramitacao"] = tram
-                data, status = extract_last_status_fields(tram)
-                if data:
-                    row["ultima_tramitacao_data"] = data
-                if status:
-                    row["ultima_tramitacao_status"] = status
 
             yield row
