@@ -12,7 +12,7 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
 
 ## O que já está implementado
 - **Descoberta de SAPL** (`tools/sapl_finder`): busca instâncias ativas combinando IBGE e crt.sh, validando endpoints de forma incremental.
-- **Raspagem de PLs** (`tools/sapl_scrapper`): coleta tipos de PL, pagina matérias, opcionalmente puxa última tramitação e salva em CSV/JSON/JSONL com deduplicação.
+- **Raspagem de PLs** (`tools/sapl_scrapper`): coleta tipos de PL, pagina matérias, opcionalmente puxa última tramitação e salva em JSONL com deduplicação.
 - **Geração de ações** (`notebooks/sonar-municipal-ptt5-v2-text2action-*`): usa o modelo `thiagoambiel/ptt5v2-pl-text2action` para converter ementa → ação imperativa.
 - **Módulo core** (`core/`): funções para carregar o dataset, extrair embeddings, fazer busca semântica, cruzar PLs com indicadores e agrupar políticas.
 - **API FastAPI** (`api/`): expõe busca, cálculo de efeitos de indicadores e geração de políticas.
@@ -47,15 +47,11 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
 - **Descoberta (`sapl_finder`)**
   - Entrada: nenhuma (consulta IBGE + crt.sh).
   - Saídas principais:
-    - `sapl_hosts.csv` / `sapl_hosts.json`: endpoints confirmados com `ibge_id`, `municipio`, `uf`, `sapl_url`, `source`, `http_status`, `marker`, `title`.
-    - `sapl_hosts.jsonl`: escrita incremental, ideal para alimentar o scrapper.
-    - `sapl_hosts_candidates.jsonl`: candidatos brutos do crt.sh (sem validação).
+    - `sapl_hosts.jsonl`: endpoints confirmados com `ibge_id`, `municipio`, `uf`, `sapl_url`, `source`, `http_status`, `marker`, `title`.
 - **Raspagem (`sapl_scrapper`)**
   - Entrada: `sapl_hosts.jsonl` gerado pelo finder.
   - Saídas:
-    - `pl.csv`: colunas `sapl_base`, `sapl_url`, `municipio`, `uf`, `tipo_id`, `tipo_label`, `materia_id`, `numero`, `ano`, `ementa`, `data_apresentacao`, `em_tramitacao`, `situacao`, `link_publico`, `ultima_tramitacao_data`, `ultima_tramitacao_status`.
     - `pl.jsonl`: registros completos (incremental).
-    - `pl.json`: JSON agregado ao final.
 - **Dataset final (`dataset.npy`)**
   - Lista de dicionários contendo ao menos `municipio`, `uf`, `ementa`, `acao` (gerada), `data_apresentacao`, `embedding` (vetor float32), mais metadados herdados do scrapper.
 - **Indicadores externos**
@@ -75,9 +71,9 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
   ```
 - **Para reconstruir seus dados** (detalhes em `DATASET.MD`):
   1. Descobrir SAPLs  
-     `python -m tools.sapl_finder --strategy all --concurrency 200 --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json`
+     `python tools/sapl_finder/sapl_finder.py --concurrency 200 --out-jsonl data/sapl_hosts.jsonl`
   2. Raspar PLs  
-     `python -m tools.sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json`
+     `python tools/sapl_scrapper/sapl_scrapper.py --in-jsonl data/sapl_hosts.jsonl --out-jsonl data/pl.jsonl`
   3. Gerar ações (ementa → ação) com o notebook `notebooks/sonar-municipal-ptt5-v2-text2action-inference-on-pls.py`, produzindo `pl_actions.jsonl`.
   4. Montar `dataset.npy` com o notebook `notebooks/SonarMunicipal_Build_the_Base_Action_Recommendation_Dataset.py` (une PL + ação, normaliza e gera embeddings).
   5. (Opcional) Rodar análises/correlação com indicadores (`notebooks/SonarMunicipal_Correlation_Between_Policies_and_Indicators.py`).
@@ -132,17 +128,17 @@ Pipeline para descobrir instâncias SAPL, raspar projetos de lei municipais, tra
 ## CLIs principais
 - **Descobrir SAPLs**  
   ```bash
-  python -m tools.sapl_finder --strategy all --concurrency 100 --timeout 20 --out-csv data/sapl_hosts.csv --out-json data/sapl_hosts.json
+  python tools/sapl_finder/sapl_finder.py --concurrency 100 --timeout 20 --out-jsonl data/sapl_hosts.jsonl
   ```
-  Entradas: nenhuma. Saídas incrementais em CSV/JSON/JSONL. Ajuste `--strategy` (`ibge`, `crtsh`, `all`), `--concurrency` e `--timeout` conforme rede. Logs estruturados com `--log-json`.
+  Entradas: nenhuma. Saida incremental em JSONL. Ajuste `--concurrency` e `--timeout` conforme rede.
 - **Raspar PLs**  
   ```bash
-  python -m tools.sapl_scrapper --in-jsonl data/sapl_hosts.jsonl --out-csv data/pl.csv --out-json data/pl.json --concurrency 100 --page-size 200
+  python tools/sapl_scrapper/sapl_scrapper.py --in-jsonl data/sapl_hosts.jsonl --out-jsonl data/pl.jsonl --concurrency 100 --page-size 200
   ```
-  Entrada: `sapl_hosts.jsonl`. Saídas incrementais `pl.csv`/`pl.jsonl` + `pl.json`. Use `--no-tramitacao` para execuções mais leves; amostre hosts com `head` para testes rápidos.
+  Entrada: `sapl_hosts.jsonl`. Saida incremental `pl.jsonl`. Use `--no-tramitacao` para execucoes mais leves; amostre hosts com `head` para testes rapidos.
 
 ## Dicas de uso
-- Prefira execuções incrementais: tanto finder quanto scrapper escrevem linha a linha, permitindo retomar facilmente.
+- Prefira execucoes incrementais: tanto finder quanto scrapper escrevem linha a linha, permitindo retomar facilmente.
 - Conexões: 50–150 no finder e 10–100 no scrapper são estáveis; reduza em redes restritivas.
 - Timeout: aumente para 40–60s em redes lentas; diminua para iterar rápido em testes.
 - GPU: só necessária para gerar ações; todo o pipeline de coleta funciona em CPU.

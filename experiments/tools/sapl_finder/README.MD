@@ -31,16 +31,13 @@ python sapl_finder.py
 # Ajustar concorrencia e timeout
 python sapl_finder.py --concurrency 60 --timeout 30
 
-# Definir arquivos de saida
-python sapl_finder.py --out-csv saida/sapl_hosts.csv --out-json saida/sapl_hosts.json
-
-# Gerar JSONL adicional
+# Definir arquivo de saida
 python sapl_finder.py --out-jsonl saida/sapl_hosts.jsonl
 ```
 
-## Saidas
+## Saida
 
-Os arquivos gerados compartilham os mesmos campos:
+O JSONL gerado contem os mesmos campos por linha:
 
 - `ibge_id`: identificador do municipio no IBGE
 - `municipio`: nome do municipio
@@ -51,11 +48,9 @@ Os arquivos gerados compartilham os mesmos campos:
 - `marker`: marcador que confirmou o SAPL
 - `title`: titulo da pagina HTML
 
-Arquivos:
+Arquivo:
 
-- `sapl_hosts.csv`: tabela resumida
-- `sapl_hosts.json`: JSON agregado
-- `sapl_hosts.jsonl`: JSON por linha (opcional)
+- `sapl_hosts.jsonl`: JSON por linha (progresso em tempo real)
 
 ## Como o algoritmo funciona
 
@@ -77,7 +72,7 @@ Arquivos:
 
 4. **Deduplica e grava resultados**
    - Resultados sao deduplicados por `sapl_url`.
-   - O script grava CSV e JSON agregados. O JSONL e opcional.
+   - O script grava JSONL em tempo real.
 
 ## Observacoes de desempenho
 
@@ -88,5 +83,4 @@ Arquivos:
 ## Estrutura do projeto
 
 - `sapl_finder.py`: script principal
-- `output.py`: rotinas de escrita de saidas
 - `sapls/`: exemplos de dados (nao usados pelo script)

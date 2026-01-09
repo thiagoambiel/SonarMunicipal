@@ -17,35 +17,27 @@ O módulo `sapl_finder` localiza portais SAPL ativos varrendo:
 
 Comando típico:
 ```bash
-python -m tools.sapl_finder \
-  --strategy all \
+python tools/sapl_finder/sapl_finder.py \
   --concurrency 200 \
-  --out-csv data/sapl_hosts.csv \
-  --out-json data/sapl_hosts.json
+  --out-jsonl data/sapl_hosts.jsonl
 ```
 
 Saídas:
-- `data/sapl_hosts.csv`: hosts SAPL confirmados (ibge_id, município, uf, url, etc.).
-- `data/sapl_hosts.json`: o mesmo, em JSON agregado.
-- `data/sapl_hosts.jsonl`: escrito incrementalmente durante a busca (usado pelo scrapper).
-- `data/sapl_hosts_candidates.jsonl`: lista de hosts candidatos vindos do crt.sh (sem validação).
+- `data/sapl_hosts.jsonl`: hosts SAPL confirmados (ibge_id, municipio, uf, url, etc.), escrito incrementalmente.
 
 ## 2) Baixar projetos de lei (tools/sapl_scrapper)
-O módulo `sapl_scrapper` lê o JSONL produzido pelo finder e coleta PLs via API do SAPL.
+O script `sapl_scrapper` lê o JSON (ou JSONL) produzido pelo finder e coleta PLs via API do SAPL.
 
 Exemplo:
 ```bash
-python -m tools.sapl_scrapper \
+python tools/sapl_scrapper/sapl_scrapper.py \
   --in-jsonl data/sapl_hosts.jsonl \
-  --out-csv data/pl.csv \
-  --out-json data/pl.json \
+  --out-jsonl data/pl.jsonl \
   --page-size 100
 ```
 
 Saídas:
-- `data/pl.csv`: PLs com campos básicos (ementa, número, ano, data, tramitação opcional).
-- `data/pl.jsonl`: PLs linha a linha (útil para streaming/continuação).
-- `data/pl.json`: JSON agregado com todos os registros.
+- `data/pl.jsonl`: PLs linha a linha (util para streaming/continuacao).
 
 ## 3) Gerar ações (ementa -> ação)
 Use o modelo `thiagoambiel/ptt5v2-pl-text2action` (Hugging Face) para converter ementas em ações imperativas.

@@ -1,93 +1,125 @@
 # sapl_scrapper
 
-Extrai Projetos de Lei (PL) de múltiplas instâncias SAPL, a partir da lista produzida pelo `sapl_finder`. Salva resultados incrementalmente em CSV e JSONL, e gera um JSON agregado ao final.
+Script em Python para extrair Projetos de Lei (PL) de multiplas instancias SAPL
+a partir do arquivo JSONL gerado pelo `sapl_finder`. O resultado e salvo apenas
+em JSONL incremental.
 
-- Entrada: `sapl_hosts.jsonl` (do `sapl_finder`).
-- Saída: `pl.csv`, `pl.jsonl` (incremental) e `pl.json` (agregado).
+- **Entrada:** `sapl_hosts.jsonl` do `sapl_finder`.
+- **Saida:** `pl.jsonl` (incremental).
+
+## Requisitos
+
+- Python 3.10+
+- Dependencia: `httpx`
+
+Instalacao rapida:
+
+```bash
+pip install httpx
+```
 
 ## Como usar
 
 Ajuda:
 
 ```bash
-python -m sapl_scrapper --help
+python sapl_scrapper.py --help
 ```
 
 Exemplos:
 
 ```bash
-# Execução completa e incremental
-python -m sapl_scrapper \
+# Execucao completa
+python sapl_scrapper.py \
   --in-jsonl sapl_hosts.jsonl \
-  --out-csv pl.csv \
-  --out-json pl.json \
-  --concurrency 100 \
+  --out-jsonl pl.jsonl \
+  --concurrency 20 \
   --timeout 30 \
- --page-size 200 \
-  --log-level INFO \
-  --log-file logs/sapl_scrapper.log \
-  --log-json
+  --page-size 100
 
-# Execução mais leve (sem última tramitação)
-python -m sapl_scrapper --in-jsonl sapl_hosts.jsonl --no-tramitacao
-
-# Teste com poucos hosts
-head -n 5 sapl_hosts.jsonl > sample_hosts.jsonl
-python -m sapl_scrapper --in-jsonl sample_hosts.jsonl --out-csv pls_test.csv --out-json pls_test.json --no-tramitacao --concurrency 2
+# Execucao mais leve (sem ultima tramitacao)
+python sapl_scrapper.py --in-jsonl sapl_hosts.jsonl --no-tramitacao
 ```
 
-## Arquitetura e fluxo
+## Argumentos principais
 
-Para cada `sapl_url` do JSONL de entrada:
+- `--in-jsonl`: arquivo JSONL do `sapl_finder` (uma entrada por linha).
+- `--out-jsonl`: caminho do JSONL incremental de saida.
+- `--concurrency`: numero de bases SAPL processadas em paralelo.
+- `--timeout`: timeout das requisicoes (segundos).
+- `--page-size`: `page_size` usado na API.
+- `--no-tramitacao`: desativa a consulta de ultima tramitacao.
 
-1) Deriva a base do SAPL (`https://host` ou `https://host/sapl`) a partir do caminho `.../materia/pesquisar-materia`.
-2) Descobre o endpoint de matérias com fallback: tenta `BASE/api/materia/` e, se 404, `BASE/api/materia/materialegislativa/`.
-3) Lista `BASE/api/materia/tipomaterialegislativa/` e filtra rótulos contendo “projeto de lei” (normalização NFKD + lower, sem acentos), cobrindo Ordinária, Complementar, Executivo/Legislativo e variantes.
-4) Para cada tipo de PL, pagina as matérias (`page_size` configurável) seguindo o formato de paginação do SAPL (campo `pagination` com `links.next` e/ou `next_page`) ou DRF clássico (`next`). Evitamos definir ordenação (`o=-ano`) por padrão, pois algumas instâncias retornam resultados duplicados e incompletos ao paginar com esse parâmetro.
-5) Opcionalmente, consulta `ultima_tramitacao` em `BASE/api/materia/materialegislativa/{id}/ultima_tramitacao/` e expõe `ultima_tramitacao_data`/`ultima_tramitacao_status` (além do JSON bruto em `ultima_tramitacao`).
-6) Salva incrementalmente em CSV e JSONL (flush por registro) e, ao final, `pl.json` agregado.
+## Estrutura da entrada
 
-## Paralelização e rede
+O JSONL do `sapl_finder` contem um objeto por linha. O script usa principalmente:
 
-- Escopo do paralelismo: por instância (base) SAPL.
-  - `runner.py` cria uma tarefa por host de entrada e usa `asyncio.Semaphore(concurrency)` para limitar quantas bases são processadas simultaneamente.
-  - Cada base é processada de forma sequencial internamente (listar tipos e paginar matérias), o que evita sobrecarga em instâncias menores.
-- Cliente HTTP: `httpx.AsyncClient` com `Limits(max_keepalive_connections=0, max_connections=CONCURRENCY)` e `Timeout(T)`.
-  - `max_keepalive_connections=0`: reduz conexões persistentes entre muitas bases distintas.
-- Padrões da API do SAPL: paginação no estilo DRF (`results`/`next`) ou no formato nativo do SAPL (`pagination.links.next` e `pagination.next_page`). O scrapper segue ambos e também suporta URLs relativas nestes campos.
+- `sapl_url` (obrigatorio)
+- `municipio` e `uf` (usados como contexto no output)
 
-## Saída e deduplicação
+Exemplo simplificado:
 
-- Deduplicação por `(sapl_base, materia_id)` em `PLWriter`.
-- Escrita incremental com `flush`:
-  - CSV com cabeçalho fixo e colunas:
-    - `sapl_base`, `sapl_url`, `municipio`, `uf`, `tipo_id`, `tipo_label`, `materia_id`, `numero`, `ano`, `ementa`, `data_apresentacao`, `em_tramitacao`, `situacao`, `link_publico`, `ultima_tramitacao_data`, `ultima_tramitacao_status`.
-  - JSONL: uma linha por matéria (JSON completo, incluindo `ultima_tramitacao` quando consultada).
-  - JSON agregado (`finalize_json`) ao final da execução.
+```json
+[
+  {
+    "municipio": "Fortaleza",
+    "uf": "CE",
+    "sapl_url": "https://sapl.fortaleza.ce.leg.br/materia/pesquisar-materia"
+  }
+]
+```
 
-## Logging
+## Saidas geradas
 
-Reutiliza `sapl_finder/logging_config.py` (JSON opcional + arquivo rotativo). Principais eventos:
-- `[PL] Alvo carregado` — início do processamento de uma base.
-- `[PL] Iniciando extração` — confirmação da base e contexto.
-- `Tipos PL identificados` — contagem de tipos com “projeto de lei”.
-- `Coletando matérias do tipo` — contexto do tipo atual.
-- `PL salvo (N)` — progresso incremental por matéria salva.
+### JSONL incremental (`pl.jsonl`)
 
-Extras incluídos nos logs: `sapl_url`, `municipio`, `uf`, `count`, etc.
+Uma linha por materia, com o JSON completo de cada registro.
+Campos mais comuns:
 
-## Boas práticas de execução
+- `sapl_base`, `sapl_url`, `municipio`, `uf`
+- `tipo_id`, `tipo_label`
+- `materia_id`, `numero`, `ano`, `ementa`
+- `data_apresentacao`, `em_tramitacao`, `situacao`
+- `link_publico`
+- `ultima_tramitacao_data`, `ultima_tramitacao_status`
+- `ultima_tramitacao` (quando habilitado)
 
-- Conexões: ajuste `--concurrency` entre 10–50 para iniciar; aumente gradualmente conforme a rede.
-- Timeout: em redes mais lentas, use `--timeout 40` ou `60`.
-- Page size: aumentar `--page-size 200` reduz requisições por base.
-- Tramitação: desative `--no-tramitacao` para alto volume; habilite em execuções de refinamento ou subconjuntos.
-- Amostras: use `head`/`rg` para filtrar por UF/município no JSONL de entrada e iterar mais rápido.
-- Idempotência: o par `(sapl_base, materia_id)` evita duplicatas ao reexecutar.
+## Como o algoritmo funciona
 
-## Arquivos relevantes
+1. **Derivacao da base SAPL**  
+   A partir de `sapl_url`, o script calcula a base correta
+   (`https://host` ou `https://host/sapl`).
 
-- `sapl_scrapper/cli.py` — parser de argumentos e inicialização.
-- `sapl_scrapper/runner.py` — orquestração por base, semáforo e escrita incremental.
-- `sapl_scrapper/scraper.py` — lógica de API do SAPL, filtro de tipos, paginação e última tramitação.
-- `sapl_scrapper/output.py` — `PLWriter` (CSV/JSONL incremental, deduplicação).
+2. **Descoberta do endpoint de materias**  
+   Tenta `/api/materia/` e, se necessario, usa o fallback
+   `/api/materia/materialegislativa/`.
+
+3. **Filtro de tipos de PL**  
+   Lista `tipomaterialegislativa` e filtra todos os tipos cujo rotulo,
+   normalizado, contem "projeto de lei".
+
+4. **Paginacao das materias**  
+   Para cada tipo de PL, pagina as materias respeitando o formato da API:
+   - DRF classico (`results`/`next`)
+   - Paginacao nativa do SAPL (`pagination.links.next` ou `pagination.next_page`)
+
+5. **Ultima tramitacao (opcional)**  
+   Quando habilitado, consulta
+   `/api/materia/materialegislativa/{id}/ultima_tramitacao/` para enriquecer
+   cada registro.
+
+6. **Deduplicacao e escrita**  
+   Cada item e deduplicado por `(sapl_base, materia_id)` e gravado no JSONL
+   imediatamente (progresso em tempo real).
+
+## Desempenho e ajustes
+
+- `--concurrency`: comece com 10-30 e aumente conforme a rede.
+- `--timeout`: em redes lentas, aumente para 40 ou 60.
+- `--page-size`: valores entre 100 e 200 reduzem o numero de requisicoes.
+
+## Estrutura do codigo
+
+- `sapl_scrapper.py`: script principal (CLI e orquestracao).
+- `scraper.py`: logica de API, filtros e paginacao.
+- `output.py`: escrita e deduplicacao JSONL.

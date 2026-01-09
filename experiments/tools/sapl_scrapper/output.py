@@ -1,126 +1,108 @@
-import asyncio
-import csv
 import json
 import logging
 import os
-from typing import Dict, List, Optional
+from typing import Any, Dict, Optional
 
 
-class PLWriter:
+class JsonlWriter:
+    """Escreve registros em JSONL com deduplicacao e flush imediato.
+
+    Notes
+    -----
+    Cada linha e gravada no momento em que e processada, garantindo progresso
+    em tempo real mesmo em execucoes longas.
     """
-    Escrita incremental dos PLs em CSV e JSONL, com flush imediato e
-    deduplicação por (sapl_base, materia_id).
-    """
 
-    CSV_FIELDS = [
-        "sapl_base",
-        "sapl_url",
-        "municipio",
-        "uf",
-        "tipo_id",
-        "tipo_label",
-        "materia_id",
-        "numero",
-        "ano",
-        "ementa",
-        "data_apresentacao",
-        "em_tramitacao",
-        "situacao",
-        "link_publico",
-        "ultima_tramitacao_data",
-        "ultima_tramitacao_status",
-    ]
+    def __init__(self, out_jsonl: str) -> None:
+        """Inicializa o escritor JSONL.
 
-    def __init__(self, out_csv: str, out_jsonl: Optional[str] = None) -> None:
-        self._lock = asyncio.Lock()
+        Parameters
+        ----------
+        out_jsonl : str
+            Caminho do arquivo JSONL de saida.
+        """
         self._seen: set[str] = set()
-        self._rows: List[Dict] = []
         self._count: int = 0
         self._logger = logging.getLogger("sapl_scrapper.progress")
 
-        # prepara CSV
-        csv_dir = os.path.dirname(out_csv)
-        if csv_dir:
-            os.makedirs(csv_dir, exist_ok=True)
-        self._csv_fp = open(out_csv, "w", newline="", encoding="utf-8")
-        self._csv_writer = csv.DictWriter(self._csv_fp, fieldnames=self.CSV_FIELDS)
-        self._csv_writer.writeheader()
-        self._csv_fp.flush()
-
-        self._jsonl_fp = None
-        if out_jsonl:
-            jsonl_dir = os.path.dirname(out_jsonl)
-            if jsonl_dir:
-                os.makedirs(jsonl_dir, exist_ok=True)
-            self._jsonl_fp = open(out_jsonl, "w", encoding="utf-8")
+        out_dir = os.path.dirname(out_jsonl)
+        if out_dir:
+            os.makedirs(out_dir, exist_ok=True)
+        self._fp = open(out_jsonl, "w", encoding="utf-8")
 
     @property
-    def rows(self) -> List[Dict]:
-        return list(self._rows)
+    def count(self) -> int:
+        """Retorna o total de registros unicos gravados.
 
-    def _key(self, row: Dict) -> Optional[str]:
+        Returns
+        -------
+        int
+            Numero de linhas gravadas no JSONL.
+        """
+        return self._count
+
+    def _key(self, row: Dict[str, Any]) -> Optional[str]:
+        """Monta a chave de deduplicacao.
+
+        Parameters
+        ----------
+        row : dict
+            Registro da materia.
+
+        Returns
+        -------
+        str or None
+            Chave formada por base e id, ou None se incompleta.
+        """
         base = row.get("sapl_base") or ""
         mid = row.get("materia_id")
         if not base or mid is None:
             return None
         return f"{base}|{mid}"
 
-    async def emit(self, row: Dict) -> None:
+    def write(self, row: Dict[str, Any]) -> bool:
+        """Grava um registro no JSONL, se ainda nao existir.
+
+        Parameters
+        ----------
+        row : dict
+            Registro completo da materia.
+
+        Returns
+        -------
+        bool
+            True se o registro foi gravado, False se foi ignorado.
+        """
         key = self._key(row)
-        if not key:
-            return
-        async with self._lock:
-            if key in self._seen:
-                return
-            self._seen.add(key)
-            self._rows.append(row)
-            self._count += 1
+        if not key or key in self._seen:
+            return False
 
-            # escreve CSV (somente campos conhecidos)
-            csv_row = {k: row.get(k, "") for k in self.CSV_FIELDS}
-            self._csv_writer.writerow(csv_row)
-            self._csv_fp.flush()
+        self._seen.add(key)
+        self._fp.write(json.dumps(row, ensure_ascii=False) + "\n")
+        self._fp.flush()
+        self._count += 1
 
-            # escreve JSONL completo
-            if self._jsonl_fp is not None:
-                try:
-                    self._jsonl_fp.write(json.dumps(row, ensure_ascii=False) + "\n")
-                    self._jsonl_fp.flush()
-                except Exception:
-                    pass
+        try:
+            self._logger.info(
+                "PL salvo (%s): %s/%s %s-%s",
+                self._count,
+                (row.get("municipio") or "").strip(),
+                row.get("uf", ""),
+                row.get("numero", ""),
+                row.get("ano", ""),
+            )
+        except Exception:
+            pass
 
-            # log progressivo
-            try:
-                self._logger.info(
-                    "PL salvo (%s): %s/%s %s-%s",
-                    self._count,
-                    (row.get("municipio") or "").strip(),
-                    row.get("uf", ""),
-                    row.get("numero", ""),
-                    row.get("ano", ""),
-                    extra={
-                        "count": self._count,
-                        "sapl_url": row.get("sapl_url", ""),
-                        "sapl_base": row.get("sapl_base", ""),
-                        "municipio": row.get("municipio", ""),
-                        "uf": row.get("uf", ""),
-                    },
-                )
-            except Exception:
-                pass
-
-    def finalize_json(self, out_json: str) -> None:
-        out_dir = os.path.dirname(out_json)
-        if out_dir:
-            os.makedirs(out_dir, exist_ok=True)
-        with open(out_json, "w", encoding="utf-8") as f:
-            json.dump(self._rows, f, ensure_ascii=False, indent=2)
+        return True
 
     def close(self) -> None:
-        try:
-            if self._csv_fp:
-                self._csv_fp.close()
-        finally:
-            if self._jsonl_fp:
-                self._jsonl_fp.close()
+        """Fecha o arquivo JSONL aberto pelo escritor.
 
+        Returns
+        -------
+        None
+            Este metodo fecha o descritor de arquivo.
+        """
+        if self._fp:
+            self._fp.close()
