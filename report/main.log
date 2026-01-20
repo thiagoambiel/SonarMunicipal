@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  20 JAN 2026 14:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  20 JAN 2026 14:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1105,30 +1105,30 @@ Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
 LaTeX Font Info:    Trying to load font information for T1+ptm on input line 25
-8.
+9.
  (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd
 File: t1ptm.fd 2001/06/04 font definitions for T1/ptm.
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 258.
-LaTeX Font Info:    ... okay on input line 258.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 259.
+LaTeX Font Info:    ... okay on input line 259.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -1164,25 +1164,25 @@ LaTeX Font Info:    ... okay on input line 258.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-LaTeX Info: Redefining \microtypecontext on input line 258.
-Package microtype Info: Applying patch `item' on input line 258.
-Package microtype Info: Applying patch `toc' on input line 258.
-Package microtype Info: Applying patch `eqnum' on input line 258.
-Package microtype Info: Applying patch `footnote' on input line 258.
+LaTeX Info: Redefining \microtypecontext on input line 259.
+Package microtype Info: Applying patch `item' on input line 259.
+Package microtype Info: Applying patch `toc' on input line 259.
+Package microtype Info: Applying patch `eqnum' on input line 259.
+Package microtype Info: Applying patch `footnote' on input line 259.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
 Package microtype Info: Automatic font expansion enabled (level 2),
 (microtype)             stretch: 20, shrink: 20, step: 1, non-selected.
 Package microtype Info: Using default expansion set `alltext-nott'.
-LaTeX Info: Redefining \showhyphens on input line 258.
+LaTeX Info: Redefining \showhyphens on input line 259.
 Package microtype Info: No adjustment of tracking.
 Package microtype Info: No adjustment of interword spacing.
 Package microtype Info: No adjustment of character kerning.
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-ptm.cfg
 File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 )
-Package hyperref Info: Link coloring OFF on input line 258.
+Package hyperref Info: Link coloring OFF on input line 259.
 
 (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2021-04-02 v2.47 Cross-referencing by name of section
@@ -1195,9 +1195,9 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
 \c@section@level=\count469
 )
-LaTeX Info: Redefining \ref on input line 258.
-LaTeX Info: Redefining \pageref on input line 258.
-LaTeX Info: Redefining \nameref on input line 258.
+LaTeX Info: Redefining \ref on input line 259.
+LaTeX Info: Redefining \pageref on input line 259.
+LaTeX Info: Redefining \nameref on input line 259.
 
 (./main.out) (./main.out)
 \@outlinefile=\write5
@@ -1236,7 +1236,7 @@ File: translations-basic-dictionary-english.trsl (english translation file `tra
 nslations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `english'. on input line 258.
+or `english'. on input line 259.
 
 (/usr/share/texlive/texmf-dist/tex/latex/translations/translations-basic-dictio
 nary-brazil.trsl
@@ -1244,7 +1244,7 @@ File: translations-basic-dictionary-brazil.trsl (brazil translation file `trans
 lations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
-or `brazil'. on input line 258.
+or `brazil'. on input line 259.
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
@@ -1276,22 +1276,14 @@ Package biblatex Info: Automatic encoding selection.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file 'main.bbl' found.
 
-(./main.bbl
-
-Package biblatex Warning: The following entry could not be found
-(biblatex)                in the database:
-(biblatex)                raffel_t5_2020
-(biblatex)                Please verify the spelling and rerun
-(biblatex)                LaTeX afterwards.
-
-)
-Package biblatex Info: Reference section=0 on input line 258.
-Package biblatex Info: Reference segment=0 on input line 258.
+(./main.bbl)
+Package biblatex Info: Reference section=0 on input line 259.
+Package biblatex Info: Reference segment=0 on input line 259.
  (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-cmr.cfg
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 276
+LaTeX Font Info:    Trying to load font information for U+msa on input line 277
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
@@ -1300,7 +1292,7 @@ File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 (/usr/share/texlive/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 276
+LaTeX Font Info:    Trying to load font information for U+msb on input line 277
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
@@ -1310,7 +1302,7 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Trying to load font information for T1+pcr on input line 27
-6.
+7.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1pcr.fd
 File: t1pcr.fd 2001/06/04 font definitions for T1/pcr.
@@ -1320,7 +1312,7 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 2
-84.
+85.
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
@@ -1329,87 +1321,66 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
 ]
 Package hyperref Info: bookmark level for unknown algorithm defaults to 0 on in
-put line 364.
+put line 365.
  [2]
-
-LaTeX Warning: Citation 'raffel_t5_2020' on page 3 undefined on input line 426.
-
-
-
-Overfull \hbox (2.72989pt too wide) in paragraph at lines 428--429
-[]\T1/ptm/m/n/10 (-20) O mo-delo tra-du-tor foi trei-nado como ta-refa \T1/ptm/
-b/n/10 (-20) seq2seq \T1/ptm/m/n/10 (-20) (sequên-
+Overfull \hbox (1.63242pt too wide) in paragraph at lines 429--430
+[]\T1/ptm/m/n/10 (-20) O mo-delo tra-du-tor foi trei-nado como ta-refa seq2seq 
+(sequên-
  []
 
 [3]
-Overfull \hbox (18.76018pt too wide) in paragraph at lines 482--491
+Overfull \hbox (18.76018pt too wide) in paragraph at lines 483--492
  [][] 
  []
 
 
-Overfull \hbox (28.30194pt too wide) in paragraph at lines 507--507
-[]$\T1/pcr/m/n/10 https : / / www12 . senado . leg . br / interlegis /
+Overfull \hbox (2.30281pt too wide) in paragraph at lines 508--508
+\T1/ptm/m/it/10 (-20) Apoio ao Pro-cesso Le-gis-la-tivo (SAPL)\T1/ptm/m/n/10 (-
+20) . \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$\T1/pcr/m/n/10 https :
+
  []
 
 
-Overfull \hbox (10.85965pt too wide) in paragraph at lines 507--507
-\T1/ptm/m/it/10 (-20) Tool\T1/ptm/m/n/10 (-20) . 2026. \T1/ptm/m/sc/10 (-20) ur
-l\T1/ptm/m/n/10 (-20) : []$\T1/pcr/m/n/10 https : / / swagger . io / tools /
+Overfull \hbox (3.06674pt too wide) in paragraph at lines 508--508
+[]\T1/ptm/m/n/10 (-20) Django REST Fra-mework. \T1/ptm/m/it/10 (-20) Pa-gi-na-t
+ion\T1/ptm/m/n/10 (-20) . \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$\T
+1/pcr/m/n/10 https :
  []
 
 
-Overfull \hbox (0.62283pt too wide) in paragraph at lines 507--507
-[]\T1/ptm/m/n/10 (-20) Qdrant. \T1/ptm/m/it/10 (-20) Qdrant Do-cu-men-ta-tion\T
-1/ptm/m/n/10 (-20) . 2026. \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$\
-T1/pcr/m/n/10 https :
+Overfull \hbox (17.13025pt too wide) in paragraph at lines 508--508
+\T1/pcr/m/n/10 api -[] guide / pagination/$[] \T1/ptm/m/n/10 (-20) (acesso em 0
+7/01/2026). 
  []
 
 
-Overfull \hbox (0.22333pt too wide) in paragraph at lines 507--507
-[]\T1/ptm/m/n/10 (-20) Qdrant. \T1/ptm/m/it/10 (-20) Col-lec-ti-ons (con-cei-to
-s)\T1/ptm/m/n/10 (-20) . 2026. \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : 
-[]$\T1/pcr/m/n/10 https :
- []
-
-
-Overfull \hbox (15.70193pt too wide) in paragraph at lines 507--507
-\T1/pcr/m/n/10 / / qdrant . tech / documentation / concepts /
+Overfull \hbox (4.30194pt too wide) in paragraph at lines 508--508
+\T1/pcr/m/n/10 qdrant . tech / documentation / concepts /
  []
 
 [4]
-Overfull \hbox (28.63025pt too wide) in paragraph at lines 507--507
-\T1/pcr/m/n/10 br / api / docs / localidades$[] \T1/ptm/m/n/10 (-20) (acesso em
- 07/01/2026). 
+Overfull \hbox (10.63025pt too wide) in paragraph at lines 508--508
+\T1/pcr/m/n/10 api / docs / localidades$[] \T1/ptm/m/n/10 (-20) (acesso em 07/0
+1/2026). 
  []
 
 
-Overfull \hbox (4.50194pt too wide) in paragraph at lines 507--507
+Overfull \hbox (4.50194pt too wide) in paragraph at lines 508--508
 \T1/pcr/m/n/10 openai . com / index / gpt -[] 5 -[] system -[] card -[]
  []
 
 
-Overfull \hbox (8.09984pt too wide) in paragraph at lines 507--507
+Overfull \hbox (8.09984pt too wide) in paragraph at lines 508--508
 \T1/ptm/m/n/10 (-20) of Quan-ti-zed LLMs^^Q. Em: \T1/ptm/m/it/10 (-20) ar-Xiv \
 T1/ptm/m/n/10 (-20) (2023). \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$
 \T1/pcr/m/n/10 https :
  []
 
 
-Overfull \hbox (1.24289pt too wide) in paragraph at lines 507--507
-\T1/pcr/m/n/10 io / text -[] embeddings -[] inference/$[] \T1/ptm/m/n/10 (-20) 
-(acesso
- []
-
-
-Overfull \hbox (1.66086pt too wide) in paragraph at lines 507--507
+Overfull \hbox (14.00029pt too wide) in paragraph at lines 508--508
 []\T1/ptm/m/n/10 (-20) Vercel. \T1/ptm/m/it/10 (-20) Next.js on Ver-cel (do-cu-
-men-ta-ção)\T1/ptm/m/n/10 (-20) . 2025. \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10
- (-20) :
- []
-
-
-Overfull \hbox (4.30194pt too wide) in paragraph at lines 507--507
-[]$\T1/pcr/m/n/10 https : / / vercel . com / docs / frameworks /
+men-ta-ção)\T1/ptm/m/n/10 (-20) . \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20)
+ : []$\T1/pcr/m/n/10 https :
  []
 
 [5
@@ -1422,13 +1393,13 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40304 strings out of 478287
- 827439 string characters out of 5849289
- 1557641 words of memory out of 5000000
+ 40276 strings out of 478287
+ 827328 string characters out of 5849289
+ 1556654 words of memory out of 5000000
  57567 multiletter control sequences out of 15000+600000
- 528080 words of font info for 263 fonts, out of 8000000 for 9000
+ 526673 words of font info for 243 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,10n,89p,1022b,3687s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 84i,10n,89p,1022b,3683s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
@@ -1438,10 +1409,10 @@ lic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/couri
 er/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (5 pages, 145553 bytes).
+Output written on main.pdf (5 pages, 144706 bytes).
 PDF statistics:
- 290 PDF objects out of 1000 (max. 8388607)
- 262 compressed objects within 3 object streams
- 59 named destinations out of 1000 (max. 500000)
+ 297 PDF objects out of 1000 (max. 8388607)
+ 269 compressed objects within 3 object streams
+ 60 named destinations out of 1000 (max. 500000)
  57549 words of extra memory for PDF output out of 61914 (max. 10000000)
 

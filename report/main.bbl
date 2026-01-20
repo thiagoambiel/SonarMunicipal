@@ -38,11 +38,10 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Sistema de Apoio ao Processo Legislativo (SAPL)}
+      \field{title}{Sistema de Apoio ao Processo Legislativo ({SAPL})}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www12.senado.leg.br/interlegis/produtos/sapl
@@ -67,11 +66,10 @@
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{SAPL: Sistema de Apoio ao Processo Legislativo (repositório oficial)}
+      \field{title}{{SAPL}: Sistema de Apoio ao Processo Legislativo (repositório oficial)}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://github.com/interlegis/sapl
@@ -131,7 +129,7 @@
       \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{OpenAPI Specification (v3.2.0)}
+      \field{title}{{OpenAPI} Specification (v3.2.0)}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -160,11 +158,10 @@
       \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Swagger UI: REST API Documentation Tool}
+      \field{title}{Swagger {UI}: {REST} {API} Documentation Tool}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://swagger.io/tools/swagger-ui/
@@ -175,16 +172,16 @@
     \endentry
     \entry{drf_pagination}{online}{}
       \name{author}{1}{}{%
-        {{hash=7a548f51476c88a6e250f600929a346d}{%
-           family={{Django REST framework}},
+        {{hash=98a53a61a9ca40f342760d96951794a1}{%
+           family={{Django REST Framework}},
            familyi={D\bibinitperiod}}}%
       }
-      \strng{namehash}{7a548f51476c88a6e250f600929a346d}
-      \strng{fullhash}{7a548f51476c88a6e250f600929a346d}
-      \strng{bibnamehash}{7a548f51476c88a6e250f600929a346d}
-      \strng{authorbibnamehash}{7a548f51476c88a6e250f600929a346d}
-      \strng{authornamehash}{7a548f51476c88a6e250f600929a346d}
-      \strng{authorfullhash}{7a548f51476c88a6e250f600929a346d}
+      \strng{namehash}{98a53a61a9ca40f342760d96951794a1}
+      \strng{fullhash}{98a53a61a9ca40f342760d96951794a1}
+      \strng{bibnamehash}{98a53a61a9ca40f342760d96951794a1}
+      \strng{authorbibnamehash}{98a53a61a9ca40f342760d96951794a1}
+      \strng{authornamehash}{98a53a61a9ca40f342760d96951794a1}
+      \strng{authorfullhash}{98a53a61a9ca40f342760d96951794a1}
       \field{sortinit}{6}
       \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
@@ -193,7 +190,6 @@
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.django-rest-framework.org/api-guide/pagination/
@@ -219,11 +215,10 @@
       \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Qdrant Documentation}
+      \field{title}{{Qdrant} Documentation}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://qdrant.tech/documentation/
@@ -253,7 +248,6 @@
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://qdrant.tech/documentation/concepts/collections/
@@ -278,7 +272,7 @@
       \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{PROV-DM: The PROV Data Model}
+      \field{title}{{PROV-DM}: The {PROV} Data Model}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -322,7 +316,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Scientific Data}
-      \field{title}{The FAIR Guiding Principles for scientific data management and stewardship}
+      \field{title}{The {FAIR} Guiding Principles for scientific data management and stewardship}
       \field{volume}{3}
       \field{year}{2016}
       \field{pages}{160018}
@@ -347,11 +341,10 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{API de Localidades (documentação)}
+      \field{title}{{API} de Localidades (documentação)}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://servicodados.ibge.gov.br/api/docs/localidades
@@ -377,7 +370,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{GPT-5.1 Model (OpenAI API)}
+      \field{title}{{GPT-5.1} Model ({OpenAI} {API})}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -407,7 +400,7 @@
       \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{GPT-5.1 Instant and GPT-5.1 Thinking: System Card Addendum}
+      \field{title}{{GPT-5.1} Instant and {GPT-5.1} Thinking: System Card Addendum}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -446,7 +439,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
-      \field{title}{ptt5-v2: A Closer Look at Continued Pretraining of T5 Models for the Portuguese Language}
+      \field{title}{{PTT5-v2}: A Closer Look at Continued Pretraining of {T5} Models for the Portuguese Language}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -457,6 +450,82 @@
       \endverb
       \verb{url}
       \verb https://arxiv.org/abs/2406.10806
+      \endverb
+    \endentry
+    \entry{raffel_t5_2020}{article}{}
+      \name{author}{9}{}{%
+        {{hash=81a5a94e2388c149a73a86381db45e07}{%
+           family={Raffel},
+           familyi={R\bibinitperiod},
+           given={Colin},
+           giveni={C\bibinitperiod}}}%
+        {{hash=62efade83d70f0323fe248755e6c90c5}{%
+           family={Shazeer},
+           familyi={S\bibinitperiod},
+           given={Noam},
+           giveni={N\bibinitperiod}}}%
+        {{hash=243c03e5ae8031582d6af9fcbc70f629}{%
+           family={Roberts},
+           familyi={R\bibinitperiod},
+           given={Adam},
+           giveni={A\bibinitperiod}}}%
+        {{hash=bfca12eba160cc79988e61b7fb6ded42}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Katherine},
+           giveni={K\bibinitperiod}}}%
+        {{hash=a2da348cbbad750c6fe76dda9c35ffcd}{%
+           family={Narang},
+           familyi={N\bibinitperiod},
+           given={Sharan},
+           giveni={S\bibinitperiod}}}%
+        {{hash=2ce97dc1ae3d554bd748423ad06453df}{%
+           family={Matena},
+           familyi={M\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod}}}%
+        {{hash=83a9e81d976cada23775106b303c4247}{%
+           family={Zhou},
+           familyi={Z\bibinitperiod},
+           given={Yanqi},
+           giveni={Y\bibinitperiod}}}%
+        {{hash=be6f1b6df7f1ddfafad18806238fa391}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Wei},
+           giveni={W\bibinitperiod}}}%
+        {{hash=570360613a16cb233115feb5f8b4e526}{%
+           family={Liu},
+           familyi={L\bibinitperiod},
+           given={Peter\bibnamedelima J.},
+           giveni={P\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{93aba8e9bb746e2d8ac216494b952014}
+      \strng{fullhash}{21f7721b75bba06d59f9d5ce222a34a5}
+      \strng{bibnamehash}{93aba8e9bb746e2d8ac216494b952014}
+      \strng{authorbibnamehash}{93aba8e9bb746e2d8ac216494b952014}
+      \strng{authornamehash}{93aba8e9bb746e2d8ac216494b952014}
+      \strng{authorfullhash}{21f7721b75bba06d59f9d5ce222a34a5}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Machine Learning Research}
+      \field{number}{140}
+      \field{title}{Exploring the Limits of Transfer Learning with a Unified {Text-to-Text} Transformer}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{volume}{21}
+      \field{year}{2020}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 67}
+      \range{pages}{67}
+      \verb{urlraw}
+      \verb https://jmlr.org/papers/v21/20-074.html
+      \endverb
+      \verb{url}
+      \verb https://jmlr.org/papers/v21/20-074.html
       \endverb
     \endentry
     \entry{dettmers_qlora_2023}{article}{}
@@ -493,7 +562,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
-      \field{title}{QLoRA: Efficient Finetuning of Quantized LLMs}
+      \field{title}{{QLoRA}: Efficient Finetuning of Quantized {LLMs}}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -545,7 +614,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
-      \field{title}{BERTScore: Evaluating Text Generation with BERT}
+      \field{title}{{BERTScore}: Evaluating Text Generation with {BERT}}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -602,7 +671,7 @@
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
-      \field{title}{Multilingual E5 Text Embeddings: A Technical Report}
+      \field{title}{Multilingual {E5} Text Embeddings: A Technical Report}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
@@ -631,11 +700,10 @@
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Text Embeddings Inference (TEI)}
+      \field{title}{Text Embeddings Inference ({TEI})}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://huggingface.github.io/text-embeddings-inference/
@@ -664,7 +732,6 @@
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2026}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar
@@ -689,11 +756,10 @@
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{Next.js on Vercel (documentação)}
+      \field{title}{{Next.js} on {Vercel} (documentação)}
       \field{urlday}{7}
       \field{urlmonth}{1}
       \field{urlyear}{2026}
-      \field{year}{2025}
       \field{urldateera}{ce}
       \verb{urlraw}
       \verb https://vercel.com/docs/frameworks/full-stack/nextjs
@@ -703,7 +769,6 @@
       \endverb
     \endentry
   \enddatalist
-  \missing{raffel_t5_2020}
 \endrefsection
 \endinput
 

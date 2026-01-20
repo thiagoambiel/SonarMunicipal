@@ -113,13 +113,14 @@
 
 @article{raffel_t5_2020,
   author  = {Raffel, Colin and Shazeer, Noam and Roberts, Adam and Lee, Katherine and Narang, Sharan and Matena, Michael and Zhou, Yanqi and Li, Wei and Liu, Peter J.},
-  title   = {Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer},
+  title   = {Exploring the Limits of Transfer Learning with a Unified {Text-to-Text} Transformer},
   journal = {Journal of Machine Learning Research},
   year    = {2020},
   volume  = {21},
   number  = {140},
   pages   = {1--67},
-  url     = {https://jmlr.org/papers/v21/20-074.html}
+  url     = {https://jmlr.org/papers/v21/20-074.html},
+  urldate = {2026-01-07}
 }
 
 @online{qdrant_overview,
@@ -208,8 +209,8 @@
 % Algoritmos (corrigido: ambiente algorithmic)
 \usepackage{algorithm}
 \usepackage{algpseudocode}
-\algrenewcommand\algorithmicrequire{\textbf{Entrada:}}
-\algrenewcommand\algorithmicensure{\textbf{Saída:}}
+\algrenewcommand\algorithmicrequire{Entrada:}
+\algrenewcommand\algorithmicensure{Saída:}
 
 % -------------------------
 % Ajustes de estilo
@@ -220,14 +221,14 @@
 
 \newenvironment{resumo}{
   \selectlanguage{brazil}
-  \begin{center}\textbf{Resumo}\end{center}
+  \begin{center}Resumo\end{center}
   \small
 }{
   \normalsize
   \selectlanguage{brazil}
 }
-\newcommand{\keywords}[1]{\vspace{2pt}\noindent\textbf{Keywords:} #1}
-\newcommand{\palavrasChave}[1]{\vspace{2pt}\noindent\textbf{Palavras-chave:} #1}
+\newcommand{\keywords}[1]{\vspace{2pt}\noindent Keywords: #1}
+\newcommand{\palavrasChave}[1]{\vspace{2pt}\noindent Palavras-chave: #1}
 
 % -------------------------
 % Metadados editáveis
@@ -280,7 +281,7 @@ Gestores municipais frequentemente precisam redigir, comparar e justificar propo
 
 A produção legislativa municipal no Brasil ocorre em um cenário de alta diversidade institucional. Mesmo quando municípios enfrentam problemas semelhantes (por exemplo, segurança pública ou evasão escolar), as soluções propostas variam em linguagem, escopo e grau de detalhamento. Essa heterogeneidade dificulta comparar, reutilizar e avaliar propostas existentes, reduzindo a eficiência da tomada de decisão baseada em evidências.
 
-Este trabalho descreve o projeto \textbf{Sonar Municipal} (plataforma web: \url{https://sonar-municipal.vercel.app/}), cujo objetivo é apoiar a elaboração e a análise de Projetos de Lei (PLs) por meio de:
+Este trabalho descreve o projeto Sonar Municipal (plataforma web: \url{https://sonar-municipal.vercel.app/}), cujo objetivo é apoiar a elaboração e a análise de Projetos de Lei (PLs) por meio de:
 \begin{itemize}[leftmargin=*,nosep]
   \item descoberta e coleta sistemática de PLs em instâncias do SAPL;
   \item transformação de ementas em recomendações de ação;
@@ -289,36 +290,36 @@ Este trabalho descreve o projeto \textbf{Sonar Municipal} (plataforma web: \url{
   \item agrupamento de PLs similares em ``políticas públicas'' para análise conjunta.
 \end{itemize}
 
-\textbf{Contribuições.} As principais contribuições são: (C1) método auditável para descoberta de instâncias do SAPL e extração exaustiva de PLs via API; (C2) transformação de ementas em recomendações de ação; (C3) busca semântica baseada em embeddings; (C4) análise de indicadores com agrupamento de projetos similares; (C5) plataforma web para usuários não técnicos.
+Contribuições. As principais contribuições são: (C1) método auditável para descoberta de instâncias do SAPL e extração exaustiva de PLs via API; (C2) transformação de ementas em recomendações de ação; (C3) busca semântica baseada em embeddings; (C4) análise de indicadores com agrupamento de projetos similares; (C5) plataforma web para usuários não técnicos.
 
 % ======================================================================
 \section{Fundamentação e conceitos utilizados}
 
 \subsection{SAPL e padronização do processo legislativo}
 
-O \textbf{SAPL} (Sistema de Apoio ao Processo Legislativo) é mantido pelo Programa Interlegis e amplamente adotado por casas legislativas brasileiras para informatizar e dar publicidade ao processo legislativo \cite{interlegis_sapl}. O sistema organiza etapas como proposição, tramitação e votação, favorecendo padronização. Por ser de código aberto \cite{interlegis_sapl_repo}, muitas instâncias compartilham estruturas de dados e padrões de consulta e, em vários casos, expõem uma API.
+O SAPL (Sistema de Apoio ao Processo Legislativo) é mantido pelo Programa Interlegis e amplamente adotado por casas legislativas brasileiras para informatizar e dar publicidade ao processo legislativo \cite{interlegis_sapl}. O sistema organiza etapas como proposição, tramitação e votação, favorecendo padronização. Por ser de código aberto \cite{interlegis_sapl_repo}, muitas instâncias compartilham estruturas de dados e padrões de consulta e, em vários casos, expõem uma API.
 
 \subsection{APIs HTTP, REST, OpenAPI e Swagger}
 
-Uma \textbf{API} (Interface de Programação de Aplicações) é um conjunto de regras que permite que programas acessem funcionalidades e dados de um serviço. Neste trabalho, consideramos APIs acessadas via HTTP/HTTPS.
+Uma API (Interface de Programação de Aplicações) é um conjunto de regras que permite que programas acessem funcionalidades e dados de um serviço. Neste trabalho, consideramos APIs acessadas via HTTP/HTTPS.
 
-O estilo \textbf{REST} (Representational State Transfer) organiza a API em recursos acessados por URLs, com operações padronizadas (por exemplo, GET para consulta) \cite{fielding_rest_2000}. Um \textbf{endpoint} é a URL associada a um recurso específico (por exemplo, uma lista de matérias).
+O estilo REST (Representational State Transfer) organiza a API em recursos acessados por URLs, com operações padronizadas (por exemplo, GET para consulta) \cite{fielding_rest_2000}. Um endpoint é a URL associada a um recurso específico (por exemplo, uma lista de matérias).
 
-\textbf{OpenAPI} descreve formalmente endpoints, parâmetros e respostas em um formato legível por máquina \cite{openapi_3_2}. O \textbf{Swagger UI} renderiza essa descrição em uma interface navegável para exploração e teste \cite{swagger_ui}.
+OpenAPI descreve formalmente endpoints, parâmetros e respostas em um formato legível por máquina \cite{openapi_3_2}. O Swagger UI renderiza essa descrição em uma interface navegável para exploração e teste \cite{swagger_ui}.
 
 \subsection{Paginação}
 
-APIs costumam retornar coleções de forma \textbf{paginada}, dividindo resultados em páginas para reduzir carga e tamanho da resposta. Para uma extração exaustiva, é necessário iterar todas as páginas até o esgotamento dos resultados \cite{drf_pagination}.
+APIs costumam retornar coleções de forma paginada, dividindo resultados em páginas para reduzir carga e tamanho da resposta. Para uma extração exaustiva, é necessário iterar todas as páginas até o esgotamento dos resultados \cite{drf_pagination}.
 
 \subsection{Embeddings, busca semântica e banco vetorial}
 
-\textbf{Embedding} é um vetor numérico que representa um texto de modo que conteúdos semanticamente próximos fiquem próximos no espaço vetorial. \textbf{Busca semântica} recupera itens por similaridade entre embeddings, e não por coincidência literal de termos.
+Embedding é um vetor numérico que representa um texto de modo que conteúdos semanticamente próximos fiquem próximos no espaço vetorial. Busca semântica recupera itens por similaridade entre embeddings, e não por coincidência literal de termos.
 
-Um \textbf{banco vetorial} armazena vetores e permite consultas eficientes por similaridade. Neste projeto, utilizamos o Qdrant \cite{qdrant_overview,qdrant_collections}.
+Um banco vetorial armazena vetores e permite consultas eficientes por similaridade. Neste projeto, utilizamos o Qdrant \cite{qdrant_overview,qdrant_collections}.
 
 \subsection{Proveniência e FAIR}
 
-\textbf{Proveniência} é informação sobre origem e transformações do dado, útil para auditoria, reprodutibilidade e reuso. O modelo PROV-DM do W3C formaliza esse conceito \cite{w3c_prov_dm}. Também buscamos aderência prática aos princípios \textbf{FAIR} (Encontrável, Acessível, Interoperável e Reutilizável) \cite{wilkinson_fair_2016}.
+Proveniência é informação sobre origem e transformações do dado, útil para auditoria, reprodutibilidade e reuso. O modelo PROV-DM do W3C formaliza esse conceito \cite{w3c_prov_dm}. Também buscamos aderência prática aos princípios FAIR (Encontrável, Acessível, Interoperável e Reutilizável) \cite{wilkinson_fair_2016}.
 
 % ======================================================================
 \section{Metodologia}
@@ -354,11 +355,11 @@ A Figura~\ref{fig:pipeline} resume o pipeline em seis etapas: (E1) municípios, 
 
 \subsubsection{Universo de busca e cobertura territorial}
 
-O quadro amostral (lista de municípios) foi obtido via \textbf{API de localidades do IBGE} \cite{ibge_localidades_api}. Essa escolha reduz viés de seleção por listas manuais e permite replicação a partir da mesma fonte.
+O quadro amostral (lista de municípios) foi obtido via API de localidades do IBGE \cite{ibge_localidades_api}. Essa escolha reduz viés de seleção por listas manuais e permite replicação a partir da mesma fonte.
 
 \subsubsection{Geração de candidatos e validação por evidência pública}
 
-A descoberta foi implementada como \textbf{geração de candidatos + validação}. A geração usa \textbf{heurísticas} (regras práticas baseadas em padrões observáveis de URL) para criar endereços prováveis de portais SAPL. A validação busca evidências públicas de compatibilidade (respostas e páginas de consulta) antes de aceitar a instância.
+A descoberta foi implementada como geração de candidatos + validação. A geração usa heurísticas (regras práticas baseadas em padrões observáveis de URL) para criar endereços prováveis de portais SAPL. A validação busca evidências públicas de compatibilidade (respostas e páginas de consulta) antes de aceitar a instância.
 
 \begin{algorithm}[H]
 \caption{Descoberta e validação de instâncias SAPL (visão conceitual)}
@@ -372,7 +373,7 @@ A descoberta foi implementada como \textbf{geração de candidatos + validação
   \For{cada candidato $c \in C$}
     \If{rota pública de consulta responde e conteúdo é compatível com SAPL}
       \State adicionar $c$ em $S$
-      \State \textbf{break} \Comment{evita duplicidade para o mesmo município}
+      \State break \Comment{evita duplicidade para o mesmo município}
     \EndIf
   \EndFor
 \EndFor
@@ -386,7 +387,7 @@ Quando exposta, a API tende a seguir REST \cite{fielding_rest_2000}, com endpoin
 
 \subsubsection{Extração de Projetos de Lei}
 
-A extração foi desenhada para ser adaptável ao \textbf{vocabulário local}, já que rótulos variam entre casas legislativas. O método consulta o catálogo de tipos de matéria, identifica quais rótulos correspondem a ``Projeto de Lei'' e percorre todas as páginas até o esgotamento (paginação) \cite{drf_pagination}.
+A extração foi desenhada para ser adaptável ao vocabulário local, já que rótulos variam entre casas legislativas. O método consulta o catálogo de tipos de matéria, identifica quais rótulos correspondem a ``Projeto de Lei'' e percorre todas as páginas até o esgotamento (paginação) \cite{drf_pagination}.
 
 \begin{algorithm}[H]
 \caption{Extração exaustiva de PLs via API (visão conceitual)}
@@ -421,11 +422,11 @@ Para auditoria, cada registro mantém proveniência mínima: instância de orige
 \subsection{Construção do tradutor de ementas para ações}
 \label{sec:tradutor}
 
-Ementas têm alta variabilidade e linguagem abreviada. Para reduzir ruído na busca e melhorar a interpretação do resultado, o projeto transforma ementas em \textbf{recomendações de ação}, preservando a semântica.
+Ementas têm alta variabilidade e linguagem abreviada. Para reduzir ruído na busca e melhorar a interpretação do resultado, o projeto transforma ementas em recomendações de ação, preservando a semântica.
 
 Foi criado um conjunto de dados de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas, geradas por um LLM da família GPT-5.1 \cite{openai_gpt51_model,openai_gpt51_system_card}. O objetivo é realizar transferência de aprendizado, isto é, aproveitar um modelo já treinado e ajustá-lo à tarefa com poucos exemplos. Como modelo base para o fine-tuning, utilizamos o PTT5-v2, voltado ao português \cite{piau_ptt5v2_2024}. O PTT5-v2 é uma variante do modelo T5 do Google, treinada com textos em português pela Unicamp \cite{raffel_t5_2020}.
 
-O modelo tradutor foi treinado como tarefa \textbf{seq2seq} (sequência para sequência). O ajuste foi feito com QLoRA-4bit \cite{dettmers_qlora_2023}. A qualidade foi avaliada por BERTScore \cite{zhang_bertscore_2019}, obtendo 84\% na avaliação interna do projeto.
+O modelo tradutor foi treinado como tarefa seq2seq (sequência para sequência). O ajuste foi feito com QLoRA-4bit \cite{dettmers_qlora_2023}. A qualidade foi avaliada por BERTScore \cite{zhang_bertscore_2019}, obtendo 84\% na avaliação interna do projeto.
 
 Após o treinamento, todas as ementas coletadas foram convertidas em ações, formando um conjunto finito de ações recomendáveis para indexação.
 
@@ -443,7 +444,7 @@ Para viabilizar hospedagem de baixo custo do serviço de embeddings, uma opção
 
 Indicadores em séries temporais foram construídos por município, usando fontes oficiais. No indicador educacional, por exemplo, utilizam-se microdados do Censo Escolar (INEP) \cite{inep_microdados_censo_escolar}. A comparação do indicador na data de apresentação do PL com valores posteriores produz uma estimativa operacional de variação, com horizonte escolhido pelo usuário.
 
-\textbf{Observação:} essa estimativa é associativa, não causal. Ela descreve mudanças no período posterior, mas não prova que o PL causou a variação.
+Observação: essa estimativa é associativa, não causal. Ela descreve mudanças no período posterior, mas não prova que o PL causou a variação.
 
 % ======================================================================
 \subsection{Agrupamento de projetos em políticas públicas}
@@ -481,7 +482,7 @@ Os resultados desta etapa concentram-se na cobertura da coleta e na qualidade do
 \label{tab:coleta}
 \begin{tabular}{l r}
 \toprule
-\textbf{Métrica} & \textbf{Valor} \\
+Métrica & Valor \\
 \midrule
 Instâncias do SAPL encontradas & 1.259 \\
 Instâncias do SAPL com extração bem-sucedida & 322 \\
