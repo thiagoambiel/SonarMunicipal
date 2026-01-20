@@ -205,7 +205,7 @@
 
 % Biblatex ABNT
 \usepackage{csquotes}
-\usepackage[backend=biber,style=abnt,language=brazil,sorting=nty]{biblatex}
+\usepackage[backend=biber,style=numeric,language=brazil,sorting=none]{biblatex}
 \addbibresource{sonar-references.bib}
 
 % TikZ (corrigido: positioning)
@@ -277,54 +277,54 @@ Gestores municipais frequentemente precisam redigir, comparar e justificar propo
 % ======================================================================
 \section{Introdução}
 
-A produção legislativa municipal no Brasil ocorre em um cenário de alta diversidade institucional. Mesmo quando diferentes municípios enfrentam problemas semelhantes (por exemplo, segurança pública ou evasão escolar), as soluções propostas podem variar em linguagem, escopo e grau de detalhamento. Isso dificulta a reutilização de conhecimento legislativo entre municípios e reduz a eficiência da tomada de decisão baseada em evidências.
+A produção legislativa municipal no Brasil ocorre em um cenário de alta diversidade institucional. Mesmo quando municípios enfrentam problemas semelhantes (por exemplo, segurança pública ou evasão escolar), as soluções propostas variam em linguagem, escopo e grau de detalhamento. Essa heterogeneidade dificulta comparar, reutilizar e avaliar propostas existentes, reduzindo a eficiência da tomada de decisão baseada em evidências.
 
-Este trabalho descreve o projeto \textbf{Sonar Municipal} (plataforma web: \url{https://sonar-municipal.vercel.app/}), cujo objetivo é apoiar a elaboração e análise de Projetos de Lei por meio de:
+Este trabalho descreve o projeto \textbf{Sonar Municipal} (plataforma web: \url{https://sonar-municipal.vercel.app/}), cujo objetivo é apoiar a elaboração e a análise de Projetos de Lei (PLs) por meio de:
 \begin{itemize}[leftmargin=*,nosep]
   \item descoberta e coleta sistemática de PLs em instâncias do SAPL;
-  \item tradução de ementas para uma linguagem de ação recomendada;
-  \item busca semântica de ações a partir da pergunta do usuário;
+  \item transformação de ementas em recomendações de ação;
+  \item busca semântica de ações a partir de perguntas do usuário;
   \item simulação aproximada de efeitos em indicadores oficiais ao longo do tempo;
   \item agrupamento de PLs similares em ``políticas públicas'' para análise conjunta.
 \end{itemize}
 
-\textbf{Contribuições.} (C1) Método auditável para descoberta de instâncias SAPL e extração exaustiva de PLs via API. (C2) Tradução de ementas para ações recomendáveis. (C3) Busca semântica por embeddings. (C4) Análise com indicadores e agrupamento. (C5) Plataforma web para usuários não técnicos.
+\textbf{Contribuições.} As principais contribuições são: (C1) método auditável para descoberta de instâncias do SAPL e extração exaustiva de PLs via API; (C2) transformação de ementas em recomendações de ação; (C3) busca semântica baseada em embeddings; (C4) análise de indicadores com agrupamento de projetos similares; (C5) plataforma web para usuários não técnicos.
 
 % ======================================================================
 \section{Fundamentação e conceitos utilizados}
 
 \subsection{SAPL e padronização do processo legislativo}
 
-O \textbf{SAPL} é um sistema mantido pelo Programa Interlegis e amplamente adotado por casas legislativas brasileiras para informatizar e dar publicidade ao processo legislativo \cite{interlegis_sapl}. Por ser de código aberto \cite{interlegis_sapl_repo}, muitas instâncias compartilham estruturas semelhantes de consulta e, em vários casos, expõem uma API.
+O \textbf{SAPL} (Sistema de Apoio ao Processo Legislativo) é mantido pelo Programa Interlegis e amplamente adotado por casas legislativas brasileiras para informatizar e dar publicidade ao processo legislativo \cite{interlegis_sapl}. O sistema organiza etapas como proposição, tramitação e votação, favorecendo padronização. Por ser de código aberto \cite{interlegis_sapl_repo}, muitas instâncias compartilham estruturas de dados e padrões de consulta e, em vários casos, expõem uma API.
 
 \subsection{APIs HTTP, REST, OpenAPI e Swagger}
 
-Uma \textbf{API} (Interface de Programação de Aplicações) é um conjunto de regras que permite que programas acessem funcionalidades e dados de um serviço. Neste trabalho, consideramos APIs acessadas por HTTP.
+Uma \textbf{API} (Interface de Programação de Aplicações) é um conjunto de regras que permite que programas acessem funcionalidades e dados de um serviço. Neste trabalho, consideramos APIs acessadas via HTTP/HTTPS.
 
 O estilo \textbf{REST} (Representational State Transfer) organiza a API em recursos acessados por URLs, com operações padronizadas (por exemplo, GET para consulta) \cite{fielding_rest_2000}. Um \textbf{endpoint} é a URL associada a um recurso específico (por exemplo, uma lista de matérias).
 
-\textbf{OpenAPI} descreve formalmente endpoints, parâmetros e respostas \cite{openapi_3_2}. O \textbf{Swagger UI} renderiza essa descrição em uma interface navegável para exploração e teste \cite{swagger_ui}.
+\textbf{OpenAPI} descreve formalmente endpoints, parâmetros e respostas em um formato legível por máquina \cite{openapi_3_2}. O \textbf{Swagger UI} renderiza essa descrição em uma interface navegável para exploração e teste \cite{swagger_ui}.
 
 \subsection{Paginação}
 
-APIs costumam retornar coleções de forma \textbf{paginada}, dividindo resultados em páginas para reduzir carga e tamanho da resposta. Paginação é essencial para extração exaustiva de bases volumosas \cite{drf_pagination}.
+APIs costumam retornar coleções de forma \textbf{paginada}, dividindo resultados em páginas para reduzir carga e tamanho da resposta. Para uma extração exaustiva, é necessário iterar todas as páginas até o esgotamento dos resultados \cite{drf_pagination}.
 
 \subsection{Embeddings, busca semântica e banco vetorial}
 
-\textbf{Embedding} é um vetor numérico que representa um texto de modo que textos semanticamente próximos fiquem próximos no espaço vetorial. \textbf{Busca semântica} recupera itens por similaridade entre embeddings, e não por coincidência literal.
+\textbf{Embedding} é um vetor numérico que representa um texto de modo que conteúdos semanticamente próximos fiquem próximos no espaço vetorial. \textbf{Busca semântica} recupera itens por similaridade entre embeddings, e não por coincidência literal de termos.
 
 Um \textbf{banco vetorial} armazena vetores e permite consultas eficientes por similaridade. Neste projeto, utilizamos o Qdrant \cite{qdrant_overview,qdrant_collections}.
 
 \subsection{Proveniência e FAIR}
 
-\textbf{Proveniência} é informação sobre origem e transformações do dado, útil para auditoria e reuso. O modelo PROV-DM do W3C formaliza esse conceito \cite{w3c_prov_dm}. Também buscamos aderência prática aos princípios \textbf{FAIR} (Encontrável, Acessível, Interoperável e Reutilizável) \cite{wilkinson_fair_2016}.
+\textbf{Proveniência} é informação sobre origem e transformações do dado, útil para auditoria, reprodutibilidade e reuso. O modelo PROV-DM do W3C formaliza esse conceito \cite{w3c_prov_dm}. Também buscamos aderência prática aos princípios \textbf{FAIR} (Encontrável, Acessível, Interoperável e Reutilizável) \cite{wilkinson_fair_2016}.
 
 % ======================================================================
 \section{Metodologia}
 
 \subsection{Visão geral do pipeline}
 
-A Figura~\ref{fig:pipeline} resume o pipeline: (E1) municípios, (E2) descoberta SAPL, (E3) extração de PLs, (E4) ementa para ação, (E5) indexação vetorial e (E6) indicadores e agrupamento.
+A Figura~\ref{fig:pipeline} resume o pipeline em seis etapas: (E1) municípios, (E2) descoberta de instâncias do SAPL, (E3) extração de PLs, (E4) transformação de ementa em ação, (E5) indexação vetorial e (E6) indicadores e agrupamento.
 
 \begin{figure*}[t]
 \centering
@@ -348,7 +348,7 @@ A Figura~\ref{fig:pipeline} resume o pipeline: (E1) municípios, (E2) descoberta
 \label{fig:pipeline}
 \end{figure*}
 
-\subsection{Descoberta de instâncias SAPL e extração de Projetos de Lei}
+\subsection{Descoberta de instâncias do SAPL e extração de Projetos de Lei}
 \label{sec:sapl}
 
 \subsubsection{Universo de busca e cobertura territorial}
@@ -357,7 +357,7 @@ O quadro amostral (lista de municípios) foi obtido via \textbf{API de localidad
 
 \subsubsection{Geração de candidatos e validação por evidência pública}
 
-A descoberta foi implementada como \textbf{geração de candidatos + validação}. A geração usa \textbf{heurísticas} (regra prática baseada em padrões observáveis) para criar endereços prováveis de portais SAPL. A validação checa se o conteúdo e o comportamento de rotas públicas são compatíveis com o sistema.
+A descoberta foi implementada como \textbf{geração de candidatos + validação}. A geração usa \textbf{heurísticas} (regras práticas baseadas em padrões observáveis de URL) para criar endereços prováveis de portais SAPL. A validação busca evidências públicas de compatibilidade (respostas e páginas de consulta) antes de aceitar a instância.
 
 \begin{algorithm}[H]
 \caption{Descoberta e validação de instâncias SAPL (visão conceitual)}
@@ -381,11 +381,11 @@ A descoberta foi implementada como \textbf{geração de candidatos + validação
 
 \subsubsection{Estrutura conceitual da API do SAPL}
 
-Quando exposta, a API tende a seguir REST \cite{fielding_rest_2000}, com endpoints de coleções e itens. Em várias instâncias, a descrição OpenAPI e a interface Swagger UI podem estar disponíveis \cite{openapi_3_2,swagger_ui}.
+Quando exposta, a API tende a seguir REST \cite{fielding_rest_2000}, com endpoints de coleção (listagem) e item (detalhe). Em várias instâncias, a descrição OpenAPI e a interface Swagger UI podem estar disponíveis \cite{openapi_3_2,swagger_ui}.
 
 \subsubsection{Extração de Projetos de Lei}
 
-A extração foi desenhada para ser adaptável ao \textbf{vocabulário local}. O método consulta o catálogo de tipos de matéria e identifica quais rótulos correspondem a ``Projeto de Lei''. Em seguida, percorre todas as páginas até o esgotamento (paginação) \cite{drf_pagination}.
+A extração foi desenhada para ser adaptável ao \textbf{vocabulário local}, já que rótulos variam entre casas legislativas. O método consulta o catálogo de tipos de matéria, identifica quais rótulos correspondem a ``Projeto de Lei'' e percorre todas as páginas até o esgotamento (paginação) \cite{drf_pagination}.
 
 \begin{algorithm}[H]
 \caption{Extração exaustiva de PLs via API (visão conceitual)}
@@ -410,23 +410,23 @@ A extração foi desenhada para ser adaptável ao \textbf{vocabulário local}. O
 
 \subsubsection{Resultado da primeira execução e customizações locais}
 
-Na primeira execução dos coletores, foram encontradas 1.259 instâncias SAPL; porém, a extração automatizada de PLs foi possível em 322 instâncias, totalizando 220.065 PLs coletados. A discrepância é explicada por customizações locais (mudanças de rotas, proxies, autenticação, regras anti-robô e parametrizações).
+Na primeira execução dos coletores, foram encontradas 1.259 instâncias do SAPL. A extração automatizada de PLs foi possível em 322 instâncias, totalizando 220.065 PLs coletados. A discrepância decorre de customizações locais (mudanças de rotas, proxies, autenticação, regras anti-robô e parametrizações) que impedem ou dificultam o acesso programático.
 
 \subsubsection{Rastreabilidade}
 
-Para auditoria, cada registro mantém proveniência mínima: instância de origem, identificadores e carimbo temporal. O PROV-DM formaliza esse conceito \cite{w3c_prov_dm}.
+Para auditoria, cada registro mantém proveniência mínima: instância de origem, identificadores do processo legislativo e carimbo temporal de coleta. O PROV-DM formaliza esse conceito \cite{w3c_prov_dm}.
 
 % ======================================================================
 \subsection{Construção do tradutor de ementas para ações}
 \label{sec:tradutor}
 
-Ementas têm variação alta e linguagem abreviada. Para reduzir ruído na busca e melhorar a leitura do resultado, o projeto traduz ementas para uma \textbf{recomendação de ação}, mantendo a semântica.
+Ementas têm alta variabilidade e linguagem abreviada. Para reduzir ruído na busca e melhorar a interpretação do resultado, o projeto transforma ementas em \textbf{recomendações de ação}, preservando a semântica.
 
-Foi criado um dataset de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas, geradas por um LLM da família GPT-5.1 \cite{openai_gpt51_model,openai_gpt51_system_card}. O objetivo é transferência de aprendizado, isto é, aproveitar um modelo já treinado para aprender a tarefa com menos exemplos reais.
+Foi criado um conjunto de dados de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas, geradas por um LLM da família GPT-5.1 \cite{openai_gpt51_model,openai_gpt51_system_card}. O objetivo é realizar transferência de aprendizado, isto é, aproveitar um modelo já treinado e ajustá-lo à tarefa com poucos exemplos.
 
 O modelo tradutor foi treinado como tarefa \textbf{seq2seq} (sequência para sequência). O ajuste foi feito com QLoRA-4bit \cite{dettmers_qlora_2023}. A qualidade foi avaliada por BERTScore \cite{zhang_bertscore_2019}, obtendo 84\% na avaliação interna do projeto.
 
-Após o treinamento, todas as ementas coletadas foram convertidas em ações, formando um domínio fechado de ações recomendáveis.
+Após o treinamento, todas as ementas coletadas foram convertidas em ações, formando um conjunto finito de ações recomendáveis para indexação.
 
 % ======================================================================
 \subsection{Codificação das ações para busca semântica}
@@ -434,33 +434,33 @@ Após o treinamento, todas as ementas coletadas foram convertidas em ações, fo
 
 Para indexar ações e consultas no mesmo espaço vetorial, foi utilizado o Multilingual E5 \cite{wang_e5_2024}, adequado ao cenário de pergunta e resposta. As embeddings foram armazenadas no Qdrant \cite{qdrant_overview,qdrant_collections}, permitindo recuperar as top-$K$ ações mais similares a uma pergunta.
 
-Para viabilizar hospedagem gratuita do serviço de embeddings, uma opção prática é usar Text Embeddings Inference (TEI) \cite{hf_tei}.
+Para viabilizar hospedagem de baixo custo do serviço de embeddings, uma opção prática é usar Text Embeddings Inference (TEI) \cite{hf_tei}.
 
 % ======================================================================
 \subsection{Indicadores para simulação de efeito no mundo real}
 \label{sec:indicadores}
 
-Indicadores em séries temporais foram construídos por município, usando fontes oficiais. No indicador educacional, por exemplo, utilizam-se microdados do Censo Escolar (INEP) \cite{inep_microdados_censo_escolar}. A comparação do indicador na data de apresentação do PL com valores meses ou anos depois produz uma estimativa operacional de variação, com horizonte escolhido pelo usuário.
+Indicadores em séries temporais foram construídos por município, usando fontes oficiais. No indicador educacional, por exemplo, utilizam-se microdados do Censo Escolar (INEP) \cite{inep_microdados_censo_escolar}. A comparação do indicador na data de apresentação do PL com valores posteriores produz uma estimativa operacional de variação, com horizonte escolhido pelo usuário.
 
-\textbf{Observação:} essa estimativa é associativa, não causal. Ela descreve o que mudou depois, mas não prova que o PL causou a mudança.
+\textbf{Observação:} essa estimativa é associativa, não causal. Ela descreve mudanças no período posterior, mas não prova que o PL causou a variação.
 
 % ======================================================================
 \subsection{Agrupamento de projetos em políticas públicas}
 \label{sec:agrupamento}
 
-Para aumentar robustez, PLs similares são agrupados em clusters chamados ``políticas públicas''. A análise conjunta permite calcular efeito médio e dispersão. Para ranquear políticas, foi definida a métrica:
+Para aumentar robustez, PLs semanticamente similares são agrupados em clusters chamados ``políticas públicas''. A análise conjunta permite calcular efeito médio e dispersão. Para ranquear políticas, foi definida a métrica:
 
 \[
 Q = \frac{n_{\text{positivos}}}{n} \times \frac{n}{n+1}
 \]
 
-onde $n_{\text{positivos}}$ é o número de municípios com efeito considerado positivo (de acordo com o objetivo do indicador) e $n$ é o total de municípios no grupo.
+onde $n_{\text{positivos}}$ é o número de municípios com efeito considerado positivo (de acordo com o objetivo do indicador) e $n$ é o total de municípios no grupo. O fator $\frac{n}{n+1}$ reduz o peso de grupos muito pequenos.
 
 % ======================================================================
 \subsection{Desenvolvimento da plataforma web}
 \label{sec:plataforma}
 
-A plataforma foi desenvolvida em React com Next.js \cite{nextjs_docs} e hospedada na Vercel \cite{vercel_nextjs}. A arquitetura integra: interface web, serviço de embeddings e banco vetorial (Qdrant).
+A plataforma foi desenvolvida em React com Next.js \cite{nextjs_docs} e hospedada na Vercel \cite{vercel_nextjs}. A arquitetura integra três componentes: interface web, serviço de embeddings e banco vetorial (Qdrant), conectados por APIs.
 
 Funcionalidades principais:
 \begin{enumerate}[leftmargin=*]
@@ -472,6 +472,8 @@ Funcionalidades principais:
 % ======================================================================
 \section{Resultados}
 
+Os resultados desta etapa concentram-se na cobertura da coleta e na qualidade do tradutor de ementas.
+
 \begin{table}[H]
 \centering
 \caption{Resumo da primeira execução de descoberta e extração.}
@@ -480,30 +482,24 @@ Funcionalidades principais:
 \toprule
 \textbf{Métrica} & \textbf{Valor} \\
 \midrule
-Instâncias SAPL encontradas & 1.259 \\
-Instâncias com extração bem-sucedida & 322 \\
+Instâncias do SAPL encontradas & 1.259 \\
+Instâncias do SAPL com extração bem-sucedida & 322 \\
 Projetos de Lei coletados (total) & 220.065 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-O tradutor ementa $\rightarrow$ ação atingiu BERTScore de 84\% na avaliação interna, indicando preservação semântica adequada para uso prático.
+Como mostra a Tabela~\ref{tab:coleta}, a primeira execução dos coletores atingiu escala nacional, com extração bem-sucedida em parte das instâncias descobertas. Na avaliação interna, o tradutor ementa $\rightarrow$ ação atingiu BERTScore de 84\%, indicando preservação semântica adequada para uso prático.
 
 % ======================================================================
 \section{Limitações e ameaças à validade}
 
-\begin{itemize}[leftmargin=*,nosep]
-  \item disponibilidade operacional de instâncias (instabilidade e mudanças de URL);
-  \item heterogeneidade e customizações locais que quebram padrões de extração;
-  \item variação semântica de rótulos e tipos de proposição entre instâncias;
-  \item dificuldade de atribuir variações de indicadores a um único PL;
-  \item uso de dataset sintético pode introduzir vieses do gerador.
-\end{itemize}
+Este estudo enfrenta limitações operacionais e metodológicas. Do ponto de vista operacional, a disponibilidade das instâncias do SAPL é variável: há instabilidades, mudanças de URL e barreiras como proxies, autenticação e regras anti-robô, o que reduz a cobertura efetiva da coleta. Além disso, customizações locais e diferenças de configuração afetam a padronização dos endpoints e dificultam a extração automática. No aspecto semântico, a variação de rótulos e tipos de proposição entre casas legislativas pode levar a omissões ou inconsistências na identificação de Projetos de Lei. Já na análise de impacto, a variação de indicadores ao longo do tempo não pode ser atribuída de forma causal a um único PL, pois outras políticas e fatores contextuais podem influenciar os resultados. Por fim, o uso de um conjunto de dados sintético para treinar o tradutor pode introduzir vieses do gerador e limitar a generalização do modelo em cenários reais.
 
 % ======================================================================
 \section{Conclusão}
 
-O Sonar Municipal integra coleta sistemática de PLs via SAPL, tradução de ementas para ações, busca semântica por embeddings, análise com indicadores e agrupamento de políticas públicas. O resultado é uma ferramenta que aproxima evidência legislativa e dados oficiais do fluxo de trabalho de gestores públicos, com foco em reprodutibilidade e auditoria.
+O Sonar Municipal integra coleta sistemática de PLs via SAPL, transformação de ementas em ações, busca semântica por embeddings, análise com indicadores e agrupamento de políticas públicas. O projeto entrega uma ferramenta que aproxima evidências legislativas e dados oficiais do fluxo de trabalho de gestores públicos, com foco em reprodutibilidade e auditabilidade. Como resultado, a plataforma favorece a comparação entre propostas, a identificação de alternativas e a tomada de decisão informada, mantendo transparência sobre a origem e o processamento dos dados.
 
 % ======================================================================
 \printbibliography

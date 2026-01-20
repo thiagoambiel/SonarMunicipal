@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  20 JAN 2026 13:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  20 JAN 2026 13:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -546,7 +546,7 @@ Package biblatex Info: ... file 'blx-dm.def' found.
 File: blx-dm.def 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
 Package biblatex Info: Trying to load biblatex style data model...
-Package biblatex Info: ... file 'abnt.dbx' not found.
+Package biblatex Info: ... file 'numeric.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
 \c@afterword=\count361
@@ -656,18 +656,11 @@ File: biblatex.def 2022/02/02 v3.17 biblatex compatibility (PK/MW)
 \biburllcskip=\muskip21
 \c@smartand=\count437
 )
-Package biblatex Info: Trying to load bibliography style 'abnt'...
-Package biblatex Info: ... file 'abnt.bbx' found.
+Package biblatex Info: Trying to load bibliography style 'numeric'...
+Package biblatex Info: ... file 'numeric.bbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/abnt.bbx
-File: abnt.bbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-
-(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-Package: xparse 2022-01-12 L3 Experimental document command parser
-)
-(/usr/share/texlive/texmf-dist/tex/latex/xpatch/xpatch.sty
-Package: xpatch 2020/03/25 v0.3a Extending etoolbox patching commands
-)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/bbx/numeric.bbx
+File: numeric.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
 Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
 
@@ -676,37 +669,22 @@ File: standard.bbx 2022/02/02 v3.17 biblatex bibliography style (PK/MW)
 \c@bbx:relatedcount=\count438
 \c@bbx:relatedtotal=\count439
 ))
-Package biblatex Info: Trying to load citation style 'abnt'...
-Package biblatex Info: ... file 'abnt.cbx' found.
+Package biblatex Info: Trying to load citation style 'numeric'...
+Package biblatex Info: ... file 'numeric.cbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/abnt.cbx
-File: abnt.cbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-Package biblatex Info: Trying to load citation style 'authoryear-comp'...
-Package biblatex Info: ... file 'authoryear-comp.cbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/authoryear-comp.cbx
-File: authoryear-comp.cbx 2022/02/02 v3.17 biblatex citation style (PK/MW)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/cbx/numeric.cbx
+File: numeric.cbx 2022/02/02 v3.17 biblatex citation style (PK/MW)
 Package biblatex Info: Redefining '\cite'.
 Package biblatex Info: Redefining '\parencite'.
 Package biblatex Info: Redefining '\footcite'.
 Package biblatex Info: Redefining '\footcitetext'.
 Package biblatex Info: Redefining '\smartcite'.
+Package biblatex Info: Redefining '\supercite'.
 Package biblatex Info: Redefining '\textcite'.
 Package biblatex Info: Redefining '\textcites'.
 Package biblatex Info: Redefining '\cites'.
 Package biblatex Info: Redefining '\parencites'.
-Package biblatex Info: Redefining '\footcites'.
-Package biblatex Info: Redefining '\footcitetexts'.
 Package biblatex Info: Redefining '\smartcites'.
-)
-Package biblatex Info: Redefining '\cite'.
-Package biblatex Info: Redefining '\cites'.
-Package biblatex Info: Redefining '\footcite'.
-Package biblatex Info: Redefining '\footcites'.
-Package biblatex Info: Redefining '\citetitle'.
-Package biblatex Info: Redefining '\smartcite'.
-Package biblatex Info: Redefining '\citeauthor'.
-Package biblatex Info: Redefining '\citeyear'.
 )
 Package biblatex Info: Trying to load configuration file...
 Package biblatex Info: ... file 'biblatex.cfg' found.
@@ -722,6 +700,9 @@ Package biblatex Info: ... and expl3
 (biblatex)             setting 'casechanger=expl3'.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty
+(/usr/share/texlive/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
+Package: xparse 2022-01-12 L3 Experimental document command parser
+)
 Package: blx-case-expl3 2022/02/02 v3.17 expl3 case changing code for biblatex
 ))
 (/usr/share/texlive/texmf-dist/tex/latex/pgf/frontendlayer/tikz.sty
@@ -1264,112 +1245,29 @@ lations-basic-dictionary')
 )
 Package translations Info: loading dictionary `translations-basic-dictionary' f
 or `brazil'. on input line 257.
-Package biblatex Info: Trying to load language 'english' -> 'english-abnt'...
-Package biblatex Info: ... file 'english-abnt.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/english-abnt.lbx
-File: english-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
 Package biblatex Info: Trying to load language 'english'...
 Package biblatex Info: ... file 'english.lbx' found.
 
 (/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
 File: english.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
-Package biblatex Info: Trying to load language 'english'...
-Package biblatex Info: ... file 'english.lbx' found.
+Package biblatex Info: Trying to load language 'brazil'...
+Package biblatex Info: ... file 'brazil.lbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
-File: english.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
+File: brazil.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
+Package biblatex Info: Trying to load language 'brazilian'...
+Package biblatex Info: ... file 'brazilian.lbx' found.
+
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
+File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 )
-Package biblatex Info: Trying to load language 'english'...
-Package biblatex Info: ... file 'english.lbx' found.
+Package biblatex Info: Trying to load language 'brazilian'...
+Package biblatex Info: ... file 'brazilian.lbx' found.
 
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/english.lbx
-File: english.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
+(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
+File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
 ))
-Package biblatex Info: Trying to load language 'brazil' -> 'brazil-abnt'...
-Package biblatex Info: ... file 'brazil-abnt.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/brazil-abnt.lbx
-File: brazil-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-
-
-Package biblatex Warning: File 'brazilian-abnt-abnt.lbx' not found!
-(biblatex)                Ignoring mapping 'brazilian-abnt' -> 'brazilian-abnt-
-abnt'.
-
-Package biblatex Info: Trying to load language 'brazilian-abnt'...
-Package biblatex Info: ... file 'brazilian-abnt.lbx' found.
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/brazilian-abnt.lbx
-File: brazilian-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-Package biblatex Info: Trying to load language 'brazilian' -> 'brazilian-abnt'.
-..
-Package biblatex Info: ... file 'brazilian-abnt.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/brazilian-abnt.lbx
-File: brazilian-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-Package biblatex Info: Trying to load language 'brazilian'...
-Package biblatex Info: ... file 'brazilian.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
-File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-)))
-Package biblatex Info: Trying to load language 'brazilian-abnt'...
-Package biblatex Info: ... file 'brazilian-abnt.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/brazilian-abnt.lbx
-File: brazilian-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-Package biblatex Info: Trying to load language 'brazilian' -> 'brazilian-abnt'.
-..
-Package biblatex Info: ... file 'brazilian-abnt.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/brazilian-abnt.lbx
-File: brazilian-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-Package biblatex Info: Trying to load language 'brazilian'...
-Package biblatex Info: ... file 'brazilian.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
-File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-)
-Package biblatex Info: Trying to load language 'brazil'...
-Package biblatex Info: ... file 'brazil.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
-File: brazil.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-Package biblatex Info: Trying to load language 'brazilian'...
-Package biblatex Info: ... file 'brazilian.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
-File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-)))
-Package biblatex Info: Trying to load language 'brazil'...
-Package biblatex Info: ... file 'brazil.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
-File: brazil.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-Package biblatex Info: Trying to load language 'brazilian' -> 'brazilian-abnt'.
-..
-Package biblatex Info: ... file 'brazilian-abnt.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex-abnt/brazilian-abnt.lbx
-File: brazilian-abnt.lbx 2018-11-17 v3.4 ABNT BibLaTeX citation style
-Package biblatex Info: Trying to load language 'brazilian'...
-Package biblatex Info: ... file 'brazilian.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
-File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-)
-Package biblatex Info: Trying to load language 'brazil'...
-Package biblatex Info: ... file 'brazil.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazil.lbx
-File: brazil.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-Package biblatex Info: Trying to load language 'brazilian'...
-Package biblatex Info: ... file 'brazilian.lbx' found.
-
-(/usr/share/texlive/texmf-dist/tex/latex/biblatex/lbx/brazilian.lbx
-File: brazilian.lbx 2022/02/02 v3.17 biblatex localization (PK/MW)
-))))))
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
@@ -1431,36 +1329,108 @@ Overfull \hbox (2.72989pt too wide) in paragraph at lines 427--428
 b/n/10 (-20) seq2seq \T1/ptm/m/n/10 (-20) (sequên-
  []
 
-[3] [4] [5
+[3]
+Overfull \hbox (18.76018pt too wide) in paragraph at lines 481--490
+ [][] 
+ []
+
+
+Overfull \hbox (28.30194pt too wide) in paragraph at lines 506--506
+[]$\T1/pcr/m/n/10 https : / / www12 . senado . leg . br / interlegis /
+ []
+
+
+Overfull \hbox (10.85965pt too wide) in paragraph at lines 506--506
+\T1/ptm/m/it/10 (-20) Tool\T1/ptm/m/n/10 (-20) . 2026. \T1/ptm/m/sc/10 (-20) ur
+l\T1/ptm/m/n/10 (-20) : []$\T1/pcr/m/n/10 https : / / swagger . io / tools /
+ []
+
+
+Overfull \hbox (0.62283pt too wide) in paragraph at lines 506--506
+[]\T1/ptm/m/n/10 (-20) Qdrant. \T1/ptm/m/it/10 (-20) Qdrant Do-cu-men-ta-tion\T
+1/ptm/m/n/10 (-20) . 2026. \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$\
+T1/pcr/m/n/10 https :
+ []
+
+
+Overfull \hbox (0.22333pt too wide) in paragraph at lines 506--506
+[]\T1/ptm/m/n/10 (-20) Qdrant. \T1/ptm/m/it/10 (-20) Col-lec-ti-ons (con-cei-to
+s)\T1/ptm/m/n/10 (-20) . 2026. \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : 
+[]$\T1/pcr/m/n/10 https :
+ []
+
+
+Overfull \hbox (15.70193pt too wide) in paragraph at lines 506--506
+\T1/pcr/m/n/10 / / qdrant . tech / documentation / concepts /
+ []
+
+
+Overfull \hbox (28.63025pt too wide) in paragraph at lines 506--506
+\T1/pcr/m/n/10 br / api / docs / localidades$[] \T1/ptm/m/n/10 (-20) (acesso em
+ 07/01/2026). 
+ []
+
+[4]
+Overfull \hbox (4.50194pt too wide) in paragraph at lines 506--506
+\T1/pcr/m/n/10 openai . com / index / gpt -[] 5 -[] system -[] card -[]
+ []
+
+
+Overfull \hbox (8.09984pt too wide) in paragraph at lines 506--506
+\T1/ptm/m/n/10 (-20) of Quan-ti-zed LLMs^^Q. Em: \T1/ptm/m/it/10 (-20) ar-Xiv \
+T1/ptm/m/n/10 (-20) (2023). \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$
+\T1/pcr/m/n/10 https :
+ []
+
+
+Overfull \hbox (1.24289pt too wide) in paragraph at lines 506--506
+\T1/pcr/m/n/10 io / text -[] embeddings -[] inference/$[] \T1/ptm/m/n/10 (-20) 
+(acesso
+ []
+
+
+Overfull \hbox (1.66086pt too wide) in paragraph at lines 506--506
+[]\T1/ptm/m/n/10 (-20) Vercel. \T1/ptm/m/it/10 (-20) Next.js on Ver-cel (do-cu-
+men-ta-ção)\T1/ptm/m/n/10 (-20) . 2025. \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10
+ (-20) :
+ []
+
+
+Overfull \hbox (4.30194pt too wide) in paragraph at lines 506--506
+[]$\T1/pcr/m/n/10 https : / / vercel . com / docs / frameworks /
+ []
+
+[5
 
 ] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 8FBC4CB32800971B3E49977825E12F2B;5648.
+(rerunfilecheck)             Checksum: E91536AEC5AA50F48370F305F7C4257E;5666.
 Package logreq Info: Writing requests to 'main.run.xml'.
 \openout1 = `main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40919 strings out of 478287
- 841069 string characters out of 5849289
- 1622407 words of memory out of 5000000
- 58139 multiletter control sequences out of 15000+600000
- 526694 words of font info for 267 fonts, out of 8000000 for 9000
+ 40336 strings out of 478287
+ 827926 string characters out of 5849289
+ 1556481 words of memory out of 5000000
+ 57589 multiletter control sequences out of 15000+600000
+ 531877 words of font info for 274 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 84i,13n,89p,1001b,4312s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 84i,13n,89p,1022b,3687s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/cour
-ier/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb>
-</usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (5 pages, 135243 bytes).
+ype1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
+sfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr
+8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/sh
+are/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/tex
+mf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (5 pages, 153177 bytes).
 PDF statistics:
- 309 PDF objects out of 1000 (max. 8388607)
- 281 compressed objects within 3 object streams
+ 295 PDF objects out of 1000 (max. 8388607)
+ 265 compressed objects within 3 object streams
  59 named destinations out of 1000 (max. 500000)
- 62157 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 64205 words of extra memory for PDF output out of 74296 (max. 10000000)
 
