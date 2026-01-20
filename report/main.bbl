@@ -420,6 +420,45 @@
       \verb https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/
       \endverb
     \endentry
+    \entry{piau_ptt5v2_2024}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{2}{}{%
+        {{hash=f4a31c6a35a04b62390832e08ba2cee8}{%
+           family={Piau},
+           familyi={P\bibinitperiod},
+           given={Marcos},
+           giveni={M\bibinitperiod}}}%
+        {{hash=2d16a4cc7bee009a76f8bcfec7c4076f}{%
+           family={Vieira},
+           familyi={V\bibinitperiod},
+           given={Matheus\bibnamedelima P.},
+           giveni={M\bibinitperiod\bibinitdelim P\bibinitperiod}}}%
+      }
+      \strng{namehash}{3dadd5afd39b81b82d613bbbe0a1787b}
+      \strng{fullhash}{3dadd5afd39b81b82d613bbbe0a1787b}
+      \strng{bibnamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
+      \strng{authorbibnamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
+      \strng{authornamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
+      \strng{authorfullhash}{3dadd5afd39b81b82d613bbbe0a1787b}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv}
+      \field{title}{ptt5-v2: A Closer Look at Continued Pretraining of T5 Models for the Portuguese Language}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2406.10806
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2406.10806
+      \endverb
+    \endentry
     \entry{dettmers_qlora_2023}{article}{}
       \name{author}{4}{}{%
         {{hash=67a40f4e13f66c2e43ce4d7d64b9d9a4}{%
@@ -558,8 +597,8 @@
       \strng{authorbibnamehash}{e9012e3e3adcfce14161e542a312bb44}
       \strng{authornamehash}{e9012e3e3adcfce14161e542a312bb44}
       \strng{authorfullhash}{5a81cbb424928b29f66fe3aae6c72d9e}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -634,36 +673,6 @@
       \verb https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar
       \endverb
     \endentry
-    \entry{nextjs_docs}{online}{}
-      \name{author}{1}{}{%
-        {{hash=dc173d57136dbe619cbccee88ee6421c}{%
-           family={{Vercel}},
-           familyi={V\bibinitperiod}}}%
-      }
-      \strng{namehash}{dc173d57136dbe619cbccee88ee6421c}
-      \strng{fullhash}{dc173d57136dbe619cbccee88ee6421c}
-      \strng{bibnamehash}{dc173d57136dbe619cbccee88ee6421c}
-      \strng{authorbibnamehash}{dc173d57136dbe619cbccee88ee6421c}
-      \strng{authornamehash}{dc173d57136dbe619cbccee88ee6421c}
-      \strng{authorfullhash}{dc173d57136dbe619cbccee88ee6421c}
-      \field{extraname}{1}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Next.js Documentation}
-      \field{urlday}{7}
-      \field{urlmonth}{1}
-      \field{urlyear}{2026}
-      \field{year}{2026}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://nextjs.org/docs
-      \endverb
-      \verb{url}
-      \verb https://nextjs.org/docs
-      \endverb
-    \endentry
     \entry{vercel_nextjs}{online}{}
       \name{author}{1}{}{%
         {{hash=dc173d57136dbe619cbccee88ee6421c}{%
@@ -676,7 +685,6 @@
       \strng{authorbibnamehash}{dc173d57136dbe619cbccee88ee6421c}
       \strng{authornamehash}{dc173d57136dbe619cbccee88ee6421c}
       \strng{authorfullhash}{dc173d57136dbe619cbccee88ee6421c}
-      \field{extraname}{2}
       \field{sortinit}{2}
       \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
@@ -695,6 +703,7 @@
       \endverb
     \endentry
   \enddatalist
+  \missing{raffel_t5_2020}
 \endrefsection
 \endinput
 
