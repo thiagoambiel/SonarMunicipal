@@ -1,0 +1,762 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{nty/global//global/global}
+    \entry{dettmers_qlora_2023}{article}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=67a40f4e13f66c2e43ce4d7d64b9d9a4}{%
+           family={Dettmers},
+           familyi={D\bibinitperiod},
+           given={Tim},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=14917de5b5a7cbc3cd12e6467297e657}{%
+           family={Pagnoni},
+           familyi={P\bibinitperiod},
+           given={Artidoro},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c32ace2a5a2590ef3542c3713e05925d}{%
+           family={Holtzman},
+           familyi={H\bibinitperiod},
+           given={Ari},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1dbd3a5b42828fb2cebd7786488ba425}{%
+           family={Zettlemoyer},
+           familyi={Z\bibinitperiod},
+           given={Luke},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
+      \strng{fullhash}{1bf24d73d3c3884f634a1b420205ff86}
+      \strng{bibnamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
+      \strng{authorbibnamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
+      \strng{authornamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
+      \strng{authorfullhash}{1bf24d73d3c3884f634a1b420205ff86}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv}
+      \field{title}{QLoRA: Efficient Finetuning of Quantized LLMs}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2305.14314
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2305.14314
+      \endverb
+    \endentry
+    \entry{drf_pagination}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=7a548f51476c88a6e250f600929a346d}{%
+           family={{Django REST framework}},
+           familyi={D\bibinitperiod}}}%
+      }
+      \strng{namehash}{7a548f51476c88a6e250f600929a346d}
+      \strng{fullhash}{7a548f51476c88a6e250f600929a346d}
+      \strng{bibnamehash}{7a548f51476c88a6e250f600929a346d}
+      \strng{authorbibnamehash}{7a548f51476c88a6e250f600929a346d}
+      \strng{authornamehash}{7a548f51476c88a6e250f600929a346d}
+      \strng{authorfullhash}{7a548f51476c88a6e250f600929a346d}
+      \field{sortinit}{D}
+      \field{sortinithash}{6f385f66841fb5e82009dc833c761848}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Pagination}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.django-rest-framework.org/api-guide/pagination/
+      \endverb
+      \verb{url}
+      \verb https://www.django-rest-framework.org/api-guide/pagination/
+      \endverb
+    \endentry
+    \entry{fielding_rest_2000}{thesis}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=87dbbd44b3977c28b71d826a931add3e}{%
+           family={Fielding},
+           familyi={F\bibinitperiod},
+           given={Roy\bibnamedelima Thomas},
+           giveni={R\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{institution}{1}{%
+        {University of California, Irvine}%
+      }
+      \strng{namehash}{87dbbd44b3977c28b71d826a931add3e}
+      \strng{fullhash}{87dbbd44b3977c28b71d826a931add3e}
+      \strng{bibnamehash}{87dbbd44b3977c28b71d826a931add3e}
+      \strng{authorbibnamehash}{87dbbd44b3977c28b71d826a931add3e}
+      \strng{authornamehash}{87dbbd44b3977c28b71d826a931add3e}
+      \strng{authorfullhash}{87dbbd44b3977c28b71d826a931add3e}
+      \field{sortinit}{F}
+      \field{sortinithash}{2638baaa20439f1b5a8f80c6c08a13b4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{bookpagination}{sheet}
+      \field{title}{Architectural Styles and the Design of Network-based Software Architectures}
+      \field{type}{phdthesis}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+      \endverb
+      \verb{url}
+      \verb https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm
+      \endverb
+    \endentry
+    \entry{hf_tei}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=e0b6bb846c6a3e0649ce0e3cd9355df3}{%
+           family={{Hugging Face}},
+           familyi={H\bibinitperiod}}}%
+      }
+      \strng{namehash}{e0b6bb846c6a3e0649ce0e3cd9355df3}
+      \strng{fullhash}{e0b6bb846c6a3e0649ce0e3cd9355df3}
+      \strng{bibnamehash}{e0b6bb846c6a3e0649ce0e3cd9355df3}
+      \strng{authorbibnamehash}{e0b6bb846c6a3e0649ce0e3cd9355df3}
+      \strng{authornamehash}{e0b6bb846c6a3e0649ce0e3cd9355df3}
+      \strng{authorfullhash}{e0b6bb846c6a3e0649ce0e3cd9355df3}
+      \field{sortinit}{H}
+      \field{sortinithash}{23a3aa7c24e56cfa16945d55545109b5}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Text Embeddings Inference (TEI)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://huggingface.github.io/text-embeddings-inference/
+      \endverb
+      \verb{url}
+      \verb https://huggingface.github.io/text-embeddings-inference/
+      \endverb
+    \endentry
+    \entry{ibge_localidades_api}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3898f1ceb6fdd56f963db7f9326130e4}{%
+           family={{IBGE}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{3898f1ceb6fdd56f963db7f9326130e4}
+      \strng{fullhash}{3898f1ceb6fdd56f963db7f9326130e4}
+      \strng{bibnamehash}{3898f1ceb6fdd56f963db7f9326130e4}
+      \strng{authorbibnamehash}{3898f1ceb6fdd56f963db7f9326130e4}
+      \strng{authornamehash}{3898f1ceb6fdd56f963db7f9326130e4}
+      \strng{authorfullhash}{3898f1ceb6fdd56f963db7f9326130e4}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{API de Localidades (documentação)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://servicodados.ibge.gov.br/api/docs/localidades
+      \endverb
+      \verb{url}
+      \verb https://servicodados.ibge.gov.br/api/docs/localidades
+      \endverb
+    \endentry
+    \entry{inep_microdados_censo_escolar}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=266e61b70f52ca64d6c99fddde80afb7}{%
+           family={{INEP}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{266e61b70f52ca64d6c99fddde80afb7}
+      \strng{fullhash}{266e61b70f52ca64d6c99fddde80afb7}
+      \strng{bibnamehash}{266e61b70f52ca64d6c99fddde80afb7}
+      \strng{authorbibnamehash}{266e61b70f52ca64d6c99fddde80afb7}
+      \strng{authornamehash}{266e61b70f52ca64d6c99fddde80afb7}
+      \strng{authorfullhash}{266e61b70f52ca64d6c99fddde80afb7}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Censo Escolar: Microdados (dados abertos)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar
+      \endverb
+      \verb{url}
+      \verb https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar
+      \endverb
+    \endentry
+    \entry{interlegis_sapl_repo}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b25c278268e9352cb1ed2739d6dbe7f1}{%
+           family={{Interlegis}},
+           familyi={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{b25c278268e9352cb1ed2739d6dbe7f1}
+      \strng{fullhash}{b25c278268e9352cb1ed2739d6dbe7f1}
+      \strng{bibnamehash}{b25c278268e9352cb1ed2739d6dbe7f1}
+      \strng{authorbibnamehash}{b25c278268e9352cb1ed2739d6dbe7f1}
+      \strng{authornamehash}{b25c278268e9352cb1ed2739d6dbe7f1}
+      \strng{authorfullhash}{b25c278268e9352cb1ed2739d6dbe7f1}
+      \field{sortinit}{I}
+      \field{sortinithash}{8d291c51ee89b6cd86bf5379f0b151d8}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{SAPL: Sistema de Apoio ao Processo Legislativo (repositório oficial)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://github.com/interlegis/sapl
+      \endverb
+      \verb{url}
+      \verb https://github.com/interlegis/sapl
+      \endverb
+    \endentry
+    \entry{openai_gpt51_system_card}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=0523b13262b12c215d8009938f5c14f1}{%
+           family={{OpenAI}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{fullhash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{bibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
+      \field{extraname}{1}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{GPT-5.1 Instant and GPT-5.1 Thinking: System Card Addendum}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/
+      \endverb
+      \verb{url}
+      \verb https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/
+      \endverb
+    \endentry
+    \entry{openai_gpt51_model}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=0523b13262b12c215d8009938f5c14f1}{%
+           family={{OpenAI}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{fullhash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{bibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
+      \field{extraname}{2}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{GPT-5.1 Model (OpenAI API)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://platform.openai.com/docs/models/gpt-5.1
+      \endverb
+      \verb{url}
+      \verb https://platform.openai.com/docs/models/gpt-5.1
+      \endverb
+    \endentry
+    \entry{openapi_3_2}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=2140293a9301207642312840ece53671}{%
+           family={{OpenAPI Initiative}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{2140293a9301207642312840ece53671}
+      \strng{fullhash}{2140293a9301207642312840ece53671}
+      \strng{bibnamehash}{2140293a9301207642312840ece53671}
+      \strng{authorbibnamehash}{2140293a9301207642312840ece53671}
+      \strng{authornamehash}{2140293a9301207642312840ece53671}
+      \strng{authorfullhash}{2140293a9301207642312840ece53671}
+      \field{sortinit}{O}
+      \field{sortinithash}{2cd7140a07aea5341f9e2771efe90aae}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{OpenAPI Specification (v3.2.0)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://spec.openapis.org/oas/v3.2.0.html
+      \endverb
+      \verb{url}
+      \verb https://spec.openapis.org/oas/v3.2.0.html
+      \endverb
+    \endentry
+    \entry{qdrant_collections}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b8b503212d5eeeab9d0a38b1b0b46ec1}{%
+           family={{Qdrant}},
+           familyi={Q\bibinitperiod}}}%
+      }
+      \strng{namehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{fullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{bibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{authorbibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{authornamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{authorfullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \field{extraname}{1}
+      \field{sortinit}{Q}
+      \field{sortinithash}{ce69a400a872ddd02ee7fdb3b38c6abd}
+      \field{extradate}{1}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Collections (conceitos)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://qdrant.tech/documentation/concepts/collections/
+      \endverb
+      \verb{url}
+      \verb https://qdrant.tech/documentation/concepts/collections/
+      \endverb
+    \endentry
+    \entry{qdrant_overview}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b8b503212d5eeeab9d0a38b1b0b46ec1}{%
+           family={{Qdrant}},
+           familyi={Q\bibinitperiod}}}%
+      }
+      \strng{namehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{fullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{bibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{authorbibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{authornamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \strng{authorfullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
+      \field{extraname}{2}
+      \field{sortinit}{Q}
+      \field{sortinithash}{ce69a400a872ddd02ee7fdb3b38c6abd}
+      \field{extradate}{2}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Qdrant Documentation}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://qdrant.tech/documentation/
+      \endverb
+      \verb{url}
+      \verb https://qdrant.tech/documentation/
+      \endverb
+    \endentry
+    \entry{interlegis_sapl}{online}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=7ebc9b2a0004f519a5ad84c429e420ca}{%
+           family={{Senado Federal}},
+           familyi={S\bibinitperiod}}}%
+        {{un=0,uniquepart=base,hash=ff5ef62cd2be1bb0d1b085f94e6c1588}{%
+           family={{Programa Interlegis}},
+           familyi={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{419bc3c6bf8e938e53dde1e55873d126}
+      \strng{fullhash}{419bc3c6bf8e938e53dde1e55873d126}
+      \strng{bibnamehash}{419bc3c6bf8e938e53dde1e55873d126}
+      \strng{authorbibnamehash}{419bc3c6bf8e938e53dde1e55873d126}
+      \strng{authornamehash}{419bc3c6bf8e938e53dde1e55873d126}
+      \strng{authorfullhash}{419bc3c6bf8e938e53dde1e55873d126}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Sistema de Apoio ao Processo Legislativo (SAPL)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www12.senado.leg.br/interlegis/produtos/sapl
+      \endverb
+      \verb{url}
+      \verb https://www12.senado.leg.br/interlegis/produtos/sapl
+      \endverb
+    \endentry
+    \entry{swagger_ui}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=336ff1e9aa6177ea7a71984fa8c241b9}{%
+           family={{Swagger}},
+           familyi={S\bibinitperiod}}}%
+      }
+      \strng{namehash}{336ff1e9aa6177ea7a71984fa8c241b9}
+      \strng{fullhash}{336ff1e9aa6177ea7a71984fa8c241b9}
+      \strng{bibnamehash}{336ff1e9aa6177ea7a71984fa8c241b9}
+      \strng{authorbibnamehash}{336ff1e9aa6177ea7a71984fa8c241b9}
+      \strng{authornamehash}{336ff1e9aa6177ea7a71984fa8c241b9}
+      \strng{authorfullhash}{336ff1e9aa6177ea7a71984fa8c241b9}
+      \field{sortinit}{S}
+      \field{sortinithash}{b164b07b29984b41daf1e85279fbc5ab}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Swagger UI: REST API Documentation Tool}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://swagger.io/tools/swagger-ui/
+      \endverb
+      \verb{url}
+      \verb https://swagger.io/tools/swagger-ui/
+      \endverb
+    \endentry
+    \entry{nextjs_docs}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=dc173d57136dbe619cbccee88ee6421c}{%
+           family={{Vercel}},
+           familyi={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{fullhash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{bibnamehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{authorbibnamehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{authornamehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{authorfullhash}{dc173d57136dbe619cbccee88ee6421c}
+      \field{extraname}{1}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Next.js Documentation}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://nextjs.org/docs
+      \endverb
+      \verb{url}
+      \verb https://nextjs.org/docs
+      \endverb
+    \endentry
+    \entry{vercel_nextjs}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=dc173d57136dbe619cbccee88ee6421c}{%
+           family={{Vercel}},
+           familyi={V\bibinitperiod}}}%
+      }
+      \strng{namehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{fullhash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{bibnamehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{authorbibnamehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{authornamehash}{dc173d57136dbe619cbccee88ee6421c}
+      \strng{authorfullhash}{dc173d57136dbe619cbccee88ee6421c}
+      \field{extraname}{2}
+      \field{sortinit}{V}
+      \field{sortinithash}{afb52128e5b4dc4b843768c0113d673b}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Next.js on Vercel (documentação)}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://vercel.com/docs/frameworks/full-stack/nextjs
+      \endverb
+      \verb{url}
+      \verb https://vercel.com/docs/frameworks/full-stack/nextjs
+      \endverb
+    \endentry
+    \entry{w3c_prov_dm}{online}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=446a1ae6601a5c59360c7d591c3992da}{%
+           family={{W3C}},
+           familyi={W\bibinitperiod}}}%
+      }
+      \strng{namehash}{446a1ae6601a5c59360c7d591c3992da}
+      \strng{fullhash}{446a1ae6601a5c59360c7d591c3992da}
+      \strng{bibnamehash}{446a1ae6601a5c59360c7d591c3992da}
+      \strng{authorbibnamehash}{446a1ae6601a5c59360c7d591c3992da}
+      \strng{authornamehash}{446a1ae6601a5c59360c7d591c3992da}
+      \strng{authorfullhash}{446a1ae6601a5c59360c7d591c3992da}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{PROV-DM: The PROV Data Model}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2013}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://www.w3.org/TR/prov-dm/
+      \endverb
+      \verb{url}
+      \verb https://www.w3.org/TR/prov-dm/
+      \endverb
+    \endentry
+    \entry{wang_e5_2024}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=cce05cab2c437e9c128f853684ee3137}{%
+           family={Wang},
+           familyi={W\bibinitperiod},
+           given={Liang},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a44174a97a52d8b64289ef831cb1ac37}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Nan},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=026d1f57876191243f47c0ec47352891}{%
+           family={Huang},
+           familyi={H\bibinitperiod},
+           given={Xiaolong},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=312f531e29a4681ac2abc9a6ebcde92a}{%
+           family={Yang},
+           familyi={Y\bibinitperiod},
+           given={Linjun},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=91d8356734700015f7c8f8a7303609f3}{%
+           family={Majumder},
+           familyi={M\bibinitperiod},
+           given={Rangan},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e5bfd490d91c5d1b935092ce3132a083}{%
+           family={Wei},
+           familyi={W\bibinitperiod},
+           given={Furu},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e9012e3e3adcfce14161e542a312bb44}
+      \strng{fullhash}{5a81cbb424928b29f66fe3aae6c72d9e}
+      \strng{bibnamehash}{e9012e3e3adcfce14161e542a312bb44}
+      \strng{authorbibnamehash}{e9012e3e3adcfce14161e542a312bb44}
+      \strng{authornamehash}{e9012e3e3adcfce14161e542a312bb44}
+      \strng{authorfullhash}{5a81cbb424928b29f66fe3aae6c72d9e}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv}
+      \field{title}{Multilingual E5 Text Embeddings: A Technical Report}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2402.05672
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2402.05672
+      \endverb
+    \endentry
+    \entry{wilkinson_fair_2016}{article}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=e88185c2eca4405ce11cb8920f485660}{%
+           family={Wilkinson},
+           familyi={W\bibinitperiod},
+           given={Mark\bibnamedelima D.},
+           giveni={M\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=93badcbcd9ff0747849763affb474199}{%
+           family={Dumontier},
+           familyi={D\bibinitperiod},
+           given={Michel},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cda28834d0f69262ef00bb56bd87a0c0}{%
+           family={Aalbersberg},
+           familyi={A\bibinitperiod},
+           given={IJsbrand\bibnamedelima Jan},
+           giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{d8f0363b3c965933a541bbcdf16fe221}
+      \strng{fullhash}{d8f0363b3c965933a541bbcdf16fe221}
+      \strng{bibnamehash}{d8f0363b3c965933a541bbcdf16fe221}
+      \strng{authorbibnamehash}{d8f0363b3c965933a541bbcdf16fe221}
+      \strng{authornamehash}{d8f0363b3c965933a541bbcdf16fe221}
+      \strng{authorfullhash}{d8f0363b3c965933a541bbcdf16fe221}
+      \field{sortinit}{W}
+      \field{sortinithash}{4315d78024d0cea9b57a0c6f0e35ed0d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Scientific Data}
+      \field{title}{The FAIR Guiding Principles for scientific data management and stewardship}
+      \field{volume}{3}
+      \field{year}{2016}
+      \field{pages}{160018}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/sdata.2016.18
+      \endverb
+    \endentry
+    \entry{zhang_bertscore_2019}{article}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=733e3732b7e3ce5cf2b04cf5e9bd9cf1}{%
+           family={Zhang},
+           familyi={Z\bibinitperiod},
+           given={Tianyi},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=68f7171bfe61e73c62ff3ffc4c84e5ab}{%
+           family={Kishore},
+           familyi={K\bibinitperiod},
+           given={Varsha},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5d3c3a632d3c15054a532172777a7e40}{%
+           family={Wu},
+           familyi={W\bibinitperiod},
+           given={Felix},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=68a0238356fbd88b34be8886f25938a7}{%
+           family={Weinberger},
+           familyi={W\bibinitperiod},
+           given={Kilian\bibnamedelima Q.},
+           giveni={K\bibinitperiod\bibinitdelim Q\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bda57b6734e461152eada7e447798ca8}{%
+           family={Artzi},
+           familyi={A\bibinitperiod},
+           given={Yoav},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{b7341c276394125587ea24e5ba844df4}
+      \strng{fullhash}{0f3fc6c6b2643b223fd923710ae91526}
+      \strng{bibnamehash}{b7341c276394125587ea24e5ba844df4}
+      \strng{authorbibnamehash}{b7341c276394125587ea24e5ba844df4}
+      \strng{authornamehash}{b7341c276394125587ea24e5ba844df4}
+      \strng{authorfullhash}{0f3fc6c6b2643b223fd923710ae91526}
+      \field{sortinit}{Z}
+      \field{sortinithash}{96892c0b0a36bb8557c40c49813d48b3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv}
+      \field{title}{BERTScore: Evaluating Text Generation with BERT}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{year}{2019}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/1904.09675
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/1904.09675
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+
