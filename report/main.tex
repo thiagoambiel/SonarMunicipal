@@ -331,12 +331,12 @@ A Figura~\ref{fig:pipeline} resume o pipeline em seis etapas: (E1) municípios, 
 \resizebox{\textwidth}{!}{%
 \begin{tikzpicture}[node distance=0.9cm, font=\small]
 \tikzstyle{box}=[draw, rounded corners, align=center, inner sep=6pt]
-\node[box] (e1) {E1\\Municípios (IBGE)};
-\node[box, right=0.6cm of e1] (e2) {E2\\Descoberta\\SAPL};
+\node[box] (e1) {E1\\Lista de\\municípios\\(IBGE)};
+\node[box, right=0.6cm of e1] (e2) {E2\\Descoberta\\de instâncias\\do SAPL};
 \node[box, right=0.6cm of e2] (e3) {E3\\Extração\\de PLs};
-\node[box, right=0.6cm of e3] (e4) {E4\\Ementa $\rightarrow$ Ação};
-\node[box, right=0.6cm of e4] (e5) {E5\\Embeddings\\+ Qdrant};
-\node[box, right=0.6cm of e5] (e6) {E6\\Indicadores\\+ Agrupamento};
+\node[box, right=0.6cm of e3] (e4) {E4\\Transformação\\de ementa\\em ação};
+\node[box, right=0.6cm of e4] (e5) {E5\\Indexação\\vetorial\\(Qdrant)};
+\node[box, right=0.6cm of e5] (e6) {E6\\Indicadores\\oficiais\\+ Agrupamento};
 \draw[->] (e1) -- (e2);
 \draw[->] (e2) -- (e3);
 \draw[->] (e3) -- (e4);

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  20 JAN 2026 13:43
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  20 JAN 2026 13:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1364,13 +1364,13 @@ Overfull \hbox (15.70193pt too wide) in paragraph at lines 506--506
 \T1/pcr/m/n/10 / / qdrant . tech / documentation / concepts /
  []
 
-
+[4]
 Overfull \hbox (28.63025pt too wide) in paragraph at lines 506--506
 \T1/pcr/m/n/10 br / api / docs / localidades$[] \T1/ptm/m/n/10 (-20) (acesso em
  07/01/2026). 
  []
 
-[4]
+
 Overfull \hbox (4.50194pt too wide) in paragraph at lines 506--506
 \T1/pcr/m/n/10 openai . com / index / gpt -[] 5 -[] system -[] card -[]
  []
@@ -1410,11 +1410,11 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40336 strings out of 478287
- 827926 string characters out of 5849289
+ 40316 strings out of 478287
+ 827595 string characters out of 5849289
  1556481 words of memory out of 5000000
- 57589 multiletter control sequences out of 15000+600000
- 531877 words of font info for 274 fonts, out of 8000000 for 9000
+ 57573 multiletter control sequences out of 15000+600000
+ 530332 words of font info for 268 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,13n,89p,1022b,3687s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
@@ -1422,15 +1422,14 @@ e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/share/texlive/texmf-dist/
 fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/t
 ype1/public/amsfonts/cm/cmr7.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
-lic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/am
-sfonts/cm/cmsy9.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/courier/ucrr
-8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (5 pages, 153177 bytes).
+lic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/couri
+er/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on main.pdf (5 pages, 145175 bytes).
 PDF statistics:
- 295 PDF objects out of 1000 (max. 8388607)
- 265 compressed objects within 3 object streams
+ 290 PDF objects out of 1000 (max. 8388607)
+ 262 compressed objects within 3 object streams
  59 named destinations out of 1000 (max. 500000)
- 64205 words of extra memory for PDF output out of 74296 (max. 10000000)
+ 63693 words of extra memory for PDF output out of 74296 (max. 10000000)
 
