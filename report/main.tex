@@ -429,11 +429,25 @@ Exemplo de tradução:
 \centering
 \small
 \begin{tabular}{p{0.18\linewidth} p{0.76\linewidth}}
-Ementa: & \textit{DISPÕE SOBRE A IMPLANTAÇÃO DE ESTUFAS COM HORTAS PRODUZIDAS COM GARRAFAS PET NAS ESCOLAS MUNICIPAIS DE MARABÁ E DA OUTRAS PROVIDÊNCIAS.} \\
+Ementa: & \textit{CRIA O PROGRAMA DE TRANSPORTE ESCOLAR SEGURINHO PARA CRIANÇAS DA EDUCAÇÃO PÚBLICA NO MUNICÍPIO DE MARABÁ.} \\
 \addlinespace[4pt]
-Ação: & \textit{Instalar estufas com hortas produzidas com garrafas pet nas escolas municipais.} \\
+Ação: & \textit{Criar um programa de transporte escolar para crianças da educação pública no município.} \\
 \end{tabular}
 \end{table}
+
+O prompt usado na transformação explicita que a saída deve ser uma recomendação de ação operacional no formato: verbo no infinitivo + objeto + complementos essenciais. A frase precisa ser imperativa, curta e livre de juridiquês, mantendo apenas o que é necessário para executar a política.
+
+Princípios gerais:
+\begin{enumerate}[leftmargin=*]
+  \item Remover casca jurídica e fórmulas padrão que não mudam a ação (por exemplo, ``dispõe sobre'', ``institui'', ``autoriza o Poder Executivo'', ``e dá outras providências'').
+  \item Preservar o conteúdo material da política: o que passa a existir, ser feito, fornecido ou garantido.
+  \item Converter o núcleo em verbo operacional (criar, implantar, emitir, adaptar, fornecer, atender).
+  \item Escolher o nível correto entre instrumento e resultado: quando há ``programa/projeto para [ação]'', priorizar o serviço final; quando não há ação explícita, manter o instrumento.
+  \item Eliminar contexto excessivo e manter apenas ação, objeto, público-alvo e local quando forem essenciais.
+  \item Neutralizar nomes fantasia de programas quando não forem o objeto principal; manter nomes apenas quando o objetivo é criar um rótulo (datas, prêmios, selos ou eventos).
+\end{enumerate}
+
+No exemplo acima, a transformação elimina o nome fantasia e preserva apenas o núcleo operacional, destacando o que precisa ser executado.
 
 Foi criado um conjunto de dados de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas, geradas por um LLM da família GPT-5.1 \cite{openai_gpt51_model,openai_gpt51_system_card}. O objetivo é realizar transferência de aprendizado, isto é, aproveitar um modelo já treinado e ajustá-lo à tarefa com poucos exemplos. Como modelo base para o fine-tuning, utilizamos o PTT5-v2, voltado ao português \cite{piau_ptt5v2_2024}. O PTT5-v2 é uma variante do modelo T5 do Google, treinada com textos em português pela Unicamp \cite{raffel_t5_2020}.
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  21 JAN 2026 17:15
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2025.7.17)  21 JAN 2026 19:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1328,61 +1328,61 @@ Overfull \hbox (10.12755pt too wide) in paragraph at lines 431--436
  []
 
 
-Overfull \hbox (1.63242pt too wide) in paragraph at lines 440--441
+Overfull \hbox (1.63242pt too wide) in paragraph at lines 454--455
 []\T1/ptm/m/n/10 (-20) O mo-delo tra-du-tor foi trei-nado como ta-refa seq2seq 
 (sequên-
  []
 
 [3]
-Overfull \hbox (18.76018pt too wide) in paragraph at lines 494--503
+Overfull \hbox (18.76018pt too wide) in paragraph at lines 508--517
  [][] 
  []
 
-
-Overfull \hbox (2.30281pt too wide) in paragraph at lines 519--519
+[4]
+Overfull \hbox (2.30281pt too wide) in paragraph at lines 533--533
 \T1/ptm/m/it/10 (-20) Apoio ao Pro-cesso Le-gis-la-tivo (SAPL)\T1/ptm/m/n/10 (-
 20) . \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$\T1/pcr/m/n/10 https :
 
  []
 
 
-Overfull \hbox (3.06674pt too wide) in paragraph at lines 519--519
+Overfull \hbox (3.06674pt too wide) in paragraph at lines 533--533
 []\T1/ptm/m/n/10 (-20) Django REST Fra-mework. \T1/ptm/m/it/10 (-20) Pa-gi-na-t
 ion\T1/ptm/m/n/10 (-20) . \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$\T
 1/pcr/m/n/10 https :
  []
 
 
-Overfull \hbox (17.13025pt too wide) in paragraph at lines 519--519
+Overfull \hbox (17.13025pt too wide) in paragraph at lines 533--533
 \T1/pcr/m/n/10 api -[] guide / pagination/$[] \T1/ptm/m/n/10 (-20) (acesso em 0
 7/01/2026). 
  []
 
-[4]
-Overfull \hbox (4.30194pt too wide) in paragraph at lines 519--519
+
+Overfull \hbox (4.30194pt too wide) in paragraph at lines 533--533
 \T1/pcr/m/n/10 qdrant . tech / documentation / concepts /
  []
 
 
-Overfull \hbox (10.63025pt too wide) in paragraph at lines 519--519
+Overfull \hbox (10.63025pt too wide) in paragraph at lines 533--533
 \T1/pcr/m/n/10 api / docs / localidades$[] \T1/ptm/m/n/10 (-20) (acesso em 07/0
 1/2026). 
  []
 
 
-Overfull \hbox (4.50194pt too wide) in paragraph at lines 519--519
+Overfull \hbox (4.50194pt too wide) in paragraph at lines 533--533
 \T1/pcr/m/n/10 openai . com / index / gpt -[] 5 -[] system -[] card -[]
  []
 
 
-Overfull \hbox (8.09984pt too wide) in paragraph at lines 519--519
+Overfull \hbox (8.09984pt too wide) in paragraph at lines 533--533
 \T1/ptm/m/n/10 (-20) of Quan-ti-zed LLMs^^Q. Em: \T1/ptm/m/it/10 (-20) ar-Xiv \
 T1/ptm/m/n/10 (-20) (2023). \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20) : []$
 \T1/pcr/m/n/10 https :
  []
 
 
-Overfull \hbox (14.00029pt too wide) in paragraph at lines 519--519
+Overfull \hbox (14.00029pt too wide) in paragraph at lines 533--533
 []\T1/ptm/m/n/10 (-20) Vercel. \T1/ptm/m/it/10 (-20) Next.js on Ver-cel (do-cu-
 men-ta-ção)\T1/ptm/m/n/10 (-20) . \T1/ptm/m/sc/10 (-20) url\T1/ptm/m/n/10 (-20)
  : []$\T1/pcr/m/n/10 https :
@@ -1396,11 +1396,11 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 40308 strings out of 478287
- 827732 string characters out of 5849289
- 1557654 words of memory out of 5000000
+ 40317 strings out of 478287
+ 827789 string characters out of 5849289
+ 1558654 words of memory out of 5000000
  57581 multiletter control sequences out of 15000+600000
- 531857 words of font info for 258 fonts, out of 8000000 for 9000
+ 531987 words of font info for 260 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,11n,89p,1022b,3683s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
@@ -1412,10 +1412,10 @@ lic/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/couri
 er/ucrr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb><
 /usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
 ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (5 pages, 146637 bytes).
+Output written on main.pdf (5 pages, 147824 bytes).
 PDF statistics:
- 299 PDF objects out of 1000 (max. 8388607)
- 271 compressed objects within 3 object streams
- 61 named destinations out of 1000 (max. 500000)
+ 306 PDF objects out of 1000 (max. 8388607)
+ 278 compressed objects within 3 object streams
+ 67 named destinations out of 1000 (max. 500000)
  62157 words of extra memory for PDF output out of 74296 (max. 10000000)
 
