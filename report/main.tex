@@ -424,6 +424,14 @@ Para auditoria, cada registro mantém proveniência mínima: instância de orige
 
 Ementas têm alta variabilidade e linguagem abreviada. Para reduzir ruído na busca e melhorar a interpretação do resultado, o projeto transforma ementas em recomendações de ação, preservando a semântica.
 
+Exemplo de tradução:
+\begin{quote}
+\small
+\raggedright
+Ementa: DISPÕE SOBRE A IMPLANTAÇÃO DE ESTUFAS COM HORTAS PRODUZIDAS COM GARRAFAS PET NAS ESCOLAS MUNICIPAIS DE MARABÁ E DA OUTRAS PROVIDÊNCIAS.\par
+Ação: Instalar estufas com hortas produzidas com garrafas pet nas escolas municipais.
+\end{quote}
+
 Foi criado um conjunto de dados de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas, geradas por um LLM da família GPT-5.1 \cite{openai_gpt51_model,openai_gpt51_system_card}. O objetivo é realizar transferência de aprendizado, isto é, aproveitar um modelo já treinado e ajustá-lo à tarefa com poucos exemplos. Como modelo base para o fine-tuning, utilizamos o PTT5-v2, voltado ao português \cite{piau_ptt5v2_2024}. O PTT5-v2 é uma variante do modelo T5 do Google, treinada com textos em português pela Unicamp \cite{raffel_t5_2020}.
 
 O modelo tradutor foi treinado como tarefa seq2seq (sequência para sequência). O ajuste foi feito com QLoRA-4bit \cite{dettmers_qlora_2023}. A qualidade foi avaliada por BERTScore \cite{zhang_bertscore_2019}, obtendo 84\% na avaliação interna do projeto.
