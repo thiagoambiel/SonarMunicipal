@@ -1,7 +1,3 @@
-Segue uma versão mais enxuta e “afiada” da descrição da transformação, já cobrindo explicitamente o caso do **“Segurinho”**.
-
----
-
 ## 1. O que a transformação faz
 
 Dada uma ementa de PL em linguagem jurídica, a tarefa é gerar **uma recomendação de ação operacional**, no formato:
