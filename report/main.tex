@@ -4,177 +4,6 @@
 % Compilacao sugerida: pdflatex -> biber -> pdflatex -> pdflatex
 % ======================================================================
 
-\begin{filecontents*}{sonar-references.bib}
-@online{interlegis_sapl,
-  author   = {{Senado Federal} and {Programa Interlegis}},
-  title    = {Sistema de Apoio ao Processo Legislativo ({SAPL})},
-  url      = {https://www12.senado.leg.br/interlegis/produtos/sapl},
-  urldate  = {2026-01-07}
-}
-
-@online{interlegis_sapl_repo,
-  author   = {{Interlegis}},
-  title    = {{SAPL}: Sistema de Apoio ao Processo Legislativo (repositório oficial)},
-  url      = {https://github.com/interlegis/sapl},
-  urldate  = {2026-01-07}
-}
-
-@online{ibge_localidades_api,
-  author   = {{IBGE}},
-  title    = {{API} de Localidades (documentação)},
-  url      = {https://servicodados.ibge.gov.br/api/docs/localidades},
-  urldate  = {2026-01-07}
-}
-
-@phdthesis{fielding_rest_2000,
-  author = {Fielding, Roy Thomas},
-  title  = {Architectural Styles and the Design of Network-based Software Architectures},
-  school = {University of California, Irvine},
-  year   = {2000},
-  url    = {https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm},
-  urldate = {2026-01-07}
-}
-
-@online{openapi_3_2,
-  author   = {{OpenAPI Initiative}},
-  title    = {{OpenAPI} Specification (v3.2.0)},
-  year     = {2024},
-  url      = {https://spec.openapis.org/oas/v3.2.0.html},
-  urldate  = {2026-01-07}
-}
-
-@online{swagger_ui,
-  author   = {{Swagger}},
-  title    = {Swagger {UI}: {REST} {API} Documentation Tool},
-  url      = {https://swagger.io/tools/swagger-ui/},
-  urldate  = {2026-01-07}
-}
-
-@online{drf_pagination,
-  author   = {{Django REST Framework}},
-  title    = {Pagination},
-  url      = {https://www.django-rest-framework.org/api-guide/pagination/},
-  urldate  = {2026-01-07}
-}
-
-@online{w3c_prov_dm,
-  author   = {{W3C}},
-  title    = {{PROV-DM}: The {PROV} Data Model},
-  year     = {2013},
-  url      = {https://www.w3.org/TR/prov-dm/},
-  urldate  = {2026-01-07}
-}
-
-@article{wilkinson_fair_2016,
-  author  = {Wilkinson, Mark D. and Dumontier, Michel and Aalbersberg, IJsbrand Jan and others},
-  title   = {The {FAIR} Guiding Principles for scientific data management and stewardship},
-  journal = {Scientific Data},
-  year    = {2016},
-  volume  = {3},
-  pages   = {160018},
-  doi     = {10.1038/sdata.2016.18}
-}
-
-@article{wang_e5_2024,
-  author  = {Wang, Liang and Yang, Nan and Huang, Xiaolong and Yang, Linjun and Majumder, Rangan and Wei, Furu},
-  title   = {Multilingual {E5} Text Embeddings: A Technical Report},
-  journal = {arXiv},
-  year    = {2024},
-  url     = {https://arxiv.org/abs/2402.05672},
-  urldate = {2026-01-07}
-}
-
-@article{piau_ptt5v2_2024,
-  author  = {Piau, Marcos and Vieira, Matheus P. and others},
-  title   = {{PTT5-v2}: A Closer Look at Continued Pretraining of {T5} Models for the Portuguese Language},
-  journal = {arXiv},
-  year    = {2024},
-  url     = {https://arxiv.org/abs/2406.10806},
-  urldate = {2026-01-07}
-}
-
-@article{dettmers_qlora_2023,
-  author  = {Dettmers, Tim and Pagnoni, Artidoro and Holtzman, Ari and Zettlemoyer, Luke},
-  title   = {{QLoRA}: Efficient Finetuning of Quantized {LLMs}},
-  journal = {arXiv},
-  year    = {2023},
-  url     = {https://arxiv.org/abs/2305.14314},
-  urldate = {2026-01-07}
-}
-
-@article{zhang_bertscore_2019,
-  author  = {Zhang, Tianyi and Kishore, Varsha and Wu, Felix and Weinberger, Kilian Q. and Artzi, Yoav},
-  title   = {{BERTScore}: Evaluating Text Generation with {BERT}},
-  journal = {arXiv},
-  year    = {2019},
-  url     = {https://arxiv.org/abs/1904.09675},
-  urldate = {2026-01-07}
-}
-
-@article{raffel_t5_2020,
-  author  = {Raffel, Colin and Shazeer, Noam and Roberts, Adam and Lee, Katherine and Narang, Sharan and Matena, Michael and Zhou, Yanqi and Li, Wei and Liu, Peter J.},
-  title   = {Exploring the Limits of Transfer Learning with a Unified {Text-to-Text} Transformer},
-  journal = {Journal of Machine Learning Research},
-  year    = {2020},
-  volume  = {21},
-  number  = {140},
-  pages   = {1--67},
-  url     = {https://jmlr.org/papers/v21/20-074.html},
-  urldate = {2026-01-07}
-}
-
-@online{qdrant_overview,
-  author   = {{Qdrant}},
-  title    = {{Qdrant} Documentation},
-  url      = {https://qdrant.tech/documentation/},
-  urldate  = {2026-01-07}
-}
-
-@online{qdrant_collections,
-  author   = {{Qdrant}},
-  title    = {Collections (conceitos)},
-  url      = {https://qdrant.tech/documentation/concepts/collections/},
-  urldate  = {2026-01-07}
-}
-
-@online{hf_tei,
-  author   = {{Hugging Face}},
-  title    = {Text Embeddings Inference ({TEI})},
-  url      = {https://huggingface.github.io/text-embeddings-inference/},
-  urldate  = {2026-01-07}
-}
-
-@online{vercel_nextjs,
-  author   = {{Vercel}},
-  title    = {{Next.js} on {Vercel} (documentação)},
-  url      = {https://vercel.com/docs/frameworks/full-stack/nextjs},
-  urldate  = {2026-01-07}
-}
-
-@online{openai_gpt51_model,
-  author   = {{OpenAI}},
-  title    = {{GPT-5.1} Model ({OpenAI} {API})},
-  year     = {2026},
-  url      = {https://platform.openai.com/docs/models/gpt-5.1},
-  urldate  = {2026-01-07}
-}
-
-@online{openai_gpt51_system_card,
-  author   = {{OpenAI}},
-  title    = {{GPT-5.1} Instant and {GPT-5.1} Thinking: System Card Addendum},
-  year     = {2025},
-  url      = {https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/},
-  urldate  = {2026-01-07}
-}
-
-@online{inep_microdados_censo_escolar,
-  author   = {{INEP}},
-  title    = {Censo Escolar: Microdados (dados abertos)},
-  url      = {https://www.gov.br/inep/pt-br/acesso-a-informacao/dados-abertos/microdados/censo-escolar},
-  urldate  = {2026-01-07}
-}
-\end{filecontents*}
-
 \documentclass[10pt,a4paper]{article}
 
 % -------------------------
@@ -414,15 +243,11 @@ A extração foi desenhada para ser adaptável ao vocabulário local, já que r�
 
 Na primeira execução dos coletores, foram encontradas 1.259 instâncias do SAPL. A extração automatizada de PLs foi possível em 322 instâncias, totalizando 220.065 PLs coletados. A discrepância decorre de customizações locais (mudanças de rotas, proxies, autenticação, regras anti-robô e parametrizações) que impedem ou dificultam o acesso programático.
 
-\subsubsection{Rastreabilidade}
-
-Para auditoria, cada registro mantém proveniência mínima: instância de origem, identificadores do processo legislativo e carimbo temporal de coleta. O PROV-DM formaliza esse conceito \cite{w3c_prov_dm}.
-
 % ======================================================================
 \subsection{Construção do tradutor de ementas para ações}
 \label{sec:tradutor}
 
-Ementas têm alta variabilidade e linguagem abreviada. Para reduzir ruído na busca e melhorar a interpretação do resultado, o projeto transforma ementas em recomendações de ação, preservando a semântica.
+Ementas têm alta variabilidade e linguagem abreviada. Usá-las diretamente em busca semântica tende a produzir resultados pouco satisfatórios: modelos de codificação não são treinados nesse estilo jurídico e as respostas retornam na mesma linguagem, dificultando a interpretação do usuário. Para reduzir ruído na busca e melhorar a interpretação do resultado, o projeto transforma ementas em recomendações de ação, preservando a semântica.
 
 Exemplo de tradução:
 \begin{table}[H]
@@ -449,7 +274,7 @@ Princípios gerais:
 
 No exemplo acima, a transformação elimina o nome fantasia e preserva apenas o núcleo operacional, destacando o que precisa ser executado.
 
-Foi criado um conjunto de dados de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas, geradas por um LLM da família GPT-5.1 \cite{openai_gpt51_model,openai_gpt51_system_card}. O objetivo é realizar transferência de aprendizado, isto é, aproveitar um modelo já treinado e ajustá-lo à tarefa com poucos exemplos. Como modelo base para o fine-tuning, utilizamos o PTT5-v2, voltado ao português \cite{piau_ptt5v2_2024}. O PTT5-v2 é uma variante do modelo T5 do Google, treinada com textos em português pela Unicamp \cite{raffel_t5_2020}.
+Foi criado um conjunto de dados de pares \textit{ementa $\rightarrow$ ação} com 1.000 amostras sintéticas. As amostras foram obtidas apresentando ementas reais ao modelo e registrando as recomendações de ação geradas. Utilizamos o GPT-5.1-Thinking \cite{openai_gpt51_model,openai_gpt51_system_card}, com um prompt desenhado para gerar 100 amostras por vez. O objetivo é realizar transferência de aprendizado, isto é, aproveitar um modelo já treinado e ajustá-lo à tarefa com poucos exemplos. Como modelo base para o fine-tuning, utilizamos o PTT5-v2, voltado ao português \cite{piau_ptt5v2_2024}. O PTT5-v2 é uma variante do modelo T5 do Google, treinada com textos em português pela Unicamp \cite{raffel_t5_2020}.
 
 O modelo tradutor foi treinado como tarefa seq2seq (sequência para sequência). O ajuste foi feito com QLoRA-4bit \cite{dettmers_qlora_2023}. A qualidade foi avaliada por BERTScore \cite{zhang_bertscore_2019}, obtendo 84\% na avaliação interna do projeto.
 
@@ -459,15 +284,21 @@ Após o treinamento, todas as ementas coletadas foram convertidas em ações, fo
 \subsection{Codificação das ações para busca semântica}
 \label{sec:busca}
 
-Para indexar ações e consultas no mesmo espaço vetorial, foi utilizado o Multilingual E5 \cite{wang_e5_2024}, adequado ao cenário de pergunta e resposta. As embeddings foram armazenadas no Qdrant \cite{qdrant_overview,qdrant_collections}, permitindo recuperar as top-$K$ ações mais similares a uma pergunta.
+Com o domínio de ações definido, o passo seguinte é selecionar quais ações recomendar para cada pergunta do usuário. A escolha natural é a busca semântica, que retorna as top-$K$ ações mais compatíveis com o problema descrito.
 
-Para viabilizar hospedagem de baixo custo do serviço de embeddings, uma opção prática é usar Text Embeddings Inference (TEI) \cite{hf_tei}.
+Para indexar ações e consultas no mesmo espaço vetorial, foi utilizado o Multilingual E5 \cite{wang_e5_2024}. Esse modelo é adequado ao cenário de pergunta e resposta porque foi treinado com supervisão fraca e aprendizado contrastivo em pares de título--conteúdo e de pergunta--resposta. Como as ementas são resumos dos projetos de lei e as ações transformadas podem ser tratadas como respostas, essa configuração reduz o risco de \textit{domain shift}. Todas as ações foram codificadas com esse modelo.
+
+As embeddings foram armazenadas no Qdrant \cite{qdrant_overview,qdrant_collections}, escolhido como banco vetorial para viabilizar uma hospedagem de baixo custo do projeto na nuvem.
+
+Para o serviço de embeddings, uma opção prática de implantação é usar Text Embeddings Inference (TEI) \cite{hf_tei}.
 
 % ======================================================================
 \subsection{Indicadores para simulação de efeito no mundo real}
 \label{sec:indicadores}
 
-Indicadores em séries temporais foram construídos por município, usando fontes oficiais. No indicador educacional, por exemplo, utilizam-se microdados do Censo Escolar (INEP) \cite{inep_microdados_censo_escolar}. A comparação do indicador na data de apresentação do PL com valores posteriores produz uma estimativa operacional de variação, com horizonte escolhido pelo usuário.
+Resultados de busca semântica isoladamente podem não refletir com precisão dinâmicas sociais reais, dadas limitações de treinamento do modelo. Para aproximar o sistema do mundo real, construímos indicadores em séries temporais por município, com dados oficiais e atributos municipais comparáveis ao longo do tempo. Implementamos dois indicadores. O primeiro mede segurança pela Taxa de Homicídios por 100 mil habitantes, com base no SINESP/MJSP \cite{mjsp_homicidios}. O segundo estima evasão escolar pela Taxa de Matrículas em Ensino Regular por 100 mil habitantes, a partir dos microdados do Censo Escolar (INEP) \cite{inep_microdados_censo_escolar}.
+
+Esses indicadores permitem estimar variações operacionais ao comparar o valor na data de apresentação do PL com o valor em meses ou anos posteriores. Como não há metodologia única para o tempo de efeito de uma ação legislativa, o sistema permite que o usuário escolha o horizonte temporal usado no cálculo.
 
 Observação: essa estimativa é associativa, não causal. Ela descreve mudanças no período posterior, mas não prova que o PL causou a variação.
 
@@ -475,26 +306,30 @@ Observação: essa estimativa é associativa, não causal. Ela descreve mudança
 \subsection{Agrupamento de projetos em políticas públicas}
 \label{sec:agrupamento}
 
-Para aumentar robustez, PLs semanticamente similares são agrupados em clusters chamados ``políticas públicas''. A análise conjunta permite calcular efeito médio e dispersão. Para ranquear políticas, foi definida a métrica:
+Analisar PLs individualmente dá pouco poder estatístico e dificulta inferir benefícios com uma única amostra. Para aumentar robustez, PLs semanticamente similares são agrupados em clusters chamados ``políticas públicas''. A análise conjunta permite calcular efeito médio e dispersão e reduz a ambiguidade quando vários PLs são aplicados simultaneamente no mesmo município. Ao evidenciar ações adotadas por vários municípios e associadas a bons resultados, o agrupamento torna a análise mais confiável.
+
+Para ranquear políticas, foi definida a métrica:
 
 \[
 Q = \frac{n_{\text{positivos}}}{n} \times \frac{n}{n+1}
 \]
 
-onde $n_{\text{positivos}}$ é o número de municípios com efeito considerado positivo (de acordo com o objetivo do indicador) e $n$ é o total de municípios no grupo. O fator $\frac{n}{n+1}$ reduz o peso de grupos muito pequenos.
+onde $n_{\text{positivos}}$ é o número de municípios com efeito considerado positivo (de acordo com o objetivo do indicador) e $n$ é o total de municípios no grupo. O fator $\frac{n}{n+1}$ reduz o peso de grupos muito pequenos. Um efeito positivo depende da meta do indicador: por exemplo, se o objetivo é reduzir criminalidade, uma queda no indicador é considerada um bom resultado.
 
 % ======================================================================
 \subsection{Desenvolvimento da plataforma web}
 \label{sec:plataforma}
 
-A plataforma foi desenvolvida em React com Next.js e hospedada na Vercel \cite{vercel_nextjs}. A arquitetura integra três componentes: interface web, serviço de embeddings e banco vetorial (Qdrant), conectados por APIs.
+A plataforma Sonar Municipal foi desenvolvida em React com Next.js e hospedada na Vercel \cite{vercel_nextjs}. A arquitetura integra três componentes: interface web, serviço de embeddings e banco vetorial (Qdrant), conectados por APIs. O código completo do projeto (coleta, treinamento, recomendação e interface web) está disponível em \url{https://github.com/thiagoambiel/SonarMunicipal}.
 
 Funcionalidades principais:
 \begin{enumerate}[leftmargin=*]
-  \item recomendação de políticas públicas com estimativa de efeito esperado;
-  \item detalhamento de PLs (ementa, data, link do SAPL e gráfico do indicador);
+  \item recomendação de políticas públicas com estimativa de efeito esperado baseada em dados oficiais;
+  \item detalhamento de PLs (ementa, data, link do SAPL e gráfico interativo do indicador após a apresentação);
   \item busca semântica no acervo para apoiar ideação e comparação de propostas.
 \end{enumerate}
+
+Para reduzir custo de operação, o serviço de embeddings pode ser hospedado via Hugging Face, e o Qdrant armazena os vetores de ações indexadas pelo modelo E5.
 
 % ======================================================================
 \section{Resultados}

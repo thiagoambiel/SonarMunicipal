@@ -666,8 +666,8 @@
       \strng{authorbibnamehash}{e9012e3e3adcfce14161e542a312bb44}
       \strng{authornamehash}{e9012e3e3adcfce14161e542a312bb44}
       \strng{authorfullhash}{5a81cbb424928b29f66fe3aae6c72d9e}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -710,6 +710,34 @@
       \endverb
       \verb{url}
       \verb https://huggingface.github.io/text-embeddings-inference/
+      \endverb
+    \endentry
+    \entry{mjsp_homicidios}{online}{}
+      \name{author}{1}{}{%
+        {{hash=2936785a1c837a0ce8943ccbbb392432}{%
+           family={{Ministério da Justiça e Segurança Pública}},
+           familyi={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{2936785a1c837a0ce8943ccbbb392432}
+      \strng{fullhash}{2936785a1c837a0ce8943ccbbb392432}
+      \strng{bibnamehash}{2936785a1c837a0ce8943ccbbb392432}
+      \strng{authorbibnamehash}{2936785a1c837a0ce8943ccbbb392432}
+      \strng{authornamehash}{2936785a1c837a0ce8943ccbbb392432}
+      \strng{authorfullhash}{2936785a1c837a0ce8943ccbbb392432}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Sistema Nacional de Estatísticas de Segurança Pública ({SINESP})}
+      \field{urlday}{7}
+      \field{urlmonth}{1}
+      \field{urlyear}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://dados.mj.gov.br/dataset/sistema-nacional-de-estatisticas-de-seguranca-publica
+      \endverb
+      \verb{url}
+      \verb https://dados.mj.gov.br/dataset/sistema-nacional-de-estatisticas-de-seguranca-publica
       \endverb
     \endentry
     \entry{inep_microdados_censo_escolar}{online}{}

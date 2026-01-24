@@ -2359,17 +2359,17 @@
     <bcf:citekey order="12">openapi_3_2</bcf:citekey>
     <bcf:citekey order="12">swagger_ui</bcf:citekey>
     <bcf:citekey order="13">drf_pagination</bcf:citekey>
-    <bcf:citekey order="14">w3c_prov_dm</bcf:citekey>
-    <bcf:citekey order="15">openai_gpt51_model</bcf:citekey>
-    <bcf:citekey order="15">openai_gpt51_system_card</bcf:citekey>
-    <bcf:citekey order="16">piau_ptt5v2_2024</bcf:citekey>
-    <bcf:citekey order="17">raffel_t5_2020</bcf:citekey>
-    <bcf:citekey order="18">dettmers_qlora_2023</bcf:citekey>
-    <bcf:citekey order="19">zhang_bertscore_2019</bcf:citekey>
-    <bcf:citekey order="20">wang_e5_2024</bcf:citekey>
-    <bcf:citekey order="21">qdrant_overview</bcf:citekey>
-    <bcf:citekey order="21">qdrant_collections</bcf:citekey>
-    <bcf:citekey order="22">hf_tei</bcf:citekey>
+    <bcf:citekey order="14">openai_gpt51_model</bcf:citekey>
+    <bcf:citekey order="14">openai_gpt51_system_card</bcf:citekey>
+    <bcf:citekey order="15">piau_ptt5v2_2024</bcf:citekey>
+    <bcf:citekey order="16">raffel_t5_2020</bcf:citekey>
+    <bcf:citekey order="17">dettmers_qlora_2023</bcf:citekey>
+    <bcf:citekey order="18">zhang_bertscore_2019</bcf:citekey>
+    <bcf:citekey order="19">wang_e5_2024</bcf:citekey>
+    <bcf:citekey order="20">qdrant_overview</bcf:citekey>
+    <bcf:citekey order="20">qdrant_collections</bcf:citekey>
+    <bcf:citekey order="21">hf_tei</bcf:citekey>
+    <bcf:citekey order="22">mjsp_homicidios</bcf:citekey>
     <bcf:citekey order="23">inep_microdados_censo_escolar</bcf:citekey>
     <bcf:citekey order="24">vercel_nextjs</bcf:citekey>
     <bcf:citekey order="25">interlegis_sapl</bcf:citekey>
@@ -2391,8 +2391,9 @@
     <bcf:citekey order="41">zhang_bertscore_2019</bcf:citekey>
     <bcf:citekey order="42">wang_e5_2024</bcf:citekey>
     <bcf:citekey order="43">hf_tei</bcf:citekey>
-    <bcf:citekey order="44">inep_microdados_censo_escolar</bcf:citekey>
-    <bcf:citekey order="45">vercel_nextjs</bcf:citekey>
+    <bcf:citekey order="44">mjsp_homicidios</bcf:citekey>
+    <bcf:citekey order="45">inep_microdados_censo_escolar</bcf:citekey>
+    <bcf:citekey order="46">vercel_nextjs</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">
