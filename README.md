@@ -1,9 +1,10 @@
 ![](public/logo.png)
 
-[![Next.js](https://img.shields.io/badge/Next.js-App%20Router-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![HuggingFace](https://img.shields.io/badge/Hugging%20Face-API%20de%20Infer%C3%AAncia-FFD21E?style=for-the-badge&logo=huggingface&logoColor=000)](https://huggingface.co/)
-[![Qdrant](https://img.shields.io/badge/Qdrant-Banco%20Vetorial-FF4F8B?style=for-the-badge)](https://qdrant.tech/)
+[![Next.js](https://img.shields.io/badge/Next.js-16.0.7-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![HuggingFace](https://img.shields.io/badge/Hugging%20Face-3.1.2-FFD21E?style=for-the-badge&logo=huggingface&logoColor=000)](https://huggingface.co/)
+[![Qdrant](https://img.shields.io/badge/Qdrant-1.12.0-FF4F8B?style=for-the-badge)](https://qdrant.tech/)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
 
 **Sonar Municipal** é uma plataforma web para apoiar a elaboração e a análise de Projetos
 de Lei (PLs) em municípios, em um contexto de alta diversidade legislativa. O sistema
