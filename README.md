@@ -1,26 +1,28 @@
 ![](public/logo.png)
 
 [![Next.js](https://img.shields.io/badge/Next.js-App%20Router-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![HuggingFace](https://img.shields.io/badge/Hugging%20Face-Inference%20API-FFD21E?style=for-the-badge&logo=huggingface&logoColor=000)](https://huggingface.co/)
-[![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-FF4F8B?style=for-the-badge)](https://qdrant.tech/)
+[![HuggingFace](https://img.shields.io/badge/Hugging%20Face-API%20de%20Inferencia-FFD21E?style=for-the-badge&logo=huggingface&logoColor=000)](https://huggingface.co/)
+[![Qdrant](https://img.shields.io/badge/Qdrant-Banco%20Vetorial-FF4F8B?style=for-the-badge)](https://qdrant.tech/)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
-**Sonar Municipal** e uma aplicacao Next.js (App Router) com rotas `/api` que gera
-embeddings via HuggingFace Inference API e faz busca semantica no Qdrant. Alem da
-busca, o backend agrupa projetos semelhantes em **politicas** e calcula efeitos
-com indicadores reais (ex.: homicidios, matriculas).
+**Sonar Municipal** e uma plataforma web para apoiar a elaboracao e a analise de Projetos
+de Lei (PLs) em municipios, em um contexto de alta diversidade legislativa. O sistema
+padroniza e automatiza a descoberta e coleta de PLs em instancias SAPL, transforma
+ementas em recomendacoes de ação, permite busca semantica por demandas dos usuarios,
+simula efeitos em indicadores oficiais ao longo do tempo e agrupa PLs semelhantes em
+**politicas publicas** para analise conjunta. 
 
-# How it Works?
+# Como funciona?
 ```mermaid
 flowchart LR
-  A[UI / Query] --> B[API /search]
-  B --> C[HuggingFace Inference API\nE5 embeddings]
-  C --> D[Qdrant Vector Search]
-  D --> E[Resultados de PLs]
-  E --> F[API /policies\nAgrupamento + Indicadores]
+  E1[Lista de municipios\n(IBGE)] --> E2[Descoberta de instancias\ndo SAPL]
+  E2 --> E3[Extracao\nde PLs]
+  E3 --> E4[Transformacao\nde ementa\nem acao]
+  E4 --> E5[Indexacao\nvetorial\n(Qdrant)]
+  E5 --> E6[Indicadores\noficiais\n+ Agrupamento]
 ```
 <p align="center">
-  <b>Figure 1:</b> Fluxo de busca semantica e geracao de politicas.
+  <b>Figura 1:</b> Fluxo de busca semantica e geracao de politicas.
 </p>
 
 ## API (rotas Next.js)
@@ -38,7 +40,7 @@ curl -X POST http://localhost:3000/api/search \
   -d '{ "query": "Como reduzir homicidios no municipio?", "top_k": 25 }'
 ```
 
-## Environment Variables
+## Variaveis de ambiente
 Crie `.env.local` na raiz:
 ```bash
 HF_API_TOKEN=...
@@ -58,18 +60,18 @@ EDUCATION_INDICATOR_CITY_COL=municipio
 EDUCATION_INDICATOR_VALUE_COL=taxa_matriculas_100k
 ```
 
-## Installation
+## Instalacao
 Requisitos: Node.js 18+ e npm.
 
 ```bash
 npm install
 ```
 
-## Basic Usage
+## Uso basico
 ```bash
 npm run dev
 ```
-- App: http://localhost:3000
+- Aplicacao: http://localhost:3000
 - API: http://localhost:3000/api/...
 
 Build de producao:
@@ -78,9 +80,9 @@ npm run build
 npm start
 ```
 
-## Experiments (pipeline completo)
-O backend FastAPI original, os notebooks e os scripts de coleta ficaram em
-`experiments/`. Para reconstruir o dataset do zero, use o guia:
+## Experimentos (pipeline completo)
+Os notebooks e os scripts de coleta ficaram em `experiments/`. Para reconstruir
+o dataset do zero, use o guia:
 
 - `experiments/DATASET.MD`
 
@@ -94,4 +96,3 @@ Resumo do pipeline:
 - `src/app`: paginas e rotas de API do Next.js.
 - `public/`: assets do frontend (inclui o banner).
 - `experiments/`: backend antigo, notebooks e ferramentas de dados.
-
