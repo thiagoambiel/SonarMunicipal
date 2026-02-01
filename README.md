@@ -82,9 +82,16 @@ npm start
 
 ## Experimentos e Reprodutibilidade
 Os notebooks e os scripts de coleta ficaram em `experiments/`. Para reconstruir
-o dataset do zero, use o guia:
+o dataset do zero, use os atalhos abaixo:
 
-- `experiments/DATASET.MD`
+| Link | Descrição |
+| --- | --- |
+| [![experiments](https://img.shields.io/badge/experiments-Visao%20geral-0F4C81?style=for-the-badge)](experiments/README.MD) | Visão geral do pipeline e guias de execução. |
+| [![DATASET.MD](https://img.shields.io/badge/DATASET.MD-Guia%20de%20Dataset-2D9CDB?style=for-the-badge)](experiments/DATASET.MD) | Passo a passo para reconstruir o dataset final (`dataset.npy`). |
+| [![core](https://img.shields.io/badge/core-Documentacao%20do%20Modulo-1565C0?style=for-the-badge)](experiments/core/README.MD) | Documentação do módulo `core`. |
+| [![sapl_finder](https://img.shields.io/badge/sapl__finder-Descoberta%20SAPL-2E7D32?style=for-the-badge)](experiments/tools/sapl_finder/README.MD) | Descoberta de instâncias do SAPL. |
+| [![sapl_scrapper](https://img.shields.io/badge/sapl__scrapper-Raspagem%20de%20PLs-7B1FA2?style=for-the-badge)](experiments/tools/sapl_scrapper/README.MD) | Raspagem de projetos de lei. |
+| [![notebooks](https://img.shields.io/badge/notebooks-Analises%20e%20Treinos-FF8F00?style=for-the-badge)](experiments/notebooks) | Notebooks de análises, inferência e fine-tuning. |
 
 Resumo do pipeline:
 1. Descobrir instancias SAPL (`tools/sapl_finder`).
