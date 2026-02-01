@@ -1,26 +1,53 @@
-# Sonar Municipal — Next.js + Qdrant + HuggingFace
+![](public/logo.png)
 
-Aplicação Next.js (App Router) com backend em rotas `/api` que gera embeddings via HuggingFace Inference API e busca semântica no Qdrant. O backend FastAPI antigo foi movido para `experiments/backend` (junto dos notebooks de referência).
+[![Next.js](https://img.shields.io/badge/Next.js-App%20Router-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
+[![HuggingFace](https://img.shields.io/badge/Hugging%20Face-Inference%20API-FFD21E?style=for-the-badge&logo=huggingface&logoColor=000)](https://huggingface.co/)
+[![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-FF4F8B?style=for-the-badge)](https://qdrant.tech/)
+[![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 
-## Estrutura
-- `src/app`: páginas e rotas de API do Next.js.
-- `experiments/backend`: backend FastAPI original e notebooks (`notebooks/Upload Data to Qdrant.ipynb` mostra o pipeline de embeddings + Qdrant).
+**Sonar Municipal** e uma aplicacao Next.js (App Router) com rotas `/api` que gera
+embeddings via HuggingFace Inference API e faz busca semantica no Qdrant. Alem da
+busca, o backend agrupa projetos semelhantes em **politicas** e calcula efeitos
+com indicadores reais (ex.: homicidios, matriculas).
 
-## Pré-requisitos
-- Node.js 18+ e npm.
-- Credenciais:
-  - `HF_API_TOKEN` — token da HuggingFace Inference API.
-  - `QDRANT_URL` — URL do cluster Qdrant (ex.: `https://...qdrant.io` ou `http://localhost:6333`).
-  - `QDRANT_API_KEY` — API key do Qdrant (deixe vazio para Qdrant local).
+# How it Works?
+```mermaid
+flowchart LR
+  A[UI / Query] --> B[API /search]
+  B --> C[HuggingFace Inference API\nE5 embeddings]
+  C --> D[Qdrant Vector Search]
+  D --> E[Resultados de PLs]
+  E --> F[API /policies\nAgrupamento + Indicadores]
+```
+<p align="center">
+  <b>Figure 1:</b> Fluxo de busca semantica e geracao de politicas.
+</p>
 
-Crie um arquivo `.env.local` na raiz com, no mínimo:
+## API (rotas Next.js)
+As rotas seguem a logica do pipeline em `experiments/notebooks`.
+
+- `GET /api/health` retorna status e valida variaveis obrigatorias.
+- `POST /api/search` recebe `{ "query": "...", "top_k": 50 }` e devolve PLs similares.
+- `POST /api/policies` agrupa PLs por acao e calcula qualidade via indicador.
+- `GET /api/indicators` lista indicadores disponiveis.
+
+Exemplo rapido:
+```bash
+curl -X POST http://localhost:3000/api/search \
+  -H "Content-Type: application/json" \
+  -d '{ "query": "Como reduzir homicidios no municipio?", "top_k": 25 }'
+```
+
+## Environment Variables
+Crie `.env.local` na raiz:
 ```bash
 HF_API_TOKEN=...
 QDRANT_URL=https://seu-cluster.qdrant.io
 QDRANT_API_KEY=...
-QDRANT_COLLECTION=projetos-de-lei        # opcional; default igual ao notebook
-HF_MODEL_ID=embaas/sentence-transformers-multilingual-e5-base  # opcional; default igual ao notebook
-SEARCH_MAX_RESULTS=1000                  # limite máximo de resultados por busca no backend
+QDRANT_COLLECTION=projetos-de-lei
+HF_MODEL_ID=embaas/sentence-transformers-multilingual-e5-base
+SEARCH_MAX_RESULTS=1000
+
 # Indicadores (dados reais)
 CRIMINAL_INDICATOR_PATH=indicators/homicidios.csv
 CRIMINAL_INDICATOR_CITY_COL=municipio_norm
@@ -29,65 +56,42 @@ CRIMINAL_INDICATOR_MIN_VALUE=5
 EDUCATION_INDICATOR_PATH=indicators/matriculas.csv
 EDUCATION_INDICATOR_CITY_COL=municipio
 EDUCATION_INDICATOR_VALUE_COL=taxa_matriculas_100k
-# Frontend (opcionais)
-# NEXT_PUBLIC_API_BASE_URL=http://localhost:3000  # para apontar o frontend para outro host
-# NEXT_PUBLIC_MAX_TOP_K=1000                      # mesma intenção do SEARCH_MAX_RESULTS, mas no cliente
 ```
 
-## Desenvolvimento
+## Installation
+Requisitos: Node.js 18+ e npm.
+
 ```bash
 npm install
-npm run dev           # Next.js + rotas /api no mesmo servidor
 ```
-- App: http://localhost:3000  
+
+## Basic Usage
+```bash
+npm run dev
+```
+- App: http://localhost:3000
 - API: http://localhost:3000/api/...
 
-Build de produção:
+Build de producao:
 ```bash
 npm run build
 npm start
 ```
 
-## Backend (rotas Next.js /api)
-As rotas seguem a lógica do notebook `notebooks/Upload Data to Qdrant.ipynb`: a query é codificada com o modelo E5 na Inference API e enviada ao Qdrant como vetor para `search`.
+## Experiments (pipeline completo)
+O backend FastAPI original, os notebooks e os scripts de coleta ficaram em
+`experiments/`. Para reconstruir o dataset do zero, use o guia:
 
-- `GET /api/health`  
-  Retorna `status: "ok"` e flags indicando se as envs obrigatórias estão definidas.
+- `experiments/DATASET.MD`
 
-- `POST /api/search`  
-  Corpo: `{ "query": "texto livre", "top_k": 50 }` (`top_k` opcional, máx. 500).  
-  Resposta: `{ query, top_k, returned, results: [{ index, score, municipio, uf, acao, data_apresentacao, ementa, link_publico, sapl_url, tipo_label }] }`.
-  Exemplo:
-  ```bash
-  curl -X POST http://localhost:3000/api/search \\
-    -H "Content-Type: application/json" \\
-    -d '{ "query": "Como diminuir homicídios no município?", "top_k": 25 }'
-  ```
+Resumo do pipeline:
+1. Descobrir instancias SAPL (`tools/sapl_finder`).
+2. Raspar projetos de lei (`tools/sapl_scrapper`).
+3. Gerar acoes a partir das ementas (modelo `ptt5v2-pl-text2action`).
+4. Gerar embeddings e montar `dataset.npy`.
 
-- `POST /api/policies`  
-  Agrupa projetos retornados pela busca por similaridade de tema (campo `acao`), calcula efeitos usando o indicador configurado e prioriza políticas com maior “win rate” (efeitos com direção desejada).  
-  Corpo (campos opcionais):  
-  ```json
-  {
-    "bill_indexes": [0,1,2],
-    "use_indicator": true,
-    "indicator": "criminal_indicator",
-    "effect_window_months": 6,
-    "similarity_threshold": 0.75,
-    "min_group_members": 2
-  }
-  ```  
-  - `effect_window_months` é múltiplo de 6 (1 semestre = 6 meses).  
-  - Se `use_indicator` for `true`, PLs sem dados do indicador são ignorados.  
-  Resposta:  
-  `{ indicator, used_indicator, total_candidates, policies: [{ policy, effect_mean, effect_std, quality_score, actions: [{ municipio, acao, effect, url, data_apresentacao, ementa }] }] }`.
+## Estrutura do repositorio
+- `src/app`: paginas e rotas de API do Next.js.
+- `public/`: assets do frontend (inclui o banner).
+- `experiments/`: backend antigo, notebooks e ferramentas de dados.
 
-- `GET /api/indicators`  
-  Lista os indicadores reais disponíveis (alias, direção “positive_is_good”, min_value e colunas usadas no CSV).
-
-## Frontend
-- `src/app/page.tsx`: busca principal e sugestões de políticas (agrupamento simples a partir dos resultados).
-- `src/app/projects/page.tsx`: lista completa de projetos retornados pela busca.
-
-## Experimentos e backend antigo
-- Todo o código do backend Python original e notebooks foram movidos para `experiments/backend`. Nenhum arquivo foi removido.
