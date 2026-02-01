@@ -1,27 +1,27 @@
-# Modulo core (Sonar Municipal)
+# Módulo core (Sonar Municipal)
 
-Este modulo concentra as funcoes reutilizaveis para carregar dados, gerar
-embeddings, realizar busca semantica e agrupar Projetos de Lei em politicas
-publicas com base em indicadores.
+Este módulo concentra as funções reutilizáveis para carregar dados, gerar
+embeddings, realizar busca semântica e agrupar Projetos de Lei em políticas
+públicas com base em indicadores.
 
 ## Para que serve
 - Carregar o dataset de PLs com embeddings.
-- Fazer busca semantica por consultas textuais.
+- Fazer busca semântica por consultas textuais.
 - Calcular efeitos de indicadores ao longo do tempo.
-- Agrupar PLs semelhantes em politicas com criterios de qualidade.
+- Agrupar PLs semelhantes em políticas com critérios de qualidade.
 
-## Pre-requisitos
+## Pré-requisitos
 - Python 3.9+
-- Dependencias principais: `numpy`, `sentence-transformers`
+- Dependências principais: `numpy`, `sentence-transformers`
 - Para efeitos com indicadores: `pandas`
 
-Instalacao minima:
+Instalação mínima:
 ```bash
 pip install numpy sentence-transformers pandas
 ```
 
 ## Formato esperado do dataset
-O arquivo `dataset.npy` deve conter uma lista de dicionarios com, no minimo:
+O arquivo `dataset.npy` deve conter uma lista de dicionários com, no mínimo:
 - `municipio` (str)
 - `uf` (str)
 - `data_apresentacao` (YYYY-MM-DD)
@@ -29,24 +29,24 @@ O arquivo `dataset.npy` deve conter uma lista de dicionarios com, no minimo:
 - `acao` (str)
 - `embedding` (lista ou array de floats)
 
-## Funcoes principais
-Disponiveis via `from core import ...`:
+## Funções principais
+Disponíveis via `from core import ...`:
 
-| Funcao | Descricao |
+| Função | Descrição |
 | --- | --- |
-| `load_actions_dataset(path)` | Carrega a lista de dicionarios do `.npy`. |
+| `load_actions_dataset(path)` | Carrega a lista de dicionários do `.npy`. |
 | `extract_embeddings(dataset)` | Empilha embeddings em matriz `N x D`. |
 | `load_sentence_model(model_name, device)` | Carrega o modelo E5. |
-| `semantic_search(query, dataset, model, embeddings=None, top_k=5)` | Retorna PLs mais proximos com `score` e `index`. |
-| `compute_effects_from_indicator(bills, indicator_df, city_col, value_col, effect_window_months, min_value)` | Calcula variacao percentual entre semestres. |
+| `semantic_search(query, dataset, model, embeddings=None, top_k=5)` | Retorna PLs mais próximos com `score` e `index`. |
+| `compute_effects_from_indicator(bills, indicator_df, city_col, value_col, effect_window_months, min_value)` | Calcula variação percentual entre semestres. |
 | `group_bills_by_structure(bills, threshold)` | Agrupa por similaridade textual (Jaccard). |
-| `generate_policies_from_bills(bills, min_group_members, similarity_threshold, criterion)` | Gera politicas agregadas e ordena por qualidade. |
-| `by_win_rate(scores)` | Criterio de qualidade por taxa de vitoria. |
-| `by_magnitude(scores)` | Criterio de qualidade por magnitude. |
-| `normalize_and_tokenize(text)` | Normalizacao e tokenizacao de texto. |
+| `generate_policies_from_bills(bills, min_group_members, similarity_threshold, criterion)` | Gera políticas agregadas e ordena por qualidade. |
+| `by_win_rate(scores)` | Critério de qualidade por taxa de vitória. |
+| `by_magnitude(scores)` | Critério de qualidade por magnitude. |
+| `normalize_and_tokenize(text)` | Normalização e tokenização de texto. |
 | `jaccard_similarity(a, b)` | Similaridade Jaccard entre tokens. |
 
-## Exemplo: busca semantica
+## Exemplo: busca semântica
 ```python
 from core import load_actions_dataset, extract_embeddings, load_sentence_model, semantic_search
 
@@ -55,7 +55,7 @@ embeddings = extract_embeddings(dataset)
 model = load_sentence_model()
 
 results = semantic_search(
-    "Como reduzir a criminalidade no municipio?",
+    "Como reduzir a criminalidade no município?",
     dataset,
     model,
     embeddings,
@@ -66,7 +66,7 @@ for row in results:
     print(row["municipio"], row.get("uf", "-"), row["acao"], row["score"])
 ```
 
-## Exemplo: efeitos e politicas
+## Exemplo: efeitos e políticas
 ```python
 import pandas as pd
 from core import (
@@ -97,7 +97,7 @@ for p in policies:
     print(p["policy"], p["quality_score"], p["effect_mean"])
 ```
 
-## Observacoes importantes
+## Observações importantes
 - `semantic_search` usa prefixo `"query: "` para compatibilidade com E5.
-- `effect_window_months` deve ser multiplo de 6 (semestres).
-- Indicadores com efeito negativo sao tratados como melhoria (criterios em `criterion.py`).
+- `effect_window_months` deve ser múltiplo de 6 (semestres).
+- Indicadores com efeito negativo são tratados como melhoria (critérios em `criterion.py`).
