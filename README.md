@@ -22,10 +22,10 @@ flowchart LR
   E5 --> E6["Indicadores oficiais + Agrupamento"]
 ```
 <p align="center">
-  <b>Figura 1:</b> Fluxo de busca semantica e geracao de politicas.
+  <b>Figura 1:</b> Pipeline conceitual do Sonar Municipal.
 </p>
 
-## API (rotas Next.js)
+## API
 As rotas seguem a logica do pipeline em `experiments/notebooks`.
 
 - `GET /api/health` retorna status e valida variaveis obrigatorias.
@@ -80,7 +80,7 @@ npm run build
 npm start
 ```
 
-## Experimentos (pipeline completo)
+## Experimentos e Reprodutibilidade
 Os notebooks e os scripts de coleta ficaram em `experiments/`. Para reconstruir
 o dataset do zero, use o guia:
 
