@@ -15,11 +15,11 @@ simula efeitos em indicadores oficiais ao longo do tempo e agrupa PLs semelhante
 # Como funciona?
 ```mermaid
 flowchart LR
-  E1[Lista de municipios<br/>(IBGE)] --> E2[Descoberta de instancias<br/>do SAPL]
-  E2 --> E3[Extracao<br/>de PLs]
-  E3 --> E4[Transformacao<br/>de ementa<br/>em acao]
-  E4 --> E5[Indexacao<br/>vetorial<br/>(Qdrant)]
-  E5 --> E6[Indicadores<br/>oficiais<br/>+ Agrupamento]
+  E1["Lista de municipios (IBGE)"] --> E2["Descoberta de instancias do SAPL"]
+  E2 --> E3["Extracao de PLs"]
+  E3 --> E4["Transformacao de ementa em acao"]
+  E4 --> E5["Indexacao vetorial (Qdrant)"]
+  E5 --> E6["Indicadores oficiais + Agrupamento"]
 ```
 <p align="center">
   <b>Figura 1:</b> Fluxo de busca semantica e geracao de politicas.
