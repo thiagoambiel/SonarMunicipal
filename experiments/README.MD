@@ -23,14 +23,12 @@ flowchart LR
 </p>
 
 ## Guias e atalhos
-[![DATASET.MD](https://img.shields.io/badge/DATASET.MD-Guia%20de%20Dataset-2D9CDB?style=for-the-badge)](DATASET.MD)  
-Passo a passo para reconstruir o dataset final (`dataset.npy`).
-
-[![sapl_finder](https://img.shields.io/badge/sapl__finder-Descoberta%20SAPL-2E7D32?style=for-the-badge)](tools/sapl_finder/README.MD)  
-CLI para descobrir instâncias do SAPL e gerar `sapl_hosts.jsonl`.
-
-[![sapl_scrapper](https://img.shields.io/badge/sapl__scrapper-Raspagem%20de%20PLs-7B1FA2?style=for-the-badge)](tools/sapl_scrapper/README.MD)  
-CLI para raspar PLs das instâncias encontradas e salvar `pl.jsonl`.
+| Link | Descrição |
+| --- | --- |
+| [![DATASET.MD](https://img.shields.io/badge/DATASET.MD-Guia%20de%20Dataset-2D9CDB?style=for-the-badge)](DATASET.MD) | Passo a passo para reconstruir o dataset final (`dataset.npy`). |
+| [![core](https://img.shields.io/badge/core-Documentacao%20do%20Modulo-1565C0?style=for-the-badge)](core/README.MD) | Documentação do módulo `core` com funções de busca, embeddings e políticas. |
+| [![sapl_finder](https://img.shields.io/badge/sapl__finder-Descoberta%20SAPL-2E7D32?style=for-the-badge)](tools/sapl_finder/README.MD) | CLI para descobrir instâncias do SAPL e gerar `sapl_hosts.jsonl`. |
+| [![sapl_scrapper](https://img.shields.io/badge/sapl__scrapper-Raspagem%20de%20PLs-7B1FA2?style=for-the-badge)](tools/sapl_scrapper/README.MD) | CLI para raspar PLs das instâncias encontradas e salvar `pl.jsonl`. |
 
 ## O que já está implementado
 - Descoberta de instâncias do SAPL (`tools/sapl_finder`).
