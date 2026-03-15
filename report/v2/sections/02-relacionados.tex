@@ -1,0 +1,33 @@
+\section{Trabalhos Relacionados e Fundamentos}
+
+\subsection{Infraestrutura legislativa aberta no Brasil}
+
+No Brasil, a digitalização e a abertura da informação legislativa avançaram com iniciativas institucionais como o SAPL, do Interlegis, e o portal LexML. O SAPL consolidou-se como uma infraestrutura relevante para informatização do processo legislativo em câmaras municipais e assembleias, padronizando parte da tramitação e da publicidade das proposições \cite{interlegis_sapl,interlegis_sapl_repo}. Já o LexML ampliou a integração entre bases jurídicas brasileiras, reunindo normas, proposições, jurisprudência e doutrina em um ambiente nacional de busca e referência.
+
+Esse ecossistema mostra que a informação legislativa brasileira já conta com camadas importantes de abertura e organização. Ainda assim, essas iniciativas não resolvem integralmente o problema tratado neste artigo: a descoberta automática de fontes municipais heterogêneas, sua coleta em escala e sua transformação em insumos semanticamente comparáveis para apoio à formulação de políticas públicas.
+
+\subsection{Recuperação de informação legislativa}
+
+Na literatura de recuperação de informação legislativa em português, uma das linhas mais próximas do tema deste trabalho é a família de estudos Ulysses, desenvolvida no contexto da Câmara dos Deputados. Esses trabalhos tratam da construção de pipelines de recuperação, uso de \textit{relevance feedback}, corpora especializados e expansão de consultas no domínio legislativo. Em conjunto, mostram que o problema de buscar melhor dentro de um acervo legislativo já estruturado é tecnicamente relevante e distinto do cenário geral de IR jurídico.
+
+Esse bloco de literatura se aproxima bastante da nossa contribuição em termos de problema informacional, mas permanece centrado sobretudo no nível federal e em acervos previamente organizados. O Sonar Municipal se diferencia por operar antes dessa etapa de IR clássica: além da recuperação, ele precisa descobrir automaticamente fontes municipais, lidar com heterogeneidade de portais, consolidar um dataset unificado e só então aplicar busca semântica e agrupamento.
+
+\subsection{NLP aplicado a textos legislativos brasileiros}
+
+Também há uma literatura crescente de NLP voltada a textos legislativos em português brasileiro, incluindo recursos para reconhecimento de entidades nomeadas, classificação e análise semântica de documentos legislativos. Essa frente é importante porque reforça um diagnóstico recorrente: o português legislativo brasileiro ainda é menos explorado do que corpora judiciais ou do que datasets equivalentes em inglês. Nesse contexto, construir recursos, pipelines e bases sobre legislação municipal continua sendo uma contribuição metodológica por si só.
+
+Mais próximo do nosso problema, trabalhos recentes têm explorado agrupamento temático e recuperação semântica de emendas legislativas brasileiras, inclusive com comparações entre abordagens léxicas e dense retrieval e com uso de LLMs para clustering semântico. Esses estudos são altamente relevantes como inspiração metodológica, mas permanecem concentrados em emendas e corpora federais. O presente artigo amplia esse escopo ao operar sobre proposições municipais, com foco em ações legislativas comparáveis entre municípios.
+
+\subsection{IR jurídica baseada em embeddings}
+
+No campo mais amplo da IR jurídica, estudos recentes têm mostrado o valor de embeddings especializados, indexação em múltiplas granularidades e adaptação ao domínio legal. Essa literatura sustenta a escolha de modelos dense retrieval para busca semântica em textos normativos, e também dialoga com a nossa opção por traduzir ementas em ações antes da indexação. A hipótese central é que a normalização semântica do texto legislativo reduz ruído superficial e melhora a utilidade da recuperação para usuários finais.
+
+Ao mesmo tempo, a literatura de embeddings jurídicos não resolve automaticamente o principal desafio deste trabalho: a fragmentação institucional do nível municipal. Mesmo quando dense retrieval funciona bem em acervos homogêneos, ainda permanece aberta a questão de como construir um pipeline integrado que descubra fontes, extraia dados, normalize textos e disponibilize recomendações comparativas para realidades locais.
+
+\subsection{Difusão e transferência de políticas públicas}
+
+Por fim, a literatura de difusão e transferência de políticas públicas oferece a fundamentação conceitual para o componente comparativo do Sonar Municipal. Estudos sobre \textit{policy transfer}, difusão e circulação de políticas em contextos subnacionais mostram que governos aprendem, emulam e adaptam soluções observadas em outras localidades. Essa literatura não resolve o problema computacional da recomendação, mas justifica por que identificar políticas semelhantes entre municípios é substantivamente relevante: não se trata apenas de busca textual, mas de apoio ao aprendizado intermunicipal e à circulação de soluções governamentais.
+
+\subsection{Síntese do gap}
+
+Os trabalhos existentes distribuem-se, de forma geral, em quatro frentes: (i) plataformas de organização e transparência da informação legislativa; (ii) pipelines de recuperação em acervos legislativos federais; (iii) recursos de NLP para o português jurídico-legislativo; e (iv) teorias sobre difusão e transferência de políticas. O diferencial do Sonar Municipal está em integrar essas frentes em um único pipeline voltado ao nível municipal, combinando descoberta de instâncias SAPL, extração em escala, tradução de ementas em ações comparáveis, busca semântica e conexão com indicadores territoriais. Em outras palavras, o artigo não propõe apenas um componente isolado, mas um fluxo ponta a ponta para transformar acervos legislativos municipais em suporte prático ao aprendizado entre governos.
