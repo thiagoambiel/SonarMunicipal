@@ -49,14 +49,14 @@ def generate_pipeline_svg() -> str:
     width = 1400
     height = 860
 
-    background = "#f6f2e8"
-    ink = "#1d2a3a"
-    muted = "#61738a"
-    box_fill = "#fffdf8"
-    accent = "#d3622b"
-    accent_soft = "#f2d6c8"
-    secondary = "#2f7d6a"
-    stroke = "#213547"
+    background = "#f3f7fb"
+    ink = "#17324a"
+    muted = "#5d7389"
+    box_fill = "#fbfdff"
+    accent = "#2e6b9b"
+    accent_soft = "#dbe8f4"
+    secondary = "#4f88b4"
+    stroke = "#254761"
 
     steps = [
         (90, 180, 340, 126, "1. Descoberta", "Municípios do IBGE\n+ heurísticas de URL"),
@@ -77,7 +77,7 @@ def generate_pipeline_svg() -> str:
 
     def rect(x: int, y: int, w: int, h: int, fill: str, extra: str = "") -> str:
         return (
-            f'<rect x="{x + 6}" y="{y + 10}" width="{w}" height="{h}" rx="24" fill="#d9d1c2" opacity="0.25"/>'
+            f'<rect x="{x + 6}" y="{y + 10}" width="{w}" height="{h}" rx="24" fill="#cfdae5" opacity="0.35"/>'
             +
             f'<rect x="{x}" y="{y}" width="{w}" height="{h}" rx="24" '
             f'fill="{fill}" stroke="{stroke}" stroke-width="3"{extra}/>'
@@ -101,8 +101,7 @@ def generate_pipeline_svg() -> str:
         f'<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">',
         f'<rect width="{width}" height="{height}" fill="{background}"/>',
         "<defs>",
-        f'<marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="{accent}"/></marker>',
-        f'<marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="{secondary}"/></marker>',
+        f'<marker id="arrow" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z" fill="{accent}"/></marker>',
         "</defs>",
         f'<text x="80" y="82" font-family="Helvetica, Arial, sans-serif" font-size="48" font-weight="700" fill="{ink}">Pipeline do Sonar Municipal</text>',
         f'<text x="80" y="116" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="{muted}">Fluxo da descoberta de fontes à consulta pública de políticas similares</text>',
@@ -115,18 +114,16 @@ def generate_pipeline_svg() -> str:
 
     svg.extend(
         [
-            f'<line x1="430" y1="243" x2="510" y2="243" stroke="{accent}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow)"/>',
-            f'<line x1="870" y1="243" x2="950" y2="243" stroke="{accent}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow)"/>',
-            f'<path d="M 1140 306 C 1160 360, 1110 400, 1040 430" fill="none" stroke="{secondary}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-green)"/>',
-            f'<path d="M 260 306 C 240 360, 290 400, 360 430" fill="none" stroke="{secondary}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-green)"/>',
-            f'<line x1="650" y1="473" x2="730" y2="473" stroke="{accent}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow)"/>',
-            f'<path d="M 530 536 C 530 585, 580 620, 700 650" fill="none" stroke="{secondary}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-green)"/>',
-            f'<path d="M 870 536 C 870 585, 820 620, 700 650" fill="none" stroke="{secondary}" stroke-width="8" stroke-linecap="round" marker-end="url(#arrow-green)"/>',
+            f'<line x1="430" y1="243" x2="505" y2="243" stroke="{accent}" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>',
+            f'<line x1="870" y1="243" x2="945" y2="243" stroke="{accent}" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>',
+            f'<path d="M 1140 306 L 1140 360 L 480 360 L 480 402" fill="none" stroke="{accent}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>',
+            f'<line x1="650" y1="473" x2="725" y2="473" stroke="{accent}" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow)"/>',
+            f'<path d="M 920 536 L 920 600 L 700 600 L 700 640" fill="none" stroke="{accent}" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#arrow)"/>',
         ]
     )
 
     fx, fy, fw, fh, ftitle, fbody = footer
-    svg.append(rect(fx, fy, fw, fh, "#eef6f3"))
+    svg.append(rect(fx, fy, fw, fh, "#e7f1f9"))
     svg.append(text_block(fx + fw / 2, fy + 40, ftitle, fbody, secondary))
 
     svg.append(
@@ -177,12 +174,12 @@ def generate_brazil_coverage_svg(uf_counts: Counter[str]) -> str:
 
     features = data["features"]
     width, height = 1400, 980
-    bg = "#f7f4ed"
-    stroke = "#fbfaf6"
-    title = "#182433"
-    muted = "#59697f"
-    no_data = "#d8ddd5"
-    palette = ["#d8e7f5", "#adcbe7", "#78a8d6", "#457db7", "#1f537b"]
+    bg = "#f3f7fb"
+    stroke = "#f7fbff"
+    title = "#17324a"
+    muted = "#5d7389"
+    no_data = "#dce4ea"
+    palette = ["#dbe8f4", "#b8d0e6", "#8db4d3", "#5a8db8", "#2b608d"]
 
     map_x = 60
     map_y = 170
@@ -296,17 +293,17 @@ def generate_brazil_coverage_svg(uf_counts: Counter[str]) -> str:
         f'<rect width="{width}" height="{height}" fill="{bg}"/>',
         f'<text x="70" y="78" font-family="Helvetica, Arial, sans-serif" font-size="46" font-weight="700" fill="{title}">Cobertura da base por UF</text>',
         f'<text x="70" y="112" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="{muted}">Mapa coroplético com municípios de extração válida por unidade da federação</text>',
-        f'<rect x="{map_x - 10}" y="{map_y - 20}" width="{map_w + 20}" height="{map_h + 40}" rx="26" fill="#fffdf9" stroke="#d7d2c8" stroke-width="2"/>',
+        f'<rect x="{map_x - 10}" y="{map_y - 20}" width="{map_w + 20}" height="{map_h + 40}" rx="26" fill="#fbfdff" stroke="#cfdae5" stroke-width="2"/>',
         "".join(states_svg),
         "".join(labels_svg),
-        f'<rect x="{legend_x - 30}" y="{legend_box_y}" width="380" height="{legend_box_h}" rx="28" fill="#fffdf9" stroke="#d7d2c8" stroke-width="2"/>',
+        f'<rect x="{legend_x - 30}" y="{legend_box_y}" width="380" height="{legend_box_h}" rx="28" fill="#fbfdff" stroke="#cfdae5" stroke-width="2"/>',
         f'<text x="{legend_x}" y="{legend_title_y}" font-family="Helvetica, Arial, sans-serif" font-size="28" font-weight="700" fill="{title}">Execução congelada</text>',
         f'<text x="{legend_x}" y="{legend_subtitle_y}" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="{muted}">322 municípios em 19 UFs</text>',
     ]
 
     for idx, (label, color) in enumerate(legend_items):
         y = legend_items_y + idx * 44
-        svg.append(f'<rect x="{legend_x}" y="{y}" width="34" height="34" rx="7" fill="{color}" stroke="#bcc4cf" stroke-width="1.4"/>')
+        svg.append(f'<rect x="{legend_x}" y="{y}" width="34" height="34" rx="7" fill="{color}" stroke="#b7c6d5" stroke-width="1.4"/>')
         svg.append(
             f'<text x="{legend_x + 52}" y="{y + 24}" font-family="Helvetica, Arial, sans-serif" font-size="20" fill="{title}">{label}</text>'
         )

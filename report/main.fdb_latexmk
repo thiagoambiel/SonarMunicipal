@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber main"] 1773608452 "main.bcf" "main.bbl" "main" 1773608458
-  "main.bcf" 1773608458 107909 2f5077fdb0a5465e1495fe64c1d2b322 "pdflatex"
+["biber main"] 1773608693 "main.bcf" "main.bbl" "main" 1773608695
+  "main.bcf" 1773608695 107909 2f5077fdb0a5465e1495fe64c1d2b322 "pdflatex"
   "sonar-references.bib" 1773605254 10264 5ebe413e6391675bddb844e101b58cc2 ""
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1773608456 "main.tex" "main.pdf" "main" 1773608458
+["pdflatex"] 1773608694 "main.tex" "main.pdf" "main" 1773608695
   "/etc/texmf/web2c/texmf.cnf" 1752781794 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -157,13 +157,13 @@
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1752782669 4379155 98693266ff65f58d9f98aff394de12d2 ""
   "/var/lib/texmf/web2c/pdftex/pdflatex.fmt" 1769796481 2798843 fc05f288f34e3d0ac613a8bb8d34436a ""
-  "figures/brazil-coverage-map.png" 1773608444 990599 d0cf8cc96b4fb81a2f1bda14adfe8ae3 ""
-  "figures/pipeline-diagram.png" 1773608442 792507 a7da9fa212c18c9d31b4d14b54c03281 ""
+  "figures/brazil-coverage-map.png" 1773608691 976271 b148713726cea8a6d7130c3e2ea2e5ba ""
+  "figures/pipeline-diagram.png" 1773608689 759572 e765406e8710330f9fda572dddf75a2c ""
   "figures/sonar-app.png" 1773604921 231615 6f8c412c03f6368b3baed08ea42383ea ""
-  "main.aux" 1773608458 7796 b3e76808ef032b7b1184986cd4b8ed4a "pdflatex"
-  "main.bbl" 1773608453 29944 619a1ba2a4c11b2a8dd66f822443d700 "biber main"
-  "main.out" 1773608458 2555 6ae14ef7ad574973dfa64624343f7fa8 "pdflatex"
-  "main.run.xml" 1773608458 2374 f093074253073c23d84ff3ed278cb69f "pdflatex"
+  "main.aux" 1773608695 7796 b3e76808ef032b7b1184986cd4b8ed4a "pdflatex"
+  "main.bbl" 1773608694 29944 619a1ba2a4c11b2a8dd66f822443d700 "biber main"
+  "main.out" 1773608695 2555 6ae14ef7ad574973dfa64624343f7fa8 "pdflatex"
+  "main.run.xml" 1773608695 2374 f093074253073c23d84ff3ed278cb69f "pdflatex"
   "main.tex" 1773605254 1161 c1ab070f0dd3e106ec1a2c04c0de257f ""
   "sbc-template.sty" 1773602803 6074 ecc54df5124d8db4ac67c42cc728f3a5 ""
   "sections/00-frontmatter.tex" 1773607522 2628 570b3a4268a1dd652c291c4ae62f3b60 ""
