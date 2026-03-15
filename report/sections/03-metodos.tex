@@ -2,38 +2,52 @@
 
 \subsection{Visão geral}
 
-O pipeline possui cinco etapas: (i) descoberta de instâncias do SAPL a partir da lista de municípios do IBGE \cite{ibge_localidades_api}; (ii) extração de Projetos de Lei diretamente das APIs públicas; (iii) tradução de ementas em ações operacionais; (iv) indexação vetorial para busca semântica; e (v) associação exploratória com indicadores municipais e agrupamento de políticas.
+O pipeline possui cinco etapas: (i) descoberta de instâncias do SAPL a partir da lista de municípios do IBGE \cite{ibge_localidades_api}; (ii) extração de Projetos de Lei diretamente das APIs públicas; (iii) textualização de ementas; (iv) indexação vetorial para busca semântica; e (v) associação exploratória com indicadores municipais e agrupamento de políticas similares. A Figura~\ref{fig:sonar-pipeline} sintetiza esse fluxo da descoberta das fontes à interface pública.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/pipeline-diagram.png}
+\caption{Síntese do pipeline do Sonar Municipal, da descoberta de fontes à interface pública.}
+\label{fig:sonar-pipeline}
+\end{figure*}
 
 \subsection{Descoberta e extração}
 
-A descoberta combina heurísticas de URL com validação por evidência pública. Para cada município, o sistema gera candidatos como \texttt{sapl.\{slug\}.\{uf\}.leg.br}, testa rotas típicas do SAPL e valida a instância quando encontra marcadores compatíveis. Depois disso, a extração deriva a base correta da API, consulta os tipos de matéria e percorre a paginação de todos os tipos cujo rótulo contém ``projeto de lei''.
+A descoberta combina heurísticas de URL com validação por evidência pública. Para cada município, o sistema gera endereços candidatos com base no nome normalizado do município e na sigla da unidade federativa, testa rotas típicas do SAPL e valida a instância quando encontra marcadores compatíveis. Em seguida, a extração deriva a base correta da API, consulta os tipos de matéria e percorre a paginação de todos os tipos cujo rótulo contém ``projeto de lei''.
 
-Na execução congelada em 12/11/2025, foram encontradas 1.259 instâncias do SAPL e 322 delas permitiram extração válida com ao menos um PL, totalizando 220.065 registros. Considerando os 5.570 municípios brasileiros, isso corresponde a 22,60\% de cobertura na descoberta e 5,78\% na extração automatizada. O gap entre essas etapas reflete heterogeneidade técnica entre portais, mudanças de rota, autenticação e diferenças locais de configuração.
+Na execução congelada em 12 de novembro de 2025, foram encontradas 1.259 instâncias do SAPL, das quais 322 permitiram extração válida com ao menos um PL, totalizando 220.065 registros. Considerando os 5.570 municípios brasileiros, isso corresponde a 22,60\% de cobertura na descoberta e 5,78\% na extração automatizada. A diferença entre essas etapas reflete heterogeneidade técnica entre portais, mudanças de rota, autenticação e diferenças locais de configuração. Assim, a descoberta operou em escopo nacional, mas a base extraída deve ser interpretada como um subconjunto parcial e desigual dos municípios com instâncias SAPL acessíveis.
 
-O dataset final cobre 322 municípios em 19 UFs. Todos os registros possuem \textit{ementa}, \textit{ação}, \textit{link\_publico} e embedding preenchidos. A base não apresentou duplicatas por \textit{link\_publico} nem por \texttt{(sapl\_base, materia\_id)}. Por outro lado, o filtro textual de tipos ainda recupera cerca de 3,54\% de itens que não são PLs estritos, como anteprojetos, emendas, substitutivos e vetos.
+A base final cobre 322 municípios em 19 UFs. Todos os registros possuem ementa, ação, endereço público de origem e representação vetorial preenchidos. A base não apresentou duplicatas nem no endereço público nem na combinação entre a instância SAPL de origem e o identificador da matéria. O filtro textual de tipos, contudo, ainda recupera cerca de 3,54\% de itens que não correspondem estritamente a PLs, como anteprojetos, emendas, substitutivos e vetos. Esses casos foram mantidos como ruído residual de coleta, sem a pretensão de que a base represente apenas PLs estritos.
 
-\subsection{Tradução de ementas em ações}
+\subsection{Textualização de ementas}
 
-Para reduzir ruído jurídico e tornar as proposições mais comparáveis, cada ementa é convertida em uma ação no formato ``verbo no infinitivo + objeto + complementos essenciais''. O conjunto de treinamento foi composto por 1.000 ementas reais distintas, textualizadas com apoio de GPT-5.1-Thinking \cite{openai_gpt51_model,openai_gpt51_system_card} e revisadas manualmente nos casos de perda de sentido.
+Para reduzir ruído jurídico e tornar as proposições mais comparáveis, cada ementa é convertida em uma ação textualizada no formato ``verbo no infinitivo + objeto + complementos essenciais''. O conjunto de treinamento foi composto por 1.000 ementas reais distintas, textualizadas com apoio de GPT-5.1-Thinking \cite{openai_gpt51_model} e revisadas manualmente nos casos em que houve perda de sentido.
 
-Como modelo base, utilizou-se o PTT5-v2 \cite{piau_ptt5v2_2024}, uma variante do T5 \cite{raffel_t5_2020} adaptada ao português. O ajuste fino foi realizado com QLoRA em 4 bits \cite{dettmers_qlora_2023}, com divisão 90/10 entre treino e validação, 30 épocas, taxa de aprendizado de $3\times 10^{-4}$ e \textit{batch size} 16. A avaliação automática por BERTScore \cite{zhang_bertscore_2019} atingiu 84\% no conjunto de validação.
+Como modelo base, utilizou-se o PTT5-v2 \cite{piau_ptt5v2_2024}, uma variante do T5 \cite{raffel_t5_2020} adaptada ao português. O ajuste fino foi realizado com QLoRA em 4 bits \cite{dettmers_qlora_2023}, com divisão 90/10 entre treino e validação, 30 épocas, taxa de aprendizado de $3\times 10^{-4}$ e tamanho de lote igual a 16. A avaliação automática por BERTScore \cite{zhang_bertscore_2019} atingiu 84\% no conjunto de validação.
 
-No acervo completo, a tradução reduziu o comprimento médio das descrições de 152,86 para 90,01 caracteres e de 24,18 para 13,61 palavras. Isso corresponde a 58,9\% dos caracteres e 56,3\% das palavras das ementas originais, favorecendo busca e agrupamento. O principal \textit{baseline} considerado até aqui foi indexar a ementa bruta.
+No acervo completo, a tradução reduziu o comprimento médio das descrições de 152,86 para 90,01 caracteres e de 24,18 para 13,61 palavras. Isso corresponde a 58,9\% dos caracteres e a 56,3\% das palavras das ementas originais, o que favorece busca e agrupamento. A textualização foi mantida por três razões operacionais. Primeiro, o modelo de representações vetoriais não foi treinado especificamente em texto legislativo. Segundo, ações curtas são mais legíveis para o usuário final do que ementas jurídicas. Terceiro, o agrupamento por similaridade textual tende a funcionar melhor quando há menos ruído introduzido por fórmulas legislativas recorrentes.
 
 \subsection{Busca, indicadores e agrupamento}
 
-As ações são indexadas com embeddings do modelo Multilingual E5 \cite{wang_e5_2024} e armazenadas no Qdrant \cite{qdrant_overview,qdrant_collections}. As consultas usam o prefixo \texttt{query:}, conforme a recomendação do modelo. A avaliação da recuperação ainda é exploratória: há inspeção manual das primeiras posições, mas ainda não há benchmark anotado nem métricas formais como Precision@K ou nDCG.
+As ações são indexadas com representações vetoriais do modelo Multilingual E5 \cite{wang_e5_2024} e armazenadas no Qdrant \cite{qdrant_overview}. As consultas seguem o formato recomendado pelo modelo para entradas de busca. A avaliação da recuperação ainda é inicial. Foi realizada inspeção manual das primeiras posições e uma avaliação preliminar com consultas públicas de demonstração, mas ainda não há benchmark anotado nem métricas formais como Precision@K ou nDCG.
 
-Para aproximar o sistema de desfechos observáveis, utilizamos taxa de homicídios por 100 mil habitantes e taxa de matrículas em ensino regular por 100 mil habitantes. Os efeitos são calculados comparando o indicador na data mais próxima ao PL com janelas posteriores de 6, 12, 18, 24, 30 e 36 meses. Trata-se de análise descritiva, sem pretensão causal.
+Para aproximar o sistema de desfechos observáveis, utilizamos taxa de homicídios por 100 mil habitantes e taxa de matrículas em ensino regular por 100 mil habitantes. As variações são calculadas comparando o indicador na data mais próxima ao PL com janelas posteriores de 6, 12, 18, 24, 30 e 36 meses. Trata-se de uma análise descritiva, sem pretensão causal, utilizada apenas para priorização exploratória de políticas recorrentes.
 
-PLs semanticamente próximos são agrupados por similaridade de Jaccard sobre o texto da ação, com limiar 0,75. Para cada grupo, definimos o escore heurístico:
+PLs semanticamente próximos são agrupados por similaridade de Jaccard sobre o texto da ação, com limiar 0,75. Para cada grupo, definimos o seguinte escore heurístico:
 
 \[
-Q = \frac{n_{\text{positivos}}}{n} \times \frac{n}{n+1}
+Q = \frac{p}{n} \times \frac{n}{n+1}
 \]
 
-em que $n$ é o número de municípios representados e $n_{\text{positivos}}$ o número de efeitos favoráveis ao objetivo do indicador. O termo final penaliza grupos muito pequenos e ajuda a priorizar políticas mais recorrentes.
+em que $n$ é o número de municípios representados e $p$ é o número de casos com variação favorável ao objetivo do indicador. O termo final penaliza grupos muito pequenos e ajuda a priorizar políticas mais recorrentes.
 
 \subsection{Implementação}
 
-A plataforma foi implementada em React/Next.js e integra interface web, serviço de embeddings, banco vetorial e dados de indicadores \cite{vercel_nextjs}. O código de coleta, treinamento, indexação e interface permanece disponível em \url{https://github.com/thiagoambiel/SonarMunicipal}, juntamente com o prompt do tradutor e a lista de instâncias SAPL utilizadas nesta versão.
+A plataforma foi implementada em React/Next.js e integra interface web, serviço de geração de representações vetoriais, banco vetorial e dados de indicadores \cite{vercel_nextjs}. O código de coleta, treinamento, indexação e interface permanece disponível em \url{https://github.com/thiagoambiel/SonarMunicipal}, juntamente com o prompt do tradutor e a lista congelada de instâncias SAPL utilizadas no artigo. A implementação web pública está disponível em \url{https://sonar-municipal.vercel.app/}. Como artefato visual complementar ao pipeline e aos resultados de cobertura, a Figura~\ref{fig:sonar-web} apresenta a interface pública da plataforma, por meio da qual usuários podem consultar políticas similares e explorar a metodologia adotada. A reprodução integral do acervo depende da disponibilidade externa das APIs públicas no momento da coleta, mas o repositório documenta as etapas e disponibiliza os artefatos necessários para reexecução.
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.9\linewidth]{figures/sonar-app.png}
+\caption{Tela da implementação web pública do Sonar Municipal, apresentada como artefato complementar da interface.}
+\label{fig:sonar-web}
+\end{figure}

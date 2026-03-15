@@ -50,32 +50,325 @@
       \verb https://www12.senado.leg.br/interlegis/produtos/sapl
       \endverb
     \endentry
-    \entry{interlegis_sapl_repo}{online}{}
-      \name{author}{1}{}{%
-        {{hash=b25c278268e9352cb1ed2739d6dbe7f1}{%
-           family={{Interlegis}},
-           familyi={I\bibinitperiod}}}%
+    \entry{souza_stemming_2021}{inproceedings}{}
+      \name{author}{7}{}{%
+        {{hash=684a2c38edd1706883381be26a8cdca6}{%
+           family={Souza},
+           familyi={S\bibinitperiod},
+           given={Ellen},
+           giveni={E\bibinitperiod}}}%
+        {{hash=2bf170ba71192ab1597681a0a2e0f60f}{%
+           family={Moriyama},
+           familyi={M\bibinitperiod},
+           given={Gyovana},
+           giveni={G\bibinitperiod}}}%
+        {{hash=b005e5d57929e1e12e8e0de8dd75922f}{%
+           family={Vitório},
+           familyi={V\bibinitperiod},
+           given={Douglas},
+           giveni={D\bibinitperiod}}}%
+        {{hash=7fe1edfc9cd62daffd99f99c89d596d5}{%
+           family={Carvalho},
+           familyi={C\bibinitperiod},
+           given={André},
+           giveni={A\bibinitperiod}}}%
+        {{hash=7ae3c28d0c258a7e849eb199a1fdc27a}{%
+           family={Félix},
+           familyi={F\bibinitperiod},
+           given={Nádia},
+           giveni={N\bibinitperiod}}}%
+        {{hash=5c06175c098293d27cb3a5a9721e3e02}{%
+           family={Albuquerque},
+           familyi={A\bibinitperiod},
+           given={Hidelberg\bibnamedelima O.},
+           giveni={H\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=d038c641c3ed516528a96f74ade30414}{%
+           family={Oliveira},
+           familyi={O\bibinitperiod},
+           given={Adriano\bibnamedelimb L.\bibnamedelimi I.},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
       }
-      \strng{namehash}{b25c278268e9352cb1ed2739d6dbe7f1}
-      \strng{fullhash}{b25c278268e9352cb1ed2739d6dbe7f1}
-      \strng{bibnamehash}{b25c278268e9352cb1ed2739d6dbe7f1}
-      \strng{authorbibnamehash}{b25c278268e9352cb1ed2739d6dbe7f1}
-      \strng{authornamehash}{b25c278268e9352cb1ed2739d6dbe7f1}
-      \strng{authorfullhash}{b25c278268e9352cb1ed2739d6dbe7f1}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \list{location}{1}{%
+        {Porto Alegre, Brazil}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computational Linguistics}%
+      }
+      \strng{namehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{fullhash}{239c7968653d2107df728389c0d694fd}
+      \strng{bibnamehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{authorbibnamehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{authornamehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{authorfullhash}{239c7968653d2107df728389c0d694fd}
+      \field{extraname}{1}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{SAPL}: Sistema de Apoio ao Processo Legislativo (repositório oficial)}
-      \field{urlday}{7}
-      \field{urlmonth}{1}
+      \field{booktitle}{Proceedings of the 13th Brazilian Symposium in Information and Human Language Technology}
+      \field{title}{Assessing the Impact of Stemming Algorithms Applied to Brazilian Legislative Documents Retrieval}
+      \field{urlday}{15}
+      \field{urlmonth}{3}
       \field{urlyear}{2026}
+      \field{year}{2021}
       \field{urldateera}{ce}
+      \field{pages}{227\bibrangedash 236}
+      \range{pages}{10}
       \verb{urlraw}
-      \verb https://github.com/interlegis/sapl
+      \verb https://aclanthology.org/2021.stil-1.25/
       \endverb
       \verb{url}
-      \verb https://github.com/interlegis/sapl
+      \verb https://aclanthology.org/2021.stil-1.25/
+      \endverb
+    \endentry
+    \entry{vitorio_ir_pipeline_2021}{inproceedings}{}
+      \name{author}{11}{}{%
+        {{hash=684a2c38edd1706883381be26a8cdca6}{%
+           family={Souza},
+           familyi={S\bibinitperiod},
+           given={Ellen},
+           giveni={E\bibinitperiod}}}%
+        {{hash=b005e5d57929e1e12e8e0de8dd75922f}{%
+           family={Vitório},
+           familyi={V\bibinitperiod},
+           given={Douglas},
+           giveni={D\bibinitperiod}}}%
+        {{hash=2bf170ba71192ab1597681a0a2e0f60f}{%
+           family={Moriyama},
+           familyi={M\bibinitperiod},
+           given={Gyovana},
+           giveni={G\bibinitperiod}}}%
+        {{hash=8c2b724e8f737029310d33763320dbee}{%
+           family={Santos},
+           familyi={S\bibinitperiod},
+           given={Luiz},
+           giveni={L\bibinitperiod}}}%
+        {{hash=b6ec58f75b85763cb224d13a2f89bdb2}{%
+           family={Martins},
+           familyi={M\bibinitperiod},
+           given={Lucas},
+           giveni={L\bibinitperiod}}}%
+        {{hash=c762226ea0ffdb61fe9682e336271e82}{%
+           family={Souza},
+           familyi={S\bibinitperiod},
+           given={Mariana},
+           giveni={M\bibinitperiod}}}%
+        {{hash=53ad571a2a41923fe9eb505534f195f7}{%
+           family={Fonseca},
+           familyi={F\bibinitperiod},
+           given={Márcio},
+           giveni={M\bibinitperiod}}}%
+        {{hash=7ae3c28d0c258a7e849eb199a1fdc27a}{%
+           family={Félix},
+           familyi={F\bibinitperiod},
+           given={Nádia},
+           giveni={N\bibinitperiod}}}%
+        {{hash=5544f3d02ccae1340e6737c13984b744}{%
+           family={Carvalho},
+           familyi={C\bibinitperiod},
+           given={André\bibnamedelimb C.\bibnamedelimi P.\bibnamedelimi L.\bibnamedelimi F.},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim F\bibinitperiod}}}%
+        {{hash=5c06175c098293d27cb3a5a9721e3e02}{%
+           family={Albuquerque},
+           familyi={A\bibinitperiod},
+           given={Hidelberg\bibnamedelima O.},
+           giveni={H\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=d038c641c3ed516528a96f74ade30414}{%
+           family={Oliveira},
+           familyi={O\bibinitperiod},
+           given={Adriano\bibnamedelimb L.\bibnamedelimi I.},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim I\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {IOS Press}%
+      }
+      \strng{namehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{fullhash}{95e4611ce8efdab6d37b1e1a5e82278f}
+      \strng{bibnamehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{authorbibnamehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{authornamehash}{204371b2c4b238db317bae447e8418d6}
+      \strng{authorfullhash}{95e4611ce8efdab6d37b1e1a5e82278f}
+      \field{extraname}{2}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Legal Knowledge and Information Systems}
+      \field{series}{Frontiers in Artificial Intelligence and Applications}
+      \field{title}{An Information Retrieval Pipeline for Legislative Documents from the Brazilian Chamber of Deputies}
+      \field{urlday}{15}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{346}
+      \field{year}{2021}
+      \field{urldateera}{ce}
+      \field{pages}{119\bibrangedash 126}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.3233/FAIA210326
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.3233/FAIA210326
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.3233/FAIA210326
+      \endverb
+    \endentry
+    \entry{vitorio_rfcorpus_2025}{article}{}
+      \name{author}{7}{}{%
+        {{hash=b005e5d57929e1e12e8e0de8dd75922f}{%
+           family={Vitório},
+           familyi={V\bibinitperiod},
+           given={Douglas},
+           giveni={D\bibinitperiod}}}%
+        {{hash=684a2c38edd1706883381be26a8cdca6}{%
+           family={Souza},
+           familyi={S\bibinitperiod},
+           given={Ellen},
+           giveni={E\bibinitperiod}}}%
+        {{hash=b6ec58f75b85763cb224d13a2f89bdb2}{%
+           family={Martins},
+           familyi={M\bibinitperiod},
+           given={Lucas},
+           giveni={L\bibinitperiod}}}%
+        {{hash=aac558dc9dd713f5b3e9b2412b3b56b6}{%
+           family={Silva},
+           familyi={S\bibinitperiod},
+           given={Nádia\bibnamedelimb Félix\bibnamedelimb F.\bibnamedelimi da},
+           giveni={N\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=c1e952bb7e04ffd53f7a17b2255abb83}{%
+           family={Carvalho},
+           familyi={C\bibinitperiod},
+           given={André\bibnamedelimb Carlos\bibnamedelimb Ponce\bibnamedelimb de\bibnamedelimb Leon\bibnamedelimb Ferreira\bibnamedelima de},
+           giveni={A\bibinitperiod\bibinitdelim C\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim d\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim F\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=53a38ef96401a845be77fe4e9c47144d}{%
+           family={Oliveira},
+           familyi={O\bibinitperiod},
+           given={Adriano\bibnamedelimb Lorena\bibnamedelimb Inácio\bibnamedelima de},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim I\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=3a3bff030e93fac793b40d75dbed6367}{%
+           family={Andrade},
+           familyi={A\bibinitperiod},
+           given={Francisco\bibnamedelimb Edmundo\bibnamedelima de},
+           giveni={F\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+      }
+      \strng{namehash}{f19c9a31151c409d1a21a0f0a3430373}
+      \strng{fullhash}{460e25e5c2a8545311a382b679a33188}
+      \strng{bibnamehash}{f19c9a31151c409d1a21a0f0a3430373}
+      \strng{authorbibnamehash}{f19c9a31151c409d1a21a0f0a3430373}
+      \strng{authornamehash}{f19c9a31151c409d1a21a0f0a3430373}
+      \strng{authorfullhash}{460e25e5c2a8545311a382b679a33188}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Language Resources and Evaluation}
+      \field{number}{2}
+      \field{title}{Building a Relevance Feedback Corpus for Legal Information Retrieval in the Real-Case Scenario of the Brazilian Chamber of Deputies}
+      \field{urlday}{15}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{59}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \field{pages}{1257\bibrangedash 1277}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.1007/S10579-024-09767-3
+      \endverb
+      \verb{urlraw}
+      \verb https://dblp.org/rec/journals/lre/VitorioSMSCOA25
+      \endverb
+      \verb{url}
+      \verb https://dblp.org/rec/journals/lre/VitorioSMSCOA25
+      \endverb
+    \endentry
+    \entry{albuquerque_ulyssesner_2022}{inproceedings}{}
+      \true{moreauthor}
+      \true{morelabelname}
+      \name{author}{3}{}{%
+        {{hash=388626c30506e5d2142bccf38a3269a3}{%
+           family={Albuquerque},
+           familyi={A\bibinitperiod},
+           given={Hidelberg\bibnamedelima Oliveira},
+           giveni={H\bibinitperiod\bibinitdelim O\bibinitperiod}}}%
+        {{hash=8997a707d010c9a1c9e09c955b11ea8a}{%
+           family={Costa},
+           familyi={C\bibinitperiod},
+           given={Rosimeire},
+           giveni={R\bibinitperiod}}}%
+        {{hash=2a11a09933cf05fec62adabbb11298f0}{%
+           family={Silvestre},
+           familyi={S\bibinitperiod},
+           given={Gabriel\bibnamedelima Dalforno},
+           giveni={G\bibinitperiod\bibinitdelim D\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{e15eba06656ba56e7e59b84610f16a8c}
+      \strng{fullhash}{e15eba06656ba56e7e59b84610f16a8c}
+      \strng{bibnamehash}{e15eba06656ba56e7e59b84610f16a8c}
+      \strng{authorbibnamehash}{e15eba06656ba56e7e59b84610f16a8c}
+      \strng{authornamehash}{e15eba06656ba56e7e59b84610f16a8c}
+      \strng{authorfullhash}{e15eba06656ba56e7e59b84610f16a8c}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Computational Processing of the Portuguese Language: 15th International Conference, {PROPOR} 2022, Fortaleza, Brazil, March 21--23, 2022, Proceedings}
+      \field{series}{Lecture Notes in Computer Science}
+      \field{title}{Ulysses{NER}-{Br}: A Corpus of Brazilian Legislative Documents for Named Entity Recognition}
+      \field{urlday}{15}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{13208}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \field{pages}{3\bibrangedash 14}
+      \range{pages}{12}
+      \verb{doi}
+      \verb 10.1007/978-3-030-98305-5_1
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/978-3-030-98305-5_1
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/978-3-030-98305-5_1
+      \endverb
+    \endentry
+    \entry{shipan_volden_2008}{article}{}
+      \name{author}{2}{}{%
+        {{hash=3b093c2b03f8263bccf728d9dff73a30}{%
+           family={Shipan},
+           familyi={S\bibinitperiod},
+           given={Charles\bibnamedelima R.},
+           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=ee9355e8e08102b30b7281f90148ac69}{%
+           family={Volden},
+           familyi={V\bibinitperiod},
+           given={Craig},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{fullhash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{bibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authorbibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authornamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authorfullhash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Political Science}
+      \field{number}{4}
+      \field{title}{The Mechanisms of Policy Diffusion}
+      \field{volume}{52}
+      \field{year}{2008}
+      \field{pages}{840\bibrangedash 857}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1111/j.1540-5907.2008.00346.x
       \endverb
     \endentry
     \entry{ibge_localidades_api}{online}{}
@@ -90,8 +383,8 @@
       \strng{authorbibnamehash}{3898f1ceb6fdd56f963db7f9326130e4}
       \strng{authornamehash}{3898f1ceb6fdd56f963db7f9326130e4}
       \strng{authorfullhash}{3898f1ceb6fdd56f963db7f9326130e4}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{API} de Localidades (documentação)}
@@ -118,9 +411,8 @@
       \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
       \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
       \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
-      \field{extraname}{1}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{GPT-5.1} Model ({OpenAI} {API})}
@@ -134,36 +426,6 @@
       \endverb
       \verb{url}
       \verb https://platform.openai.com/docs/models/gpt-5.1
-      \endverb
-    \endentry
-    \entry{openai_gpt51_system_card}{online}{}
-      \name{author}{1}{}{%
-        {{hash=0523b13262b12c215d8009938f5c14f1}{%
-           family={{OpenAI}},
-           familyi={O\bibinitperiod}}}%
-      }
-      \strng{namehash}{0523b13262b12c215d8009938f5c14f1}
-      \strng{fullhash}{0523b13262b12c215d8009938f5c14f1}
-      \strng{bibnamehash}{0523b13262b12c215d8009938f5c14f1}
-      \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
-      \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
-      \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
-      \field{extraname}{2}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{{GPT-5.1} Instant and {GPT-5.1} Thinking: System Card Addendum}
-      \field{urlday}{7}
-      \field{urlmonth}{1}
-      \field{urlyear}{2026}
-      \field{year}{2025}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/
-      \endverb
-      \verb{url}
-      \verb https://openai.com/index/gpt-5-system-card-addendum-gpt-5-1/
       \endverb
     \endentry
     \entry{piau_ptt5v2_2024}{article}{}
@@ -187,8 +449,8 @@
       \strng{authorbibnamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
       \strng{authornamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
       \strng{authorfullhash}{3dadd5afd39b81b82d613bbbe0a1787b}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -259,8 +521,8 @@
       \strng{authorbibnamehash}{93aba8e9bb746e2d8ac216494b952014}
       \strng{authornamehash}{93aba8e9bb746e2d8ac216494b952014}
       \strng{authorfullhash}{21f7721b75bba06d59f9d5ce222a34a5}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -310,8 +572,8 @@
       \strng{authorbibnamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
       \strng{authornamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
       \strng{authorfullhash}{1bf24d73d3c3884f634a1b420205ff86}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -362,8 +624,8 @@
       \strng{authorbibnamehash}{b7341c276394125587ea24e5ba844df4}
       \strng{authornamehash}{b7341c276394125587ea24e5ba844df4}
       \strng{authorfullhash}{0f3fc6c6b2643b223fd923710ae91526}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -419,8 +681,8 @@
       \strng{authorbibnamehash}{e9012e3e3adcfce14161e542a312bb44}
       \strng{authornamehash}{e9012e3e3adcfce14161e542a312bb44}
       \strng{authorfullhash}{5a81cbb424928b29f66fe3aae6c72d9e}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -449,9 +711,8 @@
       \strng{authorbibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
       \strng{authornamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
       \strng{authorfullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \field{extraname}{1}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{Qdrant} Documentation}
@@ -464,35 +725,6 @@
       \endverb
       \verb{url}
       \verb https://qdrant.tech/documentation/
-      \endverb
-    \endentry
-    \entry{qdrant_collections}{online}{}
-      \name{author}{1}{}{%
-        {{hash=b8b503212d5eeeab9d0a38b1b0b46ec1}{%
-           family={{Qdrant}},
-           familyi={Q\bibinitperiod}}}%
-      }
-      \strng{namehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \strng{fullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \strng{bibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \strng{authorbibnamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \strng{authornamehash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \strng{authorfullhash}{b8b503212d5eeeab9d0a38b1b0b46ec1}
-      \field{extraname}{2}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{title}{Collections (conceitos)}
-      \field{urlday}{7}
-      \field{urlmonth}{1}
-      \field{urlyear}{2026}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://qdrant.tech/documentation/concepts/collections/
-      \endverb
-      \verb{url}
-      \verb https://qdrant.tech/documentation/concepts/collections/
       \endverb
     \endentry
     \entry{vercel_nextjs}{online}{}
