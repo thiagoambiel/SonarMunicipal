@@ -283,6 +283,40 @@
       \verb https://dblp.org/rec/journals/lre/VitorioSMSCOA25
       \endverb
     \endentry
+    \entry{shipan_volden_2008}{article}{}
+      \name{author}{2}{}{%
+        {{hash=3b093c2b03f8263bccf728d9dff73a30}{%
+           family={Shipan},
+           familyi={S\bibinitperiod},
+           given={Charles\bibnamedelima R.},
+           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=ee9355e8e08102b30b7281f90148ac69}{%
+           family={Volden},
+           familyi={V\bibinitperiod},
+           given={Craig},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{fullhash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{bibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authorbibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authornamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authorfullhash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Political Science}
+      \field{number}{4}
+      \field{title}{The Mechanisms of Policy Diffusion}
+      \field{volume}{52}
+      \field{year}{2008}
+      \field{pages}{840\bibrangedash 857}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1111/j.1540-5907.2008.00346.x
+      \endverb
+    \endentry
     \entry{albuquerque_ulyssesner_2022}{inproceedings}{}
       \true{moreauthor}
       \true{morelabelname}
@@ -312,8 +346,8 @@
       \strng{authorbibnamehash}{e15eba06656ba56e7e59b84610f16a8c}
       \strng{authornamehash}{e15eba06656ba56e7e59b84610f16a8c}
       \strng{authorfullhash}{e15eba06656ba56e7e59b84610f16a8c}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Computational Processing of the Portuguese Language: 15th International Conference, {PROPOR} 2022, Fortaleza, Brazil, March 21--23, 2022, Proceedings}
@@ -335,40 +369,6 @@
       \endverb
       \verb{url}
       \verb https://doi.org/10.1007/978-3-030-98305-5_1
-      \endverb
-    \endentry
-    \entry{shipan_volden_2008}{article}{}
-      \name{author}{2}{}{%
-        {{hash=3b093c2b03f8263bccf728d9dff73a30}{%
-           family={Shipan},
-           familyi={S\bibinitperiod},
-           given={Charles\bibnamedelima R.},
-           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
-        {{hash=ee9355e8e08102b30b7281f90148ac69}{%
-           family={Volden},
-           familyi={V\bibinitperiod},
-           given={Craig},
-           giveni={C\bibinitperiod}}}%
-      }
-      \strng{namehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{fullhash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{bibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{authorbibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{authornamehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{authorfullhash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{American Journal of Political Science}
-      \field{number}{4}
-      \field{title}{The Mechanisms of Policy Diffusion}
-      \field{volume}{52}
-      \field{year}{2008}
-      \field{pages}{840\bibrangedash 857}
-      \range{pages}{18}
-      \verb{doi}
-      \verb 10.1111/j.1540-5907.2008.00346.x
       \endverb
     \endentry
     \entry{ibge_localidades_api}{online}{}

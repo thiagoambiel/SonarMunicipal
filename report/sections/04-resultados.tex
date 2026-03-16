@@ -2,30 +2,7 @@
 
 \subsection{Cobertura da base}
 
-A execução congelada indica que a descoberta nacional é tecnicamente viável, mas que a extração automatizada ainda depende fortemente da qualidade e da estabilidade das instâncias municipais do SAPL. A Tabela~\ref{tab:coleta-v2} resume os principais números dessa execução, enquanto a Figura~\ref{fig:coverage-panel} reorganiza esses dados como painel visual de escala, redução e concentração regional.
-
-\begin{table}[H]
-\centering
-\caption{Cobertura e distribuição regional da base final.}
-\label{tab:coleta-v2}
-\small
-\begin{tabular}{l r}
-\toprule
-Métrica & Valor \\
-\midrule
-Instâncias SAPL encontradas & 1.259 \\
-Instâncias com extração válida & 322 \\
-PLs coletados & 220.065 \\
-Municípios cobertos & 322 \\
-UFs cobertas & 19 \\
-Sul & 100.175 registros / 107 municípios \\
-Sudeste & 50.673 registros / 100 municípios \\
-Centro-Oeste & 38.788 registros / 68 municípios \\
-Nordeste & 21.588 registros / 36 municípios \\
-Norte & 8.841 registros / 11 municípios \\
-\bottomrule
-\end{tabular}
-\end{table}
+A execução congelada indica que a descoberta nacional é tecnicamente viável, mas que a extração automatizada ainda depende fortemente da qualidade e da estabilidade das instâncias municipais do SAPL. A Figura~\ref{fig:coverage-panel} resume os principais números dessa execução como painel visual de escala, redução e concentração regional.
 
 \begin{figure*}[t]
 \centering
@@ -41,39 +18,19 @@ Norte & 8.841 registros / 11 municípios \\
 \label{fig:brazil-coverage-map}
 \end{figure*}
 
-Em termos percentuais, o Sul concentra 45,52\% dos registros e o Sudeste, 23,03\%. Juntas, essas duas regiões somam 68,55\% de todo o acervo. Em número de municípios, Sul e Sudeste concentram 64,29\% dos 322 municípios presentes na base final. A Figura~\ref{fig:coverage-panel} antecipa essa leitura quantitativa, e a Figura~\ref{fig:brazil-coverage-map} mostra sua distribuição territorial, com cobertura concentrada em 19 UFs e lacunas visíveis em parte do Norte e do Nordeste. Portanto, o resultado atual deve ser interpretado como um acervo interestadual extenso, mas não como um espelho nacional da produção legislativa municipal.
-
-A base cobre principalmente o período recente da produção legislativa municipal, mas também inclui histórico mais antigo. A data mínima observada foi 29 de dezembro de 1947. A análise exploratória também revelou poucos, porém relevantes, outliers temporais, incluindo um registro com ano 199 e duas datas de apresentação em 2099. Esses casos sugerem a necessidade de saneamento temporal antes de análises mais sensíveis ao eixo cronológico.
-
-Apesar desses outliers, a base contém volume substantivo de registros recentes: entre 2021 e 2025, há 96.018 registros, correspondentes a 43,63\% do acervo, distribuídos por 315 municípios. Esse resultado é relevante para o uso aplicado do sistema, pois indica que a base não é apenas histórica, mas também suficientemente recente para apoiar consultas contemporâneas.
+Em termos percentuais, o Sul concentra 45,52\% dos registros e o Sudeste, 23,03\%; juntas, essas duas regiões somam 68,55\% do acervo e 64,29\% dos municípios cobertos. A Figura~\ref{fig:coverage-panel} antecipa essa leitura quantitativa, e a Figura~\ref{fig:brazil-coverage-map} mostra sua distribuição territorial, com cobertura concentrada em 19 UFs e lacunas visíveis em parte do Norte e do Nordeste. O resultado deve ser interpretado como um acervo interestadual extenso, mas não como um espelho nacional da produção legislativa municipal. A base cobre principalmente o período recente da produção legislativa: entre 2021 e 2025, há 96.018 registros distribuídos por 315 municípios. Também foram observados poucos outliers temporais, o que indica necessidade de saneamento antes de análises mais sensíveis ao eixo cronológico.
 
 \subsection{Tradução e busca semântica}
 
 \paragraph{Viabilidade da textualização.}
 Na avaliação interna do projeto, o tradutor \textit{ementa} $\rightarrow$ \textit{ação} obteve BERTScore de 84\% no conjunto de validação. A transformação de todo o acervo de 220.065 PLs em ações textualizadas levou 4h47min na execução reportada, o que indica viabilidade operacional nessa escala.
 
-A análise exploratória da base mostrou que a textualização reduz substancialmente o comprimento médio das descrições legislativas sem eliminar a diversidade do acervo. Foram observadas 219.245 ementas únicas e 188.254 ações textualizadas únicas. A tradução encurta o texto e reduz variabilidade superficial em grau suficiente para favorecer recuperação semântica e agrupamento. A Tabela~\ref{tab:ementa-acao-v2} ilustra esse ganho de legibilidade com exemplos reais do acervo.
-
-\begin{table}[t]
-\centering
-\caption{Exemplos de ementas e ações textualizadas correspondentes.}
-\label{tab:ementa-acao-v2}
-\small
-\begin{tabular}{p{0.54\linewidth} p{0.34\linewidth}}
-\toprule
-Ementa original & Ação textualizada \\
-\midrule
-``Institui no âmbito do Município de Congonhal, o Plano Municipal de Saneamento Básico e dá outras providências.'' & ``Criar plano municipal de saneamento básico.'' \\
-``INSTITUI A CAMPANHA `Janeiro Branco', NO MUNICÍPIO DE CARLOS BARBOSA.'' & ``Instituir a campanha `Janeiro Branco' no município.'' \\
-``DISPÕE SOBRE A CRIAÇÃO DA TARIFA SOCIAL DE ÁGUA E ESGOTO.'' & ``Criar tarifa social de água e esgoto.'' \\
-\bottomrule
-\end{tabular}
-\end{table}
+A análise exploratória da base mostrou que a textualização reduz substancialmente o comprimento médio das descrições legislativas sem eliminar a diversidade do acervo. Foram observadas 219.245 ementas únicas e 188.254 ações textualizadas únicas. Em termos práticos, a transformação encurta o texto e reduz variabilidade superficial suficiente para favorecer recuperação semântica e agrupamento; exemplos típicos incluem conversões como ``Institui o Plano Municipal de Saneamento Básico'' para ``Criar plano municipal de saneamento básico''.
 
 \paragraph{Utilidade preliminar da busca.}
-A etapa de busca semântica foi avaliada de forma exploratória com consultas reais e julgamento manual preliminar das ações retornadas. Em uma inspeção das cinco consultas públicas de demonstração disponíveis no sistema, 17 dos 25 itens retornados entre os cinco primeiros resultados foram julgados diretamente alinhados ao tema da consulta. Os melhores resultados apareceram em saneamento e evasão escolar, enquanto a consulta sobre arrecadação sem aumento de impostos apresentou o pior desempenho. A inspeção sugere utilidade preliminar, mas não substitui avaliação formal de recuperação da informação.
+A etapa de busca semântica foi avaliada de forma exploratória com consultas reais e julgamento manual preliminar das ações retornadas. Em uma inspeção das cinco consultas públicas de demonstração disponíveis no sistema, 17 dos 25 itens retornados entre os cinco primeiros resultados foram julgados diretamente alinhados ao tema da consulta. Os melhores resultados apareceram em saneamento e evasão escolar, enquanto a consulta sobre arrecadação sem aumento de impostos apresentou o pior desempenho.
 
-Mesmo sem benchmark anotado, a busca produz resultados tematicamente coerentes em consultas substantivas. Para a consulta ``como enfrentar a violência contra a mulher no município?'', por exemplo, a recuperação semântica retornou entre os primeiros itens ações como: regulamentar a violência contra a mulher no município (Uruguaiana/RS), criar política municipal de enfrentamento à violência política contra a mulher (Parauapebas/PA) e promover campanha de denúncia da violência contra a mulher (Anápolis/GO). O exemplo sugere a recuperação de ações alinhadas ao problema informado pelo usuário.
+Mesmo sem benchmark anotado, a busca produz resultados tematicamente coerentes em consultas substantivas. Para a consulta ``como enfrentar a violência contra a mulher no município?'', por exemplo, a recuperação semântica retornou entre os primeiros itens ações como: regulamentar a violência contra a mulher no município (Uruguaiana/RS), criar política municipal de enfrentamento à violência política contra a mulher (Parauapebas/PA) e promover campanha de denúncia da violência contra a mulher (Anápolis/GO).
 
 \subsection{Estudo de caso: violência contra a mulher}
 
@@ -88,7 +45,7 @@ Entre os temas disponíveis no acervo, violência contra a mulher foi selecionad
 
 No recorte temático com janela de 6 meses para taxa de homicídios, 1.240 ações tiveram variação computável e geraram 136 políticas agrupadas com pelo menos dois municípios. O cluster com maior escore heurístico foi ``Conceder auxílio financeiro a mulheres vítimas de violência doméstica no município'', com $Q = 0{,}778$, oito municípios representados e sete variações favoráveis em oito observações. Entre os exemplos que compõem esse grupo estão Marabá, Campina Grande e Campinas, com reduções observadas de -26,23\%, -22,22\% e -30,00\%, respectivamente. Esses resultados devem ser interpretados como associações observadas após a proposição legislativa, e não como evidência causal de efetividade.
 
-Além do cluster líder, o estudo de caso indica diversidade de estratégias. Entre os grupos com $Q = 0{,}750$, apareceram propostas de tramitação prioritária para processos envolvendo vítimas de violência doméstica, programas de defesa pessoal para mulheres, programas municipais de enfrentamento ao feminicídio e mecanismos de punição administrativa para autores de violência contra a mulher. Também apareceu um grupo educacional recorrente: ensino de noções básicas sobre a Lei Maria da Penha nas escolas municipais, com oito municípios e $Q = 0{,}667$. A Figura~\ref{fig:case-study-strategies} organiza esse conjunto como mosaico visual de respostas recorrentes. Esse resultado sugere que o sistema não concentra as recomendações em uma única família de resposta.
+Além do cluster líder, o estudo de caso indica diversidade de estratégias. Entre os grupos com $Q = 0{,}750$, apareceram propostas de tramitação prioritária para processos envolvendo vítimas de violência doméstica, programas de defesa pessoal para mulheres, programas municipais de enfrentamento ao feminicídio e mecanismos de punição administrativa para autores de violência contra a mulher. Também apareceu um grupo educacional recorrente: ensino de noções básicas sobre a Lei Maria da Penha nas escolas municipais, com oito municípios e $Q = 0{,}667$. A Figura~\ref{fig:case-study-strategies} organiza esse conjunto como mosaico visual de respostas recorrentes.
 
 \begin{figure*}[t]
 \centering
@@ -99,19 +56,4 @@ Além do cluster líder, o estudo de caso indica diversidade de estratégias. En
 
 \subsection{Falhas observadas}
 
-A Tabela~\ref{tab:falhas-v2} resume exemplos concretos de erro observados durante a inspeção qualitativa. Os exemplos indicam que os principais riscos atuais estão na condensação textual e na interpretação automática de variações extremas do indicador.
-
-\begin{table}[H]
-\centering
-\caption{Falhas observadas na inspeção qualitativa do pipeline.}
-\label{tab:falhas-v2}
-\small
-\begin{tabular}{p{0.18\linewidth} p{0.28\linewidth} p{0.42\linewidth}}
-\toprule
-Etapa & Exemplo & Implicação \\
-\midrule
-Tradução & ``Junho Violeta'' $\rightarrow$ ``Junho Violento'' & A condensação pode alterar o sentido material da proposta quando o modelo força uma paráfrase inadequada. \\
-Indicadores & Variações de -100\% quando o período futuro registra zero homicídios & O efeito percentual pode parecer excessivamente favorável em municípios pequenos ou com baixa contagem absoluta de eventos. \\
-\bottomrule
-\end{tabular}
-\end{table}
+A inspeção qualitativa apontou dois riscos recorrentes. Na textualização, a condensação pode alterar o sentido material da proposta quando o modelo força uma paráfrase inadequada, como em ``Junho Violeta'' $\rightarrow$ ``Junho Violento''. Nos indicadores, variações de -100\% em janelas futuras com contagem zero podem parecer excessivamente favoráveis em municípios pequenos ou com baixa contagem absoluta de eventos.

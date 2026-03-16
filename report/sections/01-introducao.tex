@@ -1,20 +1,9 @@
 \section{Introdução}
 
-A formulação de políticas públicas municipais no Brasil ocorre em um ambiente de forte heterogeneidade institucional, textual e tecnológica. Municípios com problemas semelhantes produzem proposições com vocabulário distinto, diferentes níveis de detalhamento e portais legislativos com graus variados de padronização. Isso dificulta a reutilização de experiências anteriores, reduz a comparabilidade entre iniciativas e limita o uso sistemático de evidências legislativas no processo decisório.
+A formulação de políticas públicas municipais no Brasil ocorre em um ambiente de forte heterogeneidade institucional, textual e tecnológica. Municípios com problemas semelhantes produzem proposições com vocabulário distinto, diferentes níveis de detalhamento e portais legislativos com graus variados de padronização, o que dificulta a reutilização de experiências anteriores e limita o uso sistemático de evidências legislativas no processo decisório.
 
-Este trabalho investiga se é possível transformar o histórico de Projetos de Lei municipais em um acervo pesquisável de ações públicas orientadas a problema, integrando textos legislativos, recuperação semântica e indicadores oficiais. A pergunta central de pesquisa é a seguinte: \textit{é possível construir um pipeline reproduzível para descoberta, organização e apoio exploratório à identificação de políticas públicas similares a partir de PLs históricos e indicadores oficiais?}
+Este trabalho investiga se é possível transformar o histórico de Projetos de Lei municipais em um acervo pesquisável de ações públicas orientadas a problema, integrando textos legislativos, recuperação semântica e indicadores oficiais. A pergunta central é a seguinte: \textit{é possível construir um pipeline reproduzível para descoberta, organização e apoio exploratório à identificação de políticas públicas similares a partir de PLs históricos e indicadores oficiais?}
 
-O trabalho se posiciona como um artigo de sistema aplicado a governo digital e a sistemas de informação para o setor público, utilizando NLP e recuperação de informação como meios técnicos. O objetivo principal é propor e demonstrar uma infraestrutura informacional implementada em plataforma web para gestores e analistas não técnicos.
+O artigo se posiciona como um trabalho de sistema aplicado a governo digital. Suas principais contribuições são: um método reproduzível para descoberta de instâncias do SAPL e extração automatizada de PLs em escala nacional; uma estratégia de textualização de ementas em ações textualizadas para reduzir ruído linguístico; um mecanismo de busca semântica em linguagem natural para apoiar a identificação de políticas similares; e um procedimento exploratório de associação entre grupos de PLs e indicadores municipais oficiais. A implementação atual deve ser lida como uma infraestrutura concreta e reprodutível sobre um acervo interestadual parcial, com coleta e tradução mais maduras do que recuperação, agrupamento e análise com indicadores.
 
-As contribuições do trabalho são:
-\begin{itemize}[leftmargin=*,nosep]
-  \item \textbf{C1}: um método reproduzível para descoberta de instâncias do SAPL e extração automatizada de PLs em escala nacional;
-  \item \textbf{C2}: uma estratégia de textualização de ementas jurídicas em ações textualizadas para reduzir ruído linguístico em recuperação e agrupamento;
-  \item \textbf{C3}: um mecanismo de busca semântica de ações textualizadas a partir de consultas em linguagem natural para apoiar a identificação de políticas similares;
-  \item \textbf{C4}: um procedimento exploratório de associação entre grupos de PLs e indicadores municipais oficiais ao longo do tempo, como mecanismo de priorização e não de inferência causal;
-  \item \textbf{C5}: uma implementação web pública que operacionaliza as etapas anteriores em uma interface única.
-\end{itemize}
-
-Na implementação atual, todo o pipeline foi construído, mas as etapas apresentam níveis distintos de validação empírica. Coleta e tradução de ementas estão mais maduras, enquanto recuperação semântica, agrupamento e análise com indicadores ainda permanecem em estágio exploratório. Assim, o artigo deve ser lido como a apresentação de uma infraestrutura concreta e reprodutível sobre um acervo interestadual parcial, e não como um benchmark de estado da arte em NLP ou IR.
-
-Para responder à pergunta de pesquisa, o artigo organiza a proposta em um pipeline reproduzível de cinco etapas: descoberta de fontes, extração de PLs, textualização de ementas, busca semântica e associação exploratória com indicadores municipais.
+O restante do artigo organiza a proposta em cinco etapas: descoberta de fontes, extração de PLs, textualização de ementas, busca semântica e associação exploratória com indicadores municipais.
