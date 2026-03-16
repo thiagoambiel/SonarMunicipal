@@ -27,10 +27,37 @@ Na avaliação interna do projeto, o tradutor \textit{ementa} $\rightarrow$ \tex
 
 A análise exploratória da base mostrou que a textualização reduz substancialmente o comprimento médio das descrições legislativas sem eliminar a diversidade do acervo. Foram observadas 219.245 ementas únicas e 188.254 ações textualizadas únicas. Em termos práticos, a transformação encurta o texto e reduz variabilidade superficial suficiente para favorecer recuperação semântica e agrupamento; exemplos típicos incluem conversões como ``Institui o Plano Municipal de Saneamento Básico'' para ``Criar plano municipal de saneamento básico''.
 
-\paragraph{Utilidade preliminar da busca.}
-A etapa de busca semântica foi avaliada de forma exploratória com consultas reais e julgamento manual preliminar das ações retornadas. Em uma inspeção das cinco consultas públicas de demonstração disponíveis no sistema, 17 dos 25 itens retornados entre os cinco primeiros resultados foram julgados diretamente alinhados ao tema da consulta. Os melhores resultados apareceram em saneamento e evasão escolar, enquanto a consulta sobre arrecadação sem aumento de impostos apresentou o pior desempenho.
+\paragraph{Avaliação anotada da recuperação.}
+A comparação formal entre \textit{ementas} e \textit{ações} foi conduzida em 15 problemas municipais com 272 pares problema-documento anotados automaticamente por um agente GPT-5.4. O pool é denso em itens úteis porque foi construído da união dos top-10 das duas abordagens: 87,5\% dos itens receberam relevância maior que zero e 68,8\% receberam relevância alta ($\geq 2$). Ainda assim, os documentos exclusivos de \textit{ações} foram mais fortes do que os exclusivos de \textit{ementas}: 76,2\% dos exclusivos de \textit{ações} receberam relevância alta, contra 56,6\% dos exclusivos de \textit{ementas}. As Figuras~\ref{fig:retrieval-eval-problem},~\ref{fig:retrieval-eval-heatmap} e~\ref{fig:retrieval-eval-summary} separam essa comparação em três leituras complementares: heterogeneidade por problema, variabilidade entre métricas e resumo agregado com incerteza.
 
-Mesmo sem benchmark anotado, a busca produz resultados tematicamente coerentes em consultas substantivas. Para a consulta ``como enfrentar a violência contra a mulher no município?'', por exemplo, a recuperação semântica retornou entre os primeiros itens ações como: regulamentar a violência contra a mulher no município (Uruguaiana/RS), criar política municipal de enfrentamento à violência política contra a mulher (Parauapebas/PA) e promover campanha de denúncia da violência contra a mulher (Anápolis/GO).
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/retrieval-eval-problem.pdf}
+\caption{Comparação pareada de nDCG@10 por problema entre recuperação por ementas e por ações textualizadas no benchmark exploratório. Cada linha representa uma consulta; segmentos em verde indicam ganho com ações, enquanto segmentos em terracota indicam perda. A figura evidencia que a vantagem média da textualização convive com heterogeneidade substantiva entre temas.}
+\label{fig:retrieval-eval-problem}
+\end{figure*}
+
+Em métricas agregadas, \textit{ações} superou \textit{ementas} na maior parte dos indicadores principais. O ganho aparece tanto na ordenação quanto na composição do ranking: nDCG@10 sobe de 0,671 para 0,802, MAP@10 sobe de 0,491 para 0,593 e a relevância média no top-10 sobe de 1,893 para 2,240. Em termos práticos, isso significa que a versão em ações não apenas encontra mais itens úteis, mas também coloca documentos mais fortemente alinhados nas primeiras posições. No topo do ranking, a melhora também é visível: P@3 passa de 0,844 para 1,000 e P@10 de 0,847 para 0,927. O efeito mais consistente, porém, aparece na recuperação de documentos fortemente relevantes: High-P@10 sobe de 0,627 para 0,787 e High-Recall@10 de 0,499 para 0,638.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/retrieval-eval-heatmap.pdf}
+\caption{Delta entre ações e ementas, por problema e por métrica, em nDCG@10, MAP@10, P@10 e High-Recall@10. Tons azuis indicam ganho com ações, e tons terracota indicam perda. A figura destaca que o efeito da textualização varia por tema e não se distribui uniformemente entre todas as métricas.}
+\label{fig:retrieval-eval-heatmap}
+\end{figure*}
+
+O perfil pareado por problema reforça essa leitura e mostra heterogeneidade substantiva que a média sozinha esconde. Em High-P@10 e High-Recall@10, \textit{ações} venceu em 9 dos 10 casos não empatados, com \textit{sign test} exato de $p=0{,}021$ em ambas as métricas. Em nDCG@10, \textit{ações} ficou à frente em 11 dos 15 problemas, com apenas três derrotas. Além disso, as duas abordagens recuperam conjuntos bastante diferentes: o overlap médio entre os dois top-10 é de apenas 1,87 documento por problema e o Jaccard médio é 0,118. Na prática, isso indica que textualizar a ementa altera materialmente quais PLs chegam ao usuário, e não apenas a ordem de um mesmo conjunto. Como esses julgamentos foram produzidos por GPT-5.4, os números devem ser lidos como uma linha de base automatizada para comparação relativa entre métodos, e não como veredicto final de especialistas setoriais.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/retrieval-eval-summary.pdf}
+\caption{Ganho médio por consulta com IC 95\% por bootstrap e contagem de vitórias, empates e derrotas para quatro métricas-chave. A figura resume a comparação relativa no pool anotado e explicita a incerteza e a variabilidade entre problemas.}
+\label{fig:retrieval-eval-summary}
+\end{figure*}
+
+Os maiores ganhos de \textit{ações} apareceram em problemas de enchentes urbanas (nDCG@10 de 0,430 para 0,964), emprego jovem (0,433 para 0,802), resíduos e reciclagem (0,673 para 1,000) e agricultura familiar (0,505 para 0,793). Nesses casos, a textualização parece reduzir ambiguidade e aproximar a indexação de consultas formuladas como objetivos de política pública. As principais perdas ocorreram em iluminação pública (0,673 para 0,483), saneamento básico (0,928 para 0,773) e dengue e arboviroses (0,940 para 0,807), sugerindo que a reescrita pode empobrecer nuances quando a ementa original já é suficientemente específica.
+
+Essa heterogeneidade sugere uma leitura mais precisa do resultado. A evidência observada aqui não é de superioridade universal da textualização, mas de uma tendência favorável quando a consulta é formulada como objetivo de política pública e a ementa original carrega ruído legislativo-formal, termos genéricos ou linguagem administrativa indireta. Em contrapartida, consultas mais terminológicas ou domínios em que a ementa já preserva vocabulário técnico claro podem perder desempenho quando a reescrita simplifica demais o conteúdo.
 
 \subsection{Estudo de caso: violência contra a mulher}
 

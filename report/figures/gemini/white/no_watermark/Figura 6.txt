@@ -1,0 +1,163 @@
+Create a publication-quality scientific results figure in Brazilian Portuguese for an academic paper. The figure should explain, with clarity and rigor, that semantic retrieval based on textualized actions outperforms retrieval based on original bill summaries (\emph{ementas}) in the Sonar Municipal project.
+
+MANDATORY BACKGROUND
+The background must be pure white.
+Use only a completely white canvas: #FFFFFF.
+Do not use off-white, gray, gradients, textures, shadows on the background, colored panels, or tinted areas.
+The entire figure must sit on a clean white scientific-paper background.
+
+LANGUAGE
+All visible text inside the figure must be in Brazilian Portuguese.
+
+GENERAL STYLE
+The figure must look like a refined academic evaluation panel suitable for a peer-reviewed paper in digital government, public policy, information retrieval, or applied NLP.
+It should feel:
+- elegant
+- precise
+- modern
+- highly legible
+- methodologically serious
+- visually restrained
+
+Do not make it look like a marketing infographic.
+Do not make it playful, cartoonish, futuristic, or decorative.
+
+DESIGN DIRECTION
+Use a modern editorial scientific style:
+- flat vector rendering
+- crisp geometry
+- thin, precise lines
+- subtle rounded elements only when useful
+- strong alignment and spacing
+- restrained color palette
+- excellent information hierarchy
+
+Preferred palette:
+- white background
+- dark navy
+- slate blue
+- muted steel blue
+- neutral grays
+- one restrained green accent for positive deltas
+
+No 3D, no glossy effects, no heavy shadows, no neon, no ornamental icons.
+
+TITLE
+At the top, use:
+“Busca semântica: ementas vs. ações textualizadas”
+
+Optional subtitle:
+“Avaliação anotada com 272 pares problema-documento em 15 problemas municipais”
+
+MAIN CONCEPT
+The figure must communicate three ideas at a glance:
+1. actions outperform summaries on the main retrieval metrics
+2. actions remain stronger across most ranking positions after rank 1
+3. the two approaches retrieve substantially different document sets
+
+LAYOUT
+Use a clean landscape layout with two main panels and one compact callout area.
+
+Left panel:
+A grouped bar chart comparing the two approaches in the main top-10 metrics.
+
+Metrics to show:
+- P@10
+- High-P@10 (rel >= 2)
+- Recall@10
+- High-Recall@10 (rel >= 2)
+- MAP@10
+- nDCG@10
+
+Values:
+- Ementas: 0.847, 0.627, 0.541, 0.499, 0.491, 0.671
+- Ações: 0.927, 0.787, 0.601, 0.638, 0.593, 0.802
+
+Each metric should visually show:
+- light blue-gray bar for “Ementas”
+- dark navy bar for “Ações”
+- small positive delta label in restrained green, such as “+0,131”
+
+Right panel:
+A line chart showing average relevance by rank from 1 to 10.
+
+Series values:
+- Ementas: 2.600, 1.733, 1.733, 1.933, 2.067, 1.867, 1.933, 1.733, 1.400, 1.933
+- Ações: 2.600, 2.600, 2.267, 2.400, 1.733, 2.333, 2.400, 2.067, 2.000, 2.000
+
+This panel should make it immediately visible that:
+- the methods tie at rank 1
+- actions are stronger from rank 2 to rank 10, except a dip at rank 5
+
+Compact callout area:
+Include a small, elegant annotation box with these facts:
+- “Overlap médio top-10: 1,87 documento”
+- “Jaccard médio: 0,118”
+- “Documentos exclusivos de ações com relevância alta: 76,2%”
+
+TEXT INSIDE THE FIGURE
+Use concise labels only.
+Keep explanatory sentences short.
+Do not use long paragraphs.
+
+TEXT HIERARCHY
+Use clear hierarchy:
+- title prominent but compact
+- subtitle smaller
+- panel titles medium-bold
+- axes and metric labels fully legible after reduction
+- delta labels visible but discreet
+- callout text small, sharp, and readable
+
+PANEL TITLES
+Left panel title:
+“Métricas agregadas no top-10”
+
+Right panel title:
+“Relevância média por posição”
+
+Optional short line below left panel title:
+“ações melhora precisão, ordenação e recuperação de documentos fortes”
+
+Optional short line below right panel title:
+“empate no rank 1; vantagem clara de ações do rank 2 ao 10”
+
+ICONOGRAPHY
+Do not rely on decorative icons.
+If any visual cue is used, it must be minimal and secondary.
+The figure should read primarily as a scientific chart, not as an infographic.
+
+MODERN ELEGANCE REQUIREMENT
+The figure must feel contemporary and polished without becoming flashy.
+Aim for:
+- disciplined spacing
+- restrained contrast
+- refined typography
+- visual calm
+- excellent readability after being reduced inside a paper
+
+STRICT NEGATIVE CONSTRAINTS
+Do not include:
+- non-white background
+- textured or tinted canvas
+- gradients
+- large decorative icons
+- screenshots
+- dashboards
+- cartoon styling
+- 3D effects
+- ornamental arrows
+- excessive labels
+- paragraph blocks
+- exaggerated colors
+
+FINAL REQUIREMENTS
+- pure white background only
+- publication-quality
+- elegant academic chart aesthetic
+- clean vector-like rendering
+- strong readability after reduction
+- scientifically credible
+- suitable for direct insertion into a peer-reviewed article
+
+The final image must look like a rigorous, modern academic evaluation figure that clearly shows the advantage of textualized actions over original summaries in semantic retrieval.
