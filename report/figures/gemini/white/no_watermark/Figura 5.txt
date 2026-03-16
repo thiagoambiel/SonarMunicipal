@@ -1,0 +1,212 @@
+Create a publication-quality scientific systems figure in Portuguese to replace Figure 1 of an academic paper. The figure must present the complete “Sonar Municipal” pipeline in a didactic, elegant, modern, and scientifically rigorous way, suitable for a peer-reviewed article in public policy, digital government, information systems, or applied NLP.
+
+MANDATORY BACKGROUND
+The background must be pure white.
+Use only a fully white canvas: #FFFFFF.
+Do not use off-white, beige, gray, gradients, textures, shadows on the background, colored panels, or tinted areas.
+The whole figure must sit on a clean white scientific-paper background.
+
+LANGUAGE
+All visible text inside the figure must be in Brazilian Portuguese.
+
+GENERAL STYLE
+The figure must look like a polished, modern academic workflow diagram.
+It should feel:
+- elegant
+- clean
+- contemporary
+- highly readable
+- methodologically serious
+- visually restrained
+
+Do not make it look like a marketing infographic.
+Do not make it playful, cartoonish, futuristic, or decorative.
+
+DESIGN DIRECTION
+Use a modern editorial design language:
+- flat vector style
+- crisp geometry
+- thin, precise lines
+- subtle rounded rectangles
+- strong alignment and spacing
+- restrained color palette
+- compact but refined typography
+- visual hierarchy similar to high-quality journal figures
+
+Use mostly:
+- white background
+- dark navy
+- slate blue
+- muted steel blue
+- neutral grays
+- very subtle accent color only if necessary
+
+No 3D, no glossy effects, no heavy shadows, no neon, no ornamental icons.
+
+TITLE
+At the top, use:
+“Pipeline do Sonar Municipal”
+
+Optional subtitle in smaller text:
+“Da descoberta de fontes à interface pública de busca e exploração de políticas similares”
+
+MAIN CONTENT
+Represent the system as a pipeline with 5 numbered stages plus a final output block.
+Each stage must include:
+1. stage number
+2. stage title
+3. one short subtitle
+4. one brief explanation, in smaller text, explaining what the stage does
+
+The explanations must be concise, scientific, and easy to scan.
+
+STAGE CONTENT
+
+Stage 1
+Title:
+“1. Descoberta”
+Subtitle:
+“Municípios do IBGE + heurísticas de URL”
+Brief explanation:
+“Identifica municípios e localiza portais legislativos com potencial para consulta automatizada.”
+
+Visual cue:
+A structured source block with municipality records, lists, and candidate legislative portals.
+
+Stage 2
+Title:
+“2. Extração”
+Subtitle:
+“Instâncias SAPL válidas + PLs públicos”
+Brief explanation:
+“Valida instâncias acessíveis do SAPL e coleta projetos de lei disponíveis publicamente.”
+
+Visual cue:
+A clean portal/API extraction block with document inflow.
+
+Stage 3
+Title:
+“3. Textualização”
+Subtitle:
+“Ementas jurídicas → ações textualizadas”
+Brief explanation:
+“Transforma descrições jurídicas em textos mais claros e padronizados sobre a ação proposta.”
+
+Visual cue:
+A document transformation block showing legal text becoming standardized policy-action text.
+
+Stage 4
+Title:
+“4. Busca semântica”
+Subtitle:
+“Embeddings E5 + índice vetorial”
+Brief explanation:
+“Converte os textos em representações semânticas para recuperar propostas similares por significado.”
+
+Visual cue:
+A restrained semantic-index motif with nodes, vectors, or database-like semantic structures.
+
+Stage 5
+Title:
+“5. Análise exploratória”
+Subtitle:
+“Agrupamento textual + indicadores municipais”
+Brief explanation:
+“Organiza propostas semelhantes e permite comparações com indicadores municipais agregados.”
+
+Visual cue:
+A clean analytical block with clusters, grouped items, and a small indicator/chart glyph.
+
+Final block
+Title:
+“Interface pública”
+Subtitle:
+“Busca, exploração e inspeção do pipeline”
+Brief explanation:
+“Disponibiliza consulta por problema, navegação por políticas similares e transparência sobre o processo.”
+
+Visual cue:
+A clean interface or browser-like panel, minimal and schematic, not a real screenshot.
+
+LAYOUT
+Use a highly organized landscape composition.
+Preferred arrangement:
+- stages 1, 2, and 3 on the top row
+- stages 4 and 5 on the second row
+- final block centered at the bottom
+- arrows clearly connecting stages in sequence
+- balanced spacing with strong symmetry and generous margins
+
+Flow:
+Descoberta → Extração → Textualização
+Textualização → Busca semântica
+Busca semântica → Análise exploratória
+Busca semântica + Análise exploratória → Interface pública
+
+The layout must be easy to understand in a few seconds.
+
+TEXT HIERARCHY
+Use clear visual hierarchy:
+- title prominent but compact
+- stage number clearly visible
+- stage title medium-bold
+- subtitle smaller
+- explanation in even smaller but still fully legible text
+- all text sharp and readable at article scale
+
+The explanations must remain brief.
+Do not use paragraphs.
+Do not overload the figure with text.
+
+ICONOGRAPHY
+Use only minimal schematic icons, with a consistent line style:
+- list/table icon for municipalities
+- portal/database symbol for SAPL
+- document transformation cue for textualização
+- vector/index nodes for semantic retrieval
+- cluster/chart cue for exploratory analysis
+- browser/system panel for interface pública
+
+Icons must be subtle and secondary to the structure.
+
+MODERN ELEGANCE REQUIREMENT
+The figure must feel visually modern without losing academic seriousness.
+Aim for:
+- smooth spacing
+- disciplined alignment
+- refined typography
+- subtle visual rhythm
+- minimalistic sophistication
+- no clutter
+
+It should look like a figure designed for a strong conference or journal paper.
+
+STRICT NEGATIVE CONSTRAINTS
+Do not include:
+- non-white background
+- gray or beige canvas
+- textured background
+- gradients
+- decorative shadows
+- hand-drawn look
+- cartoon icons
+- real screenshots
+- maps
+- logos
+- human figures
+- glowing AI brains
+- busy dashboard aesthetics
+- oversized symbols
+- dense paragraphs
+- flashy infographic styling
+
+FINAL REQUIREMENTS
+- pure white background only
+- publication-quality
+- crisp vector-like rendering
+- elegant and modern
+- scientifically credible
+- highly legible after reduction
+- suitable for direct insertion into a scientific article
+
+The final image must look like a modern, elegant, and didactic academic pipeline diagram with concise explanatory text under each stage and a fully white background.

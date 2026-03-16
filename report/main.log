@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.30)  15 MAR 2026 18:04
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.30)  16 MAR 2026 01:25
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -822,54 +822,69 @@ LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 1
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 ))
 (./sections/02-relacionados.tex [2]) (./sections/03-metodos.tex
-<figures/pipeline-diagram.png, id=93, 3220.03pt x 1977.3875pt>
+<figures/pipeline-diagram.png, id=93, 2762.32pt x 1541.76pt>
 File: figures/pipeline-diagram.png Graphic file (type png)
 <use figures/pipeline-diagram.png>
 Package pdftex.def Info: figures/pipeline-diagram.png  used on input line 9.
-(pdftex.def)             Requested size: 426.79135pt x 262.07803pt.
+(pdftex.def)             Requested size: 426.79135pt x 238.19398pt.
 LaTeX Font Info:    Trying to load font information for T1+phv on input line 10
 .
 
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
-) [3] [4 <./figures/pipeline-diagram.png>]
-<figures/sonar-app.png, id=130, 1284.8pt x 722.7pt>
-File: figures/sonar-app.png Graphic file (type png)
-<use figures/sonar-app.png>
-Package pdftex.def Info: figures/sonar-app.png  used on input line 50.
-(pdftex.def)             Requested size: 384.1096pt x 216.0618pt.
-) (./sections/04-resultados.tex [5]
-<figures/brazil-coverage-map.png, id=142, 3220.03pt x 2253.41875pt>
+) [3] [4 <./figures/pipeline-diagram.png>]) (./sections/04-resultados.tex [5]
+<figures/coverage-panel.png, id=140, 2762.32pt x 1541.76pt>
+File: figures/coverage-panel.png Graphic file (type png)
+<use figures/coverage-panel.png>
+Package pdftex.def Info: figures/coverage-panel.png  used on input line 32.
+(pdftex.def)             Requested size: 426.79135pt x 238.19398pt.
+<figures/brazil-coverage-map.png, id=141, 2762.32pt x 1541.76pt>
 File: figures/brazil-coverage-map.png Graphic file (type png)
 <use figures/brazil-coverage-map.png>
-Package pdftex.def Info: figures/brazil-coverage-map.png  used on input line 32
+Package pdftex.def Info: figures/brazil-coverage-map.png  used on input line 39
 .
-(pdftex.def)             Requested size: 426.79135pt x 298.66252pt.
- [6 <./figures/sonar-app.png (PNG copy)>] [7 <./figures/brazil-coverage-map.png
->]
-Underfull \hbox (badness 1762) in paragraph at lines 60--61
+(pdftex.def)             Requested size: 426.79135pt x 238.19398pt.
+ [6 <./figures/coverage-panel.png>]
+Underfull \hbox (badness 1762) in paragraph at lines 67--68
 []\T1/ptm/m/n/10.95 ``Instituir a cam-pa-nha `Ja-neiro
  []
 
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 93--93
+
+Underfull \vbox (badness 6461) has occurred while \output is active []
+
+ [7 <./figures/brazil-coverage-map.png>]
+<figures/case-study-flow.png, id=162, 2762.32pt x 1541.76pt>
+File: figures/case-study-flow.png Graphic file (type png)
+<use figures/case-study-flow.png>
+Package pdftex.def Info: figures/case-study-flow.png  used on input line 84.
+(pdftex.def)             Requested size: 426.79135pt x 238.19398pt.
+ [8]
+<figures/case-study-strategies.png, id=171, 2762.32pt x 1541.76pt>
+File: figures/case-study-strategies.png Graphic file (type png)
+<use figures/case-study-strategies.png>
+Package pdftex.def Info: figures/case-study-strategies.png  used on input line 
+95.
+(pdftex.def)             Requested size: 426.79135pt x 238.19398pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 114--114
 []\T1/ptm/m/n/10.95 Variações de -100%
  []
 
 
-Underfull \hbox (badness 1990) in paragraph at lines 93--93
+Underfull \hbox (badness 1990) in paragraph at lines 114--114
 \T1/ptm/m/n/10.95 quando o pe-ríodo fu-turo
  []
 
-) (./sections/05-limitacoes.tex) (./sections/06-etica.tex)
-(./sections/07-conclusao.tex [9]) [10]
+) (./sections/05-limitacoes.tex [9 <./figures/case-study-flow.png>])
+(./sections/06-etica.tex) (./sections/07-conclusao.tex [10 <./figures/case-stud
+y-strategies.png>]) [11]
 Underfull \hbox (badness 3128) in paragraph at lines 41--41
 []\T1/ptm/m/n/12 Qdrant. \T1/ptm/m/it/12 Qdrant Do-cu-men-ta-tion\T1/ptm/m/n/12
  . \T1/ptm/m/sc/12 url\T1/ptm/m/n/12 : []$\T1/pcr/m/n/12 https : / / qdrant . t
 ech /
  []
 
-[11] (./main.aux)
+[12] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 6AE14EF7AD574973DFA64624343F7FA8;2555.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -877,10 +892,10 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21415 strings out of 478287
- 373685 string characters out of 5849289
- 1107093 words of memory out of 5000000
- 39262 multiletter control sequences out of 15000+600000
+ 21434 strings out of 478287
+ 374279 string characters out of 5849289
+ 1107509 words of memory out of 5000000
+ 39276 multiletter control sequences out of 15000+600000
  513591 words of font info for 81 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  68i,11n,77p,1231b,1956s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -895,10 +910,10 @@ b></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/share/t
 exlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/texmf-d
 ist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /urw/times/utmri8a.pfb>
-Output written on main.pdf (11 pages, 1465442 bytes).
+Output written on main.pdf (12 pages, 17122865 bytes).
 PDF statistics:
- 270 PDF objects out of 1000 (max. 8388607)
- 227 compressed objects within 3 object streams
- 51 named destinations out of 1000 (max. 500000)
- 144 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 284 PDF objects out of 1000 (max. 8388607)
+ 235 compressed objects within 3 object streams
+ 54 named destinations out of 1000 (max. 500000)
+ 154 words of extra memory for PDF output out of 10000 (max. 10000000)
 

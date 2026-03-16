@@ -1,0 +1,73 @@
+Create a clean academic infographic in Portuguese, landscape orientation, ratio 16:9, designed for insertion into a scientific paper. The visual style must be minimal, elegant, modern, and publication-friendly, not corporate-advertising style. Use a warm very light beige background, rounded cards, subtle shadows, thin borders, lots of white space, and a restrained palette based on dark blue, medium blue, light blue, and soft gray. Use orange only as a very subtle accent for emphasis. Typography should look like a scientific infographic: clean sans-serif, highly legible, semi-bold titles, regular body text.
+
+Title of the figure:
+“Escala, cobertura e distribuição regional da base final”
+
+Build the composition in three horizontal sections from top to bottom.
+
+SECTION 1: KPI CARDS
+Place five rounded cards aligned horizontally across the top. Each card must contain a large bold number and a smaller label below it. Make the numbers visually dominant.
+Card 1:
+“1.259”
+“Instâncias SAPL encontradas”
+Card 2:
+“322”
+“Instâncias com extração válida”
+Card 3:
+“220.065”
+“PLs coletados”
+Card 4:
+“322”
+“Municípios cobertos”
+Card 5:
+“19”
+“UFs cobertas”
+
+SECTION 2: COVERAGE FUNNEL
+Below the cards, create a horizontal funnel or progressive flow showing reduction from national universe to final collected base. The flow should go from left to right with elegant tapered connectors or narrowing arrows.
+Stage 1:
+“5.570 municípios brasileiros”
+Light gray block
+Stage 2:
+“1.259 instâncias SAPL encontradas”
+Medium blue block
+Stage 3:
+“322 instâncias com extração válida”
+Darker blue block
+Stage 4:
+“220.065 PLs coletados”
+Strong dark blue block
+
+Add small subtle annotations above or below the transitions:
+“descoberta nacional tecnicamente viável”
+“extração depende da estabilidade das instâncias”
+At the final stage, add a tiny footnote-style note:
+“acervo interestadual extenso, não espelho nacional”
+
+SECTION 3: REGIONAL DISTRIBUTION
+At the bottom, build a horizontal bar chart showing regional distribution. Each region must appear as a row with a dark blue bar for records and a smaller circular marker or secondary label for municipalities. Order from highest to lowest number of records:
+“Sul — 100.175 registros / 107 municípios”
+“Sudeste — 50.673 registros / 100 municípios”
+“Centro-Oeste — 38.788 registros / 68 municípios”
+“Nordeste — 21.588 registros / 36 municípios”
+“Norte — 8.841 registros / 11 municípios”
+
+The Sul bar must be clearly the longest, followed by Sudeste, Centro-Oeste, Nordeste, Norte. Add a very subtle side annotation:
+“Sul + Sudeste = 68,55% do acervo”
+and another small annotation:
+“64,29% dos municípios cobertos”
+
+VISUAL INTENT
+The figure must tell a story in one glance:
+top = total scale,
+middle = narrowing extraction pipeline,
+bottom = regional concentration.
+It should look like an academic summary panel, polished and serious, with excellent visual hierarchy.
+
+IMPORTANT
+Do not include a map of Brazil.
+Do not make it look like a startup dashboard.
+Do not use saturated neon colors.
+Do not clutter with icons.
+Keep it highly legible and visually calm.
+Render all text in Portuguese.

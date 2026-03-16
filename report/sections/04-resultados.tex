@@ -2,7 +2,7 @@
 
 \subsection{Cobertura da base}
 
-A execução congelada indica que a descoberta nacional é tecnicamente viável, mas que a extração automatizada ainda depende fortemente da qualidade e da estabilidade das instâncias municipais do SAPL. A Tabela~\ref{tab:coleta-v2} resume os principais números dessa execução.
+A execução congelada indica que a descoberta nacional é tecnicamente viável, mas que a extração automatizada ainda depende fortemente da qualidade e da estabilidade das instâncias municipais do SAPL. A Tabela~\ref{tab:coleta-v2} resume os principais números dessa execução, enquanto a Figura~\ref{fig:coverage-panel} reorganiza esses dados como painel visual de escala, redução e concentração regional.
 
 \begin{table}[H]
 \centering
@@ -29,12 +29,19 @@ Norte & 8.841 registros / 11 municípios \\
 
 \begin{figure*}[t]
 \centering
+\includegraphics[width=\textwidth]{figures/coverage-panel.png}
+\caption{Painel visual da execução congelada, combinando indicadores-chave, redução do pipeline e distribuição regional do acervo final.}
+\label{fig:coverage-panel}
+\end{figure*}
+
+\begin{figure*}[t]
+\centering
 \includegraphics[width=\textwidth]{figures/brazil-coverage-map.png}
 \caption{Cobertura territorial da base final por UF. Estados em cinza não tiveram extração válida na execução congelada; a intensidade do azul indica o número de municípios cobertos em cada UF.}
 \label{fig:brazil-coverage-map}
 \end{figure*}
 
-Em termos percentuais, o Sul concentra 45,52\% dos registros e o Sudeste, 23,03\%. Juntas, essas duas regiões somam 68,55\% de todo o acervo. Em número de municípios, Sul e Sudeste concentram 64,29\% dos 322 municípios presentes na base final. A Figura~\ref{fig:brazil-coverage-map} mostra essa distribuição territorial, com cobertura concentrada em 19 UFs e lacunas visíveis em parte do Norte e do Nordeste. Portanto, o resultado atual deve ser interpretado como um acervo interestadual extenso, mas não como um espelho nacional da produção legislativa municipal.
+Em termos percentuais, o Sul concentra 45,52\% dos registros e o Sudeste, 23,03\%. Juntas, essas duas regiões somam 68,55\% de todo o acervo. Em número de municípios, Sul e Sudeste concentram 64,29\% dos 322 municípios presentes na base final. A Figura~\ref{fig:coverage-panel} antecipa essa leitura quantitativa, e a Figura~\ref{fig:brazil-coverage-map} mostra sua distribuição territorial, com cobertura concentrada em 19 UFs e lacunas visíveis em parte do Norte e do Nordeste. Portanto, o resultado atual deve ser interpretado como um acervo interestadual extenso, mas não como um espelho nacional da produção legislativa municipal.
 
 A base cobre principalmente o período recente da produção legislativa municipal, mas também inclui histórico mais antigo. A data mínima observada foi 29 de dezembro de 1947. A análise exploratória também revelou poucos, porém relevantes, outliers temporais, incluindo um registro com ano 199 e duas datas de apresentação em 2099. Esses casos sugerem a necessidade de saneamento temporal antes de análises mais sensíveis ao eixo cronológico.
 
@@ -70,11 +77,25 @@ Mesmo sem benchmark anotado, a busca produz resultados tematicamente coerentes e
 
 \subsection{Estudo de caso: violência contra a mulher}
 
-Entre os temas disponíveis no acervo, violência contra a mulher foi selecionado como estudo de caso principal. O recorte lexical correspondente reúne 2.306 ações distribuídas por 204 municípios e 18 UFs. Esse volume foi considerado adequado para ilustrar o fluxo completo do sistema, desde a consulta em linguagem natural até a consolidação de políticas recorrentes. Por razões de disponibilidade e cobertura, adotou-se a taxa de homicídios como proxy inicial deste estudo de caso, exclusivamente para fins exploratórios de priorização.
+Entre os temas disponíveis no acervo, violência contra a mulher foi selecionado como estudo de caso principal. O recorte lexical correspondente reúne 2.306 ações distribuídas por 204 municípios e 18 UFs. Esse volume foi considerado adequado para ilustrar o fluxo completo do sistema, desde a consulta em linguagem natural até a consolidação de políticas recorrentes. A Figura~\ref{fig:case-study-flow} sintetiza esse percurso visualmente. Por razões de disponibilidade e cobertura, adotou-se a taxa de homicídios como proxy inicial deste estudo de caso, exclusivamente para fins exploratórios de priorização.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/case-study-flow.png}
+\caption{Fluxo completo do estudo de caso sobre violência contra a mulher, da consulta em linguagem natural à priorização exploratória de políticas recorrentes.}
+\label{fig:case-study-flow}
+\end{figure*}
 
 No recorte temático com janela de 6 meses para taxa de homicídios, 1.240 ações tiveram variação computável e geraram 136 políticas agrupadas com pelo menos dois municípios. O cluster com maior escore heurístico foi ``Conceder auxílio financeiro a mulheres vítimas de violência doméstica no município'', com $Q = 0{,}778$, oito municípios representados e sete variações favoráveis em oito observações. Entre os exemplos que compõem esse grupo estão Marabá, Campina Grande e Campinas, com reduções observadas de -26,23\%, -22,22\% e -30,00\%, respectivamente. Esses resultados devem ser interpretados como associações observadas após a proposição legislativa, e não como evidência causal de efetividade.
 
-Além do cluster líder, o estudo de caso indica diversidade de estratégias. Entre os grupos com $Q = 0{,}750$, apareceram propostas de tramitação prioritária para processos envolvendo vítimas de violência doméstica, programas de defesa pessoal para mulheres, programas municipais de enfrentamento ao feminicídio e mecanismos de punição administrativa para autores de violência contra a mulher. Também apareceu um grupo educacional recorrente: ensino de noções básicas sobre a Lei Maria da Penha nas escolas municipais, com oito municípios e $Q = 0{,}667$. Esse resultado sugere que o sistema não concentra as recomendações em uma única família de resposta.
+Além do cluster líder, o estudo de caso indica diversidade de estratégias. Entre os grupos com $Q = 0{,}750$, apareceram propostas de tramitação prioritária para processos envolvendo vítimas de violência doméstica, programas de defesa pessoal para mulheres, programas municipais de enfrentamento ao feminicídio e mecanismos de punição administrativa para autores de violência contra a mulher. Também apareceu um grupo educacional recorrente: ensino de noções básicas sobre a Lei Maria da Penha nas escolas municipais, com oito municípios e $Q = 0{,}667$. A Figura~\ref{fig:case-study-strategies} organiza esse conjunto como mosaico visual de respostas recorrentes. Esse resultado sugere que o sistema não concentra as recomendações em uma única família de resposta.
+
+\begin{figure*}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/case-study-strategies.png}
+\caption{Estratégias recorrentes identificadas no estudo de caso, destacando o cluster líder e a diversidade de respostas econômicas, educacionais, administrativas e protetivas.}
+\label{fig:case-study-strategies}
+\end{figure*}
 
 \subsection{Falhas observadas}
 
