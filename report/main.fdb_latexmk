@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber main"] 1773635620 "main.bcf" "main.bbl" "main" 1773635623
-  "main.bcf" 1773635623 107909 3f3a1bbdd29bca7e8b1c680f94db529f "pdflatex"
+["biber main"] 1773635620 "main.bcf" "main.bbl" "main" 1773637128
+  "main.bcf" 1773637128 107909 3f3a1bbdd29bca7e8b1c680f94db529f "pdflatex"
   "sonar-references.bib" 1773605254 10264 5ebe413e6391675bddb844e101b58cc2 ""
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1773635621 "main.tex" "main.pdf" "main" 1773635623
+["pdflatex"] 1773637127 "main.tex" "main.pdf" "main" 1773637128
   "/etc/texmf/web2c/texmf.cnf" 1752781794 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -157,13 +157,13 @@
   "figures/case-study-strategies.jpg" 1773635283 463732 6c894cf89aa0b3bd95f689f6b70a6093 ""
   "figures/coverage-panel.jpg" 1773635282 455670 d723c83a7325f77710366954a842a829 ""
   "figures/pipeline-diagram.jpg" 1773635282 489226 5fd70ea81785f634dd59c459266098ac ""
-  "main.aux" 1773635623 7870 9511c49d77f0f2cbb398d5db12952060 "pdflatex"
+  "main.aux" 1773637128 7870 9511c49d77f0f2cbb398d5db12952060 "pdflatex"
   "main.bbl" 1773635620 29944 ab913df3c58d5055aedf857990dcaeb3 "biber main"
-  "main.out" 1773635623 2430 b618edbb36818506235b759e0b1fc19d "pdflatex"
-  "main.run.xml" 1773635623 2374 f093074253073c23d84ff3ed278cb69f "pdflatex"
+  "main.out" 1773637128 2430 b618edbb36818506235b759e0b1fc19d "pdflatex"
+  "main.run.xml" 1773637128 2374 f093074253073c23d84ff3ed278cb69f "pdflatex"
   "main.tex" 1773635615 1135 b4e01abb4f1d6dc950135f964fe3cf28 ""
   "sbc-template.sty" 1773602803 6074 ecc54df5124d8db4ac67c42cc728f3a5 ""
-  "sections/00-frontmatter.tex" 1773635615 1142 c0b0c0428a7aa5e719f09160a6994e57 ""
+  "sections/00-frontmatter.tex" 1773637125 1151 6c77be26f3f763d6a5722b53dd78edee ""
   "sections/01-introducao.tex" 1773635615 1970 c898badc56fff45980eb40788d32cf51 ""
   "sections/02-relacionados.tex" 1773635615 1308 bea81d5461dd711bb1ed2544b8de31a7 ""
   "sections/03-metodos.tex" 1773635287 6324 839e772890d3910d718db87a666f6e33 ""
