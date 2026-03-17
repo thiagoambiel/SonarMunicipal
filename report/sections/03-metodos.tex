@@ -7,7 +7,7 @@ O pipeline possui cinco etapas: (i) descoberta de instâncias do SAPL a partir d
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/pipeline-diagram.jpg}
-\caption{Síntese do pipeline do Sonar Municipal, da descoberta de fontes à interface pública.}
+\caption{Pipeline do Sonar Municipal, da descoberta de fontes à interface pública.}
 \label{fig:sonar-pipeline}
 \end{figure*}
 
@@ -29,7 +29,7 @@ No acervo completo, a tradução reduziu o comprimento médio das descrições d
 
 As ações são indexadas com representações vetoriais do modelo Multilingual E5 \cite{wang_e5_2024} e armazenadas no Qdrant \cite{qdrant_overview}. Para avaliar o efeito da textualização, comparamos três variantes do mesmo acervo: um \textit{baseline} lexical BM25 sobre as \textit{ementas} originais, busca semântica sobre as \textit{ementas} originais e busca semântica sobre as \textit{ações} textualizadas. O benchmark exploratório foi composto por 15 problemas plausíveis para a plataforma e por um pool anotado derivado da união dos top-30 das três abordagens. Cada par problema-documento recebeu julgamento automatizado de relevância em escala de 0 a 3 por um agente GPT-5.4, totalizando 1.158 anotações.
 
-Sobre esse pool calculamos métricas de ordenação, precisão no topo e cobertura local, com ênfase em nDCG@10, MAP@10, P@10 e variantes restritas a documentos fortemente relevantes ($relevance \geq 2$). Como o conjunto anotado deriva da união dos rankings comparados, a avaliação mede qualidade relativa de ordenação e cobertura local do top-30 anotado, e não \textit{recall} absoluto no corpus completo.
+Sobre esse pool calculamos métricas clássicas de recuperação ranqueada, incluindo P@10, Recall@10 e MAP@10 \cite{buckley_voorhees_2000}, além de nDCG@10 para relevância graduada \cite{jarvelin_kekalainen_2002}; as variantes ``High'', como High-P@10 e High-Recall@10, repetem a mesma lógica das métricas originais restringindo o conjunto relevante a documentos fortemente relevantes ($relevance \geq 2$). Como o conjunto anotado deriva da união dos rankings comparados, a avaliação mede qualidade relativa de ordenação e cobertura local do top-30 anotado, e não \textit{recall} absoluto no corpus completo.
 
 O uso de GPT-5.4 nessa etapa teve finalidade instrumental: padronizar os julgamentos de relevância e viabilizar uma comparação rápida entre métodos. Essa linha de base não substitui avaliadores humanos especialistas.
 

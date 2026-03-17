@@ -680,6 +680,95 @@
       \verb https://qdrant.tech/documentation/
       \endverb
     \endentry
+    \entry{buckley_voorhees_2000}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=7c2e09851b0d2700d0ec70f03daddc88}{%
+           family={Buckley},
+           familyi={B\bibinitperiod},
+           given={Chris},
+           giveni={C\bibinitperiod}}}%
+        {{hash=f13b7b0549ebe341faaf24632ca6083d}{%
+           family={Voorhees},
+           familyi={V\bibinitperiod},
+           given={Ellen\bibnamedelima M.},
+           giveni={E\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {ACM}%
+      }
+      \strng{namehash}{2031d6b1e702254db97ca795850608e7}
+      \strng{fullhash}{2031d6b1e702254db97ca795850608e7}
+      \strng{bibnamehash}{2031d6b1e702254db97ca795850608e7}
+      \strng{authorbibnamehash}{2031d6b1e702254db97ca795850608e7}
+      \strng{authornamehash}{2031d6b1e702254db97ca795850608e7}
+      \strng{authorfullhash}{2031d6b1e702254db97ca795850608e7}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the 23rd Annual International {ACM} {SIGIR} Conference on Research and Development in Information Retrieval}
+      \field{title}{Evaluating Evaluation Measure Stability}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2000}
+      \field{urldateera}{ce}
+      \field{pages}{33\bibrangedash 40}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1145/345508.345543
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/345508.345543
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/345508.345543
+      \endverb
+    \endentry
+    \entry{jarvelin_kekalainen_2002}{article}{}
+      \name{author}{2}{}{%
+        {{hash=cc5ad10d6e2bd65521f850e6a5783201}{%
+           family={Järvelin},
+           familyi={J\bibinitperiod},
+           given={Kalervo},
+           giveni={K\bibinitperiod}}}%
+        {{hash=4211fe9dfed31746f5563ba969b7bbbb}{%
+           family={Kekäläinen},
+           familyi={K\bibinitperiod},
+           given={Jaana},
+           giveni={J\bibinitperiod}}}%
+      }
+      \strng{namehash}{54e34fc2deb3a92b3d69d923863efa9c}
+      \strng{fullhash}{54e34fc2deb3a92b3d69d923863efa9c}
+      \strng{bibnamehash}{54e34fc2deb3a92b3d69d923863efa9c}
+      \strng{authorbibnamehash}{54e34fc2deb3a92b3d69d923863efa9c}
+      \strng{authornamehash}{54e34fc2deb3a92b3d69d923863efa9c}
+      \strng{authorfullhash}{54e34fc2deb3a92b3d69d923863efa9c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{ACM Transactions on Information Systems}
+      \field{number}{4}
+      \field{title}{Cumulated Gain-Based Evaluation of {IR} Techniques}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{20}
+      \field{year}{2002}
+      \field{urldateera}{ce}
+      \field{pages}{422\bibrangedash 446}
+      \range{pages}{25}
+      \verb{doi}
+      \verb 10.1145/582415.582418
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1145/582415.582418
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1145/582415.582418
+      \endverb
+    \endentry
     \entry{vercel_nextjs}{online}{}
       \name{author}{1}{}{%
         {{hash=dc173d57136dbe619cbccee88ee6421c}{%
