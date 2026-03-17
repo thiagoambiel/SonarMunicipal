@@ -19,23 +19,23 @@ Na execução congelada em 12 de novembro de 2025, foram encontradas 1.259 inst�
 
 \subsection{Textualização de ementas}
 
-Para reduzir ruído jurídico e tornar as proposições mais comparáveis, cada ementa é convertida em uma ação textualizada no formato ``verbo no infinitivo + objeto + complementos essenciais''. O conjunto de treinamento foi composto por 1.000 ementas reais distintas, textualizadas com apoio de GPT-5.1-Thinking \cite{openai_gpt51_model} e revisadas manualmente nos casos em que houve perda de sentido.
+Para reduzir ruído jurídico e tornar as proposições mais comparáveis, cada ementa é convertida em uma ação textualizada no formato ``verbo no infinitivo + objeto + complementos essenciais'' \cite{allen_engholm_1980,manor_li_2019}. O conjunto de treinamento foi composto por 1.000 ementas reais distintas, textualizadas com apoio de GPT-5.1-Thinking \cite{openai_gpt51_model} e revisadas manualmente nos casos em que houve perda de sentido.
 
 Como modelo base, utilizou-se o PTT5-v2 \cite{piau_ptt5v2_2024}, uma variante do T5 \cite{raffel_t5_2020} adaptada ao português, ajustada por \textit{fine-tuning}. A avaliação automática por BERTScore \cite{zhang_bertscore_2019} atingiu 84\% no conjunto de validação.
 
-No acervo completo, a tradução reduziu o comprimento médio das descrições de 152,86 para 90,01 caracteres e de 24,18 para 13,61 palavras. Essa compactação favorece busca, legibilidade e agrupamento ao reduzir ruído introduzido por fórmulas legislativas recorrentes.
+No acervo completo, a tradução reduziu o comprimento médio das descrições de 152,86 para 90,01 caracteres e de 24,18 para 13,61 palavras. Essa compactação favorece busca, legibilidade e agrupamento ao reduzir ruído introduzido por fórmulas legislativas recorrentes \cite{allen_engholm_1980,manor_li_2019}.
 
 \subsection{Busca, indicadores e agrupamento}
 
-As ações são indexadas com representações vetoriais do modelo Multilingual E5 \cite{wang_e5_2024} e armazenadas no Qdrant \cite{qdrant_overview}. Para avaliar o efeito da textualização, comparamos três variantes do mesmo acervo: um \textit{baseline} lexical BM25 sobre as \textit{ementas} originais, busca semântica sobre as \textit{ementas} originais e busca semântica sobre as \textit{ações} textualizadas. O benchmark exploratório foi composto por 15 problemas plausíveis para a plataforma e por um pool anotado derivado da união dos top-30 das três abordagens. Cada par problema-documento recebeu julgamento automatizado de relevância em escala de 0 a 3 por um agente GPT-5.4, totalizando 1.158 anotações.
+As ações são indexadas com representações vetoriais do modelo Multilingual E5 \cite{wang_e5_2024} e armazenadas no Qdrant \cite{qdrant_overview}. Para avaliar o efeito da textualização, comparamos três variantes do mesmo acervo: um \textit{baseline} lexical BM25 sobre as \textit{ementas} originais, busca semântica sobre as \textit{ementas} originais e busca semântica sobre as \textit{ações} textualizadas. O benchmark exploratório foi composto por 15 problemas plausíveis para a plataforma e por um pool anotado derivado da união dos top-30 das três abordagens. Cada par problema-documento recebeu julgamento automatizado de relevância em escala de 0 a 3 por um agente GPT-5.4-Thinking \cite{openai_gpt54_model,rahmani_etal_2025_judgingjudges}, totalizando 1.158 anotações.
 
 Sobre esse pool calculamos métricas clássicas de recuperação ranqueada, incluindo P@10, Recall@10 e MAP@10 \cite{buckley_voorhees_2000}, além de nDCG@10 para relevância graduada \cite{jarvelin_kekalainen_2002}; as variantes ``High'', como High-P@10 e High-Recall@10, repetem a mesma lógica das métricas originais restringindo o conjunto relevante a documentos fortemente relevantes ($relevance \geq 2$). Como o conjunto anotado deriva da união dos rankings comparados, a avaliação mede qualidade relativa de ordenação e cobertura local do top-30 anotado, e não \textit{recall} absoluto no corpus completo.
 
-O uso de GPT-5.4 nessa etapa teve finalidade instrumental: padronizar os julgamentos de relevância e viabilizar uma comparação rápida entre métodos. Essa linha de base não substitui avaliadores humanos especialistas.
+O uso de GPT-5.4-Thinking nessa etapa teve finalidade instrumental: padronizar os julgamentos de relevância e viabilizar uma comparação rápida entre métodos. Essa linha de base não substitui avaliadores humanos especialistas \cite{soboroff_2025}.
 
-Para aproximar o sistema de desfechos observáveis, utilizamos taxa de homicídios por 100 mil habitantes e taxa de matrículas em ensino regular por 100 mil habitantes. As variações são calculadas comparando o indicador na data mais próxima ao PL com janelas posteriores de 6, 12, 18, 24, 30 e 36 meses. Trata-se de uma análise descritiva, sem pretensão causal, utilizada apenas para priorização exploratória de políticas recorrentes.
+Para aproximar o sistema de desfechos observáveis, utilizamos taxa de homicídios por 100 mil habitantes e taxa de matrículas em ensino regular por 100 mil habitantes. As variações são calculadas comparando o indicador na data mais próxima ao PL com janelas posteriores de 6, 12, 18, 24, 30 e 36 meses. Trata-se de uma análise descritiva, sem pretensão causal, utilizada apenas para priorização exploratória de políticas recorrentes \cite{pinto_etal_2022}.
 
-PLs semanticamente próximos são agrupados por similaridade de Jaccard sobre o texto da ação, com limiar 0,75. Para cada grupo, definimos o seguinte escore heurístico:
+PLs semanticamente próximos são agrupados por similaridade de Jaccard sobre o texto da ação, com limiar 0,75 \cite{jaccard_1901}. Para cada grupo, definimos o seguinte escore heurístico ad hoc:
 
 \[
 Q = \frac{p}{n} \times \frac{n}{n+1}

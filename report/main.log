@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.30)  16 MAR 2026 22:57
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex 2026.1.30)  16 MAR 2026 23:16
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -824,7 +824,7 @@ Overfull \hbox (13.24225pt too wide) in paragraph at lines 41--41
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]) (./sections/02-relacionad
 os.tex)
 (./sections/03-metodos.tex
-<figures/pipeline-diagram.jpg, id=80, 2762.32pt x 1541.76pt>
+<figures/pipeline-diagram.jpg, id=86, 2762.32pt x 1541.76pt>
 File: figures/pipeline-diagram.jpg Graphic file (type jpg)
 <use figures/pipeline-diagram.jpg>
 Package pdftex.def Info: figures/pipeline-diagram.jpg  used on input line 9.
@@ -835,20 +835,20 @@ LaTeX Font Info:    Trying to load font information for T1+phv on input line 10
 (/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd
 File: t1phv.fd 2020/03/25 scalable font definitions for T1/phv.
 ) [2] [3 <./figures/pipeline-diagram.jpg>]) (./sections/04-resultados.tex
-<figures/coverage-panel.jpg, id=116, 2762.32pt x 1541.76pt>
+<figures/coverage-panel.jpg, id=132, 2762.32pt x 1541.76pt>
 File: figures/coverage-panel.jpg Graphic file (type jpg)
 <use figures/coverage-panel.jpg>
 Package pdftex.def Info: figures/coverage-panel.jpg  used on input line 9.
 (pdftex.def)             Requested size: 426.79135pt x 238.19398pt.
  [4]
-<figures/retrieval-eval-problem.pdf, id=128, 790.94244pt x 630.67934pt>
+<figures/retrieval-eval-problem.pdf, id=148, 790.94244pt x 630.67934pt>
 File: figures/retrieval-eval-problem.pdf Graphic file (type pdf)
 <use figures/retrieval-eval-problem.pdf>
 Package pdftex.def Info: figures/retrieval-eval-problem.pdf  used on input line
  22.
 (pdftex.def)             Requested size: 426.79135pt x 340.31155pt.
  [5 <./figures/coverage-panel.jpg>] [6 <./figures/retrieval-eval-problem.pdf>]
-<figures/case-study-strategies.jpg, id=159, 2762.32pt x 1541.76pt>
+<figures/case-study-strategies.jpg, id=182, 2762.32pt x 1541.76pt>
 File: figures/case-study-strategies.jpg Graphic file (type jpg)
 <use figures/case-study-strategies.jpg>
 Package pdftex.def Info: figures/case-study-strategies.jpg  used on input line 
@@ -857,7 +857,7 @@ Package pdftex.def Info: figures/case-study-strategies.jpg  used on input line
 )
 (./sections/05-limitacoes.tex) (./sections/07-conclusao.tex [7
 
- <./figures/case-study-strategies.jpg>]) [8] [9] (./main.aux)
+ <./figures/case-study-strategies.jpg>]) [8] [9] [10] (./main.aux)
 Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 30D27A10F845B5E1FC67C59D1ABEA573;2284.
 Package logreq Info: Writing requests to 'main.run.xml'.
@@ -865,13 +865,13 @@ Package logreq Info: Writing requests to 'main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 21441 strings out of 478287
- 375042 string characters out of 5849289
- 1115256 words of memory out of 5000000
- 39291 multiletter control sequences out of 15000+600000
+ 21482 strings out of 478287
+ 376875 string characters out of 5849289
+ 1118946 words of memory out of 5000000
+ 39321 multiletter control sequences out of 15000+600000
  516080 words of font info for 82 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 68i,8n,77p,1479b,1956s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 68i,8n,77p,1564b,1956s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
 e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texm
 f-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/
@@ -882,10 +882,10 @@ vb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/
 share/texlive/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/share/texlive/
 texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texlive/texmf-dist/font
 s/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (9 pages, 1592378 bytes).
+Output written on main.pdf (10 pages, 1597957 bytes).
 PDF statistics:
- 266 PDF objects out of 1000 (max. 8388607)
- 219 compressed objects within 3 object streams
- 45 named destinations out of 1000 (max. 500000)
+ 321 PDF objects out of 1000 (max. 8388607)
+ 273 compressed objects within 3 object streams
+ 56 named destinations out of 1000 (max. 500000)
  133 words of extra memory for PDF output out of 10000 (max. 10000000)
 

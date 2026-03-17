@@ -19,6 +19,123 @@
 
 \refsection{0}
   \datalist[entry]{none/global//global/global}
+    \entry{herman_marques_miola_2022}{article}{}
+      \name{author}{2}{}{%
+        {{hash=ac293aae72cbda739c9fb98234226dff}{%
+           family={Herman},
+           familyi={H\bibinitperiod},
+           given={Fellipe},
+           giveni={F\bibinitperiod}}}%
+        {{hash=2af1bbd6ddd8c6933f33e3fee3148b05}{%
+           family={Marques},
+           familyi={M\bibinitperiod},
+           given={Francisco\bibnamedelimb Paulo\bibnamedelima Jamil},
+           giveni={F\bibinitperiod\bibinitdelim P\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \strng{namehash}{df35d9a09d251301be5083797c9630e2}
+      \strng{fullhash}{df35d9a09d251301be5083797c9630e2}
+      \strng{bibnamehash}{df35d9a09d251301be5083797c9630e2}
+      \strng{authorbibnamehash}{df35d9a09d251301be5083797c9630e2}
+      \strng{authornamehash}{df35d9a09d251301be5083797c9630e2}
+      \strng{authorfullhash}{df35d9a09d251301be5083797c9630e2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Opinião Pública}
+      \field{number}{3}
+      \field{title}{What Factors Influence the Quality of Local Governments' Digital Transparency? Evidence from the Brazilian Case}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{28}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \field{pages}{857\bibrangedash 884}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.1590/1807-01912022283857
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1590/1807-01912022283857
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1590/1807-01912022283857
+      \endverb
+    \endentry
+    \entry{oliveira_compolitica_2024}{article}{}
+      \name{author}{1}{}{%
+        {{hash=f600f0787294a08806382709c388967d}{%
+           family={Oliveira},
+           familyi={O\bibinitperiod},
+           given={Paula\bibnamedelimb Andressa\bibnamedelima de},
+           giveni={P\bibinitperiod\bibinitdelim A\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+      }
+      \strng{namehash}{f600f0787294a08806382709c388967d}
+      \strng{fullhash}{f600f0787294a08806382709c388967d}
+      \strng{bibnamehash}{f600f0787294a08806382709c388967d}
+      \strng{authorbibnamehash}{f600f0787294a08806382709c388967d}
+      \strng{authornamehash}{f600f0787294a08806382709c388967d}
+      \strng{authorfullhash}{f600f0787294a08806382709c388967d}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Compolítica}
+      \field{number}{1}
+      \field{title}{Dilemas da comunicação pública dos legislativos municipais: baixa profissionalização, foco nos agentes e transmissão de sessões no Facebook}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{14}
+      \field{year}{2024}
+      \field{urldateera}{ce}
+      \field{pages}{109\bibrangedash 136}
+      \range{pages}{28}
+      \verb{doi}
+      \verb 10.21878/compolitica.2024.14.1.689
+      \endverb
+      \verb{urlraw}
+      \verb https://revista.compolitica.org/index.php/revista/article/view/689
+      \endverb
+      \verb{url}
+      \verb https://revista.compolitica.org/index.php/revista/article/view/689
+      \endverb
+    \endentry
+    \entry{shipan_volden_2008}{article}{}
+      \name{author}{2}{}{%
+        {{hash=3b093c2b03f8263bccf728d9dff73a30}{%
+           family={Shipan},
+           familyi={S\bibinitperiod},
+           given={Charles\bibnamedelima R.},
+           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
+        {{hash=ee9355e8e08102b30b7281f90148ac69}{%
+           family={Volden},
+           familyi={V\bibinitperiod},
+           given={Craig},
+           giveni={C\bibinitperiod}}}%
+      }
+      \strng{namehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{fullhash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{bibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authorbibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authornamehash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \strng{authorfullhash}{119ac1ef6020894ea729b25dbe8a8f28}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{American Journal of Political Science}
+      \field{number}{4}
+      \field{title}{The Mechanisms of Policy Diffusion}
+      \field{volume}{52}
+      \field{year}{2008}
+      \field{pages}{840\bibrangedash 857}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.1111/j.1540-5907.2008.00346.x
+      \endverb
+    \endentry
     \entry{interlegis_sapl}{online}{}
       \name{author}{2}{}{%
         {{hash=7ebc9b2a0004f519a5ad84c429e420ca}{%
@@ -34,8 +151,8 @@
       \strng{authorbibnamehash}{419bc3c6bf8e938e53dde1e55873d126}
       \strng{authornamehash}{419bc3c6bf8e938e53dde1e55873d126}
       \strng{authorfullhash}{419bc3c6bf8e938e53dde1e55873d126}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{Sistema de Apoio ao Processo Legislativo ({SAPL})}
@@ -101,8 +218,8 @@
       \strng{authornamehash}{204371b2c4b238db317bae447e8418d6}
       \strng{authorfullhash}{239c7968653d2107df728389c0d694fd}
       \field{extraname}{1}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Proceedings of the 13th Brazilian Symposium in Information and Human Language Technology}
@@ -189,8 +306,8 @@
       \strng{authornamehash}{204371b2c4b238db317bae447e8418d6}
       \strng{authorfullhash}{95e4611ce8efdab6d37b1e1a5e82278f}
       \field{extraname}{2}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Legal Knowledge and Information Systems}
@@ -258,8 +375,8 @@
       \strng{authorbibnamehash}{f19c9a31151c409d1a21a0f0a3430373}
       \strng{authornamehash}{f19c9a31151c409d1a21a0f0a3430373}
       \strng{authorfullhash}{460e25e5c2a8545311a382b679a33188}
-      \field{sortinit}{2}
-      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Language Resources and Evaluation}
@@ -281,40 +398,6 @@
       \endverb
       \verb{url}
       \verb https://dblp.org/rec/journals/lre/VitorioSMSCOA25
-      \endverb
-    \endentry
-    \entry{shipan_volden_2008}{article}{}
-      \name{author}{2}{}{%
-        {{hash=3b093c2b03f8263bccf728d9dff73a30}{%
-           family={Shipan},
-           familyi={S\bibinitperiod},
-           given={Charles\bibnamedelima R.},
-           giveni={C\bibinitperiod\bibinitdelim R\bibinitperiod}}}%
-        {{hash=ee9355e8e08102b30b7281f90148ac69}{%
-           family={Volden},
-           familyi={V\bibinitperiod},
-           given={Craig},
-           giveni={C\bibinitperiod}}}%
-      }
-      \strng{namehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{fullhash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{bibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{authorbibnamehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{authornamehash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \strng{authorfullhash}{119ac1ef6020894ea729b25dbe8a8f28}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{American Journal of Political Science}
-      \field{number}{4}
-      \field{title}{The Mechanisms of Policy Diffusion}
-      \field{volume}{52}
-      \field{year}{2008}
-      \field{pages}{840\bibrangedash 857}
-      \range{pages}{18}
-      \verb{doi}
-      \verb 10.1111/j.1540-5907.2008.00346.x
       \endverb
     \endentry
     \entry{albuquerque_ulyssesner_2022}{inproceedings}{}
@@ -346,8 +429,8 @@
       \strng{authorbibnamehash}{e15eba06656ba56e7e59b84610f16a8c}
       \strng{authornamehash}{e15eba06656ba56e7e59b84610f16a8c}
       \strng{authorfullhash}{e15eba06656ba56e7e59b84610f16a8c}
-      \field{sortinit}{4}
-      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{booktitle}{Computational Processing of the Portuguese Language: 15th International Conference, {PROPOR} 2022, Fortaleza, Brazil, March 21--23, 2022, Proceedings}
@@ -383,8 +466,8 @@
       \strng{authorbibnamehash}{3898f1ceb6fdd56f963db7f9326130e4}
       \strng{authornamehash}{3898f1ceb6fdd56f963db7f9326130e4}
       \strng{authorfullhash}{3898f1ceb6fdd56f963db7f9326130e4}
-      \field{sortinit}{5}
-      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{API} de Localidades (documentação)}
@@ -399,6 +482,92 @@
       \verb https://servicodados.ibge.gov.br/api/docs/localidades
       \endverb
     \endentry
+    \entry{allen_engholm_1980}{article}{}
+      \name{author}{2}{}{%
+        {{hash=26b92563ac1b85812db1b39a88ed35aa}{%
+           family={Allen},
+           familyi={A\bibinitperiod},
+           given={Layman\bibnamedelima E.},
+           giveni={L\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+        {{hash=3e456432c4b93f927f99d5e32ca7600c}{%
+           family={Engholm},
+           familyi={E\bibinitperiod},
+           given={Carol\bibnamedelima M.},
+           giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \strng{namehash}{8f4456ef224ca95164e3973bd9370625}
+      \strng{fullhash}{8f4456ef224ca95164e3973bd9370625}
+      \strng{bibnamehash}{8f4456ef224ca95164e3973bd9370625}
+      \strng{authorbibnamehash}{8f4456ef224ca95164e3973bd9370625}
+      \strng{authornamehash}{8f4456ef224ca95164e3973bd9370625}
+      \strng{authorfullhash}{8f4456ef224ca95164e3973bd9370625}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Legal Education}
+      \field{number}{3}
+      \field{title}{Normalized Legal Drafting and the Query Method}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{29}
+      \field{year}{1978}
+      \field{urldateera}{ce}
+      \field{pages}{380\bibrangedash 412}
+      \range{pages}{33}
+      \verb{urlraw}
+      \verb https://www.jstor.org/stable/42892933
+      \endverb
+      \verb{url}
+      \verb https://www.jstor.org/stable/42892933
+      \endverb
+    \endentry
+    \entry{manor_li_2019}{inproceedings}{}
+      \name{author}{2}{}{%
+        {{hash=1d6aaa4ebcaddffd52415d5641edff16}{%
+           family={Manor},
+           familyi={M\bibinitperiod},
+           given={Laura},
+           giveni={L\bibinitperiod}}}%
+        {{hash=1f30679330f0fc32db88902b582f4499}{%
+           family={Li},
+           familyi={L\bibinitperiod},
+           given={Junyi\bibnamedelima Jessy},
+           giveni={J\bibinitperiod\bibinitdelim J\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Association for Computational Linguistics}%
+      }
+      \strng{namehash}{7e93112f678ff2e8405947fd488e74c0}
+      \strng{fullhash}{7e93112f678ff2e8405947fd488e74c0}
+      \strng{bibnamehash}{7e93112f678ff2e8405947fd488e74c0}
+      \strng{authorbibnamehash}{7e93112f678ff2e8405947fd488e74c0}
+      \strng{authornamehash}{7e93112f678ff2e8405947fd488e74c0}
+      \strng{authorfullhash}{7e93112f678ff2e8405947fd488e74c0}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{booktitle}{Proceedings of the Natural Legal Language Processing Workshop 2019}
+      \field{title}{Plain English Summarization of Contracts}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2019}
+      \field{urldateera}{ce}
+      \field{pages}{1\bibrangedash 11}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.18653/v1/W19-2201
+      \endverb
+      \verb{urlraw}
+      \verb https://aclanthology.org/W19-2201/
+      \endverb
+      \verb{url}
+      \verb https://aclanthology.org/W19-2201/
+      \endverb
+    \endentry
     \entry{openai_gpt51_model}{online}{}
       \name{author}{1}{}{%
         {{hash=0523b13262b12c215d8009938f5c14f1}{%
@@ -411,8 +580,9 @@
       \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
       \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
       \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
-      \field{sortinit}{6}
-      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{extraname}{1}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{GPT-5.1} Model ({OpenAI} {API})}
@@ -449,8 +619,8 @@
       \strng{authorbibnamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
       \strng{authornamehash}{3dadd5afd39b81b82d613bbbe0a1787b}
       \strng{authorfullhash}{3dadd5afd39b81b82d613bbbe0a1787b}
-      \field{sortinit}{7}
-      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -521,8 +691,8 @@
       \strng{authorbibnamehash}{93aba8e9bb746e2d8ac216494b952014}
       \strng{authornamehash}{93aba8e9bb746e2d8ac216494b952014}
       \strng{authorfullhash}{21f7721b75bba06d59f9d5ce222a34a5}
-      \field{sortinit}{8}
-      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{Journal of Machine Learning Research}
@@ -577,8 +747,8 @@
       \strng{authorbibnamehash}{b7341c276394125587ea24e5ba844df4}
       \strng{authornamehash}{b7341c276394125587ea24e5ba844df4}
       \strng{authorfullhash}{0f3fc6c6b2643b223fd923710ae91526}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
@@ -680,6 +850,108 @@
       \verb https://qdrant.tech/documentation/
       \endverb
     \endentry
+    \entry{openai_gpt54_model}{online}{}
+      \name{author}{1}{}{%
+        {{hash=0523b13262b12c215d8009938f5c14f1}{%
+           family={{OpenAI}},
+           familyi={O\bibinitperiod}}}%
+      }
+      \strng{namehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{fullhash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{bibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorbibnamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authornamehash}{0523b13262b12c215d8009938f5c14f1}
+      \strng{authorfullhash}{0523b13262b12c215d8009938f5c14f1}
+      \field{extraname}{2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{{GPT-5.4 Thinking} System Card}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2026}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://openai.com/index/gpt-5-4-thinking-system-card
+      \endverb
+      \verb{url}
+      \verb https://openai.com/index/gpt-5-4-thinking-system-card
+      \endverb
+    \endentry
+    \entry{rahmani_etal_2025_judgingjudges}{article}{}
+      \name{author}{9}{}{%
+        {{hash=7d6d2b711f8df3d6a0e5dc1c8d0df3dc}{%
+           family={Rahmani},
+           familyi={R\bibinitperiod},
+           given={Hossein\bibnamedelima A.},
+           giveni={H\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=4bfd4eaa65803c74ef31dd0f860264b9}{%
+           family={Siro},
+           familyi={S\bibinitperiod},
+           given={Clemencia},
+           giveni={C\bibinitperiod}}}%
+        {{hash=1864273701eeb986ad976426a752417f}{%
+           family={Aliannejadi},
+           familyi={A\bibinitperiod},
+           given={Mohammad},
+           giveni={M\bibinitperiod}}}%
+        {{hash=7a3b8c75373fcf308a7e8cda62ddd9ce}{%
+           family={Craswell},
+           familyi={C\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod}}}%
+        {{hash=627d44a3dfae51306bbd69387cb26ecf}{%
+           family={Clarke},
+           familyi={C\bibinitperiod},
+           given={Charles\bibnamedelimb L.\bibnamedelimi A.},
+           giveni={C\bibinitperiod\bibinitdelim L\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+        {{hash=6c75bc5bd17753cabc39e84bc46af43a}{%
+           family={Faggioli},
+           familyi={F\bibinitperiod},
+           given={Guglielmo},
+           giveni={G\bibinitperiod}}}%
+        {{hash=29578de74e3c76b88989de43125385ca}{%
+           family={Mitra},
+           familyi={M\bibinitperiod},
+           given={Bhaskar},
+           giveni={B\bibinitperiod}}}%
+        {{hash=0a0c5d9bf29ecbf927c3637ea84b14a4}{%
+           family={Thomas},
+           familyi={T\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+        {{hash=127768a6d795f3c224a762902b215f38}{%
+           family={Yilmaz},
+           familyi={Y\bibinitperiod},
+           given={Emine},
+           giveni={E\bibinitperiod}}}%
+      }
+      \strng{namehash}{ed111cb537c4a6a6215c9f15488aa9fe}
+      \strng{fullhash}{1d553e6cd14d58a7e0a1213a25652733}
+      \strng{bibnamehash}{ed111cb537c4a6a6215c9f15488aa9fe}
+      \strng{authorbibnamehash}{ed111cb537c4a6a6215c9f15488aa9fe}
+      \strng{authornamehash}{ed111cb537c4a6a6215c9f15488aa9fe}
+      \strng{authorfullhash}{1d553e6cd14d58a7e0a1213a25652733}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{arXiv}
+      \field{title}{Judging the Judges: A Collection of {LLM}-Generated Relevance Judgements}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \verb{urlraw}
+      \verb https://arxiv.org/abs/2502.13908
+      \endverb
+      \verb{url}
+      \verb https://arxiv.org/abs/2502.13908
+      \endverb
+    \endentry
     \entry{buckley_voorhees_2000}{inproceedings}{}
       \name{author}{2}{}{%
         {{hash=7c2e09851b0d2700d0ec70f03daddc88}{%
@@ -769,6 +1041,134 @@
       \verb https://doi.org/10.1145/582415.582418
       \endverb
     \endentry
+    \entry{soboroff_2025}{article}{}
+      \name{author}{1}{}{%
+        {{hash=7432c6dd275d56edfc6ddb32fa771cd2}{%
+           family={Soboroff},
+           familyi={S\bibinitperiod},
+           given={Ian},
+           giveni={I\bibinitperiod}}}%
+      }
+      \strng{namehash}{7432c6dd275d56edfc6ddb32fa771cd2}
+      \strng{fullhash}{7432c6dd275d56edfc6ddb32fa771cd2}
+      \strng{bibnamehash}{7432c6dd275d56edfc6ddb32fa771cd2}
+      \strng{authorbibnamehash}{7432c6dd275d56edfc6ddb32fa771cd2}
+      \strng{authornamehash}{7432c6dd275d56edfc6ddb32fa771cd2}
+      \strng{authorfullhash}{7432c6dd275d56edfc6ddb32fa771cd2}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Information Retrieval Research}
+      \field{number}{1}
+      \field{title}{Don't Use {LLMs} to Make Relevance Judgments}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{1}
+      \field{year}{2025}
+      \field{urldateera}{ce}
+      \field{pages}{29\bibrangedash 46}
+      \range{pages}{18}
+      \verb{doi}
+      \verb 10.54195/irrj.19625
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.54195/irrj.19625
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.54195/irrj.19625
+      \endverb
+    \endentry
+    \entry{pinto_etal_2022}{article}{}
+      \name{author}{6}{}{%
+        {{hash=deee513cd577ad3a6d1caed2602dc6b1}{%
+           family={Pinto},
+           familyi={P\bibinitperiod},
+           given={Isabella\bibnamedelima Vitral},
+           giveni={I\bibinitperiod\bibinitdelim V\bibinitperiod}}}%
+        {{hash=a8613fa735b98759aca912085c3f4ae4}{%
+           family={Vasconcelos},
+           familyi={V\bibinitperiod},
+           given={Nádia\bibnamedelimb Machado\bibnamedelima de},
+           giveni={N\bibinitperiod\bibinitdelim M\bibinitperiod\bibinitdelim d\bibinitperiod}}}%
+        {{hash=007ad924e690e3fdd805046383a0712c}{%
+           family={Corassa},
+           familyi={C\bibinitperiod},
+           given={Rafael\bibnamedelima Bello},
+           giveni={R\bibinitperiod\bibinitdelim B\bibinitperiod}}}%
+        {{hash=8590261a2dec6e655ce669b321060f91}{%
+           family={Naghavi},
+           familyi={N\bibinitperiod},
+           given={Mohsen},
+           giveni={M\bibinitperiod}}}%
+        {{hash=e45ff4ee0f1969db37aebebe7b50d1af}{%
+           family={Marinho},
+           familyi={M\bibinitperiod},
+           given={Fátima},
+           giveni={F\bibinitperiod}}}%
+        {{hash=e2ce99c84e314daf18a3f868775a3ae3}{%
+           family={Malta},
+           familyi={M\bibinitperiod},
+           given={Deborah\bibnamedelima Carvalho},
+           giveni={D\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
+      }
+      \strng{namehash}{3841ed0996720303c69d4180351519fe}
+      \strng{fullhash}{08648ad29afcba5db039c506b52b8b52}
+      \strng{bibnamehash}{3841ed0996720303c69d4180351519fe}
+      \strng{authorbibnamehash}{3841ed0996720303c69d4180351519fe}
+      \strng{authornamehash}{3841ed0996720303c69d4180351519fe}
+      \strng{authorfullhash}{08648ad29afcba5db039c506b52b8b52}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Revista da Sociedade Brasileira de Medicina Tropical}
+      \field{number}{Suppl 1}
+      \field{title}{The burden of interpersonal violence against women in Brazil and its states: estimates from the Global Burden of Disease Study 2019}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{55}
+      \field{year}{2022}
+      \field{urldateera}{ce}
+      \field{pages}{e0287\bibrangedash 2021}
+      \range{pages}{-1}
+      \verb{doi}
+      \verb 10.1590/0037-8682-0287-2021
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1590/0037-8682-0287-2021
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1590/0037-8682-0287-2021
+      \endverb
+    \endentry
+    \entry{jaccard_1901}{article}{}
+      \name{author}{1}{}{%
+        {{hash=c4a98c7a2913792b5501ecdcb067315d}{%
+           family={Jaccard},
+           familyi={J\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod}}}%
+      }
+      \strng{namehash}{c4a98c7a2913792b5501ecdcb067315d}
+      \strng{fullhash}{c4a98c7a2913792b5501ecdcb067315d}
+      \strng{bibnamehash}{c4a98c7a2913792b5501ecdcb067315d}
+      \strng{authorbibnamehash}{c4a98c7a2913792b5501ecdcb067315d}
+      \strng{authornamehash}{c4a98c7a2913792b5501ecdcb067315d}
+      \strng{authorfullhash}{c4a98c7a2913792b5501ecdcb067315d}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bulletin de la Société Vaudoise des Sciences Naturelles}
+      \field{title}{Étude comparative de la distribution florale dans une portion des Alpes et du Jura}
+      \field{volume}{37}
+      \field{year}{1901}
+      \field{pages}{547\bibrangedash 579}
+      \range{pages}{33}
+    \endentry
     \entry{vercel_nextjs}{online}{}
       \name{author}{1}{}{%
         {{hash=dc173d57136dbe619cbccee88ee6421c}{%
@@ -781,8 +1181,8 @@
       \strng{authorbibnamehash}{dc173d57136dbe619cbccee88ee6421c}
       \strng{authornamehash}{dc173d57136dbe619cbccee88ee6421c}
       \strng{authorfullhash}{dc173d57136dbe619cbccee88ee6421c}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{title}{{Next.js} on {Vercel} (documentação)}
@@ -795,6 +1195,50 @@
       \endverb
       \verb{url}
       \verb https://vercel.com/docs/frameworks/full-stack/nextjs
+      \endverb
+    \endentry
+    \entry{alon_barkat_busuioc_2023}{article}{}
+      \name{author}{2}{}{%
+        {{hash=0d5020b34535efc9eb78e06628701d3d}{%
+           family={Alon-Barkat},
+           familyi={A\bibinithyphendelim B\bibinitperiod},
+           given={Saar},
+           giveni={S\bibinitperiod}}}%
+        {{hash=114a9b6050e1072e4c2c8363eb672217}{%
+           family={Busuioc},
+           familyi={B\bibinitperiod},
+           given={Madalina},
+           giveni={M\bibinitperiod}}}%
+      }
+      \strng{namehash}{c8d903843a1d7c7439a47a286260df63}
+      \strng{fullhash}{c8d903843a1d7c7439a47a286260df63}
+      \strng{bibnamehash}{c8d903843a1d7c7439a47a286260df63}
+      \strng{authorbibnamehash}{c8d903843a1d7c7439a47a286260df63}
+      \strng{authornamehash}{c8d903843a1d7c7439a47a286260df63}
+      \strng{authorfullhash}{c8d903843a1d7c7439a47a286260df63}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Public Administration Research and Theory}
+      \field{number}{1}
+      \field{title}{Human-{AI} Interactions in Public Sector Decision Making: ``Automation Bias'' and ``Selective Adherence'' to Algorithmic Advice}
+      \field{urlday}{16}
+      \field{urlmonth}{3}
+      \field{urlyear}{2026}
+      \field{volume}{33}
+      \field{year}{2023}
+      \field{urldateera}{ce}
+      \field{pages}{153\bibrangedash 169}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1093/jopart/muac007
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1093/jopart/muac007
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1093/jopart/muac007
       \endverb
     \endentry
   \enddatalist
