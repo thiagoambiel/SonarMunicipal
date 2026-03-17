@@ -1,11 +1,11 @@
 # Fdb version 3
-["biber main"] 1773712273 "main.bcf" "main.bbl" "main" 1773712322
-  "main.bcf" 1773712322 108047 b9321d4e233cbd1fc100e4f6f037d3d8 "pdflatex"
+["biber main"] 1773712273 "main.bcf" "main.bbl" "main" 1773712629
+  "main.bcf" 1773712629 108047 b9321d4e233cbd1fc100e4f6f037d3d8 "pdflatex"
   "sonar-references.bib" 1773711930 11185 594f97b7b82b113043b4892a2875f74e ""
   (generated)
   "main.bbl"
   "main.blg"
-["pdflatex"] 1773712321 "main.tex" "main.pdf" "main" 1773712322
+["pdflatex"] 1773712628 "main.tex" "main.pdf" "main" 1773712629
   "/etc/texmf/web2c/texmf.cnf" 1752781794 475 c0e671620eb5563b2130f56340a5fde8 ""
   "/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc" 1165713224 4850 80dc9bab7f31fb78a000ccfed0e27cab ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -150,6 +150,7 @@
   "/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty" 1575674187 9715 b051d5b493d9fe5f4bc251462d039e5f ""
   "/usr/share/texlive/texmf-dist/tex/latex/titlesec/titlesec.sty" 1625518490 48833 3b7b4cfab1a3d15596bfd3772a77ab65 ""
   "/usr/share/texlive/texmf-dist/tex/latex/url/url.sty" 1388531844 12796 8edb7d69a20b857904dd0ea757c14ec9 ""
+  "/usr/share/texlive/texmf-dist/tex/latex/xurl/xurl.sty" 1641763214 4675 e4b8c405820368c2dfb03526e16d725a ""
   "/usr/share/texlive/texmf-dist/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/usr/share/texmf/web2c/texmf.cnf" 1644012257 39432 7155514e09a3d69036fac785183a21c2 ""
   "/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map" 1752782669 4379155 98693266ff65f58d9f98aff394de12d2 ""
@@ -158,17 +159,17 @@
   "figures/coverage-panel.jpg" 1773635282 455670 d723c83a7325f77710366954a842a829 ""
   "figures/pipeline-diagram.jpg" 1773635282 489226 5fd70ea81785f634dd59c459266098ac ""
   "figures/retrieval-eval-problem.pdf" 1773709035 28448 c0180713a84a01b802a80a45b24b6d4b ""
-  "main.aux" 1773712322 7198 69bc4c46df6189b8a9a9148fb95ccd0e "pdflatex"
+  "main.aux" 1773712629 7082 0a1fcc7d5be9b3e05b99dc27bc30bc8b "pdflatex"
   "main.bbl" 1773712274 31546 3ae6ce2ac72b195dd5f34b0d04ef4abc "biber main"
-  "main.out" 1773712322 2284 30d27a10f845b5e1fc67c59d1abea573 "pdflatex"
-  "main.run.xml" 1773712322 2374 f093074253073c23d84ff3ed278cb69f "pdflatex"
-  "main.tex" 1773712267 1405 93f85b4899cfa91225a50d8bba680684 ""
+  "main.out" 1773712629 2284 30d27a10f845b5e1fc67c59d1abea573 "pdflatex"
+  "main.run.xml" 1773712629 2374 f093074253073c23d84ff3ed278cb69f "pdflatex"
+  "main.tex" 1773712622 1525 1dcafb18f46b2e540b4fa97848bb47cb ""
   "sbc-template.sty" 1773602803 6074 ecc54df5124d8db4ac67c42cc728f3a5 ""
   "sections/00-frontmatter.tex" 1773710489 1418 f4d007fee437276ff6e8c9665a2e75a2 ""
   "sections/01-introducao.tex" 1773710489 1957 edb0458df081e26fd96d6da24ec28e9f ""
   "sections/02-relacionados.tex" 1773709856 1308 bea81d5461dd711bb1ed2544b8de31a7 ""
   "sections/03-metodos.tex" 1773712286 6154 1fd68564058e967ed2cc58d659a52864 ""
-  "sections/04-resultados.tex" 1773712318 6126 306031b34145f34b53e43a0a424e1bd3 ""
+  "sections/04-resultados.tex" 1773712622 6092 91015036b18abb2a88c5824bfa28c8ac ""
   "sections/05-limitacoes.tex" 1773710489 1489 40814b0988e41ea404ccf1f8229b23e5 ""
   "sections/07-conclusao.tex" 1773710489 623 05038ed5a7f81a8a1e470246e885c78f ""
   (generated)

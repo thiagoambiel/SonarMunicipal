@@ -20,12 +20,13 @@ A textualização mostrou viabilidade operacional na escala do acervo e reduziu 
 \begin{figure*}[t]
 \centering
 \includegraphics[width=\textwidth]{figures/retrieval-eval-problem.pdf}
-\caption{nDCG@10 por problema para BM25, ementas e ações. A vantagem média de ações é ampla, mas não uniforme.}
+\caption{nDCG@10 por problema para BM25, ementas e ações.}
 \label{fig:retrieval-eval-problem}
 \end{figure*}
 
 Neste benchmark exploratório, \textit{ações} liderou de forma consistente nas métricas agregadas, seguida por \textit{ementas} e depois por BM25. O ganho aparece tanto na ordenação quanto na composição do ranking: nDCG@10 foi de 0,522 em BM25 para 0,591 em \textit{ementas} e 0,743 em \textit{ações}; MAP@10, de 0,125 para 0,142 e 0,173; e P@10, de 0,787 para 0,873 e 0,940. O efeito mais nítido aparece na recuperação de documentos fortemente relevantes: High-Recall@10 sobe de 0,145 em BM25 para 0,165 em \textit{ementas} e 0,215 em \textit{ações}. Em síntese, ações lideram em média nas métricas primárias e secundárias, mas a Figura~\ref{fig:retrieval-eval-problem} mostra que a vantagem não é uniforme e que consultas mais terminológicas ainda podem favorecer o baseline lexical.
 
+\vspace{2pt}
 \begin{table}[H]
 \centering
 \small
@@ -47,6 +48,7 @@ P@10 & 0,787 & 0,873 & \textbf{0,940} \\
 Contra o baseline lexical, \textit{ações} venceu BM25 em 13 dos 15 problemas em nDCG@10 e em 11 das 13 comparações não empatadas tanto em High-P@10 quanto em High-Recall@10 (\textit{sign test} exato de $p=0{,}022$ em ambas). Os maiores ganhos apareceram em consultas formuladas como objetivo de política pública, enquanto perdas se concentraram em consultas mais terminológicas, como mobilidade no horário de pico e digitalização de serviços. A evidência observada aqui, portanto, é de vantagem média no pool anotado, e não de superioridade universal no corpus completo.
 
 \FloatBarrier
+\clearpage
 
 \subsection{Estudo de caso: violência contra a mulher}
 

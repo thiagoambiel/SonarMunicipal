@@ -7,8 +7,9 @@
 \usepackage[backend=biber,style=numeric,language=brazil,sorting=none]{biblatex}
 \addbibresource{sonar-references.bib}
 \usepackage{sbc-template}
-\usepackage{graphicx,url}
+\usepackage{graphicx}
 \usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
 \usepackage{booktabs}
 \usepackage{amsmath,amssymb}
 \usepackage{enumitem}
@@ -22,6 +23,9 @@
 \setlength{\intextsep}{9pt plus 2pt minus 2pt}
 \setlength{\emergencystretch}{2em}
 \Urlmuskip=0mu plus 2mu\relax
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{9000}
 
 \title{Sonar Municipal: Descoberta, Organização e Busca Semântica de Projetos de Lei Municipais para Apoio à Formulação de Políticas Públicas}
 
