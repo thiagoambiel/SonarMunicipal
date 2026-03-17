@@ -11,26 +11,11 @@ A execução congelada indica que a descoberta nacional é tecnicamente viável,
 \label{fig:coverage-panel}
 \end{figure*}
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/brazil-coverage-map.jpg}
-\caption{Cobertura territorial da base final por UF. Estados em cinza não tiveram extração válida na execução congelada; a intensidade do azul indica o número de municípios cobertos em cada UF.}
-\label{fig:brazil-coverage-map}
-\end{figure*}
-
-Em termos percentuais, o Sul concentra 45,52\% dos registros e o Sudeste, 23,03\%; juntas, essas duas regiões somam 68,55\% do acervo e 64,29\% dos municípios cobertos. A Figura~\ref{fig:coverage-panel} antecipa essa leitura quantitativa, e a Figura~\ref{fig:brazil-coverage-map} mostra sua distribuição territorial, com cobertura concentrada em 19 UFs e lacunas visíveis em parte do Norte e do Nordeste. O resultado deve ser interpretado como um acervo interestadual extenso, mas não como um espelho nacional da produção legislativa municipal. A base cobre principalmente o período recente da produção legislativa: entre 2021 e 2025, há 96.018 registros distribuídos por 315 municípios. Também foram observados poucos outliers temporais, o que indica necessidade de saneamento antes de análises mais sensíveis ao eixo cronológico.
+Em termos percentuais, o Sul concentra 45,52\% dos registros e o Sudeste, 23,03\%; juntas, essas duas regiões somam 68,55\% do acervo e 64,29\% dos municípios cobertos. O resultado deve ser interpretado como um acervo interestadual extenso, mas não como espelho nacional da produção legislativa municipal, com lacunas relevantes no Norte e em parte do Nordeste. A base cobre principalmente o período recente da produção legislativa: entre 2021 e 2025, há 96.018 registros distribuídos por 315 municípios.
 
 \subsection{Tradução e busca semântica}
 
-\paragraph{Viabilidade da textualização.}
-Na avaliação interna do projeto, o tradutor \textit{ementa} $\rightarrow$ \textit{ação} obteve BERTScore de 84\% no conjunto de validação. A transformação de todo o acervo de 220.065 PLs em ações textualizadas levou 4h47min na execução reportada, o que indica viabilidade operacional nessa escala.
-
-A análise exploratória da base mostrou que a textualização reduz substancialmente o comprimento médio das descrições legislativas sem eliminar a diversidade do acervo. Foram observadas 219.245 ementas únicas e 188.254 ações textualizadas únicas. Em termos práticos, a transformação encurta o texto e reduz variabilidade superficial suficiente para favorecer recuperação semântica e agrupamento; exemplos típicos incluem conversões como ``Institui o Plano Municipal de Saneamento Básico'' para ``Criar plano municipal de saneamento básico''.
-
-\paragraph{Avaliação anotada da recuperação.}
-A comparação formal entre \textit{bm25}, \textit{ementas} e \textit{ações} foi conduzida em 15 problemas municipais com 1.158 pares problema-documento anotados automaticamente por um agente GPT-5.4. Para esta subseção, tratamos \textit{nDCG@10} e \textit{High-Recall@10} como métricas primárias, por combinarem ordenação graduada e cobertura local de documentos fortemente relevantes; \textit{MAP@10} e \textit{P@10} entram como métricas secundárias de apoio. O pool continua denso em itens úteis porque foi construído da união dos top-30 das três abordagens: 75,6\% dos itens receberam relevância maior que zero e 54,9\% receberam relevância alta ($\geq 2$). No recorte por método, \textit{ações} concentrou a maior fração de itens fortemente relevantes no pool (68,0\%), acima de \textit{ementas} (55,6\%) e do \textit{baseline} lexical BM25 (52,7\%). Mesmo entre os candidatos exclusivos, \textit{ações} permaneceu mais forte: 62,1\% dos itens exclusivos de \textit{ações} receberam relevância alta, contra 45,8\% dos exclusivos de \textit{ementas} e 44,7\% dos exclusivos de BM25. As Figuras~\ref{fig:retrieval-eval-problem},~\ref{fig:retrieval-eval-heatmap} e~\ref{fig:retrieval-eval-summary} separam essa comparação em três leituras complementares: heterogeneidade por problema, deltas relativos ao baseline lexical e resumo agregado com incerteza.
-
-Em termos operacionais, o agente GPT-5.4 atribuiu relevância em escala ordinal de 0 a 3, em que 0 indica irrelevância, 1 indica relevância básica, 2 indica relevância alta e 3 indica forte aderência ao problema formulado na consulta. O julgamento foi guiado por um prompt fixo e pelo mesmo critério de consistência ao longo de todo o pool, tratando como ``fortemente relevante'' qualquer item com $relevance \geq 2$. O prompt e os artefatos do benchmark são mantidos no repositório do projeto para auditoria e reuso.
+A textualização mostrou viabilidade operacional na escala do acervo e reduziu substancialmente o comprimento médio das descrições legislativas sem eliminar sua diversidade. A comparação formal entre \textit{bm25}, \textit{ementas} e \textit{ações} foi conduzida em 15 problemas municipais com 1.158 pares problema-documento anotados automaticamente por um agente GPT-5.4. O pool avaliado permaneceu denso em itens úteis porque foi construído da união dos top-30 das três abordagens: 75,6\% dos itens receberam relevância maior que zero e 54,9\% receberam relevância alta ($\geq 2$). Nesse recorte, \textit{ações} concentrou a maior fração de itens fortemente relevantes, inclusive entre os candidatos exclusivos, o que já sugere vantagem qualitativa antes mesmo do resumo agregado.
 
 \begin{figure*}[t]
 \centering
@@ -39,7 +24,7 @@ Em termos operacionais, o agente GPT-5.4 atribuiu relevância em escala ordinal 
 \label{fig:retrieval-eval-problem}
 \end{figure*}
 
-Em métricas agregadas, \textit{ações} liderou de forma consistente, seguida por \textit{ementas} e depois por BM25. O ganho aparece tanto na ordenação quanto na composição do ranking: nDCG@10 foi de 0,522 em BM25 para 0,591 em \textit{ementas} e 0,743 em \textit{ações}; MAP@10, de 0,125 para 0,142 e 0,173; e a relevância média no top-10, de 1,773 para 1,940 e 2,327. Em termos práticos, isso significa que a textualização em formato de ação não apenas encontra mais itens úteis do que o baseline lexical, mas também coloca documentos mais fortemente alinhados nas primeiras posições. No topo do ranking, a melhora também é visível: P@10 sobe de 0,787 em BM25 para 0,873 em \textit{ementas} e 0,940 em \textit{ações}. O efeito mais consistente, porém, aparece na recuperação de documentos fortemente relevantes: High-P@10 sobe de 0,620 em BM25 para 0,640 em \textit{ementas} e 0,793 em \textit{ações}, enquanto High-Recall@10 passa de 0,145 para 0,165 e 0,215.
+Neste benchmark exploratório, \textit{ações} liderou de forma consistente nas métricas agregadas, seguida por \textit{ementas} e depois por BM25. O ganho aparece tanto na ordenação quanto na composição do ranking: nDCG@10 foi de 0,522 em BM25 para 0,591 em \textit{ementas} e 0,743 em \textit{ações}; MAP@10, de 0,125 para 0,142 e 0,173; e P@10, de 0,787 para 0,873 e 0,940. O efeito mais nítido aparece na recuperação de documentos fortemente relevantes: High-Recall@10 sobe de 0,145 em BM25 para 0,165 em \textit{ementas} e 0,215 em \textit{ações}. Em síntese, ações lideram em média nas métricas primárias e secundárias, mas a Figura~\ref{fig:retrieval-eval-problem} mostra que a vantagem não é uniforme e que consultas mais terminológicas ainda podem favorecer o baseline lexical.
 
 \begin{table}[t]
 \centering
@@ -49,50 +34,22 @@ Em métricas agregadas, \textit{ações} liderou de forma consistente, seguida p
 \toprule
 Métrica & BM25 & Ementas & Ações \\
 \midrule
-nDCG@10 & 0,522 & 0,591 & 0,743 \\
-High-Recall@10 & 0,145 & 0,165 & 0,215 \\
-MAP@10 & 0,125 & 0,142 & 0,173 \\
-P@10 & 0,787 & 0,873 & 0,940 \\
+nDCG@10 & 0,522 & 0,591 & \textbf{0,743} \\
+High-Recall@10 & 0,145 & 0,165 & \textbf{0,215} \\
+MAP@10 & 0,125 & 0,142 & \textbf{0,173} \\
+P@10 & 0,787 & 0,873 & \textbf{0,940} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-Essa decomposição ajuda a separar mais claramente três efeitos. Primeiro, há um efeito de \textbf{ordenação}, capturado por nDCG@10 e MAP@10, em que \textit{ações} abre vantagem média consistente. Segundo, há um efeito no \textbf{topo do ranking}, visível em P@10 e High-P@10, indicando listas iniciais mais limpas e úteis. Terceiro, há um efeito de \textbf{cobertura local do pool}, observado em Recall@10 e High-Recall@10, que sugere maior recuperação de documentos fortemente relevantes dentro do universo anotado. Essa interpretação é compatível com a hipótese de que a textualização reduz ambiguidade e aproxima a indexação de consultas formuladas como objetivos de política pública, mas essa explicação deve ser lida como hipótese interpretativa e não como mecanismo causal demonstrado.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/retrieval-eval-heatmap.pdf}
-\caption{Delta relativo ao baseline lexical BM25, por problema e por métrica. O painel esquerdo mostra \textit{ementas} $-$ BM25; o direito, \textit{ações} $-$ BM25. Tons azuis indicam ganho e tons terracota indicam perda. O ponto a observar é que os ganhos de ações são mais frequentes e mais intensos nas métricas de ordenação e cobertura local, embora não se distribuam uniformemente entre todos os temas.}
-\label{fig:retrieval-eval-heatmap}
-\end{figure*}
-
-O perfil pareado por problema reforça essa leitura e mostra heterogeneidade substantiva que a média sozinha esconde. Contra o baseline lexical, \textit{ações} venceu em 11 das 13 comparações não empatadas tanto em High-P@10 quanto em High-Recall@10, com \textit{sign test} exato de $p=0{,}022$ em ambas as métricas. Em nDCG@10, \textit{ações} ficou à frente de BM25 em 13 dos 15 problemas, com apenas duas derrotas; \textit{ementas}, por sua vez, venceu BM25 em nove dos 15 problemas. Além disso, os três rankings recuperam conjuntos parcialmente distintos: o overlap médio entre BM25 e \textit{ementas} é de 4,27 documentos por problema (Jaccard 0,083), entre BM25 e \textit{ações} é de 4,47 (0,088) e entre \textit{ementas} e \textit{ações} é de 6,20 (0,126). Na prática, isso indica que a recuperação semântica altera materialmente quais PLs chegam ao usuário, e não apenas a ordem de um mesmo conjunto. Como esses julgamentos foram produzidos por GPT-5.4, os números devem ser lidos como uma linha de base automatizada para comparação relativa entre métodos, e não como veredicto final de especialistas setoriais. Essa leitura também permanece restrita a um contraste entre um baseline lexical simples e duas variantes semânticas do mesmo acervo, já que \textit{baselines} híbridos e métodos de fusão ainda não foram incluídos neste benchmark.
-
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/retrieval-eval-summary.pdf}
-\caption{Ganho médio por consulta com IC 95\% por \textit{bootstrap} entre consultas para \textit{ementas} e \textit{ações} em relação ao baseline lexical BM25, além da contagem de vitórias, empates e derrotas por problema. A figura resume a comparação relativa no pool anotado e explicita a incerteza e a variabilidade entre problemas.}
-\label{fig:retrieval-eval-summary}
-\end{figure*}
-
-Os maiores ganhos de \textit{ações} sobre o baseline apareceram em enchentes urbanas (nDCG@10 de 0,000 para 0,964), arrecadação sem subir impostos (0,181 para 0,642), resíduos e reciclagem (0,495 para 0,946), inclusão de pessoas com deficiência (0,374 para 0,789) e iluminação pública (0,167 para 0,460). Nesses casos, a textualização parece reduzir ambiguidade e aproximar a indexação de consultas formuladas como objetivos de política pública. As principais perdas frente ao BM25 ocorreram em mobilidade no horário de pico (0,607 para 0,404) e digitalização de serviços (0,455 para 0,382), sugerindo que consultas mais terminológicas ou fortemente ancoradas em vocabulário literal ainda podem favorecer o baseline lexical.
-
-Essa heterogeneidade sugere uma leitura mais precisa do resultado. A evidência observada aqui não é de superioridade universal da textualização, mas de vantagem média no benchmark avaliado, com efeito heterogêneo entre temas e ganho mais frequente em consultas formuladas como objetivo de política pública. Em contrapartida, consultas mais terminológicas ou domínios em que a ementa já preserva vocabulário técnico claro podem perder desempenho quando a reescrita simplifica demais o conteúdo. O benchmark mede qualidade relativa de ordenação e cobertura local dentro do pool anotado; ele não mede \textit{recall} absoluto no corpus inteiro nem resolve sozinho a questão da generalização externa. Como próximo passo metodológico, planejamos validação estratificada em subconjuntos de maior discordância entre métodos e em consultas com maior sensibilidade temática, complementando a linha de base automatizada com revisão humana focalizada. Em síntese, os resultados sustentam vantagem média da recuperação baseada em ações no pool anotado, especialmente em métricas que combinam relevância graduada e cobertura de itens fortemente relevantes, mas essa vantagem não é uniforme entre temas e deve ser interpretada à luz do caráter exploratório do benchmark. Apesar de promissores, esses achados devem ser lidos em conjunto com as ameaças à validade discutidas na Seção~\ref{sec:limitacoes}.
+Contra o baseline lexical, \textit{ações} venceu BM25 em 13 dos 15 problemas em nDCG@10 e em 11 das 13 comparações não empatadas tanto em High-P@10 quanto em High-Recall@10 (\textit{sign test} exato de $p=0{,}022$ em ambas). Os maiores ganhos apareceram em consultas formuladas como objetivo de política pública, enquanto perdas se concentraram em consultas mais terminológicas, como mobilidade no horário de pico e digitalização de serviços. A evidência observada aqui, portanto, é de vantagem média no pool anotado, e não de superioridade universal no corpus completo.
 
 \subsection{Estudo de caso: violência contra a mulher}
 
-Entre os temas disponíveis no acervo, violência contra a mulher foi selecionado como estudo de caso principal. O recorte lexical correspondente reúne 2.306 ações distribuídas por 204 municípios e 18 UFs. Esse volume foi considerado adequado para ilustrar o fluxo completo do sistema, desde a consulta em linguagem natural até a consolidação de políticas recorrentes. A Figura~\ref{fig:case-study-flow} sintetiza esse percurso visualmente. Por razões de disponibilidade e cobertura, adotou-se a taxa de homicídios como proxy inicial deste estudo de caso, exclusivamente para fins exploratórios de priorização.
+Entre os temas disponíveis no acervo, violência contra a mulher foi selecionado como estudo de caso principal. O recorte lexical correspondente reúne 2.306 ações distribuídas por 204 municípios e 18 UFs. Esse volume foi considerado adequado para ilustrar o funcionamento do sistema em um domínio substantivo concreto. Por razões de disponibilidade e cobertura, adotou-se a taxa de homicídios como proxy inicial deste estudo de caso, exclusivamente para fins exploratórios de priorização.
+No recorte temático com janela de 6 meses para taxa de homicídios, 1.240 ações tiveram variação computável e geraram 136 políticas agrupadas com pelo menos dois municípios. O cluster com maior escore heurístico foi ``Conceder auxílio financeiro a mulheres vítimas de violência doméstica no município'', com $Q = 0{,}778$, oito municípios representados e sete variações favoráveis em oito observações. Entre os exemplos desse grupo estão Marabá, Campina Grande e Campinas, com reduções observadas de -26,23\%, -22,22\% e -30,00\%, respectivamente.
 
-\begin{figure*}[t]
-\centering
-\includegraphics[width=\textwidth]{figures/case-study-flow.jpg}
-\caption{Fluxo completo do estudo de caso sobre violência contra a mulher, da consulta em linguagem natural à priorização exploratória de políticas recorrentes.}
-\label{fig:case-study-flow}
-\end{figure*}
-
-No recorte temático com janela de 6 meses para taxa de homicídios, 1.240 ações tiveram variação computável e geraram 136 políticas agrupadas com pelo menos dois municípios. O cluster com maior escore heurístico foi ``Conceder auxílio financeiro a mulheres vítimas de violência doméstica no município'', com $Q = 0{,}778$, oito municípios representados e sete variações favoráveis em oito observações. Entre os exemplos que compõem esse grupo estão Marabá, Campina Grande e Campinas, com reduções observadas de -26,23\%, -22,22\% e -30,00\%, respectivamente. Esses resultados devem ser interpretados como associações observadas após a proposição legislativa, e não como evidência causal de efetividade.
-
-Além do cluster líder, o estudo de caso indica diversidade de estratégias. Entre os grupos com $Q = 0{,}750$, apareceram propostas de tramitação prioritária para processos envolvendo vítimas de violência doméstica, programas de defesa pessoal para mulheres, programas municipais de enfrentamento ao feminicídio e mecanismos de punição administrativa para autores de violência contra a mulher. Também apareceu um grupo educacional recorrente: ensino de noções básicas sobre a Lei Maria da Penha nas escolas municipais, com oito municípios e $Q = 0{,}667$. A Figura~\ref{fig:case-study-strategies} organiza esse conjunto como mosaico visual de respostas recorrentes.
+Além do cluster líder, o estudo de caso indica diversidade de estratégias, incluindo tramitação prioritária para processos envolvendo vítimas de violência doméstica, programas de defesa pessoal, enfrentamento ao feminicídio, punição administrativa para agressores e ações educacionais sobre a Lei Maria da Penha. A Figura~\ref{fig:case-study-strategies} sintetiza esse repertório. Esses resultados devem ser interpretados como associações observadas após a proposição legislativa, e não como evidência causal de efetividade.
 
 \begin{figure*}[t]
 \centering
@@ -100,7 +57,3 @@ Além do cluster líder, o estudo de caso indica diversidade de estratégias. En
 \caption{Estratégias recorrentes identificadas no estudo de caso, destacando o cluster líder e a diversidade de respostas econômicas, educacionais, administrativas e protetivas.}
 \label{fig:case-study-strategies}
 \end{figure*}
-
-\subsection{Falhas observadas}
-
-A inspeção qualitativa apontou dois riscos recorrentes. Na textualização, a condensação pode alterar o sentido material da proposta quando o modelo força uma paráfrase inadequada, como em ``Junho Violeta'' $\rightarrow$ ``Junho Violento''. Nos indicadores, variações de -100\% em janelas futuras com contagem zero podem parecer excessivamente favoráveis em municípios pequenos ou com baixa contagem absoluta de eventos.

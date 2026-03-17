@@ -543,53 +543,6 @@
       \verb https://jmlr.org/papers/v21/20-074.html
       \endverb
     \endentry
-    \entry{dettmers_qlora_2023}{article}{}
-      \name{author}{4}{}{%
-        {{hash=67a40f4e13f66c2e43ce4d7d64b9d9a4}{%
-           family={Dettmers},
-           familyi={D\bibinitperiod},
-           given={Tim},
-           giveni={T\bibinitperiod}}}%
-        {{hash=14917de5b5a7cbc3cd12e6467297e657}{%
-           family={Pagnoni},
-           familyi={P\bibinitperiod},
-           given={Artidoro},
-           giveni={A\bibinitperiod}}}%
-        {{hash=c32ace2a5a2590ef3542c3713e05925d}{%
-           family={Holtzman},
-           familyi={H\bibinitperiod},
-           given={Ari},
-           giveni={A\bibinitperiod}}}%
-        {{hash=1dbd3a5b42828fb2cebd7786488ba425}{%
-           family={Zettlemoyer},
-           familyi={Z\bibinitperiod},
-           given={Luke},
-           giveni={L\bibinitperiod}}}%
-      }
-      \strng{namehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
-      \strng{fullhash}{1bf24d73d3c3884f634a1b420205ff86}
-      \strng{bibnamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
-      \strng{authorbibnamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
-      \strng{authornamehash}{a50dbcd4c24eb2e86d45d36ef4076dc0}
-      \strng{authorfullhash}{1bf24d73d3c3884f634a1b420205ff86}
-      \field{sortinit}{9}
-      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
-      \field{labelnamesource}{author}
-      \field{labeltitlesource}{title}
-      \field{journaltitle}{arXiv}
-      \field{title}{{QLoRA}: Efficient Finetuning of Quantized {LLMs}}
-      \field{urlday}{7}
-      \field{urlmonth}{1}
-      \field{urlyear}{2026}
-      \field{year}{2023}
-      \field{urldateera}{ce}
-      \verb{urlraw}
-      \verb https://arxiv.org/abs/2305.14314
-      \endverb
-      \verb{url}
-      \verb https://arxiv.org/abs/2305.14314
-      \endverb
-    \endentry
     \entry{zhang_bertscore_2019}{article}{}
       \name{author}{5}{}{%
         {{hash=733e3732b7e3ce5cf2b04cf5e9bd9cf1}{%
@@ -624,8 +577,8 @@
       \strng{authorbibnamehash}{b7341c276394125587ea24e5ba844df4}
       \strng{authornamehash}{b7341c276394125587ea24e5ba844df4}
       \strng{authorfullhash}{0f3fc6c6b2643b223fd923710ae91526}
-      \field{sortinit}{1}
-      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{journaltitle}{arXiv}
