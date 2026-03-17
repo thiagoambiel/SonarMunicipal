@@ -59,9 +59,20 @@ def build_parser() -> argparse.ArgumentParser:
         default=Path("experiments/eval/outputs/recommendations_acoes.jsonl"),
     )
     parser.add_argument(
+        "--bm25-path",
+        type=Path,
+        default=Path("experiments/eval/outputs/recommendations_bm25_ementas.jsonl"),
+    )
+    parser.add_argument(
         "--output-path",
         type=Path,
         default=Path("experiments/eval/Analysis.md"),
+    )
+    parser.add_argument(
+        "--pool-metadata-path",
+        type=Path,
+        default=None,
+        help="Metadados completos do pool, usados quando o arquivo anotado esta em formato cego.",
     )
     return parser
 
@@ -133,6 +144,17 @@ def format_pct(value: float) -> str:
     return f"{value * 100:.1f}%"
 
 
+def format_problem_list(problem_ids: Sequence[str]) -> str:
+    if not problem_ids:
+        return ""
+    wrapped = [f"`{problem_id}`" for problem_id in problem_ids]
+    if len(wrapped) == 1:
+        return wrapped[0]
+    if len(wrapped) == 2:
+        return f"{wrapped[0]} e {wrapped[1]}"
+    return f"{', '.join(wrapped[:-1])} e {wrapped[-1]}"
+
+
 def sign_test_pvalue(wins: int, losses: int) -> float:
     n = wins + losses
     if n == 0:
@@ -143,6 +165,66 @@ def sign_test_pvalue(wins: int, losses: int) -> float:
 
 def load_runs(path: Path) -> Dict[str, Dict[str, Any]]:
     return {row["problem_id"]: row for row in iter_jsonl(path)}
+
+
+def resolve_pool_metadata_path(pool_path: Path, explicit_path: Path | None) -> Path | None:
+    if explicit_path is not None:
+        return explicit_path
+
+    candidates = [pool_path.with_name(f"{pool_path.stem}_metadata.jsonl")]
+    if pool_path.stem.endswith("_categorized"):
+        base_stem = pool_path.stem[: -len("_categorized")]
+        candidates.append(pool_path.with_name(f"{base_stem}_metadata.jsonl"))
+
+    for candidate in candidates:
+        if candidate.exists():
+            return candidate
+    return None
+
+
+def merge_pool_rows_with_metadata(
+    pool_rows: Sequence[Dict[str, Any]],
+    metadata_rows: Sequence[Dict[str, Any]],
+) -> List[Dict[str, Any]]:
+    metadata_by_key = {
+        (str(row["problem_id"]).strip(), str(row["doc_id"]).strip()): row
+        for row in metadata_rows
+    }
+
+    merged_rows: List[Dict[str, Any]] = []
+    for row in pool_rows:
+        key = (str(row["problem_id"]).strip(), str(row["doc_id"]).strip())
+        metadata = metadata_by_key.get(key)
+        if metadata is None:
+            raise ValueError(f"Metadados ausentes para problem_id={key[0]!r}, doc_id={key[1]!r}.")
+        merged = dict(metadata)
+        merged["relevance"] = row.get("relevance")
+        merged["notes"] = row.get("notes", "")
+        merged_rows.append(merged)
+    return merged_rows
+
+
+def ensure_pool_rows_have_metadata(
+    pool_rows: Sequence[Dict[str, Any]],
+    pool_path: Path,
+    metadata_path: Path | None,
+) -> List[Dict[str, Any]]:
+    if not pool_rows:
+        return list(pool_rows)
+
+    required_fields = {"ementa_rank", "acao_rank", "bm25_ementas_rank"}
+    if required_fields.issubset(pool_rows[0].keys()):
+        return list(pool_rows)
+
+    resolved_metadata_path = resolve_pool_metadata_path(pool_path, metadata_path)
+    if resolved_metadata_path is None:
+        raise ValueError(
+            "O pool anotado esta em formato cego e nao inclui metadados de ranking. "
+            "Informe --pool-metadata-path ou mantenha o arquivo companheiro *_metadata.jsonl."
+        )
+
+    metadata_rows = list(iter_jsonl(resolved_metadata_path))
+    return merge_pool_rows_with_metadata(pool_rows, metadata_rows)
 
 
 def load_qrels(pool_rows: Sequence[Dict[str, Any]]) -> Dict[str, Dict[str, int]]:
@@ -245,27 +327,16 @@ def pool_stats(pool_rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     for row in pool_rows:
         by_problem[row["problem_id"]].append(row)
 
-    overlap_counts: List[int] = []
-    overlap_ratios: List[float] = []
-    only_ementas = []
-    only_acoes = []
-    in_both = []
-
-    for row in pool_rows:
-        if row["ementa_rank"] is not None and row["acao_rank"] is not None:
-            in_both.append(row)
-        elif row["ementa_rank"] is not None:
-            only_ementas.append(row)
-        else:
-            only_acoes.append(row)
-
-    for rows in by_problem.values():
-        ementa_docs = {row["doc_id"] for row in rows if row["ementa_rank"] is not None}
-        acao_docs = {row["doc_id"] for row in rows if row["acao_rank"] is not None}
-        overlap = len(ementa_docs & acao_docs)
-        union = len(ementa_docs | acao_docs)
-        overlap_counts.append(overlap)
-        overlap_ratios.append(overlap / union if union else 0.0)
+    approach_fields = {
+        "bm25_ementas": "bm25_ementas_rank",
+        "ementas": "ementa_rank",
+        "acoes": "acao_rank",
+    }
+    pairwise_pairs = [
+        ("bm25_ementas", "ementas"),
+        ("bm25_ementas", "acoes"),
+        ("ementas", "acoes"),
+    ]
 
     def subset_summary(rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         total = len(rows)
@@ -278,6 +349,41 @@ def pool_stats(pool_rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
             "relevance_counter": Counter(int(row["relevance"]) for row in rows),
         }
 
+    approach_stats: Dict[str, Dict[str, Any]] = {}
+    for approach, field in approach_fields.items():
+        rows = [row for row in pool_rows if row[field] is not None]
+        exclusive_rows = [
+            row
+            for row in rows
+            if all(
+                row[other_field] is None
+                for other_approach, other_field in approach_fields.items()
+                if other_approach != approach
+            )
+        ]
+        approach_stats[approach] = {
+            **subset_summary(rows),
+            "exclusive": subset_summary(exclusive_rows),
+        }
+
+    pairwise_overlap: Dict[str, Dict[str, float]] = {}
+    for left, right in pairwise_pairs:
+        overlap_counts: List[int] = []
+        overlap_ratios: List[float] = []
+        left_field = approach_fields[left]
+        right_field = approach_fields[right]
+        for rows in by_problem.values():
+            left_docs = {row["doc_id"] for row in rows if row[left_field] is not None}
+            right_docs = {row["doc_id"] for row in rows if row[right_field] is not None}
+            overlap = len(left_docs & right_docs)
+            union = len(left_docs | right_docs)
+            overlap_counts.append(overlap)
+            overlap_ratios.append(overlap / union if union else 0.0)
+        pairwise_overlap[f"{left}__{right}"] = {
+            "avg_overlap_count": mean(overlap_counts),
+            "avg_overlap_jaccard": mean(overlap_ratios),
+        }
+
     return {
         "num_rows": len(pool_rows),
         "num_problems": len(by_problem),
@@ -285,11 +391,8 @@ def pool_stats(pool_rows: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
         "relevance_counter": relevance_counter,
         "relevant_share": sum(v for k, v in relevance_counter.items() if k > 0) / len(pool_rows),
         "high_share": sum(v for k, v in relevance_counter.items() if k >= 2) / len(pool_rows),
-        "only_ementas": subset_summary(only_ementas),
-        "only_acoes": subset_summary(only_acoes),
-        "in_both": subset_summary(in_both),
-        "avg_overlap_count": mean(overlap_counts),
-        "avg_overlap_jaccard": mean(overlap_ratios),
+        "approach_stats": approach_stats,
+        "pairwise_overlap": pairwise_overlap,
     }
 
 
@@ -363,28 +466,37 @@ def recommendation_snippet(recommendation: Dict[str, Any], relevance: int) -> st
 
 
 def build_examples(
+    bm25_run: Dict[str, Dict[str, Any]],
     ementas_run: Dict[str, Dict[str, Any]],
     acoes_run: Dict[str, Dict[str, Any]],
     qrels: Dict[str, Dict[str, int]],
+    bm25_eval: Sequence[ProblemEvaluation],
     ementas_eval: Sequence[ProblemEvaluation],
     acoes_eval: Sequence[ProblemEvaluation],
 ) -> Dict[str, List[str]]:
+    bm25_by_problem = {row.problem_id: row for row in bm25_eval}
     ementas_by_problem = {row.problem_id: row for row in ementas_eval}
     acoes_by_problem = {row.problem_id: row for row in acoes_eval}
     deltas = [
         (
-            acoes_by_problem[problem_id].ndcg_at_10 - ementas_by_problem[problem_id].ndcg_at_10,
+            acoes_by_problem[problem_id].ndcg_at_10 - bm25_by_problem[problem_id].ndcg_at_10,
             problem_id,
         )
-        for problem_id in ementas_by_problem
+        for problem_id in bm25_by_problem
     ]
     deltas.sort(reverse=True)
 
     def describe(problem_id: str) -> str:
+        bm25_problem = bm25_run[problem_id]
         ementa_problem = ementas_run[problem_id]
         acao_problem = acoes_run[problem_id]
+        bm25_problem_eval = bm25_by_problem[problem_id]
         ementa_eval = ementas_by_problem[problem_id]
         acao_eval = acoes_by_problem[problem_id]
+        bm25_docs = [
+            recommendation_snippet(doc, qrels[problem_id].get(doc["doc_id"], 0))
+            for doc in bm25_problem["recommendations"][:3]
+        ]
         ementa_docs = [
             recommendation_snippet(doc, qrels[problem_id].get(doc["doc_id"], 0))
             for doc in ementa_problem["recommendations"][:3]
@@ -394,8 +506,10 @@ def build_examples(
             for doc in acao_problem["recommendations"][:3]
         ]
         return (
-            f"**{ementa_problem['problem_name']}** (`{problem_id}`): "
-            f"nDCG@10 ementas={format_float(ementa_eval.ndcg_at_10)} vs acoes={format_float(acao_eval.ndcg_at_10)}. "
+            f"**{acao_problem['problem_name']}** (`{problem_id}`): "
+            f"nDCG@10 bm25={format_float(bm25_problem_eval.ndcg_at_10)} "
+            f"vs ementas={format_float(ementa_eval.ndcg_at_10)} vs acoes={format_float(acao_eval.ndcg_at_10)}. "
+            f"Top-3 bm25: {'; '.join(bm25_docs)}. "
             f"Top-3 ementas: {'; '.join(ementa_docs)}. "
             f"Top-3 acoes: {'; '.join(acao_docs)}."
         )
@@ -405,7 +519,11 @@ def build_examples(
     return {"gains": gains, "losses": losses}
 
 
-def render_metric_table(ementas_summary: Dict[str, float], acoes_summary: Dict[str, float]) -> List[str]:
+def render_metric_table(
+    bm25_summary: Dict[str, float],
+    ementas_summary: Dict[str, float],
+    acoes_summary: Dict[str, float],
+) -> List[str]:
     rows = [
         ("P@1", "precision_at_1"),
         ("P@3", "precision_at_3"),
@@ -422,16 +540,25 @@ def render_metric_table(ementas_summary: Dict[str, float], acoes_summary: Dict[s
         ("Relevancia media@3", "avg_relevance_at_3"),
         ("Relevancia media@10", "avg_relevance_at_10"),
     ]
-    lines = ["| Metrica | Ementas | Acoes | Delta (acoes - ementas) |", "| --- | ---: | ---: | ---: |"]
+    lines = [
+        "| Metrica | BM25 | Ementas | Acoes | Delta (ementas - BM25) | Delta (acoes - BM25) |",
+        "| --- | ---: | ---: | ---: | ---: | ---: |",
+    ]
     for label, key in rows:
-        delta = acoes_summary[key] - ementas_summary[key]
+        delta_ementas = ementas_summary[key] - bm25_summary[key]
+        delta_acoes = acoes_summary[key] - bm25_summary[key]
         lines.append(
-            f"| {label} | {format_float(ementas_summary[key])} | {format_float(acoes_summary[key])} | {format_float(delta)} |"
+            f"| {label} | {format_float(bm25_summary[key])} | {format_float(ementas_summary[key])} | "
+            f"{format_float(acoes_summary[key])} | {format_float(delta_ementas)} | {format_float(delta_acoes)} |"
         )
     return lines
 
 
-def render_pairwise_table(pairwise_rows: Sequence[Dict[str, Any]]) -> List[str]:
+def render_pairwise_table(
+    pairwise_rows: Sequence[Dict[str, Any]],
+    winner_label: str,
+    loser_label: str,
+) -> List[str]:
     label_map = {
         "precision_at_3": "P@3",
         "precision_at_10": "P@10",
@@ -443,7 +570,7 @@ def render_pairwise_table(pairwise_rows: Sequence[Dict[str, Any]]) -> List[str]:
         "avg_relevance_at_10": "Relevancia media@10",
     }
     lines = [
-        "| Metrica | Delta medio | Vitorias acoes | Vitorias ementas | Empates | p-valor sign test |",
+        f"| Metrica | Delta medio | Vitorias {winner_label} | Vitorias {loser_label} | Empates | p-valor sign test |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for row in pairwise_rows:
@@ -454,60 +581,94 @@ def render_pairwise_table(pairwise_rows: Sequence[Dict[str, Any]]) -> List[str]:
 
 
 def render_problem_table(
+    bm25_eval: Sequence[ProblemEvaluation],
     ementas_eval: Sequence[ProblemEvaluation],
     acoes_eval: Sequence[ProblemEvaluation],
-    problem_qrels: Dict[str, Dict[str, Any]],
 ) -> List[str]:
+    bm25_by_problem = {row.problem_id: row for row in bm25_eval}
     ementas_by_problem = {row.problem_id: row for row in ementas_eval}
     acoes_by_problem = {row.problem_id: row for row in acoes_eval}
     sorted_ids = sorted(
-        ementas_by_problem,
-        key=lambda problem_id: acoes_by_problem[problem_id].ndcg_at_10 - ementas_by_problem[problem_id].ndcg_at_10,
+        bm25_by_problem,
+        key=lambda problem_id: acoes_by_problem[problem_id].ndcg_at_10 - bm25_by_problem[problem_id].ndcg_at_10,
         reverse=True,
     )
 
     lines = [
-        "| Problema | nDCG@10 ementas | nDCG@10 acoes | Delta | Exclusivos relevantes ementas | Exclusivos relevantes acoes |",
+        "| Problema | nDCG@10 BM25 | nDCG@10 ementas | nDCG@10 acoes | Delta (ementas - BM25) | Delta (acoes - BM25) |",
         "| --- | ---: | ---: | ---: | ---: | ---: |",
     ]
     for problem_id in sorted_ids:
-        qrels_stats = problem_qrels[problem_id]
         lines.append(
-            f"| `{problem_id}` | {format_float(ementas_by_problem[problem_id].ndcg_at_10)} | "
+            f"| `{problem_id}` | {format_float(bm25_by_problem[problem_id].ndcg_at_10)} | "
+            f"{format_float(ementas_by_problem[problem_id].ndcg_at_10)} | "
             f"{format_float(acoes_by_problem[problem_id].ndcg_at_10)} | "
-            f"{format_float(acoes_by_problem[problem_id].ndcg_at_10 - ementas_by_problem[problem_id].ndcg_at_10)} | "
-            f"{qrels_stats['relevant_exclusive_ementas']} | {qrels_stats['relevant_exclusive_acoes']} |"
+            f"{format_float(ementas_by_problem[problem_id].ndcg_at_10 - bm25_by_problem[problem_id].ndcg_at_10)} | "
+            f"{format_float(acoes_by_problem[problem_id].ndcg_at_10 - bm25_by_problem[problem_id].ndcg_at_10)} |"
         )
     return lines
 
 
-def render_rank_table(ementas_rankwise: Sequence[float], acoes_rankwise: Sequence[float]) -> List[str]:
-    lines = ["| Rank | Relevancia media ementas | Relevancia media acoes | Delta |", "| --- | ---: | ---: | ---: |"]
-    for rank, (ementa_value, acao_value) in enumerate(zip(ementas_rankwise, acoes_rankwise), start=1):
+def render_rank_table(
+    bm25_rankwise: Sequence[float],
+    ementas_rankwise: Sequence[float],
+    acoes_rankwise: Sequence[float],
+) -> List[str]:
+    lines = [
+        "| Rank | Relevancia media BM25 | Relevancia media ementas | Relevancia media acoes |",
+        "| --- | ---: | ---: | ---: |",
+    ]
+    for rank, (bm25_value, ementa_value, acao_value) in enumerate(
+        zip(bm25_rankwise, ementas_rankwise, acoes_rankwise),
+        start=1,
+    ):
         lines.append(
-            f"| {rank} | {format_float(ementa_value)} | {format_float(acao_value)} | {format_float(acao_value - ementa_value)} |"
+            f"| {rank} | {format_float(bm25_value)} | {format_float(ementa_value)} | {format_float(acao_value)} |"
         )
     return lines
 
 
 def build_markdown(
     pool_rows: Sequence[Dict[str, Any]],
+    bm25_run: Dict[str, Dict[str, Any]],
     ementas_run: Dict[str, Dict[str, Any]],
     acoes_run: Dict[str, Dict[str, Any]],
+    bm25_eval: Sequence[ProblemEvaluation],
     ementas_eval: Sequence[ProblemEvaluation],
     acoes_eval: Sequence[ProblemEvaluation],
 ) -> str:
     qrels = load_qrels(pool_rows)
     pool_summary = pool_stats(pool_rows)
-    problem_qrels = collect_problem_qrels(pool_rows)
+    bm25_summary = summarise_evaluations(bm25_eval)
     ementas_summary = summarise_evaluations(ementas_eval)
     acoes_summary = summarise_evaluations(acoes_eval)
+    bm25_rankwise = rankwise_average_relevance(bm25_run, qrels)
     ementas_rankwise = rankwise_average_relevance(ementas_run, qrels)
     acoes_rankwise = rankwise_average_relevance(acoes_run, qrels)
-    examples = build_examples(ementas_run, acoes_run, qrels, ementas_eval, acoes_eval)
+    bm25_by_problem = {row.problem_id: row for row in bm25_eval}
+    ementas_by_problem = {row.problem_id: row for row in ementas_eval}
+    acoes_by_problem = {row.problem_id: row for row in acoes_eval}
+    problem_deltas = sorted(
+        (
+            (
+                problem_id,
+                acoes_by_problem[problem_id].ndcg_at_10 - bm25_by_problem[problem_id].ndcg_at_10,
+            )
+            for problem_id in bm25_by_problem
+        ),
+        key=lambda item: item[1],
+        reverse=True,
+    )
+    top_gain_problem_ids = [problem_id for problem_id, delta in problem_deltas if delta > 0][:5]
+    top_loss_problem_ids = [problem_id for problem_id, delta in sorted(problem_deltas, key=lambda item: item[1]) if delta < 0][:3]
+    rank_deltas = [acao - bm25 for bm25, acao in zip(bm25_rankwise, acoes_rankwise)]
+    positive_rank_count = sum(1 for delta in rank_deltas if delta > 1e-12)
+    negative_rank_count = sum(1 for delta in rank_deltas if delta < -1e-12)
+    rank1_delta = rank_deltas[0] if rank_deltas else 0.0
+    examples = build_examples(bm25_run, ementas_run, acoes_run, qrels, bm25_eval, ementas_eval, acoes_eval)
 
-    pairwise_rows = [
-        pairwise_comparison(ementas_eval, acoes_eval, metric_name)
+    pairwise_bm25_vs_ementas = [
+        pairwise_comparison(bm25_eval, ementas_eval, metric_name)
         for metric_name in [
             "precision_at_3",
             "precision_at_10",
@@ -519,21 +680,59 @@ def build_markdown(
             "avg_relevance_at_10",
         ]
     ]
+    pairwise_bm25_vs_acoes = [
+        pairwise_comparison(bm25_eval, acoes_eval, metric_name)
+        for metric_name in [
+            "precision_at_3",
+            "precision_at_10",
+            "high_precision_at_10",
+            "recall_at_10",
+            "high_recall_at_10",
+            "map_at_10",
+            "ndcg_at_10",
+            "avg_relevance_at_10",
+        ]
+    ]
+    pairwise_bm25_vs_ementas_by_metric = {row["metric"]: row for row in pairwise_bm25_vs_ementas}
+    pairwise_bm25_vs_acoes_by_metric = {row["metric"]: row for row in pairwise_bm25_vs_acoes}
+    high_precision_bm25_vs_acoes = pairwise_bm25_vs_acoes_by_metric["high_precision_at_10"]
+    high_recall_bm25_vs_acoes = pairwise_bm25_vs_acoes_by_metric["high_recall_at_10"]
+    ndcg_bm25_vs_ementas = pairwise_bm25_vs_ementas_by_metric["ndcg_at_10"]
+    ndcg_bm25_vs_acoes = pairwise_bm25_vs_acoes_by_metric["ndcg_at_10"]
+    approach_labels = {
+        "bm25_ementas": "BM25",
+        "ementas": "ementas",
+        "acoes": "acoes",
+    }
+    approach_order = ["bm25_ementas", "ementas", "acoes"]
+    best_high_approach = max(
+        approach_order,
+        key=lambda approach: pool_summary["approach_stats"][approach]["high_share"],
+    )
+    most_exclusive_approach = max(
+        approach_order,
+        key=lambda approach: pool_summary["approach_stats"][approach]["exclusive"]["count"],
+    )
+    overlap_bm25_ementas = pool_summary["pairwise_overlap"]["bm25_ementas__ementas"]
+    overlap_bm25_acoes = pool_summary["pairwise_overlap"]["bm25_ementas__acoes"]
+    overlap_ementas_acoes = pool_summary["pairwise_overlap"]["ementas__acoes"]
 
     lines: List[str] = []
-    lines.append("# Analise exploratoria: ementas vs acoes")
+    lines.append("# Analise exploratoria: bm25 vs ementas vs acoes")
     lines.append("")
     lines.append("## Escopo")
     lines.append("")
     lines.append(
-        "Esta analise compara a qualidade das sugestoes geradas por busca semantica em duas representacoes do mesmo acervo legislativo:"
+        "Esta analise compara a qualidade das sugestoes geradas por tres abordagens sobre o mesmo acervo legislativo:"
     )
     lines.append("")
+    lines.append("- `bm25_ementas`: baseline lexical BM25 calculado sobre a ementa original do PL.")
     lines.append("- `ementas`: embeddings calculados diretamente sobre a ementa original do PL.")
     lines.append("- `acoes`: embeddings calculados sobre a ementa reescrita como acao com o modelo de linguagem do projeto.")
     lines.append("")
     lines.append(
-        "Os numeros abaixo usam o pool anotado em `experiments/eval/outputs/annotation_pool_categorized.jsonl` e os rankings top-10 de `recommendations_ementas.jsonl` e `recommendations_acoes.jsonl`."
+        "Os numeros abaixo usam o pool anotado em `experiments/eval/outputs/annotation_pool_categorized.jsonl` "
+        "e os rankings de `recommendations_bm25_ementas.jsonl`, `recommendations_ementas.jsonl` e `recommendations_acoes.jsonl`."
     )
     lines.append("")
     lines.append("## Resumo executivo")
@@ -543,48 +742,51 @@ def build_markdown(
         f"(media de {pool_summary['avg_candidates_per_problem']:.1f} candidatos por problema)."
     )
     lines.append(
-        f"As recomendacoes baseadas em acoes superam as recomendacoes baseadas em ementas na maior parte das metricas principais: "
-        f"nDCG@10 sobe de {format_float(ementas_summary['ndcg_at_10'])} para {format_float(acoes_summary['ndcg_at_10'])} "
-        f"(delta {format_float(acoes_summary['ndcg_at_10'] - ementas_summary['ndcg_at_10'])}), "
-        f"MAP@10 sobe de {format_float(ementas_summary['map_at_10'])} para {format_float(acoes_summary['map_at_10'])}, "
-        f"e a relevancia media no top-10 sobe de {format_float(ementas_summary['avg_relevance_at_10'])} para {format_float(acoes_summary['avg_relevance_at_10'])}."
+        "As recomendacoes baseadas em `acoes` lideram nas metricas principais, seguidas por `ementas` e depois por `bm25_ementas`: "
+        f"nDCG@10 = {format_float(bm25_summary['ndcg_at_10'])} / {format_float(ementas_summary['ndcg_at_10'])} / {format_float(acoes_summary['ndcg_at_10'])}, "
+        f"MAP@10 = {format_float(bm25_summary['map_at_10'])} / {format_float(ementas_summary['map_at_10'])} / {format_float(acoes_summary['map_at_10'])}, "
+        f"e relevancia media@10 = {format_float(bm25_summary['avg_relevance_at_10'])} / {format_float(ementas_summary['avg_relevance_at_10'])} / {format_float(acoes_summary['avg_relevance_at_10'])}."
     )
     lines.append(
-        f"O ganho mais consistente aparece na qualidade dos documentos fortes (`relevance >= 2`): "
-        f"High-P@10 sobe de {format_float(ementas_summary['high_precision_at_10'])} para {format_float(acoes_summary['high_precision_at_10'])} "
-        f"e High-Recall@10 sobe de {format_float(ementas_summary['high_recall_at_10'])} para {format_float(acoes_summary['high_recall_at_10'])}."
+        f"Contra o baseline lexical, `acoes` sobe de {format_float(bm25_summary['high_precision_at_10'])} para {format_float(acoes_summary['high_precision_at_10'])} em High-P@10 "
+        f"e de {format_float(bm25_summary['high_recall_at_10'])} para {format_float(acoes_summary['high_recall_at_10'])} em High-Recall@10. "
+        f"`ementas` tambem supera o BM25 nesses dois cortes ({format_float(ementas_summary['high_precision_at_10'])} e {format_float(ementas_summary['high_recall_at_10'])})."
     )
     lines.append(
-        f"As duas abordagens quase nao recuperam o mesmo conjunto de documentos: o overlap medio e de {pool_summary['avg_overlap_count']:.2f} documentos por problema "
-        f"e o Jaccard medio entre top-10 e de apenas {format_float(pool_summary['avg_overlap_jaccard'])}."
+        "Os tres rankings recuperam conjuntos parcialmente distintos: "
+        f"o overlap medio entre BM25 e ementas e de {overlap_bm25_ementas['avg_overlap_count']:.2f} documentos por problema "
+        f"(Jaccard {format_float(overlap_bm25_ementas['avg_overlap_jaccard'])}), "
+        f"entre BM25 e acoes e de {overlap_bm25_acoes['avg_overlap_count']:.2f} "
+        f"(Jaccard {format_float(overlap_bm25_acoes['avg_overlap_jaccard'])}) "
+        f"e entre ementas e acoes e de {overlap_ementas_acoes['avg_overlap_count']:.2f} "
+        f"(Jaccard {format_float(overlap_ementas_acoes['avg_overlap_jaccard'])})."
     )
     lines.append(
-        "Interpretacao pratica: transformar ementas em acoes tende a alinhar melhor a busca com problemas formulados como necessidades municipais, "
-        "principalmente quando a ementa original e burocratica, genrica ou indireta."
+        "Interpretacao pratica: as duas abordagens semanticas superam o baseline lexical em media, "
+        "e a textualizacao em formato de acao continua sendo a melhor forma de alinhar a busca com problemas formulados como necessidades municipais."
     )
     lines.append("")
     lines.append("## Perfil do pool anotado")
     lines.append("")
     lines.append(
-        f"A base anotada e densa em documentos relevantes porque foi montada a partir da uniao dos top-10 das duas abordagens. "
+        f"A base anotada e densa em documentos relevantes porque foi montada a partir da uniao dos rankings das tres abordagens. "
         f"No total, {format_pct(pool_summary['relevant_share'])} dos itens receberam relevancia > 0 e {format_pct(pool_summary['high_share'])} receberam relevancia >= 2."
     )
     lines.append("")
-    lines.append("| Subconjunto | Itens | % relevantes | % relevancia alta (>=2) |")
-    lines.append("| --- | ---: | ---: | ---: |")
-    lines.append(
-        f"| Somente ementas | {pool_summary['only_ementas']['count']} | {format_pct(pool_summary['only_ementas']['relevant_share'])} | {format_pct(pool_summary['only_ementas']['high_share'])} |"
-    )
-    lines.append(
-        f"| Somente acoes | {pool_summary['only_acoes']['count']} | {format_pct(pool_summary['only_acoes']['relevant_share'])} | {format_pct(pool_summary['only_acoes']['high_share'])} |"
-    )
-    lines.append(
-        f"| Intersecao | {pool_summary['in_both']['count']} | {format_pct(pool_summary['in_both']['relevant_share'])} | {format_pct(pool_summary['in_both']['high_share'])} |"
-    )
+    lines.append("| Abordagem | Itens no pool | % relevantes | % relevancia alta (>=2) | Itens exclusivos | % alta nos exclusivos |")
+    lines.append("| --- | ---: | ---: | ---: | ---: | ---: |")
+    for approach in approach_order:
+        stats = pool_summary["approach_stats"][approach]
+        lines.append(
+            f"| {approach_labels[approach]} | {stats['count']} | {format_pct(stats['relevant_share'])} | "
+            f"{format_pct(stats['high_share'])} | {stats['exclusive']['count']} | {format_pct(stats['exclusive']['high_share'])} |"
+        )
     lines.append("")
     lines.append(
-        "Os documentos exclusivos de `acoes` sao mais fortes que os exclusivos de `ementas`: "
-        "76.2% dos exclusivos de acoes receberam relevancia alta, contra 56.6% dos exclusivos de ementas."
+        f"Entre as tres abordagens, `{approach_labels[best_high_approach].lower()}` concentra a maior fracao de itens de alta relevancia "
+        f"({format_pct(pool_summary['approach_stats'][best_high_approach]['high_share'])}), "
+        f"enquanto `{approach_labels[most_exclusive_approach].lower()}` adiciona mais candidatos exclusivos ao pool "
+        f"({pool_summary['approach_stats'][most_exclusive_approach]['exclusive']['count']} pares)."
     )
     lines.append("")
     lines.append("Distribuicao global de relevancia no pool:")
@@ -604,74 +806,118 @@ def build_markdown(
     lines.append("")
     lines.append("## Metricas agregadas")
     lines.append("")
-    lines.extend(render_metric_table(ementas_summary, acoes_summary))
+    lines.extend(render_metric_table(bm25_summary, ementas_summary, acoes_summary))
     lines.append("")
     lines.append(
-        "Leitura rapida: `acoes` melhora tanto a proporcao de itens relevantes no topo quanto a ordenacao dos melhores documentos ao longo do ranking."
+        "Leitura rapida: as duas abordagens semanticas superam o BM25 em media, e `acoes` melhora tanto a proporcao de itens relevantes no topo quanto a ordenacao dos melhores documentos ao longo do ranking."
     )
     lines.append("")
     lines.append("## Comparacao pareada por problema")
     lines.append("")
     lines.append(
-        "A tabela abaixo conta, problema a problema, quantas vezes `acoes` ficou acima de `ementas`. O p-valor vem de um sign test exato e serve apenas como indicio, "
+        "As tabelas abaixo contam, problema a problema, quantas vezes cada abordagem semantica ficou acima do baseline lexical BM25. O p-valor vem de um sign test exato e serve apenas como indicio, "
         "porque a amostra tem 15 problemas."
     )
     lines.append("")
-    lines.extend(render_pairwise_table(pairwise_rows))
+    lines.append("### Ementas vs BM25")
+    lines.append("")
+    lines.extend(render_pairwise_table(pairwise_bm25_vs_ementas, "ementas", "bm25"))
+    lines.append("")
+    lines.append("### Acoes vs BM25")
+    lines.append("")
+    lines.extend(render_pairwise_table(pairwise_bm25_vs_acoes, "acoes", "bm25"))
     lines.append("")
     lines.append(
-        "O sinal mais forte esta nas metricas de relevancia alta: `acoes` venceu em 9 dos 10 casos nao empatados em High-P@10 e High-Recall@10."
+        "O sinal mais forte aparece na comparacao de `acoes` contra o baseline: "
+        f"`acoes` venceu em {high_precision_bm25_vs_acoes['wins']} de "
+        f"{high_precision_bm25_vs_acoes['wins'] + high_precision_bm25_vs_acoes['losses']} comparacoes nao empatadas em High-P@10, "
+        f"em {high_recall_bm25_vs_acoes['wins']} de "
+        f"{high_recall_bm25_vs_acoes['wins'] + high_recall_bm25_vs_acoes['losses']} em High-Recall@10 "
+        f"e em {ndcg_bm25_vs_acoes['wins']} de {ndcg_bm25_vs_acoes['wins'] + ndcg_bm25_vs_acoes['losses']} em nDCG@10. "
+        f"`Ementas` tambem vence o BM25 em nDCG@10 em {ndcg_bm25_vs_ementas['wins']} de "
+        f"{ndcg_bm25_vs_ementas['wins'] + ndcg_bm25_vs_ementas['losses']} comparacoes nao empatadas."
     )
     lines.append("")
     lines.append("## Ganho por problema")
     lines.append("")
-    lines.extend(render_problem_table(ementas_eval, acoes_eval, problem_qrels))
+    lines.extend(render_problem_table(bm25_eval, ementas_eval, acoes_eval))
     lines.append("")
-    lines.append(
-        "Os maiores ganhos de `acoes` aparecem em `enchentes_urbanas`, `emprego_jovem`, `residuos_reciclagem`, `agricultura_familiar` e `violencia_bairros_centrais`. "
-        "As maiores perdas aparecem em `iluminacao_publica`, `saneamento_basico` e `dengue_arboviroses`."
-    )
+    if top_gain_problem_ids and top_loss_problem_ids:
+        lines.append(
+            f"Os maiores ganhos de `acoes` sobre o baseline aparecem em {format_problem_list(top_gain_problem_ids)}. "
+            f"As maiores perdas aparecem em {format_problem_list(top_loss_problem_ids)}."
+        )
+    elif top_gain_problem_ids:
+        lines.append(
+            f"Os maiores ganhos de `acoes` sobre o baseline aparecem em {format_problem_list(top_gain_problem_ids)}. "
+            "Nao houve perdas de `acoes` em relacao ao BM25 neste conjunto."
+        )
+    elif top_loss_problem_ids:
+        lines.append(
+            "Nao houve ganhos de `acoes` em relacao ao BM25 neste conjunto. "
+            f"As maiores perdas aparecem em {format_problem_list(top_loss_problem_ids)}."
+        )
     lines.append("")
     lines.append("## Qualidade ao longo do ranking")
     lines.append("")
-    lines.extend(render_rank_table(ementas_rankwise, acoes_rankwise))
+    lines.extend(render_rank_table(bm25_rankwise, ementas_rankwise, acoes_rankwise))
     lines.append("")
-    lines.append(
-        "No rank 1, as duas abordagens empatam em relevancia media (2.600), mas `acoes` fica claramente melhor entre os ranks 2 e 10, "
-        "o que explica o ganho de nDCG e MAP."
-    )
+    if abs(rank1_delta) < 1e-12:
+        lines.append(
+            f"No rank 1, `acoes` e BM25 empatam em relevancia media ({format_float(bm25_rankwise[0])}), "
+            f"mas `acoes` supera o baseline em {positive_rank_count} das {len(rank_deltas)} posicoes analisadas."
+        )
+    elif rank1_delta > 0:
+        lines.append(
+            f"Ja no rank 1, `acoes` abre vantagem sobre o BM25 ({format_float(acoes_rankwise[0])} vs {format_float(bm25_rankwise[0])}) "
+            f"e supera o baseline em {positive_rank_count} das {len(rank_deltas)} posicoes analisadas."
+        )
+    else:
+        lines.append(
+            f"No rank 1, o BM25 comeca melhor ({format_float(bm25_rankwise[0])} vs {format_float(acoes_rankwise[0])}), "
+            f"mas `acoes` recupera terreno e supera o baseline em {positive_rank_count} das {len(rank_deltas)} posicoes analisadas."
+        )
+    if negative_rank_count:
+        lines[-1] += f" Ainda assim, ha {negative_rank_count} ranks em que o BM25 fica acima."
     lines.append("")
     lines.append("## Exemplos qualitativos")
     lines.append("")
-    lines.append("### Casos em que `acoes` melhora muito")
+    lines.append("### Casos em que `acoes` melhora muito sobre o baseline")
     lines.append("")
     lines.extend([f"- {item}" for item in examples["gains"]])
     lines.append("")
-    lines.append("### Casos em que `ementas` foi melhor")
+    lines.append("### Casos em que o baseline lexical foi melhor que `acoes`")
     lines.append("")
     lines.extend([f"- {item}" for item in examples["losses"]])
     lines.append("")
     lines.append("## Interpretacao")
     lines.append("")
     lines.append(
-        "Os resultados sugerem que a transformacao de ementa em acao reduz ambiguidade e aproxima o texto indexado da formulacao das queries, "
+        "Os resultados sugerem que as abordagens semanticas reduzem a dependencia de casamento lexical exato e aproximam o texto indexado da formulacao das queries, "
         "que tambem sao escritas como problemas ou objetivos de politica publica."
     )
     lines.append("")
     lines.append(
         "Esse efeito aparece sobretudo quando a ementa original fala em instrumentos genericos, fundos, revisoes administrativas ou linguagem legislativa pouco operacional. "
-        "Nesses casos, a versao em acao torna mais explicito o verbo, o alvo e o mecanismo da politica."
+        "Nesses casos, a versao em acao torna mais explicito o verbo, o alvo e o mecanismo da politica, enquanto o BM25 fica preso aos termos literais da query."
     )
     lines.append("")
-    lines.append(
-        "As derrotas de `acoes` parecem ocorrer quando a reescrita perde alguma nuance importante do dominio ou simplifica demais documentos ja muito claros na forma original. "
-        "Os temas `iluminacao_publica` e `saneamento_basico` sao exemplos disso."
-    )
+    if top_loss_problem_ids:
+        lines.append(
+            "As derrotas de `acoes` parecem ocorrer quando o baseline lexical captura termos muito especificos do dominio "
+            "ou quando a reescrita perde alguma nuance importante de documentos ja claros na forma original. "
+            f"Os temas {format_problem_list(top_loss_problem_ids[:2])} ilustram esse comportamento neste recorte."
+        )
+    else:
+        lines.append(
+            "As derrotas de `acoes` parecem ocorrer quando o baseline lexical captura termos muito especificos do dominio "
+            "ou quando a reescrita perde alguma nuance importante de documentos ja claros na forma original."
+        )
     lines.append("")
     lines.append("## Limitacoes")
     lines.append("")
     lines.append(
-        "- A avaliacao usa um pool anotado derivado da uniao dos top-10 das duas abordagens. Isso e adequado para comparacao relativa, mas nao mede recall absoluto do corpus."
+        "- A avaliacao usa um pool anotado derivado da uniao dos rankings das tres abordagens. Isso e adequado para comparacao relativa, mas nao mede recall absoluto do corpus."
     )
     lines.append(
         "- Documentos fora do pool nao foram julgados. Se uma abordagem trouxesse bons itens fora dessa uniao, o experimento atual nao capturaria esse ganho."
@@ -686,13 +932,13 @@ def build_markdown(
     lines.append("## Conclusao")
     lines.append("")
     lines.append(
-        "Dentro deste conjunto anotado, a estrategia baseada em `acoes` e superior a busca usando apenas `ementas`. "
-        "O ganho e moderado nas metricas globais, mas forte na recuperacao de documentos de alta qualidade e na consistencia do ranking apos a primeira posicao."
+        "Dentro deste conjunto anotado, `acoes` e a melhor estrategia, `ementas` fica em segundo lugar e `bm25_ementas` funciona como baseline lexical competitivo, mas inferior em media. "
+        "O ganho das abordagens semanticas e mais claro na recuperacao de documentos de alta qualidade e na consistencia do ranking apos a primeira posicao."
     )
     lines.append("")
     lines.append(
-        "Se a meta do projeto e maximizar a utilidade pratica das sugestoes para problemas municipais, os dados atuais favorecem usar a representacao em `acoes` como default "
-        "ou pelo menos como componente principal de um ranking hibrido."
+        "Se a meta do projeto e maximizar a utilidade pratica das sugestoes para problemas municipais, os dados atuais favorecem usar `acoes` como default, "
+        "manter `ementas` como segunda fonte semantica e tratar o BM25 como baseline de referencia ou componente complementar de um ranking hibrido."
     )
     lines.append("")
     return "\n".join(lines)
@@ -700,20 +946,26 @@ def build_markdown(
 
 def main() -> None:
     args = build_parser().parse_args()
-    pool_rows = list(iter_jsonl(args.pool_path))
+    pool_rows = ensure_pool_rows_have_metadata(
+        list(iter_jsonl(args.pool_path)),
+        args.pool_path,
+        args.pool_metadata_path,
+    )
+    bm25_run = load_runs(args.bm25_path)
     ementas_run = load_runs(args.ementas_path)
     acoes_run = load_runs(args.acoes_path)
     qrels = load_qrels(pool_rows)
 
-    if set(ementas_run) != set(acoes_run):
+    if set(bm25_run) != set(ementas_run) or set(bm25_run) != set(acoes_run):
         raise ValueError("Os arquivos de recomendacao nao contem o mesmo conjunto de problemas.")
     if set(ementas_run) != set(qrels):
         raise ValueError("Os problemas do pool anotado e das recomendacoes nao coincidem.")
 
+    bm25_eval = evaluate_run(bm25_run, qrels)
     ementas_eval = evaluate_run(ementas_run, qrels)
     acoes_eval = evaluate_run(acoes_run, qrels)
 
-    markdown = build_markdown(pool_rows, ementas_run, acoes_run, ementas_eval, acoes_eval)
+    markdown = build_markdown(pool_rows, bm25_run, ementas_run, acoes_run, bm25_eval, ementas_eval, acoes_eval)
     args.output_path.parent.mkdir(parents=True, exist_ok=True)
     args.output_path.write_text(markdown, encoding="utf-8")
     print(f"Analise salva em {args.output_path}")

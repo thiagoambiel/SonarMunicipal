@@ -1,1 +1,1 @@
-latexmk -pdf main.tex
+latexmk -pdf -g main.tex

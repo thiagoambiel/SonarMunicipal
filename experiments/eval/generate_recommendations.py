@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import re
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Sequence, Tuple
@@ -11,10 +12,13 @@ from common import (
     iter_jsonl,
     l2_normalize_rows,
     load_json,
+    normalize_for_dedupe,
     read_jsonl,
     save_json,
     write_jsonl,
 )
+
+TOKEN_PATTERN = re.compile(r"[a-z0-9]+")
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -51,6 +55,18 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="Se informado, salva um pool de candidatos para anotacao humana.",
     )
+    parser.add_argument(
+        "--bm25-k1",
+        type=float,
+        default=1.5,
+        help="Parametro k1 do BM25.",
+    )
+    parser.add_argument(
+        "--bm25-b",
+        type=float,
+        default=0.75,
+        help="Parametro b do BM25.",
+    )
     return parser
 
 
@@ -74,17 +90,27 @@ def top_k_indices(scores: np.ndarray, k: int) -> np.ndarray:
     return idx[np.argsort(-scores[idx])]
 
 
-def rank_problem(
-    problem: Dict[str, Any],
-    query_vector: np.ndarray,
-    corpus: Sequence[Dict[str, Any]],
-    doc_embeddings: np.ndarray,
-    top_k: int,
-    approach: str,
-) -> Dict[str, Any]:
-    scores = doc_embeddings @ query_vector
-    ranking = top_k_indices(scores, top_k)
+def tokenize_for_bm25(text: str) -> List[str]:
+    normalized = normalize_for_dedupe(text)
+    return TOKEN_PATTERN.findall(normalized)
 
+
+def approach_field_prefix(approach: str) -> str:
+    if approach == "ementas":
+        return "ementa"
+    if approach == "acoes":
+        return "acao"
+    return approach
+
+
+def build_ranked_output(
+    problem: Dict[str, Any],
+    corpus: Sequence[Dict[str, Any]],
+    scores: np.ndarray,
+    ranking: np.ndarray,
+    approach: str,
+    top_k: int,
+) -> Dict[str, Any]:
     recommendations: List[Dict[str, Any]] = []
     for rank, idx in enumerate(ranking, start=1):
         row = corpus[int(idx)]
@@ -117,6 +143,80 @@ def rank_problem(
         "top_k": top_k,
         "recommendations": recommendations,
     }
+
+
+def rank_problem(
+    problem: Dict[str, Any],
+    query_vector: np.ndarray,
+    corpus: Sequence[Dict[str, Any]],
+    doc_embeddings: np.ndarray,
+    top_k: int,
+    approach: str,
+) -> Dict[str, Any]:
+    scores = doc_embeddings @ query_vector
+    ranking = top_k_indices(scores, top_k)
+    return build_ranked_output(problem, corpus, scores, ranking, approach, top_k)
+
+
+def build_bm25_index(
+    corpus: Sequence[Dict[str, Any]],
+    *,
+    text_field: str,
+    k1: float,
+    b: float,
+) -> Dict[str, Any]:
+    postings: Dict[str, List[Tuple[int, int]]] = defaultdict(list)
+    doc_lengths = np.zeros(len(corpus), dtype=np.int32)
+
+    for idx, row in enumerate(corpus):
+        tokens = tokenize_for_bm25(str(row.get(text_field) or ""))
+        doc_lengths[idx] = len(tokens)
+        term_counts = defaultdict(int)
+        for token in tokens:
+            term_counts[token] += 1
+        for term, tf in term_counts.items():
+            postings[term].append((idx, tf))
+
+    num_docs = len(corpus)
+    avg_doc_length = float(np.mean(doc_lengths)) if num_docs else 0.0
+    return {
+        "postings": postings,
+        "idf": {
+            term: float(np.log1p((num_docs - len(posting) + 0.5) / (len(posting) + 0.5)))
+            for term, posting in postings.items()
+        },
+        "doc_lengths": doc_lengths,
+        "avg_doc_length": avg_doc_length,
+        "k1": float(k1),
+        "b": float(b),
+    }
+
+
+def rank_problem_bm25(
+    problem: Dict[str, Any],
+    corpus: Sequence[Dict[str, Any]],
+    bm25_index: Dict[str, Any],
+    top_k: int,
+    approach: str,
+) -> Dict[str, Any]:
+    scores = np.zeros(len(corpus), dtype=np.float32)
+    query_terms = tokenize_for_bm25(str(problem["query"]))
+    doc_lengths = bm25_index["doc_lengths"]
+    avg_doc_length = bm25_index["avg_doc_length"] or 1.0
+    k1 = bm25_index["k1"]
+    b = bm25_index["b"]
+
+    for term in query_terms:
+        posting = bm25_index["postings"].get(term)
+        if not posting:
+            continue
+        idf = bm25_index["idf"][term]
+        for idx, tf in posting:
+            norm = k1 * (1.0 - b + b * (float(doc_lengths[idx]) / avg_doc_length))
+            scores[idx] += idf * ((tf * (k1 + 1.0)) / (tf + norm))
+
+    ranking = top_k_indices(scores, top_k)
+    return build_ranked_output(problem, corpus, scores, ranking, approach, top_k)
 
 
 def load_qrels(path: Path) -> Dict[str, Dict[str, int]]:
@@ -214,18 +314,15 @@ def evaluate_run(run: Sequence[Dict[str, Any]], qrels: Dict[str, Dict[str, int]]
     return {"summary": summary, "per_problem": per_problem}
 
 
-def build_annotation_pool(
-    ementa_run: Sequence[Dict[str, Any]],
-    acao_run: Sequence[Dict[str, Any]],
-) -> List[Dict[str, Any]]:
+def build_annotation_pool(runs_by_approach: Dict[str, Sequence[Dict[str, Any]]]) -> List[Dict[str, Any]]:
     by_problem: Dict[str, Dict[str, Dict[str, Any]]] = defaultdict(dict)
-    run_map = {"ementas": ementa_run, "acoes": acao_run}
 
-    for approach, run in run_map.items():
+    for approach, run in runs_by_approach.items():
         for problem in run:
             problem_id = problem["problem_id"]
             for recommendation in problem["recommendations"]:
                 doc_id = recommendation["doc_id"]
+                field_prefix = approach_field_prefix(approach)
                 bucket = by_problem[problem_id].setdefault(
                     doc_id,
                     {
@@ -237,6 +334,8 @@ def build_annotation_pool(
                         "ementa_score": None,
                         "acao_rank": None,
                         "acao_score": None,
+                        "bm25_ementas_rank": None,
+                        "bm25_ementas_score": None,
                         "municipio": recommendation.get("municipio"),
                         "uf": recommendation.get("uf"),
                         "materia_id": recommendation.get("materia_id"),
@@ -250,24 +349,40 @@ def build_annotation_pool(
                         "notes": "",
                     },
                 )
-                if approach == "ementas":
-                    bucket["ementa_rank"] = recommendation["rank"]
-                    bucket["ementa_score"] = recommendation["similarity_score"]
-                else:
-                    bucket["acao_rank"] = recommendation["rank"]
-                    bucket["acao_score"] = recommendation["similarity_score"]
+                bucket[f"{field_prefix}_rank"] = recommendation["rank"]
+                bucket[f"{field_prefix}_score"] = recommendation["similarity_score"]
 
     pooled: List[Dict[str, Any]] = []
     for problem_id in sorted(by_problem):
         items = list(by_problem[problem_id].values())
         items.sort(
             key=lambda row: (
-                min(value for value in [row["ementa_rank"], row["acao_rank"]] if value is not None),
+                min(
+                    value
+                    for key, value in row.items()
+                    if key.endswith("_rank") and value is not None
+                ),
                 row["doc_id"],
             )
         )
         pooled.extend(items)
     return pooled
+
+
+def build_blind_annotation_pool(pool_rows: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    blind_rows: List[Dict[str, Any]] = []
+    for row in pool_rows:
+        blind_rows.append(
+            {
+                "problem_id": row["problem_id"],
+                "doc_id": row["doc_id"],
+                "query": row["query"],
+                "ementa": row["ementa"],
+                "relevance": row.get("relevance"),
+                "notes": row.get("notes", ""),
+            }
+        )
+    return blind_rows
 
 
 def main() -> None:
@@ -281,9 +396,11 @@ def main() -> None:
     ementa_embeddings = l2_normalize_rows(ementa_embeddings)
     acao_embeddings = l2_normalize_rows(acao_embeddings)
     query_embeddings = l2_normalize_rows(query_embeddings)
+    bm25_index = build_bm25_index(corpus, text_field="ementa", k1=args.bm25_k1, b=args.bm25_b)
 
     ementa_run: List[Dict[str, Any]] = []
     acao_run: List[Dict[str, Any]] = []
+    bm25_run: List[Dict[str, Any]] = []
 
     for problem, query_vector in zip(problems, query_embeddings):
         ementa_run.append(
@@ -292,15 +409,29 @@ def main() -> None:
         acao_run.append(
             rank_problem(problem, query_vector, corpus, acao_embeddings, args.top_k, approach="acoes")
         )
+        bm25_run.append(
+            rank_problem_bm25(problem, corpus, bm25_index, args.top_k, approach="bm25_ementas")
+        )
 
     ementa_path = args.output_dir / "recommendations_ementas.jsonl"
     acao_path = args.output_dir / "recommendations_acoes.jsonl"
+    bm25_path = args.output_dir / "recommendations_bm25_ementas.jsonl"
     write_jsonl(ementa_path, ementa_run)
     write_jsonl(acao_path, acao_run)
+    write_jsonl(bm25_path, bm25_run)
 
     if args.annotation_pool_path:
-        pool = build_annotation_pool(ementa_run, acao_run)
-        write_jsonl(args.annotation_pool_path, pool)
+        pool_metadata = build_annotation_pool(
+            {
+                "ementas": ementa_run,
+                "acoes": acao_run,
+                "bm25_ementas": bm25_run,
+            }
+        )
+        blind_pool = build_blind_annotation_pool(pool_metadata)
+        metadata_path = args.annotation_pool_path.with_name(f"{args.annotation_pool_path.stem}_metadata.jsonl")
+        write_jsonl(args.annotation_pool_path, blind_pool)
+        write_jsonl(metadata_path, pool_metadata)
 
     if args.qrels_path:
         qrels = load_qrels(args.qrels_path)
@@ -308,6 +439,7 @@ def main() -> None:
             "top_k": args.top_k,
             "ementas": evaluate_run(ementa_run, qrels, args.top_k),
             "acoes": evaluate_run(acao_run, qrels, args.top_k),
+            "bm25_ementas": evaluate_run(bm25_run, qrels, args.top_k),
         }
         save_json(args.output_dir / "metrics.json", metrics)
 
@@ -315,8 +447,10 @@ def main() -> None:
         "Saidas geradas com sucesso:\n"
         f"- recomendacoes por ementa: {ementa_path}\n"
         f"- recomendacoes por acao: {acao_path}\n"
+        f"- recomendacoes BM25 sobre ementas: {bm25_path}\n"
         f"- metricas: {args.output_dir / 'metrics.json' if args.qrels_path else 'nao calculadas'}\n"
-        f"- pool de anotacao: {args.annotation_pool_path if args.annotation_pool_path else 'nao solicitado'}"
+        f"- pool de anotacao cego: {args.annotation_pool_path if args.annotation_pool_path else 'nao solicitado'}\n"
+        f"- metadados do pool: {metadata_path if args.annotation_pool_path else 'nao solicitado'}"
     )
 
 

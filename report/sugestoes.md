@@ -1,158 +1,164 @@
-A seção de **avaliação anotada da recuperação** já tem um esqueleto bom e, dentro do artigo, é uma das partes mais convincentes. Ela explicita o desenho do benchmark, informa que o pool veio da união dos top-10, usa métricas adequadas para ranking com relevância graduada, traz comparação agregada e ainda reconhece que a avaliação é relativa, local ao top-10 e automatizada por GPT-5.4. Isso dá honestidade metodológica, o que é valioso em artigo científico. 
+Perfeito. Aqui vai um **checklist objetivo, priorizado e aplicável diretamente** à seção **4.2** e às **Figuras 4, 5 e 6**. Estou baseando as ações no que o artigo já afirma sobre o benchmark, as métricas, a heterogeneidade entre consultas, o uso de GPT-5.4 e as limitações já reconhecidas pelo próprio texto.  
 
-Semânticamente, a narrativa também está bem costurada: vocês mostram primeiro por que a textualização existe, depois definem como a recuperação foi comparada, e por fim interpretam os ganhos de ações sobre ementas em nDCG@10, MAP@10, P@3, P@10, High-P@10 e High-Recall@10, além de discutir vitórias por problema e os casos em que a reescrita piora o resultado. Esse arco argumentativo funciona porque não vende a técnica como mágica: ele mostra ganhos e também nuance, como nas perdas em iluminação pública, saneamento e dengue/arboviroses. 
+## Checklist de revisão da seção 4.2
 
-Onde a seção ainda fica frágil é no coração da validade externa. O próprio texto admite quatro pontos sensíveis: apenas 15 problemas, 272 pares anotados, pool derivado da união dos top-10 e julgamentos feitos por agente GPT-5.4, não por especialistas. Isso faz a avaliação ficar parecida com uma vitrine bem iluminada, mas ainda pequena. Ela responde bem à pergunta “ações ordenam melhor do que ementas nesse pool?”, mas responde menos à pergunta mais forte: “ações recuperam melhor, de forma robusta e generalizável, no corpus real?”. 
+### Prioridade 1. Deixar a lógica experimental mais auditável
 
-Visualmente, a **Figura 4** comunica a mensagem principal, mas ainda deixa ciência na sombra. À esquerda, as barras agregadas são limpas e mostram o ganho de ações de forma rápida; à direita, a curva de relevância média por posição tenta mostrar dominância ao longo do ranking. O problema é que ambos os painéis resumem demais. A figura mostra médias, mas não mostra **dispersão**, **incerteza**, **variabilidade por consulta** nem a quantidade de empates. Em artigo científico, isso enfraquece porque o leitor vê o placar, mas não enxerga o campeonato. A legenda também poderia informar melhor o tamanho efetivo do benchmark e a natureza incompleta do pool já no caption, não só no texto. A própria curva por posição parece mais “suave” do que os dados provavelmente são, dado que são só 15 problemas e um pool pequeno. 
+1. **Explicitar quais métricas são primárias e quais são secundárias.**
+   A seção hoje apresenta várias métricas, mas a narrativa de fato gira em torno de **nDCG@10** e **High-Recall@10**, enquanto MAP@10 e P@10 aparecem como apoio. Declare isso no início da subseção de avaliação. Isso reduz a sensação de “caça à métrica favorável”. 
 
-Minha leitura crítica, então, é esta:
+2. **Acrescentar um mini-parágrafo operacional sobre a anotação por GPT-5.4.**
+   O texto já diz que houve julgamento automático em escala 0–3 e que o agente teve papel instrumental, não substituindo especialistas. Falta dizer, de forma compacta, como esse julgamento foi guiado. Inclua:
 
-**Pontos fortes**
+   * escala 0–3 em uma linha;
+   * critério de relevância alta;
+   * uma frase sobre consistência do julgamento;
+   * referência ao prompt em apêndice ou repositório.
+     Isso fecha a caixa-preta antes que o revisor a abra com um pé de cabra. 
 
-* Boa coerência entre objetivo da textualização e hipótese de avaliação. 
-* Métricas escolhidas fazem sentido para ranking com relevância graduada. 
-* Há análise agregada e por problema, o que evita uma conclusão puramente média. 
-* O texto reconhece explicitamente que mede ordenação relativa e cobertura local do top-10, não recall absoluto. 
-* As limitações estão formuladas com honestidade e já abrem a porta para melhorias reais. 
+3. **Separar com mais nitidez “efeito no ranking” de “efeito na cobertura local”.**
+   Hoje a seção mistura bem esses conceitos, mas ainda de forma difusa. Reorganize assim:
 
-**Pontos fracos**
+   * **ordenação**: nDCG@10, MAP@10;
+   * **topo do ranking**: P@10, High-P@10;
+   * **cobertura local do pool**: Recall@10, High-Recall@10;
+   * **diversidade entre rankings**: overlap/Jaccard.
+     Essa arquitetura argumentativa já está implícita no texto, só precisa virar espinha dorsal explícita.  
 
-* O benchmark é pequeno para sustentar uma conclusão forte de superioridade geral. 
-* O pool é enviesado pelas próprias abordagens comparadas, o que favorece uma avaliação “fechada no duelo” e não no universo do corpus. 
-* Falta uma validação humana, nem que seja parcial, para calibrar o juiz automático. 
-* Faltam intervalos de confiança, testes de hipótese mais alinhados com IR e medidas de tamanho de efeito.
-* A visualização enfatiza médias agregadas e oculta heterogeneidade.
-* A comparação está restrita a “ementa vs ação” dentro do mesmo framework, mas não testa baselines mais fortes, como BM25, híbrido, concatenação e fusão.
+4. **Marcar explicitamente que a explicação causal da melhora é hipótese interpretativa.**
+   O trecho que diz que a textualização “reduz ambiguidade” e “aproxima a indexação de consultas formuladas como objetivos” é plausível, mas ainda é interpretação. Troque verbos mais fortes por formulações como “sugere”, “é compatível com”, “hipótese explicativa”. 
 
-Para aumentar a robustez e a qualidade científica, eu faria as seguintes melhorias, em ordem de impacto:
+### Prioridade 2. Fortalecer a robustez metodológica sem exigir novo experimento gigante
 
-### 1. Fortalecer o benchmark
+5. **Adicionar uma frase curta listando o que o benchmark mede e o que ele não mede.**
+   O texto já afirma que o pool vem da união dos top-30, que a avaliação mede qualidade relativa no pool e não recall absoluto no corpus. Traga isso para uma frase de fechamento da subseção, bem limpa. 
 
-Ampliem de 15 para algo como **40 a 60 problemas**, distribuídos por categorias substantivas: saúde, educação, mobilidade, saneamento, segurança, assistência social, urbanismo, meio ambiente, agricultura, tributação etc. O benchmark atual parece plausível, mas ainda estreito demais para capturar a variedade semântica do acervo. Também vale garantir mistura entre consultas específicas, amplas e ambíguas. Isso reduz o risco de a conclusão refletir apenas um punhado de temas “amigos” da textualização. 
+6. **Trazer a limitação do pool endógeno para dentro da própria leitura dos resultados.**
+   Hoje essa ressalva aparece bem nas limitações. Vale ecoá-la em uma frase na 4.2, logo após o resumo agregado. Isso deixa a seção metodologicamente mais honesta sem enfraquecer o resultado.  
 
-### 2. Tornar o pool menos endógeno
+7. **Incluir uma nota de reprodutibilidade do benchmark.**
+   Acrescente um trecho do tipo: “A lista de problemas, os candidatos do pool, os julgamentos e o prompt de anotação serão disponibilizados em material suplementar/repositório.”
+   O artigo já menciona disponibilidade de código e artefatos do pipeline; fazer o mesmo para o benchmark melhora muito a auditabilidade. 
 
-Hoje o pool nasce da união dos top-10 de ementas e ações. Isso é útil para comparação rápida, mas cria um universo em que os candidatos já são, por construção, “bons suspeitos”. O ideal é ampliar para **top-20 ou top-50**, incluir candidatos vindos de **BM25** e de um baseline híbrido, e até adicionar alguns **hard negatives** lexicalmente parecidos, mas semanticamente errados. Com isso, a avaliação deixa de ser só um duelo entre dois rankings e vira um teste mais realista de discriminação. O próprio artigo já admite que não estima recall absoluto; esse ajuste melhora bastante isso, mesmo sem resolver tudo. 
+8. **Anunciar no texto a agenda de validação futura de forma mais técnica.**
+   Em vez de só dizer “faltam avaliadores humanos”, escreva algo como:
+   “Como próximo passo, planejamos validação estratificada em subconjuntos de maior discordância entre métodos e em consultas com maior sensibilidade temática.”
+   Isso conversa diretamente com as ameaças à validade já listadas. 
 
-### 3. Incluir validação humana parcial
+## Checklist de revisão das figuras
 
-Não precisa virar uma operação jurássica. Uma solução elegante é anotar manualmente um subconjunto estratificado, por exemplo:
+### Figura 4
 
-* 20% a 30% dos pares do pool,
-* amostrados por tema,
-* incluindo casos de concordância alta, discordância alta e fronteiras ambíguas.
+9. **Ordenar os problemas pelo delta de ações em relação ao BM25.**
+   Hoje a figura já mostra que ações vence em 13 de 15 problemas, mas o padrão aparece espalhado. Ordenar por ganho transforma a figura em argumento, não só em inventário visual. 
 
-Aí vocês reportam **weighted kappa** ou **Krippendorff’s alpha** entre humanos, e também entre humanos e GPT-5.4. Isso transforma o LLM judge de “oráculo prático” em “instrumento calibrado”. A seção de limitações já pede isso nas entrelinhas. 
+10. **Encurtar os rótulos dos problemas.**
+    Alguns rótulos quebram linha demais e deixam a figura visualmente apertada. Use nomes curtos na figura e mantenha nomes completos no texto, legenda expandida ou apêndice.
 
-### 4. Descrever melhor o protocolo de anotação
+11. **Aumentar o espaçamento vertical entre linhas.**
+    A Figura 4 está correta, mas um pouco comprimida. Mais respiro melhora muito a leitura em PDF e impressões.
 
-Sugiro criar um pequeno subtópico ou apêndice com:
+12. **Destacar visualmente apenas a comparação central.**
+    Como a narrativa principal é “ações versus BM25”, dê mais contraste a esses dois pontos e deixe ementas em papel secundário. Hoje os três métodos competem pela atenção.
 
-* as 15 consultas usadas,
-* a rubrica exata da escala 0–3,
-* o prompt do julgador,
-* exemplos de pares 0, 1, 2 e 3,
-* temperatura, versão do modelo, data da execução e regra de desempate.
+13. **Ajustar a legenda para explicitar a mensagem principal.**
+    Em vez de só descrever a figura, feche com a interpretação:
+    “A vantagem média de ações é ampla, mas não uniforme, com perdas concentradas em consultas mais terminológicas.”
+    Isso já está no texto e deve ecoar na legenda. 
 
-Hoje o texto diz que o julgamento foi feito em escala de 0 a 3 por GPT-5.4, mas o leitor ainda não enxerga bem o “tribunal”. Para reprodutibilidade científica, isso é ouro. 
+### Figura 5
 
-### 5. Adicionar baselines mais fortes
+14. **Remover ou reduzir a ênfase dos números dentro das células.**
+    O heatmap já carrega muita informação. Os valores escritos em todas as células deixam a figura densa demais. Em artigo, padrão visual costuma vencer microleitura.
 
-A conclusão atual sustenta bem “ações > ementas”, mas ainda não sustenta tão bem “ações são a melhor representação prática”. Para isso, faltam adversários mais duros:
+15. **Aumentar o contraste entre ganho e perda sem exagerar na saturação.**
+    O mapa atual já comunica a direção, mas pequenas diferenças ficam visuais demais para quem já conhece o dado e pouco legíveis para quem não conhece. Busque uma escala mais equilibrada.
 
-* **BM25** nas ementas,
-* **BM25** nas ações,
-* **concatenação ementa + ação**,
-* **fusão por RRF** entre ranking lexical e semântico,
-* eventualmente um encoder alternativo ou um embedding adaptado ao domínio jurídico.
+16. **Agrupar visualmente as métricas por função analítica.**
+    Uma solução simples:
 
-Sem isso, a comparação fica correta, mas estreita. É um ringue de dois lutadores quando o leitor quer ver um mini-torneio.
+* nDCG@10 e MAP@10 juntos;
+* P@10 e High-Recall@10 juntos.
+  Isso ajuda o leitor a entender que há duas histórias ali: ordenação e cobertura/topo.
 
-### 6. Reportar incerteza estatística
+17. **Mover a carga explicativa da figura para a legenda.**
+    A figura deve mostrar padrão; a legenda deve dizer o que observar. Hoje ela ainda pede muita decodificação direta da matriz.
 
-O sign test ajuda, mas ele sozinho ainda é uma lanterna pequena. Eu incluiria:
+18. **Avaliar substituir o heatmap por barras divergentes, caso haja tempo.**
+    Se houver margem para redesenho maior, barras divergentes por métrica podem ficar mais legíveis que matriz dupla. Se não houver, mantenha o heatmap e simplifique.
 
-* **bootstrap por consulta** para IC 95% de nDCG@10, MAP@10 e High-Recall@10,
-* **randomization test** ou **paired permutation test** para métricas de ranking,
-* tamanho de efeito, além do p-valor,
-* tabela de **wins / ties / losses** por métrica.
+### Figura 6
 
-Isso deixaria a seção mais musculosa sem inflar demais o texto.
+19. **Separar visualmente ganho médio e W/T/L.**
+    A figura já é muito boa, mas hoje os dois componentes conversam no mesmo volume visual. Coloque o W/T/L como coluna auxiliar mais discreta. 
 
-### 7. Explorar melhor a heterogeneidade por problema
+20. **Ordenar as métricas por importância argumentativa.**
+    Sugestão:
 
-A parte mais interessante semanticamente está justamente nas diferenças: enchentes, emprego jovem, resíduos e agricultura melhoraram muito; iluminação, saneamento e dengue pioraram. 
-Isso merece uma microanálise mais explícita. Por exemplo:
+* nDCG@10
+* High-Recall@10
+* MAP@10
+* P@10
+  Isso alinha figura e narrativa.
 
-* consultas orientadas a “objetivo de política” parecem ganhar com textualização;
-* consultas muito específicas e terminológicas podem perder quando a reescrita apaga nuance;
-* certos domínios dependem mais de vocabulário técnico literal do que de abstração semântica.
+21. **Adicionar o valor do delta médio diretamente ao lado do ponto.**
+    Os valores já aparecem, mas podem ficar ainda mais claros com posicionamento mais limpo e tipografia menor.
 
-Esse trecho pode virar uma contribuição teórica do artigo, não só uma nota de rodapé dos resultados.
+22. **Explicitar na legenda que o IC bootstrap é entre consultas, não entre documentos.**
+    Isso evita ambiguidade estatística. A figura já sugere isso, mas uma frase curta fecha a interpretação. 
 
-### 8. Conectar a avaliação da recuperação com a fidelidade da textualização
+## Checklist de revisão de texto, frase por frase
 
-Hoje há uma ponte implícita entre “o tradutor teve BERTScore 84%” e “a recuperação melhorou”, mas falta medir a relação entre uma coisa e outra. 
-Seria muito forte incluir uma análise do tipo:
+23. **Reescrever o trecho interpretativo central para ficar mais científico.**
+    Em vez de sustentar “superioridade” de forma ampla, use:
 
-* amostra de casos em que a textualização melhora a recuperação,
-* amostra de casos em que piora,
-* classificação dos erros de reescrita: perda de entidade, generalização excessiva, troca de papel semântico, apagamento temporal, apagamento de público-alvo etc.
+* “vantagem média no benchmark avaliado”;
+* “efeito heterogêneo entre temas”;
+* “ganho mais frequente em consultas formuladas como objetivo de política pública”;
+* “perdas concentradas em consultas mais terminológicas”.
+  Isso já está alinhado com o que o artigo mostra e com a própria conclusão. 
 
-Isso une a semântica do tradutor com o comportamento do retriever.
+24. **Inserir uma frase final de fechamento da subseção 4.2.**
+    Sugestão estrutural:
+    “Em síntese, os resultados sustentam vantagem média da recuperação baseada em ações no pool anotado, especialmente em métricas que combinam relevância graduada e cobertura de itens fortemente relevantes, mas essa vantagem não é uniforme entre temas e deve ser interpretada à luz do caráter exploratório do benchmark.”
+    Essa frase amarra métodos, figuras e limitações num único nó bem apertado.
 
----
+25. **Reduzir repetição entre texto e legenda.**
+    Algumas interpretações aparecem quase duplicadas entre corpo e legenda. Deixe:
 
-## Melhorias visuais recomendadas para a Figura 4
+* a legenda focada no que observar;
+* o texto focado no que concluir.
 
-Aqui eu mudaria a figura sem piedade, mas com elegância:
+## Checklist de robustez adicional, para elevar a seção de “boa” para “muito convincente”
 
-**1. Substituir ou complementar as barras agregadas com um gráfico pareado por consulta**
-Um **dumbbell plot** de nDCG@10 por problema, comparando ementa vs ação, mostraria imediatamente onde a textualização ganha e onde perde. Isso é muito mais científico do que apenas médias.
+26. **Incluir uma tabela-resumo pequena com métricas agregadas e deltas.**
+    Uma tabela com BM25, ementas, ações, delta vs. BM25 e uma coluna de interpretação já daria um chão firme para a seção. Os valores já estão no texto; falta só organizá-los.  
 
-**2. Colocar intervalos de confiança nas métricas agregadas**
-As barras atuais contam a história, mas sem margem de erro parecem sentença de mármore. Com IC 95%, o leitor passa a ver estabilidade.
+27. **Mencionar explicitamente a ausência de baselines híbridos na leitura dos resultados.**
+    As limitações já falam disso. Vale antecipar isso na seção 4.2 com uma frase curta, para mostrar que você sabe onde o benchmark ainda não foi. 
 
-**3. Trocar a linha de relevância média por posição por boxplots ou violin plots por rank**
-A curva média por posição, com N pequeno, pode dar uma sensação artificial de continuidade. Distribuições por posição seriam mais honestas.
+28. **Conectar a seção 4.2 com a seção 5 por uma frase-ponte.**
+    Algo como:
+    “Apesar de promissores, esses resultados devem ser lidos junto às ameaças à validade discutidas na Seção 5, especialmente no que se refere ao pool endógeno, ao número de problemas e ao uso de anotação automatizada.”
+    Isso dá sensação de artigo coeso, não de capítulo isolado.
 
-**4. Adicionar um heatmap consulta × métrica**
-Linhas = problemas; colunas = nDCG@10, MAP@10, P@10, High-Recall@10; cor = delta ação − ementa. Isso expõe a heterogeneidade de uma vez só.
+## Ordem prática de execução
 
-**5. Melhorar a legenda/caption**
-O caption deveria dizer explicitamente:
+1. Reescrever os dois parágrafos centrais da interpretação da 4.2.
+2. Ajustar as legendas das Figuras 4, 5 e 6.
+3. Refazer a ordenação e o espaçamento da Figura 4.
+4. Simplificar a Figura 5.
+5. Refinar a Figura 6.
+6. Inserir um mini-parágrafo metodológico sobre o julgamento GPT-5.4.
+7. Acrescentar uma tabela-resumo enxuta.
+8. Fechar a subseção com uma frase de leitura cautelosa e robusta.
 
-* N de problemas,
-* N de pares anotados,
-* que o pool é incompleto e derivado da união dos top-k,
-* que o juiz foi GPT-5.4,
-* que as métricas medem qualidade relativa no pool.
+### Resultado esperado após as revisões
 
-Assim, a figura vira quase autossuficiente.
+A seção passa a comunicar, com mais nitidez, quatro ideias:
+**(i)** ações vence em média no benchmark;
+**(ii)** o ganho é heterogêneo;
+**(iii)** parte do ganho parece vir de melhor ordenação e parte de melhor cobertura local;
+**(iv)** a evidência é promissora, mas ainda exploratória. Isso é exatamente o tipo de equilíbrio que revisor de artigo gosta de ver.  
 
----
-
-## Sugestão de reescrita do argumento científico
-
-Hoje a seção praticamente diz: “ações ganhou”. Eu sugeriria uma formulação mais forte e mais segura:
-
-> “Os resultados indicam que a textualização tende a melhorar a ordenação de PLs relevantes quando a consulta é formulada como objetivo de política pública, sobretudo em temas nos quais a ementa original carrega maior ruído legislativo-formal. Em contrapartida, a reescrita pode reduzir desempenho em domínios nos quais a ementa já contém terminologia suficientemente específica. Assim, a principal evidência não é de superioridade universal, mas de que a textualização altera materialmente o espaço recuperado e, em média, melhora a qualidade do ranking no benchmark exploratório avaliado.”
-
-Essa formulação faz duas coisas bonitas: fica mais científica e menos vulnerável.
-
----
-
-## Pacote mínimo de melhorias para a versão do artigo
-
-Se o tempo estiver curto, eu priorizaria este combo:
-
-1. Expandir a figura com um **dumbbell plot por problema**.
-2. Incluir **IC 95% por bootstrap** para nDCG@10 e MAP@10.
-3. Acrescentar um apêndice com **consultas, prompt e rubric de anotação**.
-4. Fazer **validação humana parcial** em uma amostra estratificada.
-5. Adicionar pelo menos um baseline **BM25** e um **híbrido/fusão**.
-
-Esse quinteto já faria a seção sair de “boa avaliação exploratória” para algo muito mais próximo de “avaliação sólida de artigo”.
-
-Se quiser, eu posso transformar isso em uma **proposta de texto pronta para substituir a subseção 4.2 e a legenda da Figura 4**.
+No próximo passo, posso transformar esse checklist em uma **versão reescrita da subseção 4.2**, já pronta para colar no artigo.
