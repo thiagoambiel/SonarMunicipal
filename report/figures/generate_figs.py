@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from matplotlib.colors import LinearSegmentedColormap, TwoSlopeNorm
 from matplotlib.lines import Line2D
+from matplotlib.patches import FancyArrowPatch
 from matplotlib.ticker import FormatStrFormatter, MultipleLocator
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -28,7 +29,10 @@ from experiments.eval.analyze_annotation_pool import (  # noqa: E402
 )
 
 OUTPUT_DIR = Path(__file__).resolve().parent
+PROBLEMS_PATH = REPO_ROOT / "experiments/eval/problems.jsonl"
 POOL_PATH = REPO_ROOT / "experiments/eval/outputs/annotation_pool_categorized.jsonl"
+CLAUDE_POOL_PATH = REPO_ROOT / "experiments/eval/outputs/annotation_pool_claude.jsonl"
+GEMINI_POOL_PATH = REPO_ROOT / "experiments/eval/outputs/annotation_pool_gemini.jsonl"
 BM25_PATH = REPO_ROOT / "experiments/eval/outputs/recommendations_bm25_ementas.jsonl"
 EMENTAS_PATH = REPO_ROOT / "experiments/eval/outputs/recommendations_ementas.jsonl"
 ACOES_PATH = REPO_ROOT / "experiments/eval/outputs/recommendations_acoes.jsonl"
@@ -118,25 +122,14 @@ def bootstrap_ci(
     return center, float(low), float(high)
 
 
+_PROBLEM_NAMES_CACHE: dict[str, str] | None = None
+
+
 def short_problem_label(problem_id: str) -> str:
-    alias = {
-        "agricultura_familiar": "agricultura\nfamiliar",
-        "arrecadacao_sem_imposto": "arrecadação\nsem imposto",
-        "dengue_arboviroses": "dengue /\narboviroses",
-        "digitalizacao_servicos": "digitalização\nde serviços",
-        "emprego_jovem": "emprego\njovem",
-        "enchentes_urbanas": "enchentes\nurbanas",
-        "evasao_ensino_medio": "evasão do\nensino médio",
-        "habitacao_interesse_social": "habitação de\ninteresse social",
-        "iluminacao_publica": "iluminação\npública",
-        "inclusao_pcd": "inclusão\nPcD",
-        "mobilidade_pico": "mobilidade\nno pico",
-        "residuos_reciclagem": "resíduos /\nreciclagem",
-        "saneamento_basico": "saneamento\nbásico",
-        "saude_mental_escolas": "saúde mental\nnas escolas",
-        "violencia_bairros_centrais": "violência em\nbairros centrais",
-    }
-    return alias.get(problem_id, problem_id.replace("_", " "))
+    global _PROBLEM_NAMES_CACHE
+    if _PROBLEM_NAMES_CACHE is None:
+        _PROBLEM_NAMES_CACHE = {row["problem_id"]: row["name"] for row in iter_jsonl(PROBLEMS_PATH)}
+    return _PROBLEM_NAMES_CACHE.get(problem_id, problem_id.replace("_", " "))
 
 
 def sign_counts(values: Iterable[float], tolerance: float = 1e-12) -> tuple[int, int, int]:
@@ -200,6 +193,14 @@ def delta_text_color(value: float) -> str:
     return PALETTE["text_muted"]
 
 
+def delta_glyph(value: float, tolerance: float = 1e-12) -> str:
+    if value > tolerance:
+        return "▲"
+    if value < -tolerance:
+        return "▼"
+    return "•"
+
+
 def add_metric_group_headers(ax: plt.Axes, *, y: float = 1.055) -> None:
     ax.text(
         0.25,
@@ -235,8 +236,30 @@ def add_metric_group_headers(ax: plt.Axes, *, y: float = 1.055) -> None:
     )
 
 
+def _load_judge_jsonl(path: Path) -> dict[tuple[str, str], int]:
+    return {(r["problem_id"], r["doc_id"]): int(r["relevance"]) for r in iter_jsonl(path)}
+
+
+def build_consensus_pool_rows() -> list[dict]:
+    """Lê os 3 pools por juiz, alinha por (problem_id, doc_id) via interseção e devolve linhas com relevância de consenso (mediana inteira na escala 0–3). Reaproveita os metadados do pool Codex."""
+    codex = _load_judge_jsonl(POOL_PATH)
+    claude = _load_judge_jsonl(CLAUDE_POOL_PATH)
+    gemini = _load_judge_jsonl(GEMINI_POOL_PATH)
+    common = sorted(set(codex) & set(claude) & set(gemini))
+
+    codex_rows = ensure_pool_rows_have_metadata(list(iter_jsonl(POOL_PATH)), POOL_PATH, None)
+    metadata = {(r["problem_id"], r["doc_id"]): r for r in codex_rows}
+
+    consensus = []
+    for key in common:
+        base = dict(metadata.get(key, {"problem_id": key[0], "doc_id": key[1]}))
+        base["relevance"] = int(np.median([codex[key], claude[key], gemini[key]]))
+        consensus.append(base)
+    return consensus
+
+
 def load_metrics() -> tuple[dict[str, ProblemMetrics], dict[str, ProblemMetrics], dict[str, ProblemMetrics], int]:
-    pool_rows = ensure_pool_rows_have_metadata(list(iter_jsonl(POOL_PATH)), POOL_PATH, None)
+    pool_rows = build_consensus_pool_rows()
     qrels = load_qrels(pool_rows)
     benchmark_size = len(pool_rows)
 
@@ -270,57 +293,79 @@ def generate_problem_figure(
     bm25: dict[str, ProblemMetrics],
     ementas: dict[str, ProblemMetrics],
     acoes: dict[str, ProblemMetrics],
-    benchmark_size: int,
+    benchmark_size: int,  # noqa: ARG001 — mantido para preservar a assinatura chamada por main()
 ) -> None:
-    fig = plt.figure(figsize=(13.2, 9.4), facecolor="white")
-    grid = fig.add_gridspec(1, 2, width_ratios=[5.6, 1.2], wspace=0.04)
+    paired = sorted(
+        zip(problem_ids, labels),
+        key=lambda pair: acoes[pair[0]].ndcg_at_10 - ementas[pair[0]].ndcg_at_10,
+        reverse=True,
+    )
+    problem_ids, labels = [list(t) for t in zip(*paired)]
+
+    fig = plt.figure(figsize=(13.2, 11.0), facecolor="white")
+    grid = fig.add_gridspec(1, 2, width_ratios=[5.6, 1.2], wspace=0.06)
     ax = fig.add_subplot(grid[0, 0])
     ax_delta = fig.add_subplot(grid[0, 1], sharey=ax)
-    fig.subplots_adjust(left=0.25, right=0.975, top=0.845, bottom=0.12)
+    fig.subplots_adjust(left=0.32, right=0.975, top=0.96, bottom=0.08)
 
     y = np.arange(len(problem_ids))
     bm25_ndcg = np.array([bm25[problem_id].ndcg_at_10 for problem_id in problem_ids], dtype=float)
     ementa_ndcg = np.array([ementas[problem_id].ndcg_at_10 for problem_id in problem_ids], dtype=float)
     acao_ndcg = np.array([acoes[problem_id].ndcg_at_10 for problem_id in problem_ids], dtype=float)
-    deltas = acao_ndcg - bm25_ndcg
+    deltas = acao_ndcg - ementa_ndcg
 
     add_alternating_row_bands(ax, len(problem_ids))
-    add_alternating_row_bands(ax_delta, len(problem_ids))
 
     for idx, (bm25_value, ementa_value, acao_value) in enumerate(zip(bm25_ndcg, ementa_ndcg, acao_ndcg)):
         ax.plot(
-            [bm25_value, ementa_value, acao_value],
-            [idx, idx, idx],
+            [bm25_value, ementa_value],
+            [idx, idx],
             color=PALETTE["connector"],
-            linewidth=2.0,
+            linewidth=1.3,
+            alpha=0.55,
             zorder=1,
             solid_capstyle="round",
+        )
+        arrow_color = delta_text_color(float(acao_value - ementa_value))
+        ax.add_patch(
+            FancyArrowPatch(
+                (ementa_value, idx),
+                (acao_value, idx),
+                arrowstyle="-|>",
+                mutation_scale=12,
+                linewidth=2.4,
+                color=arrow_color,
+                shrinkA=2,
+                shrinkB=2,
+                zorder=2,
+            )
         )
 
     ax.scatter(
         bm25_ndcg,
         y,
-        s=68,
+        s=44,
         facecolor="white",
-        edgecolor=PALETTE["bm25"],
-        linewidth=1.9,
+        edgecolor=PALETTE["spine"],
+        linewidth=1.0,
+        alpha=0.75,
         label="BM25",
         zorder=3,
     )
     ax.scatter(
         ementa_ndcg,
         y,
-        s=50,
+        s=66,
         facecolor="white",
         edgecolor=PALETTE["ementas"],
-        linewidth=1.2,
+        linewidth=1.7,
         label="Ementas",
         zorder=4,
     )
     ax.scatter(
         acao_ndcg,
         y,
-        s=76,
+        s=82,
         facecolor=PALETTE["acoes"],
         edgecolor="white",
         linewidth=0.8,
@@ -329,7 +374,7 @@ def generate_problem_figure(
     )
 
     ax.set_yticks(y)
-    ax.set_yticklabels(labels)
+    ax.set_yticklabels(labels, fontsize=10.0)
     ax.invert_yaxis()
 
     xmin = min(bm25_ndcg.min(), ementa_ndcg.min(), acao_ndcg.min()) - 0.05
@@ -338,7 +383,7 @@ def generate_problem_figure(
     ax.set_xlabel("nDCG@10")
     ax.xaxis.set_major_locator(MultipleLocator(0.10))
     ax.xaxis.set_major_formatter(FormatStrFormatter("%.1f"))
-    ax.tick_params(axis="y", pad=8)
+    ax.tick_params(axis="y", pad=10)
     ax.grid(axis="x", color=PALETTE["grid"], linewidth=0.9)
     ax.set_axisbelow(True)
 
@@ -349,28 +394,41 @@ def generate_problem_figure(
 
     ax.legend(
         loc="upper left",
-        bbox_to_anchor=(0.0, 1.035),
+        bbox_to_anchor=(0.0, 1.04),
         frameon=False,
         ncol=3,
         handletextpad=0.6,
         columnspacing=1.2,
         borderaxespad=0.0,
-        labelspacing=0.8,
     )
 
-    ax_delta.set_facecolor(PALETTE["bg_box"])
     ax_delta.set_xlim(0.0, 1.0)
     ax_delta.set_xticks([])
     ax_delta.tick_params(left=False, labelleft=False)
     for spine in ax_delta.spines.values():
         spine.set_visible(False)
+
+    cmap = make_delta_cmap()
+    delta_norm = TwoSlopeNorm(
+        vmin=min(float(deltas.min()), -1e-9),
+        vcenter=0.0,
+        vmax=max(float(deltas.max()), 1e-9),
+    )
+    for idx, delta in enumerate(deltas):
+        ax_delta.axhspan(
+            idx - 0.5,
+            idx + 0.5,
+            facecolor=cmap(delta_norm(float(delta))),
+            edgecolor="none",
+            zorder=0,
+        )
     for idx in range(len(problem_ids) + 1):
-        ax_delta.axhline(idx - 0.5, color="#E1E8F0", linewidth=0.8, zorder=0)
+        ax_delta.axhline(idx - 0.5, color="white", linewidth=0.8, zorder=1)
 
     ax_delta.text(
         0.50,
-        1.035,
-        "Δ Ações - BM25",
+        1.04,
+        "Δ Ações − Ementas",
         transform=ax_delta.transAxes,
         ha="center",
         va="bottom",
@@ -380,50 +438,36 @@ def generate_problem_figure(
     )
 
     for idx, delta in enumerate(deltas):
+        norm_value = float(delta_norm(float(delta)))
+        text_color = "white" if abs(norm_value - 0.5) > 0.35 else PALETTE["text_dark"]
         ax_delta.text(
             0.50,
             idx,
-            f"{delta:+.3f}",
+            f"{delta_glyph(float(delta))} {abs(float(delta)):.3f}",
             ha="center",
             va="center",
             fontsize=8.7,
-            color=delta_text_color(float(delta)),
+            color=text_color,
+            zorder=2,
         )
 
     wins, ties, losses = sign_counts(deltas)
     ax.text(
-        0.015,
-        0.02,
-        f"Ganhos: {wins}  •  Empates: {ties}  •  Perdas: {losses}",
+        1.0,
+        1.04,
+        f"E5(ações) vs. E5(ementas) — Ganhos: {wins} • Empates: {ties} • Perdas: {losses}",
         transform=ax.transAxes,
-        ha="left",
+        ha="right",
         va="bottom",
-        fontsize=9.2,
+        fontsize=10.5,
         color=PALETTE["text_dark"],
         bbox=dict(
-            boxstyle="round,pad=0.30",
+            boxstyle="round,pad=0.45",
             facecolor=PALETTE["bg_box"],
             edgecolor="#D9E1EB",
         ),
     )
 
-    add_title_block(
-        fig,
-        "Comparação por problema em nDCG@10",
-        "Cada linha liga o baseline lexical BM25, a busca por ementas e a busca por ações textualizadas;\n"
-        "os problemas estão ordenados pela distância entre ações e BM25, do maior para o menor.",
-        x=0.25,
-        title_y=0.972,
-        subtitle_y=0.936,
-    )
-
-    fig.text(
-        0.25,
-        0.055,
-        f"Benchmark exploratório com {len(problem_ids)} problemas, {benchmark_size} pares julgados e pool derivado da união dos top-30.",
-        fontsize=9.3,
-        color=PALETTE["text_muted"],
-    )
     save_figure(fig, "retrieval-eval-problem")
 
 
