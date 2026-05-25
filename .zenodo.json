@@ -1,0 +1,36 @@
+{
+  "title": "Sonar Municipal: semantic search pipeline for Brazilian municipal bills",
+  "description": "Source code accompanying the ICMC-USP undergraduate thesis 'Mineração de Dados e Busca Semântica Aplicadas à Análise de Projetos de Lei Municipais' (Sonar Municipal project). Implements the SAPL data collection pipeline, dense-retrieval indexing with E5 and BM25 baselines, and the evaluation tooling for the companion TREC-style benchmark. Funded by AI4PEP (Artificial Intelligence for Public Health Emergency Preparedness) network, supported by IDRC (International Development Research Centre, Canada). Companion artifacts on the Hugging Face Hub: model thiagoambiel/sonar_municipal_ptt5_ementa2action, dataset thiagoambiel/sonar-municipal-pl-actions, demo thiagoambiel/sonar-municipal-demo. Companion Zenodo records (dataset, model) will be cross-linked once their DOIs are minted; thesis BDTD-USP handle to be linked in v1.0 post-defense.",
+  "creators": [
+    {
+      "name": "Ambiel, Thiago",
+      "affiliation": "Instituto de Ciências Matemáticas e de Computação, Universidade de São Paulo"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Carvalho, André Carlos Ponce de Leon Ferreira de",
+      "type": "Supervisor",
+      "affiliation": "Instituto de Ciências Matemáticas e de Computação, Universidade de São Paulo"
+    }
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "access_right": "open",
+  "language": "por",
+  "keywords": [
+    "information retrieval",
+    "semantic search",
+    "Brazilian Portuguese",
+    "SAPL",
+    "E5",
+    "BM25",
+    "TREC",
+    "LLM-as-a-judge",
+    "PTT5",
+    "municipal legislation",
+    "Brazil",
+    "legal NLP"
+  ],
+  "notes": "Pre-defense release (v0.9). Related identifiers (companion dataset DOI, companion model DOI, BDTD-USP thesis handle) and AI4PEP/IDRC grant ID will be added via Zenodo UI once available, without re-minting (Zenodo allows metadata edits)."
+}

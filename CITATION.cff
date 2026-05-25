@@ -1,0 +1,54 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "Sonar Municipal: semantic search pipeline for Brazilian municipal bills"
+abstract: >
+  Source code accompanying the ICMC-USP undergraduate thesis
+  "Mineração de Dados e Busca Semântica Aplicadas à Análise de Projetos
+  de Lei Municipais" (Sonar Municipal project). Implements the data
+  collection pipeline from SAPL portals, the dense-retrieval indexing
+  with E5 embeddings, BM25 baselines, and the evaluation tooling that
+  produced the companion TREC-style benchmark.
+authors:
+  - family-names: Ambiel
+    given-names: Thiago
+    affiliation: "Instituto de Ciências Matemáticas e de Computação, Universidade de São Paulo"
+    orcid: "https://orcid.org/<ORCID-PREENCHER>"
+    email: "thiago.ambiel@usp.br"
+contact:
+  - family-names: Ambiel
+    given-names: Thiago
+    email: "thiago.ambiel@usp.br"
+version: 0.9.0
+date-released: "2026-05-25"
+license: MIT
+repository-code: "https://github.com/thiagoambiel/SonarMunicipal"
+keywords:
+  - information retrieval
+  - semantic search
+  - Brazilian Portuguese
+  - SAPL
+  - E5
+  - BM25
+  - TREC
+  - LLM-as-a-judge
+  - PTT5
+  - Next.js
+  - FastAPI
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.<SW-CONCEPT-PREENCHER>"
+    description: "Concept DOI (always points to latest version)"
+references:
+  - type: dataset
+    title: "Sonar Municipal: TREC-style benchmark and 241k action corpus for semantic search over Brazilian municipal bills"
+    authors:
+      - family-names: Ambiel
+        given-names: Thiago
+    doi: "10.5281/zenodo.<DS-CONCEPT-PREENCHER>"
+  - type: software
+    title: "Sonar Municipal PTT5-v2 LoRA adapter for ementa-to-action textualization"
+    authors:
+      - family-names: Ambiel
+        given-names: Thiago
+    doi: "10.5281/zenodo.<MD-CONCEPT-PREENCHER>"
