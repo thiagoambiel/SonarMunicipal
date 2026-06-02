@@ -5,7 +5,7 @@ Este guia explica o pipeline completo para produzir o dataset de projetos de lei
 ## Visão geral do pipeline
 1. **Descobrir instâncias SAPL** com `sapl_finder`.
 2. **Raspar projetos de lei** (PLs) dessas instâncias com `sapl_scrapper`.
-3. **Gerar ações operacionais a partir das ementas** usando o modelo `ptt5v2-pl-text2action`.
+3. **Gerar ações operacionais a partir das ementas** usando o modelo `thiagoambiel/sonar_municipal_ptt5_ementa2action`.
 4. **Construir o dataset final** com embeddings e metadados (`dataset.npy`), reaproveitando os notebooks da pasta `notebooks/`.
 
 Os passos abaixo assumem Python 3.9+ e `pip`.
@@ -40,9 +40,9 @@ Saídas:
 - `data/pl.jsonl`: PLs linha a linha (util para streaming/continuacao).
 
 ## 3) Gerar ações (ementa -> ação)
-Use o modelo `thiagoambiel/ptt5v2-pl-text2action` (Hugging Face) para converter ementas em ações imperativas.
+Use o modelo `thiagoambiel/sonar_municipal_ptt5_ementa2action` (Hugging Face) para converter ementas em ações imperativas.
 
-Referência: notebook `notebooks/sonar-municipal-ptt5-v2-text2action-inference-on-pls.py`.
+Referência: notebook `notebooks/sonar-municipal-ptt5-v2-ementa2action-inference-on-pls.ipynb`.
 
 Passos resumidos:
 1. Baixe/prepare `pl.jsonl` da etapa anterior.

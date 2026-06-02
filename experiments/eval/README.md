@@ -1,5 +1,15 @@
 # Avaliação de Recomendações de PLs
 
+> **Pool de anotação canônico**: os arquivos `annotation_pool*.jsonl` e
+> `recommendations_*.jsonl` referenciados aqui não acompanham este
+> repositório — eles vivem no record dataset do Zenodo
+> (`10.5281/zenodo.<DS-CONCEPT-PREENCHER>`, diretórios `annotation-pool/`
+> e `recommendations/`). Antes de rodar `analyze_annotation_pool.py`
+> sobre dados já anotados, baixe o bundle do Zenodo e coloque os
+> arquivos em `experiments/eval/outputs/` (o caminho está em
+> `.gitignore` e não será re-commitado). Quem quiser regenerar do
+> zero usa os scripts abaixo.
+
 Esta pasta compara tres abordagens sobre o mesmo acervo legislativo:
 
 - `ementa`: busca semantica com embeddings calculados diretamente sobre a ementa original do Projeto de Lei.

@@ -13,6 +13,20 @@ ementas em recomendações de ação, permite busca semântica por demandas dos 
 simula efeitos em indicadores oficiais ao longo do tempo e agrupa PLs semelhantes em
 **políticas públicas** para análise conjunta.
 
+## Companion artifacts
+
+Este repositório é o componente de software de um conjunto reprodutível publicado como
+parte do TCC *"Mineração de Dados e Busca Semântica Aplicadas à Análise de Projetos
+de Lei Municipais"* (ICMC-USP, 2026):
+
+| Artefato | Licença | DOI / Hub |
+| --- | --- | --- |
+| **Código-fonte** (este repo) | MIT | Zenodo `10.5281/zenodo.<SW-CONCEPT-PREENCHER>` |
+| **Dataset** (TREC-style benchmark + corpus de 241k ações) | CC-BY-4.0 | Zenodo `10.5281/zenodo.<DS-CONCEPT-PREENCHER>` |
+| **Modelo** PTT5-v2 ementa→ação | Apache-2.0 | Zenodo `10.5281/zenodo.<MD-CONCEPT-PREENCHER>` · [Hugging Face Hub](https://huggingface.co/thiagoambiel/sonar_municipal_ptt5_ementa2action) |
+| **Demo** (Gradio Space) | — | [Hugging Face Spaces](https://huggingface.co/spaces/thiagoambiel/sonar-municipal-demo) |
+| **Tese** (TCC) | — | BDTD-USP handle (a ser vinculado quando o depósito institucional existir) |
+
 # Como funciona?
 ```mermaid
 flowchart LR
@@ -97,7 +111,7 @@ o dataset do zero, use os atalhos abaixo:
 Resumo do pipeline:
 1. Descobrir instâncias do SAPL (`tools/sapl_finder`).
 2. Raspar projetos de lei (`tools/sapl_scrapper`).
-3. Gerar ações a partir das ementas (modelo `ptt5v2-pl-text2action`).
+3. Gerar ações a partir das ementas (modelo `thiagoambiel/sonar_municipal_ptt5_ementa2action`).
 4. Gerar embeddings e montar `dataset.npy`.
 
 ## Estrutura do repositório

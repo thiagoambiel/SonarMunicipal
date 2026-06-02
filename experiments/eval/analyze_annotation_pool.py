@@ -816,7 +816,7 @@ def build_markdown(
     lines.append("")
     lines.append(
         "As tabelas abaixo contam, problema a problema, quantas vezes cada abordagem semantica ficou acima do baseline lexical BM25. O p-valor vem de um sign test exato e serve apenas como indicio, "
-        "porque a amostra tem 15 problemas."
+        f"porque a amostra tem {len(bm25_eval)} problemas."
     )
     lines.append("")
     lines.append("### Ementas vs BM25")
@@ -923,7 +923,7 @@ def build_markdown(
         "- Documentos fora do pool nao foram julgados. Se uma abordagem trouxesse bons itens fora dessa uniao, o experimento atual nao capturaria esse ganho."
     )
     lines.append(
-        "- A amostra tem 15 problemas, entao os sinais estatisticos devem ser tratados como exploratorios."
+        f"- A amostra tem {len(bm25_eval)} problemas, entao os sinais estatisticos devem ser tratados como exploratorios."
     )
     lines.append(
         "- O arquivo anotado nao registra multiplos avaliadores, entao nao ha medida de concordancia interanotador."

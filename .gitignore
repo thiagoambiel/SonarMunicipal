@@ -11,8 +11,8 @@ experiments/data/*
 experiments/.venv
 experiments/.env
 experiments/tools/indicators/education/files
-reports/
 experiments/eval/artifacts/
+experiments/eval/outputs/
 
 # Env files na raiz do Next.js
 .env

@@ -19,8 +19,8 @@ contact:
   - family-names: Ambiel
     given-names: Thiago
     email: "thiago.ambiel@usp.br"
-version: 0.9.0
-date-released: "2026-05-25"
+version: 1.0.0
+date-released: "2026-06-02"
 license: MIT
 repository-code: "https://github.com/thiagoambiel/SonarMunicipal"
 keywords:

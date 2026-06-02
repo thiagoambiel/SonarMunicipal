@@ -1,6 +1,6 @@
 {
   "title": "Sonar Municipal: semantic search pipeline for Brazilian municipal bills",
-  "description": "Source code accompanying the ICMC-USP undergraduate thesis 'Mineração de Dados e Busca Semântica Aplicadas à Análise de Projetos de Lei Municipais' (Sonar Municipal project). Implements the SAPL data collection pipeline, dense-retrieval indexing with E5 and BM25 baselines, and the evaluation tooling for the companion TREC-style benchmark. Funded by AI4PEP (Artificial Intelligence for Public Health Emergency Preparedness) network, supported by IDRC (International Development Research Centre, Canada). Companion artifacts on the Hugging Face Hub: model thiagoambiel/sonar_municipal_ptt5_ementa2action, dataset thiagoambiel/sonar-municipal-pl-actions, demo thiagoambiel/sonar-municipal-demo. Companion Zenodo records (dataset, model) will be cross-linked once their DOIs are minted; thesis BDTD-USP handle to be linked in v1.0 post-defense.",
+  "description": "Source code accompanying the ICMC-USP undergraduate thesis 'Mineração de Dados e Busca Semântica Aplicadas à Análise de Projetos de Lei Municipais' (Sonar Municipal project). Implements the SAPL data collection pipeline, dense-retrieval indexing with E5 and BM25 baselines, and the evaluation tooling for the companion TREC-style benchmark. Supported by the AI4PEP (Artificial Intelligence for Public Health Emergency Preparedness) network. Companion artifacts on the Hugging Face Hub: model thiagoambiel/sonar_municipal_ptt5_ementa2action, dataset thiagoambiel/sonar-municipal-pl-actions, demo thiagoambiel/sonar-municipal-demo. Companion Zenodo records (dataset, model) will be cross-linked once their DOIs are minted; the thesis BDTD-USP handle will be linked as a related identifier once available.",
   "creators": [
     {
       "name": "Ambiel, Thiago",
@@ -32,5 +32,5 @@
     "Brazil",
     "legal NLP"
   ],
-  "notes": "Pre-defense release (v0.9). Related identifiers (companion dataset DOI, companion model DOI, BDTD-USP thesis handle) and AI4PEP/IDRC grant ID will be added via Zenodo UI once available, without re-minting (Zenodo allows metadata edits)."
+  "notes": "Definitive release (v1.0). Companion dataset and model DOIs and the BDTD-USP thesis handle will be added as related identifiers via the Zenodo UI once available, without re-minting (Zenodo allows metadata edits)."
 }
