@@ -1,18 +1,28 @@
-# sapl_scrapper
+# SAPL Scrapper — raspagem de Projetos de Lei
 
-Script em Python para extrair Projetos de Lei (PL) de multiplas instancias SAPL
-a partir do arquivo JSONL gerado pelo `sapl_finder`. O resultado e salvo apenas
-em JSONL incremental.
+O **SAPL Scrapper** extrai Projetos de Lei (PLs) de múltiplas instâncias do sistema SAPL a partir
+do catálogo gerado pelo [`sapl_finder`](../sapl_finder/README.MD). Ele percorre a API de cada
+portal, filtra os tipos de matéria correspondentes a projetos de lei e grava o resultado de forma
+incremental.
 
-- **Entrada:** `sapl_hosts.jsonl` do `sapl_finder`.
-- **Saida:** `pl.jsonl` (incremental).
+- **Entrada:** `sapl_hosts.jsonl` (saída do `sapl_finder`).
+- **Saída:** `pl.jsonl` (incremental).
+
+## Sumário
+
+- [Requisitos](#requisitos)
+- [Como usar](#como-usar)
+- [Argumentos principais](#argumentos-principais)
+- [Estrutura da entrada](#estrutura-da-entrada)
+- [Saída gerada](#saída-gerada)
+- [Como o algoritmo funciona](#como-o-algoritmo-funciona)
+- [Desempenho](#desempenho)
+- [Estrutura do código](#estrutura-do-código)
 
 ## Requisitos
 
 - Python 3.10+
-- Dependencia: `httpx`
-
-Instalacao rapida:
+- Dependência: `httpx`
 
 ```bash
 pip install httpx
@@ -20,103 +30,82 @@ pip install httpx
 
 ## Como usar
 
-Ajuda:
+Para ver a ajuda completa:
 
 ```bash
 python sapl_scrapper.py --help
 ```
 
-Exemplos:
+Exemplo de execução completa:
 
 ```bash
-# Execucao completa
 python sapl_scrapper.py \
   --in-jsonl sapl_hosts.jsonl \
   --out-jsonl pl.jsonl \
   --concurrency 20 \
   --timeout 30 \
   --page-size 100
-
 ```
 
 ## Argumentos principais
 
-- `--in-jsonl`: arquivo JSONL do `sapl_finder` (uma entrada por linha).
-- `--out-jsonl`: caminho do JSONL incremental de saida.
-- `--concurrency`: numero de bases SAPL processadas em paralelo.
-- `--timeout`: timeout das requisicoes (segundos).
-- `--page-size`: `page_size` usado na API.
+| Argumento | Descrição |
+| --- | --- |
+| `--in-jsonl` | Arquivo JSONL do `sapl_finder` (uma entrada por linha). |
+| `--out-jsonl` | Caminho do JSONL incremental de saída. |
+| `--concurrency` | Número de bases do SAPL processadas em paralelo. |
+| `--timeout` | Timeout das requisições (segundos). |
+| `--page-size` | `page_size` usado na API. |
 
 ## Estrutura da entrada
 
-O JSONL do `sapl_finder` contem um objeto por linha. O script usa principalmente:
-
-- `sapl_url` (obrigatorio)
-- `municipio` e `uf` (usados como contexto no output)
-
-Exemplo simplificado:
+O JSONL do `sapl_finder` contém um objeto por linha. O script usa principalmente `sapl_url`
+(obrigatório) e `municipio`/`uf` (como contexto no resultado). Exemplo simplificado:
 
 ```json
-[
-  {
-    "municipio": "Fortaleza",
-    "uf": "CE",
-    "sapl_url": "https://sapl.fortaleza.ce.leg.br/materia/pesquisar-materia"
-  }
-]
+{
+  "municipio": "Fortaleza",
+  "uf": "CE",
+  "sapl_url": "https://sapl.fortaleza.ce.leg.br/materia/pesquisar-materia"
+}
 ```
 
-## Saidas geradas
+## Saída gerada
 
-### JSONL incremental (`pl.jsonl`)
-
-Uma linha por materia, com o JSON completo de cada registro.
-Campos mais comuns:
+O arquivo `pl.jsonl` traz uma linha por matéria, com o JSON completo de cada registro. Campos mais
+comuns:
 
 - `sapl_base`, `sapl_url`, `municipio`, `uf`
 - `tipo_id`, `tipo_label`
 - `materia_id`, `numero`, `ano`, `ementa`
 - `data_apresentacao`, `em_tramitacao`, `situacao`
 - `link_publico`
-- `ultima_tramitacao_data`, `ultima_tramitacao_status`
-- `ultima_tramitacao` (quando habilitado)
+- `ultima_tramitacao_data`, `ultima_tramitacao_status`, `ultima_tramitacao` (quando habilitado)
 
 ## Como o algoritmo funciona
 
-1. **Derivacao da base SAPL**  
-   A partir de `sapl_url`, o script calcula a base correta
+1. **Derivação da base do SAPL.** A partir de `sapl_url`, calcula a base correta
    (`https://host` ou `https://host/sapl`).
-
-2. **Descoberta do endpoint de materias**  
-   Tenta `/api/materia/` e, se necessario, usa o fallback
-   `/api/materia/materialegislativa/`.
-
-3. **Filtro de tipos de PL**  
-   Lista `tipomaterialegislativa` e filtra todos os tipos cujo rotulo,
-   normalizado, contem "projeto de lei".
-
-4. **Paginacao das materias**  
-   Para cada tipo de PL, pagina as materias respeitando o formato da API:
-   - DRF classico (`results`/`next`)
-   - Paginacao nativa do SAPL (`pagination.links.next` ou `pagination.next_page`)
-
-5. **Ultima tramitacao (opcional)**  
-   Quando habilitado, consulta
-   `/api/materia/materialegislativa/{id}/ultima_tramitacao/` para enriquecer
-   cada registro.
-
-6. **Deduplicacao e escrita**  
-   Cada item e deduplicado por `(sapl_base, materia_id)` e gravado no JSONL
+2. **Descoberta do endpoint de matérias.** Tenta `/api/materia/` e, se necessário, recorre ao
+   fallback `/api/materia/materialegislativa/`.
+3. **Filtro de tipos de PL.** Lista `tipomaterialegislativa` e seleciona os tipos cujo rótulo
+   normalizado contém "projeto de lei".
+4. **Paginação das matérias.** Para cada tipo de PL, pagina respeitando o formato da API: DRF
+   clássico (`results`/`next`) ou paginação nativa do SAPL (`pagination.links.next` ou
+   `pagination.next_page`).
+5. **Última tramitação (opcional).** Quando habilitado, consulta
+   `/api/materia/materialegislativa/{id}/ultima_tramitacao/` para enriquecer cada registro.
+6. **Deduplicação e escrita.** Deduplica por `(sapl_base, materia_id)` e grava o JSONL
    imediatamente (progresso em tempo real).
 
-## Desempenho e ajustes
+## Desempenho
 
-- `--concurrency`: comece com 10-30 e aumente conforme a rede.
+- `--concurrency`: comece com 10–30 e aumente conforme a rede permitir.
 - `--timeout`: em redes lentas, aumente para 40 ou 60.
-- `--page-size`: valores entre 100 e 200 reduzem o numero de requisicoes.
+- `--page-size`: valores entre 100 e 200 reduzem o número de requisições.
 
-## Estrutura do codigo
+## Estrutura do código
 
-- `sapl_scrapper.py`: script principal (CLI e orquestracao).
-- `scraper.py`: logica de API, filtros e paginacao.
-- `output.py`: escrita e deduplicacao JSONL.
+- `sapl_scrapper.py` — script principal (CLI e orquestração).
+- `scraper.py` — lógica de API, filtros e paginação.
+- `output.py` — escrita e deduplicação do JSONL.
