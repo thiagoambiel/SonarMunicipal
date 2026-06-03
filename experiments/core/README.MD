@@ -1,14 +1,26 @@
-# Módulo core (Sonar Municipal)
+# Módulo `core`
 
-Este módulo concentra as funções reutilizáveis para carregar dados, gerar
-embeddings, realizar busca semântica e agrupar Projetos de Lei em políticas
-públicas com base em indicadores.
+O `core` é o coração algorítmico do Sonar Municipal: um pacote Python enxuto e reutilizável que
+implementa a busca semântica, o cálculo de efeitos sobre indicadores e o agrupamento de Projetos
+de Lei em políticas públicas. A plataforma web reproduz a mesma lógica em TypeScript; este módulo
+é a referência canônica e o ponto de entrada para usar o algoritmo fora da aplicação (notebooks,
+scripts, avaliação).
+
+## Sumário
+
+- [Para que serve](#para-que-serve)
+- [Pré-requisitos](#pré-requisitos)
+- [Formato esperado do dataset](#formato-esperado-do-dataset)
+- [Funções principais](#funções-principais)
+- [Exemplo: busca semântica](#exemplo-busca-semântica)
+- [Exemplo: efeitos e políticas](#exemplo-efeitos-e-políticas)
+- [Observações importantes](#observações-importantes)
 
 ## Para que serve
 - Carregar o dataset de PLs com embeddings.
 - Fazer busca semântica por consultas textuais.
 - Calcular efeitos de indicadores ao longo do tempo.
-- Agrupar PLs semelhantes em políticas com critérios de qualidade.
+- Agrupar PLs semelhantes em políticas, ordenadas por critérios de qualidade.
 
 ## Pré-requisitos
 - Python 3.9+
