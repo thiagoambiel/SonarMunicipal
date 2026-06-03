@@ -28,6 +28,9 @@ Os scripts usam o mesmo modelo de embeddings do Sonar Municipal:
 
 ## Fluxo sugerido
 
+> `experiments/data/dataset.npy` é produzido conforme o `DATASET.MD` (caminho rápido: baixar o
+> dataset publicado no Hugging Face e gerar os embeddings).
+
 1. Gerar artefatos auxiliares:
 
 ```bash
@@ -55,7 +58,8 @@ Esse comando passa a gerar dois arquivos:
 - `annotation_pool.jsonl`: pool cego para anotacao, contendo apenas `problem_id`, `doc_id`, `query`, `ementa`, `relevance` e `notes`.
 - `annotation_pool_metadata.jsonl`: metadados completos do pool, usados depois na analise sem expor sinais de ranking ao avaliador.
 
-3. Anotar relevância humana no `annotation_pool.jsonl`:
+3. Anotar relevância no `annotation_pool.jsonl` (o prompt do juiz LLM usado para a anotação
+   graduada está em `judge_prompt.txt`):
 
 - Use `relevance = 0` para irrelevante.
 - Use `relevance = 1` para relevante.

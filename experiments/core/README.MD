@@ -21,13 +21,22 @@ pip install numpy sentence-transformers pandas
 ```
 
 ## Formato esperado do dataset
-O arquivo `dataset.npy` deve conter uma lista de dicionários com, no mínimo:
+O arquivo `dataset.npy` é produzido conforme o `DATASET.MD` (caminho rápido: baixar o dataset
+publicado no Hugging Face e gerar os embeddings). Ele deve conter uma lista de dicionários com,
+no mínimo:
 - `municipio` (str)
 - `uf` (str)
 - `data_apresentacao` (YYYY-MM-DD)
 - `ementa` (str)
 - `acao` (str)
 - `embedding` (lista ou array de floats)
+
+> **Normalização de município (contrato com indicadores).** `compute_effects_from_indicator`
+> casa `municipio` com o indicador usando apenas `.upper()` — **não remove acentos**. Portanto a
+> coluna-chave do CSV de indicador (`city_col`) deve estar na mesma forma acentuada e em caixa
+> alta do campo `municipio` do dataset. É o caso de `indicators/homicidios.csv` (coluna
+> `municipio_norm`). CSVs sem acento (ex.: a coluna `municipio` de `matriculas.csv`) não casam por
+> essa rota.
 
 ## Funções principais
 Disponíveis via `from core import ...`:

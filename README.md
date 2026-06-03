@@ -22,7 +22,7 @@ de Lei Municipais"* (ICMC-USP, 2026):
 | Artefato | Licença | DOI / Hub |
 | --- | --- | --- |
 | **Código-fonte** (este repo) | MIT | Zenodo `10.5281/zenodo.20387514` |
-| **Dataset** (TREC-style benchmark + corpus de 241k ações) | CC-BY-4.0 | Zenodo `10.5281/zenodo.<DS-CONCEPT-PREENCHER>` |
+| **Dataset** (TREC-style benchmark + corpus de 241k ações) | CC-BY-4.0 | [Hugging Face Hub](https://huggingface.co/datasets/thiagoambiel/sonar-municipal-pl-actions) · Zenodo `10.5281/zenodo.<DS-CONCEPT-PREENCHER>` |
 | **Modelo** PTT5-v2 ementa→ação | Apache-2.0 | Zenodo `10.5281/zenodo.<MD-CONCEPT-PREENCHER>` · [Hugging Face Hub](https://huggingface.co/thiagoambiel/sonar_municipal_ptt5_ementa2action) |
 | **Demo** (Gradio Space) | — | [Hugging Face Spaces](https://huggingface.co/spaces/thiagoambiel/sonar-municipal-demo) |
 | **Tese** (TCC) | — | BDTD-USP handle (a ser vinculado quando o depósito institucional existir) |
@@ -96,8 +96,8 @@ npm start
 ```
 
 ## Experimentos e Reprodutibilidade
-Os notebooks e os scripts de coleta ficaram em `experiments/`. Para reconstruir
-o dataset do zero, use os atalhos abaixo:
+Os notebooks e os scripts ficam em `experiments/`. O caminho recomendado parte dos artefatos
+publicados no Hugging Face; reconstruir do zero é opcional. Use os atalhos abaixo:
 
 | Link | Descrição |
 | --- | --- |
@@ -108,13 +108,18 @@ o dataset do zero, use os atalhos abaixo:
 | [![sapl_scrapper](https://img.shields.io/badge/sapl__scrapper-Raspagem%20de%20PLs-7B1FA2?style=for-the-badge)](experiments/tools/sapl_scrapper/README.MD) | Raspagem de projetos de lei. |
 | [![notebooks](https://img.shields.io/badge/notebooks-An%C3%A1lises%20e%20Treinos-FF8F00?style=for-the-badge)](experiments/notebooks) | Notebooks de análises, inferência e fine-tuning. |
 
-Resumo do pipeline:
-1. Descobrir instâncias do SAPL (`tools/sapl_finder`).
-2. Raspar projetos de lei (`tools/sapl_scrapper`).
-3. Gerar ações a partir das ementas (modelo `thiagoambiel/sonar_municipal_ptt5_ementa2action`).
-4. Gerar embeddings e montar `dataset.npy`.
+Resumo do pipeline (caminho rápido):
+1. Baixar o dataset publicado [`thiagoambiel/sonar-municipal-pl-actions`](https://huggingface.co/datasets/thiagoambiel/sonar-municipal-pl-actions) (subset `default`).
+2. Gerar os embeddings das ações e montar `experiments/data/dataset.npy`.
+3. Subir os pontos ao Qdrant (collection `projetos-de-lei`) com `upload_data_to_qdrant.ipynb`
+   para **hospedar a plataforma** (exige `HF_API_TOKEN` em runtime).
+
+Opcional (reconstruir do zero): descobrir instâncias do sistema SAPL (`tools/sapl_finder`),
+raspar PLs (`tools/sapl_scrapper`) e gerar ações com o modelo
+`thiagoambiel/sonar_municipal_ptt5_ementa2action` — detalhes em `experiments/DATASET.MD`.
 
 ## Estrutura do repositório
 - `src/app`: páginas e rotas de API do Next.js.
 - `public/`: assets do frontend (inclui o banner).
-- `experiments/`: backend antigo, notebooks e ferramentas de dados.
+- `scripts/`: utilitários do front (ex.: geração de exemplos do Policy Explorer).
+- `experiments/`: módulo `core/`, notebooks e ferramentas de dados.

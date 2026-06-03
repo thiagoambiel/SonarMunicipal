@@ -1,5 +1,4 @@
-fastapi
-uvicorn[standard]
+datasets
 pandas
 numpy<2
 sentence-transformers
