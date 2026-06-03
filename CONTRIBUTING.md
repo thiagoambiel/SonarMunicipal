@@ -3,7 +3,7 @@
 This repository is the source-code companion to the ICMC-USP
 undergraduate thesis *"Sonar Municipal"* (Thiago Ambiel, 2026). It is
 also the upstream for the Zenodo software record
-`10.5281/zenodo.<SW-CONCEPT-PREENCHER>`, which is automatically
+`10.5281/zenodo.20387514`, which is automatically
 re-archived on every published GitHub release.
 
 ## Release & tagging policy

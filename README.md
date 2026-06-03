@@ -21,7 +21,7 @@ de Lei Municipais"* (ICMC-USP, 2026):
 
 | Artefato | Licença | DOI / Hub |
 | --- | --- | --- |
-| **Código-fonte** (este repo) | MIT | Zenodo `10.5281/zenodo.<SW-CONCEPT-PREENCHER>` |
+| **Código-fonte** (este repo) | MIT | Zenodo `10.5281/zenodo.20387514` |
 | **Dataset** (TREC-style benchmark + corpus de 241k ações) | CC-BY-4.0 | Zenodo `10.5281/zenodo.<DS-CONCEPT-PREENCHER>` |
 | **Modelo** PTT5-v2 ementa→ação | Apache-2.0 | Zenodo `10.5281/zenodo.<MD-CONCEPT-PREENCHER>` · [Hugging Face Hub](https://huggingface.co/thiagoambiel/sonar_municipal_ptt5_ementa2action) |
 | **Demo** (Gradio Space) | — | [Hugging Face Spaces](https://huggingface.co/spaces/thiagoambiel/sonar-municipal-demo) |

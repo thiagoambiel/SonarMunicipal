@@ -37,7 +37,7 @@ keywords:
   - FastAPI
 identifiers:
   - type: doi
-    value: "10.5281/zenodo.<SW-CONCEPT-PREENCHER>"
+    value: "10.5281/zenodo.20387514"
     description: "Concept DOI (always points to latest version)"
 references:
   - type: dataset
