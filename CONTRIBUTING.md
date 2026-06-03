@@ -1,59 +1,61 @@
-# Contributing — Sonar Municipal
+# Contribuindo com o Sonar Municipal
 
-This repository is the source-code companion to the ICMC-USP
-undergraduate thesis *"Sonar Municipal"* (Thiago Ambiel, 2026). It is
-also the upstream for the Zenodo software record
-`10.5281/zenodo.20387514`, which is automatically
-re-archived on every published GitHub release.
+Este repositório é o componente de código-fonte que acompanha o Trabalho de Conclusão de Curso
+*"Sonar Municipal"* (Thiago Ambiel, ICMC-USP, 2026). Ele também é a origem (*upstream*) do registro
+de software no Zenodo `10.5281/zenodo.20387514`, que é re-arquivado automaticamente a cada release
+publicado no GitHub.
 
-## Release & tagging policy
+## Sumário
 
-**Tagged releases are immutable.** Once a tag in the form `v*.*.*` is
-pushed to `origin` and a corresponding GitHub release is created, the
-Zenodo webhook mints an archival DOI tied to that release tarball. To
-keep the published DOI and the GitHub-visible history consistent:
+- [Política de releases e tags](#política-de-releases-e-tags)
+- [Versionamento](#versionamento)
+- [Pull requests](#pull-requests)
+- [Licença](#licença)
+- [Contato](#contato)
 
-- **No force-push past a published tag.** If you need to undo a tagged
-  release, mint a new patch version instead (e.g., `v1.0.1`) — never
-  rewrite history at or before `v1.0.0`.
-- **No deletion of tagged releases.** GitHub release artifacts may be
-  amended (release notes, attached files) but the underlying tag must
-  remain pointing at the same commit.
-- **Branch protection**: the repository owner enables tag protection
-  for the pattern `v*` via *Settings → Tags → Protected tags* to
-  enforce the above.
+## Política de releases e tags
 
-## Versioning
+**Releases com tag são imutáveis.** Assim que uma tag no formato `v*.*.*` é enviada para a
+`origin` e um release correspondente é criado no GitHub, o webhook do Zenodo emite um DOI de
+arquivamento atrelado ao tarball daquele release. Para manter o DOI publicado e o histórico
+visível no GitHub consistentes:
 
-This project follows [Semantic Versioning](https://semver.org):
+- **Sem `force-push` sobre uma tag publicada.** Para desfazer um release com tag, publique uma nova
+  versão de correção (ex.: `v1.0.1`) — nunca reescreva o histórico em `v1.0.0` ou antes dele.
+- **Sem exclusão de releases com tag.** Os artefatos de um release no GitHub podem ser ajustados
+  (notas, arquivos anexos), mas a tag subjacente deve continuar apontando para o mesmo commit.
+- **Proteção de tags.** O mantenedor habilita a proteção de tags para o padrão `v*` em
+  *Settings → Tags → Protected tags* para garantir as regras acima.
 
-- `MAJOR` — breaking API changes (e.g., pipeline interface).
-- `MINOR` — new functionality, non-breaking (e.g., a new retriever).
-- `PATCH` — bug fixes.
+## Versionamento
 
-The companion dataset, model, and thesis follow the same MAJOR.MINOR
-versioning at the record level. The current line of releases is:
+O projeto segue o [Versionamento Semântico](https://semver.org/lang/pt-BR/):
 
-- **v1.0.0** — canonical public release.
-- **v1.x.x** — incremental improvements, if any.
+- `MAJOR` — mudanças incompatíveis na API (ex.: na interface do pipeline).
+- `MINOR` — novas funcionalidades compatíveis com versões anteriores (ex.: um novo recuperador).
+- `PATCH` — correções de bugs.
+
+O dataset, o modelo e a tese que acompanham o projeto seguem o mesmo versionamento `MAJOR.MINOR`
+no nível de cada registro. A linha atual de releases é:
+
+- **v1.0.0** — release público canônico.
+- **v1.x.x** — melhorias incrementais, se houver.
 
 ## Pull requests
 
-External contributions are welcome, especially:
+Contribuições externas são bem-vindas, especialmente:
 
-- Bug fixes in the retrieval pipeline or evaluation scripts.
-- Documentation improvements and translation.
-- New retrieval baselines added under the `control-experiments`
-  pattern.
+- correções de bugs no pipeline de recuperação ou nos scripts de avaliação;
+- melhorias e traduções de documentação;
+- novos baselines de recuperação, seguindo o padrão `control-experiments`.
 
-Please open an issue first describing the proposed change. By
-submitting a pull request, contributors agree to license their
-contributions under the MIT License of this repository.
+Por favor, abra uma *issue* antes descrevendo a mudança proposta. Ao enviar um pull request, a
+pessoa contribuidora concorda em licenciar sua contribuição sob a Licença MIT deste repositório.
 
-## License
+## Licença
 
-MIT — see [LICENSE](LICENSE).
+MIT — veja [LICENSE](LICENSE).
 
-## Contact
+## Contato
 
 Thiago Ambiel — <thiago.ambiel@usp.br>
