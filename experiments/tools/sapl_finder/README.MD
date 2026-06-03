@@ -1,14 +1,23 @@
-# SAPL Finder (IBGE)
+# SAPL Finder — descoberta de instâncias do SAPL
 
-Script em Python para descobrir instancias SAPL publicas no Brasil usando apenas dados do IBGE.
-O fluxo busca todos os municipios, gera possiveis hosts e valida endpoints tipicos do SAPL.
+O **SAPL Finder** descobre instâncias públicas do sistema SAPL (Sistema de Apoio ao Processo
+Legislativo) de municípios brasileiros usando apenas dados oficiais do IBGE. A partir da lista de
+municípios, o script gera hosts candidatos e valida os endpoints típicos do SAPL, produzindo um
+catálogo de portais ativos — o ponto de partida da etapa de raspagem (`sapl_scrapper`).
+
+## Sumário
+
+- [Requisitos](#requisitos)
+- [Como usar](#como-usar)
+- [Saída](#saída)
+- [Como o algoritmo funciona](#como-o-algoritmo-funciona)
+- [Desempenho](#desempenho)
+- [Estrutura](#estrutura)
 
 ## Requisitos
 
 - Python 3.10+
-- Dependencia: `httpx`
-
-Instalacao rapida:
+- Dependência: `httpx`
 
 ```bash
 pip install httpx
@@ -16,7 +25,7 @@ pip install httpx
 
 ## Como usar
 
-Ajuda:
+Para ver a ajuda completa:
 
 ```bash
 python sapl_finder.py --help
@@ -25,62 +34,51 @@ python sapl_finder.py --help
 Exemplos:
 
 ```bash
-# Execucao padrao
+# Execução padrão
 python sapl_finder.py
 
-# Ajustar concorrencia e timeout
+# Ajustar concorrência e timeout
 python sapl_finder.py --concurrency 60 --timeout 30
 
-# Definir arquivo de saida
+# Definir o arquivo de saída
 python sapl_finder.py --out-jsonl saida/sapl_hosts.jsonl
 ```
 
-## Saida
+## Saída
 
-O JSONL gerado contem os mesmos campos por linha:
+O arquivo `sapl_hosts.jsonl` é escrito incrementalmente (uma instância por linha, com progresso em
+tempo real). Cada registro contém:
 
-- `ibge_id`: identificador do municipio no IBGE
-- `municipio`: nome do municipio
-- `uf`: sigla da UF
-- `source`: origem do resultado (`ibge-heuristic` ou `base-host-endpoint`)
-- `sapl_url`: URL do endpoint validado
-- `http_status`: status HTTP retornado no teste
-- `marker`: marcador que confirmou o SAPL
-- `title`: titulo da pagina HTML
-
-Arquivo:
-
-- `sapl_hosts.jsonl`: JSON por linha (progresso em tempo real)
+| Campo | Descrição |
+| --- | --- |
+| `ibge_id` | Identificador do município no IBGE. |
+| `municipio` | Nome do município. |
+| `uf` | Sigla da UF. |
+| `source` | Origem do resultado (`ibge-heuristic` ou `base-host-endpoint`). |
+| `sapl_url` | URL do endpoint do SAPL validado. |
+| `http_status` | Status HTTP retornado no teste. |
+| `marker` | Marcador que confirmou tratar-se de um SAPL. |
+| `title` | Título da página HTML. |
 
 ## Como o algoritmo funciona
 
-1. **Carrega municipios do IBGE**
-   - O script consulta `https://servicodados.ibge.gov.br/api/v1/localidades/municipios`.
-   - Para cada municipio, extrai nome e UF.
+1. **Carrega os municípios do IBGE.** Consulta
+   `https://servicodados.ibge.gov.br/api/v1/localidades/municipios` e extrai nome e UF de cada
+   município.
+2. **Gera hosts candidatos.** Para cada município, monta dois hosts a partir de um *slug* (nome sem
+   acentos, espaços ou símbolos): `sapl.{slug}.{uf}.leg.br` e `{slug}.{uf}.leg.br`.
+3. **Valida os endpoints do SAPL.** Testa caminhos típicos (`/materia/pesquisar-materia` e
+   `/sapl/materia/pesquisar-materia`); a resposta precisa conter marcadores conhecidos do SAPL ou
+   um `<title>` com a palavra "SAPL".
+4. **Deduplica e grava.** Remove duplicatas por `sapl_url` e grava o JSONL em tempo real.
 
-2. **Gera hosts candidatos**
-   - Para cada municipio, monta dois hosts:
-     - `sapl.{slug}.{uf}.leg.br`
-     - `{slug}.{uf}.leg.br`
-   - O `slug` e obtido do nome do municipio sem acentos, espacos ou simbolos.
+## Desempenho
 
-3. **Valida endpoints do SAPL**
-   - Para cada host, testa caminhos tipicos:
-     - `/materia/pesquisar-materia`
-     - `/sapl/materia/pesquisar-materia`
-   - A resposta deve conter marcadores conhecidos do SAPL ou um `<title>` com a palavra `SAPL`.
+- `--concurrency` controla o número de requisições simultâneas.
+- `--timeout` controla o tempo máximo de espera por resposta.
+- Em redes mais lentas, prefira `--concurrency 30` (em vez de 60) e `--timeout 30`.
 
-4. **Deduplica e grava resultados**
-   - Resultados sao deduplicados por `sapl_url`.
-   - O script grava JSONL em tempo real.
+## Estrutura
 
-## Observacoes de desempenho
-
-- `--concurrency` controla o numero de requisicoes simultaneas.
-- `--timeout` controla o tempo maximo de espera por resposta.
-- Em redes mais lentas, prefira `--concurrency 30` a `60` e `--timeout 30`.
-
-## Estrutura do projeto
-
-- `sapl_finder.py`: script principal
-- `sapls/`: exemplos de dados (nao usados pelo script)
+- `sapl_finder.py` — script principal.
+- `sapls/` — exemplos de dados (não usados pelo script).
