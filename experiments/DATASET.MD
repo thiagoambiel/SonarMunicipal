@@ -11,6 +11,13 @@ collection vetorial usada pela plataforma. Há dois caminhos:
 
 Os passos assumem Python 3.9+ e `pip`.
 
+## Sumário
+
+- [Artefatos publicados](#artefatos-publicados)
+- [Caminho rápido (recomendado)](#caminho-rápido-recomendado)
+- [Caminho completo (opcional)](#caminho-completo-opcional--reconstruir-do-zero)
+- [Dependências principais](#dependências-principais)
+
 ## Artefatos publicados
 
 | Artefato | Hub | Conteúdo |
