@@ -1,45 +1,59 @@
-# Analise exploratoria: bm25 vs ementas vs acoes
+# Análise exploratória: bm25 vs ementas vs ações
+
+## Sumário
+
+- [Escopo](#escopo)
+- [Resumo executivo](#resumo-executivo)
+- [Perfil do pool anotado](#perfil-do-pool-anotado)
+- [Métricas agregadas](#métricas-agregadas)
+- [Comparação pareada por problema](#comparação-pareada-por-problema)
+- [Ganho por problema](#ganho-por-problema)
+- [Qualidade ao longo do ranking](#qualidade-ao-longo-do-ranking)
+- [Exemplos qualitativos](#exemplos-qualitativos)
+- [Interpretação](#interpretação)
+- [Limitações](#limitações)
+- [Conclusão](#conclusão)
 
 ## Escopo
 
-Esta analise compara a qualidade das sugestoes geradas por tres abordagens sobre o mesmo acervo legislativo:
+Esta análise compara a qualidade das sugestões geradas por três abordagens sobre o mesmo acervo legislativo:
 
 - `bm25_ementas`: baseline lexical BM25 calculado sobre a ementa original do PL.
 - `ementas`: embeddings calculados diretamente sobre a ementa original do PL.
-- `acoes`: embeddings calculados sobre a ementa reescrita como acao com o modelo de linguagem do projeto.
+- `acoes`: embeddings calculados sobre a ementa reescrita como ação com o modelo de linguagem do projeto.
 
-Os numeros abaixo usam o pool anotado em `experiments/eval/outputs/annotation_pool_categorized.jsonl` e os rankings de `recommendations_bm25_ementas.jsonl`, `recommendations_ementas.jsonl` e `recommendations_acoes.jsonl`.
+Os números abaixo usam o pool anotado em `experiments/eval/outputs/annotation_pool_categorized.jsonl` e os rankings de `recommendations_bm25_ementas.jsonl`, `recommendations_ementas.jsonl` e `recommendations_acoes.jsonl`.
 
 ## Resumo executivo
 
-O pool contem 3792 pares problema-documento anotados em 50 problemas (media de 75.8 candidatos por problema).
-As recomendacoes baseadas em `acoes` lideram nas metricas principais, seguidas por `ementas` e depois por `bm25_ementas`: nDCG@10 = 0.529 / 0.529 / 0.692, MAP@10 = 0.128 / 0.139 / 0.161, e relevancia media@10 = 1.778 / 1.778 / 2.158.
-Contra o baseline lexical, `acoes` sobe de 0.606 para 0.728 em High-P@10 e de 0.164 para 0.202 em High-Recall@10. `ementas` tambem supera o BM25 nesses dois cortes (0.582 e 0.154).
-Os tres rankings recuperam conjuntos parcialmente distintos: o overlap medio entre BM25 e ementas e de 3.94 documentos por problema (Jaccard 0.075), entre BM25 e acoes e de 5.40 (Jaccard 0.109) e entre ementas e acoes e de 7.02 (Jaccard 0.139).
-Interpretacao pratica: as duas abordagens semanticas superam o baseline lexical em media, e a textualizacao em formato de acao continua sendo a melhor forma de alinhar a busca com problemas formulados como necessidades municipais.
+O pool contém 3792 pares problema-documento anotados em 50 problemas (média de 75.8 candidatos por problema).
+As recomendações baseadas em `acoes` lideram nas métricas principais, seguidas por `ementas` e depois por `bm25_ementas`: nDCG@10 = 0.529 / 0.529 / 0.692, MAP@10 = 0.128 / 0.139 / 0.161, e relevância média@10 = 1.778 / 1.778 / 2.158.
+Contra o baseline lexical, `acoes` sobe de 0.606 para 0.728 em High-P@10 e de 0.164 para 0.202 em High-Recall@10. `ementas` também supera o BM25 nesses dois cortes (0.582 e 0.154).
+Os três rankings recuperam conjuntos parcialmente distintos: o overlap médio entre BM25 e ementas é de 3.94 documentos por problema (Jaccard 0.075), entre BM25 e ações é de 5.40 (Jaccard 0.109) e entre ementas e ações é de 7.02 (Jaccard 0.139).
+Interpretação prática: as duas abordagens semânticas superam o baseline lexical em média, e a textualização em formato de ação continua sendo a melhor forma de alinhar a busca com problemas formulados como necessidades municipais.
 
 ## Perfil do pool anotado
 
-A base anotada e densa em documentos relevantes porque foi montada a partir da uniao dos rankings das tres abordagens. No total, 73.4% dos itens receberam relevancia > 0 e 51.0% receberam relevancia >= 2.
+A base anotada é densa em documentos relevantes porque foi montada a partir da união dos rankings das três abordagens. No total, 73.4% dos itens receberam relevância > 0 e 51.0% receberam relevância >= 2.
 
-| Abordagem | Itens no pool | % relevantes | % relevancia alta (>=2) | Itens exclusivos | % alta nos exclusivos |
+| Abordagem | Itens no pool | % relevantes | % relevância alta (>=2) | Itens exclusivos | % alta nos exclusivos |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | BM25 | 1500 | 70.0% | 51.8% | 1143 | 41.9% |
 | ementas | 1500 | 75.8% | 51.1% | 1062 | 39.4% |
-| acoes | 1500 | 85.3% | 64.9% | 989 | 56.3% |
+| ações | 1500 | 85.3% | 64.9% | 989 | 56.3% |
 
-Entre as tres abordagens, `acoes` concentra a maior fracao de itens de alta relevancia (64.9%), enquanto `bm25` adiciona mais candidatos exclusivos ao pool (1143 pares).
+Entre as três abordagens, `acoes` concentra a maior fração de itens de alta relevância (64.9%), enquanto `bm25` adiciona mais candidatos exclusivos ao pool (1143 pares).
 
-Distribuicao global de relevancia no pool:
+Distribuição global de relevância no pool:
 
 - `relevance = 0`: 1008 itens
 - `relevance = 1`: 849 itens
 - `relevance = 2`: 786 itens
 - `relevance = 3`: 1149 itens
 
-## Metricas agregadas
+## Métricas agregadas
 
-| Metrica | BM25 | Ementas | Acoes | Delta (ementas - BM25) | Delta (acoes - BM25) |
+| Métrica | BM25 | Ementas | Ações | Delta (ementas - BM25) | Delta (ações - BM25) |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | P@1 | 0.760 | 0.940 | 0.980 | 0.180 | 0.220 |
 | P@3 | 0.833 | 0.880 | 0.953 | 0.047 | 0.120 |
@@ -53,18 +67,18 @@ Distribuicao global de relevancia no pool:
 | MAP@10 | 0.128 | 0.139 | 0.161 | 0.011 | 0.033 |
 | nDCG@3 | 0.549 | 0.590 | 0.769 | 0.041 | 0.220 |
 | nDCG@10 | 0.529 | 0.529 | 0.692 | -0.000 | 0.163 |
-| Relevancia media@3 | 1.913 | 1.960 | 2.433 | 0.047 | 0.520 |
-| Relevancia media@10 | 1.778 | 1.778 | 2.158 | 0.000 | 0.380 |
+| Relevância média@3 | 1.913 | 1.960 | 2.433 | 0.047 | 0.520 |
+| Relevância média@10 | 1.778 | 1.778 | 2.158 | 0.000 | 0.380 |
 
-Leitura rapida: as duas abordagens semanticas superam o BM25 em media, e `acoes` melhora tanto a proporcao de itens relevantes no topo quanto a ordenacao dos melhores documentos ao longo do ranking.
+Leitura rápida: as duas abordagens semânticas superam o BM25 em média, e `acoes` melhora tanto a proporção de itens relevantes no topo quanto a ordenação dos melhores documentos ao longo do ranking.
 
-## Comparacao pareada por problema
+## Comparação pareada por problema
 
-As tabelas abaixo contam, problema a problema, quantas vezes cada abordagem semantica ficou acima do baseline lexical BM25. O p-valor vem de um sign test exato e serve apenas como indicio, porque a amostra tem 50 problemas.
+As tabelas abaixo contam, problema a problema, quantas vezes cada abordagem semântica ficou acima do baseline lexical BM25. O p-valor vem de um sign test exato e serve apenas como indício, porque a amostra tem 50 problemas.
 
 ### Ementas vs BM25
 
-| Metrica | Delta medio | Vitorias ementas | Vitorias bm25 | Empates | p-valor sign test |
+| Métrica | Delta médio | Vitórias ementas | Vitórias bm25 | Empates | p-valor sign test |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | P@3 | 0.047 | 10 | 8 | 32 | 0.815 |
 | P@10 | 0.060 | 22 | 11 | 17 | 0.080 |
@@ -73,11 +87,11 @@ As tabelas abaixo contam, problema a problema, quantas vezes cada abordagem sema
 | High-Recall@10 | -0.010 | 19 | 26 | 5 | 0.371 |
 | MAP@10 | 0.011 | 24 | 12 | 14 | 0.065 |
 | nDCG@10 | -0.000 | 23 | 27 | 0 | 0.672 |
-| Relevancia media@10 | -0.000 | 23 | 26 | 1 | 0.775 |
+| Relevância média@10 | -0.000 | 23 | 26 | 1 | 0.775 |
 
-### Acoes vs BM25
+### Ações vs BM25
 
-| Metrica | Delta medio | Vitorias acoes | Vitorias bm25 | Empates | p-valor sign test |
+| Métrica | Delta médio | Vitórias ações | Vitórias bm25 | Empates | p-valor sign test |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | P@3 | 0.120 | 13 | 3 | 34 | 0.021 |
 | P@10 | 0.116 | 22 | 9 | 19 | 0.029 |
@@ -86,13 +100,13 @@ As tabelas abaixo contam, problema a problema, quantas vezes cada abordagem sema
 | High-Recall@10 | 0.039 | 30 | 13 | 7 | 0.014 |
 | MAP@10 | 0.033 | 23 | 9 | 18 | 0.020 |
 | nDCG@10 | 0.163 | 38 | 12 | 0 | 0.000 |
-| Relevancia media@10 | 0.380 | 38 | 10 | 2 | 0.000 |
+| Relevância média@10 | 0.380 | 38 | 10 | 2 | 0.000 |
 
-O sinal mais forte aparece na comparacao de `acoes` contra o baseline: `acoes` venceu em 30 de 43 comparacoes nao empatadas em High-P@10, em 30 de 43 em High-Recall@10 e em 38 de 50 em nDCG@10. `Ementas` tambem vence o BM25 em nDCG@10 em 23 de 50 comparacoes nao empatadas.
+O sinal mais forte aparece na comparação de `acoes` contra o baseline: `acoes` venceu em 30 de 43 comparações não empatadas em High-P@10, em 30 de 43 em High-Recall@10 e em 38 de 50 em nDCG@10. `Ementas` também vence o BM25 em nDCG@10 em 23 de 50 comparações não empatadas.
 
 ## Ganho por problema
 
-| Problema | nDCG@10 BM25 | nDCG@10 ementas | nDCG@10 acoes | Delta (ementas - BM25) | Delta (acoes - BM25) |
+| Problema | nDCG@10 BM25 | nDCG@10 ementas | nDCG@10 ações | Delta (ementas - BM25) | Delta (ações - BM25) |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | `enchentes_urbanas` | 0.000 | 0.439 | 0.964 | 0.439 | 0.964 |
 | `ciclomobilidade` | 0.000 | 0.554 | 0.736 | 0.554 | 0.736 |
@@ -149,7 +163,7 @@ Os maiores ganhos de `acoes` sobre o baseline aparecem em `enchentes_urbanas`, `
 
 ## Qualidade ao longo do ranking
 
-| Rank | Relevancia media BM25 | Relevancia media ementas | Relevancia media acoes |
+| Rank | Relevância média BM25 | Relevância média ementas | Relevância média ações |
 | --- | ---: | ---: | ---: |
 | 1 | 1.820 | 2.340 | 2.620 |
 | 2 | 1.940 | 1.720 | 2.400 |
@@ -182,37 +196,37 @@ Os maiores ganhos de `acoes` sobre o baseline aparecem em `enchentes_urbanas`, `
 | 29 | 1.380 | 1.440 | 1.900 |
 | 30 | 1.020 | 1.440 | 1.660 |
 
-Ja no rank 1, `acoes` abre vantagem sobre o BM25 (2.620 vs 1.820) e supera o baseline em 29 das 30 posicoes analisadas. Ainda assim, ha 1 ranks em que o BM25 fica acima.
+Já no rank 1, `acoes` abre vantagem sobre o BM25 (2.620 vs 1.820) e supera o baseline em 29 das 30 posições analisadas. Ainda assim, há 1 rank em que o BM25 fica acima.
 
 ## Exemplos qualitativos
 
 ### Casos em que `acoes` melhora muito sobre o baseline
 
-- **Prevenir enchentes urbanas** (`enchentes_urbanas`): nDCG@10 bm25=0.000 vs ementas=0.439 vs acoes=0.964. Top-3 bm25: #1 (rel=0) Montenegro/RS: Criar o Banco de ideias legislativas no município.; #2 (rel=0) Natal/RN: Criar o Banco de ideias legislativas no município.; #3 (rel=0) Manhuaçu/MG: Criar o Banco de ideias legislativas no município.. Top-3 ementas: #1 (rel=3) Ribas do Rio Pardo/MS: Regulamentar a contenção de águas pluviais para prevenir enchentes, alagamentos e preservaçã...; #2 (rel=0) Itapoá/SC: Desafetar lotes do patrimônio municipal.; #3 (rel=0) Natal/RN: Criar o IPTU Zero, desconto no IPTU para imóveis onde ocorram enchentes e alagamentos no mun.... Top-3 acoes: #1 (rel=3) Campinas/SP: Implantar o programa “Bueiro Imobiliário” para prevenção de enchentes no município.; #2 (rel=3) Rio Grande/RS: Implantar o programa “Bueiro Imobiliário” como forma de prevenção às enchentes no município.; #3 (rel=3) Cabo de Santo Agostinho/PE: Implantar o programa “Bueiro Imobiliário” como forma de prevenção às enchentes no município..
-- **Ampliar ciclomobilidade urbana** (`ciclomobilidade`): nDCG@10 bm25=0.000 vs ementas=0.554 vs acoes=0.736. Top-3 bm25: #1 (rel=0) Campina Grande/PB: Implantar jardins de chuva como infraestrutura verde no município.; #2 (rel=0) Palmital/SP: Conceder incentivo às industrias que virem a se instalar no município.; #3 (rel=0) Armação dos Búzios/RJ: Aumentar a licença paternidade dos servidores públicos do município.. Top-3 ementas: #1 (rel=3) Catalão/GO: Construir ciclovias e ciclorotas em loteamentos residenciais, empresariais e condomínios no...; #2 (rel=2) Cidreira/RS: Criar o programa “Doe um Bicicletário” no município.; #3 (rel=2) Carlos Barbosa/RS: Instalar bebedouros na ciclovia municipal.. Top-3 acoes: #1 (rel=3) Natal/RN: Criar sistema cicloviário no município.; #2 (rel=3) Pato Branco/PR: Criar sistema cicloviário no município.; #3 (rel=3) Pato Branco/PR: Criar sistema cicloviário no município..
+- **Prevenir enchentes urbanas** (`enchentes_urbanas`): nDCG@10 bm25=0.000 vs ementas=0.439 vs ações=0.964. Top-3 bm25: #1 (rel=0) Montenegro/RS: Criar o Banco de ideias legislativas no município.; #2 (rel=0) Natal/RN: Criar o Banco de ideias legislativas no município.; #3 (rel=0) Manhuaçu/MG: Criar o Banco de ideias legislativas no município.. Top-3 ementas: #1 (rel=3) Ribas do Rio Pardo/MS: Regulamentar a contenção de águas pluviais para prevenir enchentes, alagamentos e preservaçã...; #2 (rel=0) Itapoá/SC: Desafetar lotes do patrimônio municipal.; #3 (rel=0) Natal/RN: Criar o IPTU Zero, desconto no IPTU para imóveis onde ocorram enchentes e alagamentos no mun.... Top-3 ações: #1 (rel=3) Campinas/SP: Implantar o programa “Bueiro Imobiliário” para prevenção de enchentes no município.; #2 (rel=3) Rio Grande/RS: Implantar o programa “Bueiro Imobiliário” como forma de prevenção às enchentes no município.; #3 (rel=3) Cabo de Santo Agostinho/PE: Implantar o programa “Bueiro Imobiliário” como forma de prevenção às enchentes no município..
+- **Ampliar ciclomobilidade urbana** (`ciclomobilidade`): nDCG@10 bm25=0.000 vs ementas=0.554 vs ações=0.736. Top-3 bm25: #1 (rel=0) Campina Grande/PB: Implantar jardins de chuva como infraestrutura verde no município.; #2 (rel=0) Palmital/SP: Conceder incentivo às industrias que virem a se instalar no município.; #3 (rel=0) Armação dos Búzios/RJ: Aumentar a licença paternidade dos servidores públicos do município.. Top-3 ementas: #1 (rel=3) Catalão/GO: Construir ciclovias e ciclorotas em loteamentos residenciais, empresariais e condomínios no...; #2 (rel=2) Cidreira/RS: Criar o programa “Doe um Bicicletário” no município.; #3 (rel=2) Carlos Barbosa/RS: Instalar bebedouros na ciclovia municipal.. Top-3 ações: #1 (rel=3) Natal/RN: Criar sistema cicloviário no município.; #2 (rel=3) Pato Branco/PR: Criar sistema cicloviário no município.; #3 (rel=3) Pato Branco/PR: Criar sistema cicloviário no município..
 
 ### Casos em que o baseline lexical foi melhor que `acoes`
 
-- **Reduzir risco geológico em encostas** (`risco_geologico`): nDCG@10 bm25=0.716 vs ementas=0.251 vs acoes=0.494. Top-3 bm25: #1 (rel=3) Montes Claros/MG: Priorizar moradias para famílias em áreas de risco (encostas).; #2 (rel=3) Montes Claros/MG: Priorizar famílias em áreas de risco (encostas).; #3 (rel=3) Montes Claros/MG: Manter as áreas de risco (encostas) existentes no município.. Top-3 ementas: #1 (rel=2) Três Passos/RS: Alterar a Lei no 5.622/ 2021 que autoriza o poder executivo municipal a contratar geólogos.; #2 (rel=2) Três Passos/RS: Contratar geólogos emergenciais.; #3 (rel=0) Marabá/PA: Criar programa municipal de incentivo à prevenção do assoreamento dos rios Itacaiúnas e Toca.... Top-3 acoes: #1 (rel=1) Rio Grande/RS: Criar política municipal de informação e transparência sobre inundações e enchentes em áreas...; #2 (rel=1) Campinas/SP: Criar plano municipal de combate a enchentes e inundações no município.; #3 (rel=3) Montes Claros/MG: Manter as áreas de risco (encostas) existentes no município..
-- **Expandir Educação de Jovens e Adultos (EJA)** (`educacao_jovens_adultos`): nDCG@10 bm25=0.396 vs ementas=0.281 vs acoes=0.156. Top-3 bm25: #1 (rel=1) Rio Grande/RS: Instituir o Dia Municipal da Educação de Jovens e Adultos.; #2 (rel=1) Parauapebas/PA: Instituir campanha sobre educação de jovens e adultos no município.; #3 (rel=3) Rio Grande/RS: Criar política itinerante de educação de jovens e adultos no município.. Top-3 ementas: #1 (rel=1) Rio Grande/RS: Instituir o Dia Municipal da Educação de Jovens e Adultos.; #2 (rel=0) Luiz Alves/SC: Criar escola municipal de braço joaquim no município.; #3 (rel=3) Erechim/RS: Criar o Centro Municipal de Educação de Jovens e Adultos – Ceja Erechim.. Top-3 acoes: #1 (rel=1) Parauapebas/PA: Instituir campanha sobre educação de jovens e adultos no município.; #2 (rel=1) Natal/RN: Instituir o programa “Educação + Trabalho” no município.; #3 (rel=1) Itapoá/SC: Instituir campanhas públicas sobre educação de jovens e adultos no município..
+- **Reduzir risco geológico em encostas** (`risco_geologico`): nDCG@10 bm25=0.716 vs ementas=0.251 vs ações=0.494. Top-3 bm25: #1 (rel=3) Montes Claros/MG: Priorizar moradias para famílias em áreas de risco (encostas).; #2 (rel=3) Montes Claros/MG: Priorizar famílias em áreas de risco (encostas).; #3 (rel=3) Montes Claros/MG: Manter as áreas de risco (encostas) existentes no município.. Top-3 ementas: #1 (rel=2) Três Passos/RS: Alterar a Lei no 5.622/ 2021 que autoriza o poder executivo municipal a contratar geólogos.; #2 (rel=2) Três Passos/RS: Contratar geólogos emergenciais.; #3 (rel=0) Marabá/PA: Criar programa municipal de incentivo à prevenção do assoreamento dos rios Itacaiúnas e Toca.... Top-3 ações: #1 (rel=1) Rio Grande/RS: Criar política municipal de informação e transparência sobre inundações e enchentes em áreas...; #2 (rel=1) Campinas/SP: Criar plano municipal de combate a enchentes e inundações no município.; #3 (rel=3) Montes Claros/MG: Manter as áreas de risco (encostas) existentes no município..
+- **Expandir Educação de Jovens e Adultos (EJA)** (`educacao_jovens_adultos`): nDCG@10 bm25=0.396 vs ementas=0.281 vs ações=0.156. Top-3 bm25: #1 (rel=1) Rio Grande/RS: Instituir o Dia Municipal da Educação de Jovens e Adultos.; #2 (rel=1) Parauapebas/PA: Instituir campanha sobre educação de jovens e adultos no município.; #3 (rel=3) Rio Grande/RS: Criar política itinerante de educação de jovens e adultos no município.. Top-3 ementas: #1 (rel=1) Rio Grande/RS: Instituir o Dia Municipal da Educação de Jovens e Adultos.; #2 (rel=0) Luiz Alves/SC: Criar escola municipal de braço joaquim no município.; #3 (rel=3) Erechim/RS: Criar o Centro Municipal de Educação de Jovens e Adultos – Ceja Erechim.. Top-3 ações: #1 (rel=1) Parauapebas/PA: Instituir campanha sobre educação de jovens e adultos no município.; #2 (rel=1) Natal/RN: Instituir o programa “Educação + Trabalho” no município.; #3 (rel=1) Itapoá/SC: Instituir campanhas públicas sobre educação de jovens e adultos no município..
 
-## Interpretacao
+## Interpretação
 
-Os resultados sugerem que as abordagens semanticas reduzem a dependencia de casamento lexical exato e aproximam o texto indexado da formulacao das queries, que tambem sao escritas como problemas ou objetivos de politica publica.
+Os resultados sugerem que as abordagens semânticas reduzem a dependência de casamento lexical exato e aproximam o texto indexado da formulação das queries, que também são escritas como problemas ou objetivos de política pública.
 
-Esse efeito aparece sobretudo quando a ementa original fala em instrumentos genericos, fundos, revisoes administrativas ou linguagem legislativa pouco operacional. Nesses casos, a versao em acao torna mais explicito o verbo, o alvo e o mecanismo da politica, enquanto o BM25 fica preso aos termos literais da query.
+Esse efeito aparece sobretudo quando a ementa original fala em instrumentos genéricos, fundos, revisoes administrativas ou linguagem legislativa pouco operacional. Nesses casos, a versão em ação torna mais explícito o verbo, o alvo e o mecanismo da política, enquanto o BM25 fica preso aos termos literais da query.
 
-As derrotas de `acoes` parecem ocorrer quando o baseline lexical captura termos muito especificos do dominio ou quando a reescrita perde alguma nuance importante de documentos ja claros na forma original. Os temas `educacao_jovens_adultos` e `risco_geologico` ilustram esse comportamento neste recorte.
+As derrotas de `acoes` parecem ocorrer quando o baseline lexical captura termos muito específicos do domínio ou quando a reescrita perde alguma nuance importante de documentos já claros na forma original. Os temas `educacao_jovens_adultos` e `risco_geologico` ilustram esse comportamento neste recorte.
 
-## Limitacoes
+## Limitações
 
-- A avaliacao usa um pool anotado derivado da uniao dos rankings das tres abordagens. Isso e adequado para comparacao relativa, mas nao mede recall absoluto do corpus.
-- Documentos fora do pool nao foram julgados. Se uma abordagem trouxesse bons itens fora dessa uniao, o experimento atual nao capturaria esse ganho.
-- A amostra tem 50 problemas, entao os sinais estatisticos devem ser tratados como exploratorios.
-- O arquivo anotado nao registra multiplos avaliadores, entao nao ha medida de concordancia interanotador.
+- A avaliação usa um pool anotado derivado da união dos rankings das três abordagens. Isso é adequado para comparação relativa, mas não mede recall absoluto do corpus.
+- Documentos fora do pool não foram julgados. Se uma abordagem trouxesse bons itens fora dessa união, o experimento atual não capturaria esse ganho.
+- A amostra tem 50 problemas, entao os sinais estatísticos devem ser tratados como exploratórios.
+- O arquivo anotado não registra multiplos avaliadores, entao não ha medida de concordância interanotador.
 
-## Conclusao
+## Conclusão
 
-Dentro deste conjunto anotado, `acoes` e a melhor estrategia, `ementas` fica em segundo lugar e `bm25_ementas` funciona como baseline lexical competitivo, mas inferior em media. O ganho das abordagens semanticas e mais claro na recuperacao de documentos de alta qualidade e na consistencia do ranking apos a primeira posicao.
+Dentro deste conjunto anotado, `acoes` é a melhor estratégia, `ementas` fica em segundo lugar e `bm25_ementas` funciona como baseline lexical competitivo, mas inferior em média. O ganho das abordagens semânticas é mais claro na recuperação de documentos de alta qualidade e na consistência do ranking após a primeira posição.
 
-Se a meta do projeto e maximizar a utilidade pratica das sugestoes para problemas municipais, os dados atuais favorecem usar `acoes` como default, manter `ementas` como segunda fonte semantica e tratar o BM25 como baseline de referencia ou componente complementar de um ranking hibrido.
+Se a meta do projeto é maximizar a utilidade prática das sugestões para problemas municipais, os dados atuais favorecem usar `acoes` como default, manter `ementas` como segunda fonte semântica e tratar o BM25 como baseline de referência ou componente complementar de um ranking híbrido.
