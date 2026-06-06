@@ -45,10 +45,10 @@ references:
     authors:
       - family-names: Ambiel
         given-names: Thiago
-    doi: "10.5281/zenodo.<DS-CONCEPT-PREENCHER>"
+    doi: "10.5281/zenodo.20564283"
   - type: software
     title: "Sonar Municipal PTT5-v2 LoRA adapter for ementa-to-action textualization"
     authors:
       - family-names: Ambiel
         given-names: Thiago
-    doi: "10.5281/zenodo.<MD-CONCEPT-PREENCHER>"
+    doi: "10.5281/zenodo.20564326"

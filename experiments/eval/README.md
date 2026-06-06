@@ -13,7 +13,7 @@ As abordagens semânticas usam o mesmo modelo de embeddings da plataforma:
 
 > **Pool de anotação canônico.** Os arquivos `annotation_pool*.jsonl` e `recommendations_*.jsonl`
 > referenciados aqui **não acompanham este repositório** — eles vivem no *record* de dataset do
-> Zenodo (`10.5281/zenodo.<DS-CONCEPT-PREENCHER>`, diretórios `annotation-pool/` e
+> Zenodo (`10.5281/zenodo.20564283`, diretórios `annotation-pool/` e
 > `recommendations/`). Antes de rodar `analyze_annotation_pool.py` sobre dados já anotados, baixe o
 > *bundle* do Zenodo e coloque os arquivos em `experiments/eval/outputs/` (esse caminho está no
 > `.gitignore` e não será re-commitado). Para regenerar do zero, use os scripts abaixo.
