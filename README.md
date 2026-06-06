@@ -76,7 +76,7 @@ O conjunto publicado como parte do TCC é composto por:
 | --- | --- | --- |
 | **Código-fonte** (este repositório) | MIT | Zenodo `10.5281/zenodo.20387514` |
 | **Dataset** (benchmark TREC-style + corpus de 241k ações) | CC-BY-4.0 | [Hugging Face Hub](https://huggingface.co/datasets/thiagoambiel/sonar-municipal-pl-actions) · Zenodo `10.5281/zenodo.20564283` |
-| **Modelo** PTT5-v2 ementa→ação | Apache-2.0 | [Hugging Face Hub](https://huggingface.co/thiagoambiel/sonar_municipal_ptt5_ementa2action) · Zenodo `10.5281/zenodo.20564326` |
+| **Modelo** PTT5 base ementa→ação | Apache-2.0 | [Hugging Face Hub](https://huggingface.co/thiagoambiel/sonar_municipal_ptt5_ementa2action) · Zenodo `10.5281/zenodo.20564326` |
 | **Demo** (Gradio Space) | — | [Hugging Face Spaces](https://huggingface.co/spaces/thiagoambiel/sonar-municipal-demo) |
 | **Tese** (TCC) | — | BDTD-USP (a ser vinculado quando o depósito institucional existir) |
 

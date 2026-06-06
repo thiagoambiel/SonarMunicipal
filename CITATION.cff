@@ -47,7 +47,7 @@ references:
         given-names: Thiago
     doi: "10.5281/zenodo.20564283"
   - type: software
-    title: "Sonar Municipal PTT5-v2 LoRA adapter for ementa-to-action textualization"
+    title: "Sonar Municipal PTT5 base fine-tuned (LoRA, merged) for ementa-to-action textualization"
     authors:
       - family-names: Ambiel
         given-names: Thiago
