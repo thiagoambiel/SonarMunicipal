@@ -7,6 +7,9 @@
 [![Qdrant](https://img.shields.io/badge/Qdrant-1.12.0-FF4F8B?style=for-the-badge)](https://qdrant.tech/)
 [![Node.js](https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
 [![Python](https://img.shields.io/badge/Python-3.9%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Code DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20387514.svg)](https://doi.org/10.5281/zenodo.20387514)
+[![Dataset DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20564283.svg)](https://doi.org/10.5281/zenodo.20564283)
+[![Model DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20564326.svg)](https://doi.org/10.5281/zenodo.20564326)
 
 </div>
 
